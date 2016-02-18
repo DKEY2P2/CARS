@@ -255,10 +255,16 @@ public abstract class Vehicle implements Task, Drawable {
     public void draw(Graphics g) {
         SimpleImmutableEntry<Road, Double> position = getPosition();
         Road road = position.getKey();
+        double percentage = position.getValue();
         Intersection start = road.getStart();
         Intersection end = road.getEnd();
-        Rectangle r = new Rectangle(4, 4);
-        
+        int diameter = 8;
+        Rectangle r = new Rectangle(diameter / 2, diameter / 2);
+        //Waiting for Lucas
+        int differentX = 0; // currently 0
+        int differentY = 0; // currently 0 
+        r.setLocation((int) (differentX * percentage), (int) (differentY * percentage));
+
     }
 
 }
