@@ -6,18 +6,31 @@
 package controller.threads;
 
 /**
+ * The thread to run the task runnable
  *
  * @author Kareem
  */
-public class TaskThread extends Thread{
+public class TaskThread extends Thread {
 
-    public TaskThread(TaskRunnable runable) {
-        super(runable);
+    /**
+     * The default constructor
+     *
+     * @param runnable The target runnable
+     */
+    public TaskThread(TaskRunnable runnable) {
+        super(runnable);
     }
-    
-    public TaskThread(TaskRunnable runable, String name) {
-        super(runable);
+
+    /**
+     *
+     * The default constructor
+     *
+     * @param runnable The target runnable
+     * @param name The name of the thread
+     */
+    public TaskThread(TaskRunnable runnable, String name) {
+        super(runnable);
         setName(name);
     }
-    
+
 }

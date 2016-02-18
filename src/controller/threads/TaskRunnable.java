@@ -4,6 +4,7 @@ import controller.Task;
 import helper.Logger;
 
 /**
+ * The runnable to encapsulate the task
  *
  * @author Kareem
  */
@@ -12,7 +13,7 @@ public class TaskRunnable implements Runnable {
     private Task task;
 
     /**
-     * Set the value of task
+     * Set the task that needs to be ran
      *
      * @param task new value of task
      */
