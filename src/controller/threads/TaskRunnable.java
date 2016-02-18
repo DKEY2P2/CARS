@@ -1,14 +1,31 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller.threads;
+
+import controller.Task;
+import helper.Logger;
 
 /**
  *
  * @author Kareem
  */
-public class TaskRunnable {
-    
+public class TaskRunnable implements Runnable {
+
+    private Task task;
+
+    /**
+     * Set the value of task
+     *
+     * @param task new value of task
+     */
+    public void setTask(Task task) {
+        this.task = task;
+    }
+
+    @Override
+    public void run() {
+        Boolean results = task.update();
+        if (!results) {
+            Logger.LogAny("Task", "Task failed to run");
+        }
+    }
+
 }

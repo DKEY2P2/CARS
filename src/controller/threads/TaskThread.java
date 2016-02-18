@@ -9,6 +9,15 @@ package controller.threads;
  *
  * @author Kareem
  */
-public class TaskThread {
+public class TaskThread extends Thread{
+
+    public TaskThread(TaskRunnable runable) {
+        super(runable);
+    }
+    
+    public TaskThread(TaskRunnable runable, String name) {
+        super(runable);
+        setName(name);
+    }
     
 }
