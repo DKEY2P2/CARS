@@ -1,151 +1,134 @@
 package map;
 
-import java.util.ArrayList;
-import java.util.Queue;
-
 import vehicle.Vehicle;
+
+import java.util.ArrayList;
+import java.util.PriorityQueue;
+
 /**
- * 
- * @author Gianni
+ * This class represents a road
+ * A road is similar to an edge of a graph, they are also directed
  *
- *The abstract class for the roads of the simulation.
+ * @author Lucas Vanparijs
+ * @since 18-02-16
  */
 
 public abstract class Road {
-	
-	private double maxSpeed;
-	/**
-	 * The speed limit in km/h
-	 */
-	private double kilometer;
-	/**
-	 * length of the road in kilometers
-	 */
-	private Intersection start;
-	/**
-	 * starting intersection of the road
-	 */
-	private Intersection end;
-	/**
-	 * ending intersection of the road
-	 */
-	private ArrayList<Road> neighbor;
-	/**
-	 * The roads that share the same start and end intersection
-	 */
-	
-	private Queue<Vehicle> vehicles;
-	/**
-	 * The number of vehicles on the road
-	 */
-	
-	/**
-	 * 
-	 * 
-	 * setters
-	 * 
-	 */
-	
-	/**
-	 * @param maxSpeed sets the speed limit of the road 
-	 */
-	public void setMaxSpeed(double speed ) {
-		maxSpeed = speed;
-	}
-	/**
-	 * 
-	 * @param kilometer sets the length of the road
-	 */
-	public void setLength(double kilometer) {
-		this.kilometer=kilometer;
-	}
-	/**
-	 * 
-	 * @param start the beginning intersection of the road
-	 */
-	public void Start(Intersection start) {
-		this.start = start;
-	}
-	/**
-	 * 
-	 * @param end the end intersection of the road
-	 */
-	
-	public void End(Intersection end) {
-		this.end = end;
-	}
-	
-	public void AddNeighbor(Road road) {
-		/**
-		 * @param road will only be added to the ArrayList if it shares a start and end node of this road 
-		 */
-		if(this.start == road.getStart() && this.end == road.getEnd()) {
-			neighbor.add(road);
-		}
-			
-	}
-	
-	/**
-	 * 
-	 * Getters
-	 * 
-	 */
-	
-	/**
-	 * 
-	 * @return maxSpeed
-	 */
-	public double getMaxSpeed() {
-		return this.maxSpeed;
-	}
-	/**
-	 * 
-	 * @return getLength
-	 */
-	public double getLength() {
-		return this.kilometer;
-	}
-	/**
-	 * 
-	 * @return start
-	 */
-	public Intersection getStart() {
-		return this.start;
-	}
 
-	
-	/**
-	 * 
-	 * @return end
-	 */
-	public Intersection getEnd() {
-		return this.end;
-	}
-	/**
-	 * 
-	 * @return vehicles
-	 */
-	public Queue<Vehicle> getQueue() {
-		return this.vehicles;
-	}
-	/**
-	 * 
-	 * @return neighbor
-	 */
-	public ArrayList <Road> getNeighbor() {
-		return this.neighbor;
-	}
-	
-	/*
-	 * adds a vehicle to the queue
-	 */
-	public void addVehicle(Vehicle vehicle) {
-		vehicles.add(vehicle);
-	}
-	/*
-	 * removes a vehicle from the queue
-	 */
-	public void removeVehicle(Vehicle vehicle) {
-		vehicles.remove();
-	}
+    /**
+     * The speed limit on the road
+     */
+    private double speedLimit;
+    /**
+     * The length of the road
+     */
+    private final double LENGTH;
+    /**
+     * The starting intersection of the road
+     */
+    private Intersection start;
+    /**
+     * The ending intersection of the road
+     */
+    private Intersection end;
+    /**
+     * A parallel road, wee limit ourselves to 2 lane roads
+     */
+    private Road parallel;
+    /**
+     * Start and end intersection wrapped in an ArrayList
+     */
+    private ArrayList<Intersection> se = new ArrayList<Intersection>();
+    /**
+     * A queue of all the vehicles on this road
+     */
+    private PriorityQueue<Vehicle> qv = new PriorityQueue<Vehicle>();
+
+    /**
+     * The constructor of the Road class
+     * @param start the starting intersection
+     * @param end the ending intersection
+     * @param length the length of the road/THIS WILL NEED TO BE CALCULATED AUTOMATICALLY
+     */
+    public Road(Intersection start, Intersection end, double length){
+        this.start = start;
+        this.end = end;
+        se.add(start);
+        se.add(end);
+        LENGTH = length;
+    }
+
+    /**
+     * Returns the 2 Intersection of the road
+     * @return
+     */
+    public ArrayList<Intersection> getAdjacent(){
+        return se;
+    }
+
+    /**
+     * Returns the speed limit on this road
+     * @return the Speed limit
+     */
+    public double getSpeedLimit(){
+        return speedLimit;
+    }
+
+    /**
+     * Returns the length of the road
+     * @return LENGTH
+     */
+    public double getLength(){
+        return LENGTH;
+    }
+
+    /**
+     * Returns the starting Intersection of the Road
+     * @return The starting Intersection
+     */
+    public Intersection getStart(){
+        return start;
+    }
+
+    /**
+     * Returns the ending Intersection of the Road
+     * @return The ending Intersection
+     */
+    public Intersection getEnd(){
+        return end;
+    }
+
+    /**
+     * Returns all the vehicles on the road
+     * @return a queue of all the vehicles on the road
+     */
+    public PriorityQueue<Vehicle> getVehicles(){
+        return qv;
+    }
+
+    /**
+     * Sets the road parallel to this one to the parameter
+     * @param r the road to be parallel, WE CAN MAKE THIS GO AUTOMATICALLY
+     * @return the new parallel road
+     */
+    public Road setParallel(Road r){
+        parallel = r;
+        return r;
+    }
+
+    /**
+     * Returns the road parallel to this one, returns null if there is none
+     * @return the parallel road
+     */
+    public Road getParallel(){
+        return parallel;
+    }
+
+    /**
+     * Sets the speed limit on the road
+     * @param n the speed limit
+     */
+    public void setSpeedLimit(int n){
+        speedLimit = n;
+    }
 }

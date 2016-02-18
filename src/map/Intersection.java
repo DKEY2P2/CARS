@@ -1,36 +1,126 @@
 package map;
 
-import graph.Node;
 import vehicle.Vehicle;
+import java.util.ArrayList;
+import java.util.PriorityQueue;
 
-import java.util.Queue;
+/**
+ * The abstract class for all types of intersections present in the simulation
+ * An intersection is similar to a Node/Vertex of a graph
+ *
+ * @author Lucas Vanparijs
+ * @since 18-02-16
+ */
 
-public abstract class Intersection extends Node{
+public abstract class Intersection {
 
-    private int x,y;
-    private Queue<Vehicle> qv;
+    /**
+     * The x position of an intersection
+     */
+    private int x;
+    /**
+     * The y position of an intersection
+     */
+    private int y;
+    /**
+     * This is in an ArrayList that is parallel to the roads that have a certain traffic light,
+     * with the index of the road and the corresponding traffic light being the same
+     */
+    private ArrayList<TrafficLight> tLights = new ArrayList<TrafficLight>();
+    /**
+     * All the roads that are connected to this intersection
+     */
+    private ArrayList<Road> roads = new ArrayList<Road>();
 
-    private boolean isOpen(){
-
+    /**
+     * The constructor of the abstract class
+     * @param x the x coordinate of the intersection
+     * @param y the y coordinate of the intersection
+     */
+    public Intersection(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 
-    private int getTimerLength(){
-
+    /**
+     * Adds a road to the intersection
+     * @param r the road to be added
+     * @return the added road
+     */
+    public Road addRoad(Road r) {
+        roads.add(r);
+        tLights.add(new TrafficLight());
+        return r;
     }
 
-    private int getMaxFlow(){
-
+    /**
+     * Returns all the roads connected to the intersection
+     * @return all the connected roads
+     */
+    public ArrayList<Road> getRoads() {
+        return roads;
     }
 
-    private Queue<Vehicle> getQueue(Road r){
-
+    /**
+     * Removes a road from the intersection
+     * @param r the road to be removed
+     * @return the removed road
+     */
+    public Road removeRoad(Road r) {
+        int i = roads.indexOf(r);
+        roads.remove(r);
+        tLights.remove(i);
+        return r;
     }
 
-    private int getX(){
-
+    /**
+     * Returns whether the light of a certain road connected to the intersection is green(true) or not(false)
+     * @param r The road of which to check the light from
+     * @return True if the light is green, false if it is red
+     */
+    public boolean isGreen(Road r) {
+        int i = roads.indexOf(r);
+        return tLights.get(i).isGreen();
     }
 
-    private int getY(){
+    /**
+     * Returns all the vehicles that are on a certain road
+     * @param r the road to return the vehicles from
+     * @return A Queue of all vehicles that are on the specified road
+     */
+    public PriorityQueue<Vehicle> getQueue(Road r) {
+        return r.getVehicles();
+    }
 
+    /**
+     * Returns the X coordinate of the intersection
+     * @return x coordinate
+     */
+    public int getX() {
+        return x;
+    }
+
+    /**
+     * Returns the y coordinate of the intersection
+     * @return y coordinate
+     */
+    public int getY() {
+        return y;
+    }
+
+    /**
+     * Set the value of the x coordinate
+     * @param n the new value of the x coordinate
+     */
+    public void setX(int n) {
+        x = n;
+    }
+
+    /**
+     * Set the value of the y coordinate
+     * @param n the new value of the y coordinate
+     */
+    public void setY(int n) {
+        y = n;
     }
 }
