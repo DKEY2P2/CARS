@@ -2,6 +2,7 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import java.util.Timer;
 
 public class Ticker extends Observerable {
@@ -15,13 +16,16 @@ public class Ticker extends Observerable {
      */
     public int		      tickCount;
 			      
-    private static final long serialVersionUID = 0L;
+   
 					       
     public Ticker(double TickTimeInS) {
 	setTickTimeInS(TickTimeInS);
 
     }
-    
+    /**
+     * use this to start the timer
+     * @param args thd message passed to notifyObservers()
+     */
     public void start(String args) {
 	// the timer variable must be a javax.swing.Timer
 	new javax.swing.Timer((int) getTickTimeInMS(), new ActionListener() {
@@ -60,14 +64,20 @@ public class Ticker extends Observerable {
     }
     
     /**
-     * 
+     * Sets the TickTimeInS, rounds the value to 4 decimal places.
      * @param x
      */
     public void setTickTimeInS(double x) {
-	this.tickTimeInS = x;
+	//rounds the number to 4 decimal places, as the lowes
+	double y = (double) Math.round(x * 10000d) / 10000d;
+
+	this.tickTimeInS = y;
 	
     }
-    
+    /**
+     * 
+     * @return
+     */
     public int getTickCount() {
 	return this.tickCount;
     }
