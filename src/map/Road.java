@@ -3,6 +3,14 @@ package map;
 import java.util.ArrayList;
 import java.util.Queue;
 
+import vehicle.Vehicle;
+/**
+ * 
+ * @author Gianni
+ *
+ *The abstract class for the roads of the simulation.
+ */
+
 public abstract class Road {
 	
 	private double maxSpeed;
@@ -26,12 +34,23 @@ public abstract class Road {
 	 * The roads that share the same start and end intersection
 	 */
 	
+	private Queue<Vehicle> vehicles;
+	/**
+	 * The number of vehicles on the road
+	 */
+	
+	/**
+	 * 
+	 * 
+	 * setters
+	 * 
+	 */
+	
+	/**
+	 * @param maxSpeed sets the speed limit of the road 
+	 */
 	public void setMaxSpeed(double speed ) {
 		maxSpeed = speed;
-	}
-	
-	public void setLength(double kilometer) {
-		this.kilometer=kilometer;
 	}
 	
 	public void Start(Intersection start) {
@@ -43,11 +62,20 @@ public abstract class Road {
 	}
 	
 	public void AddNeighbor(Road road) {
+		/*
+		 * @param road will only be added to the ArrayList if it shares a start and end node of this road 
+		 */
 		if(this.start == road.getStart() && this.end == road.getEnd()) {
 			neighbor.add(road);
 		}
 			
 	}
+	
+	/**
+	 * 
+	 * Getters
+	 * 
+	 */
 	
 	public double getMaxSpeed() {
 		return this.maxSpeed;
@@ -65,11 +93,24 @@ public abstract class Road {
 		return this.end;
 	}
 	
-	public Queue getQueue() {
-		return this.cars;
+	public Queue<Vehicle> getQueue() {
+		return this.vehicles;
 	}
 	
 	public ArrayList <Road> getNeighbor() {
 		return this.neighbor;
+	}
+	
+	/*
+	 * adds a vehicle to the queue
+	 */
+	public void addVehicle(Vehicle vehicle) {
+		vehicles.add(vehicle);
+	}
+	/*
+	 * removes a vehicle from the queue
+	 */
+	public void removeVehicle(Vehicle vehicle) {
+		vehicles.remove();
 	}
 }
