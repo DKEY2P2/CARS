@@ -1,5 +1,5 @@
 package controller;
 
-public class Ticker {
+public class Ticker extends Observerable{
 
 }
