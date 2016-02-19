@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import controller.Task;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.Objects;
 import map.Intersection;
 import map.Road;
 import ui.Drawable;
@@ -14,9 +15,20 @@ import ui.ImageMap;
 /**
  * The abstract class for all vehicles and identities present in the simulation
  *
- * @author jvacek
+ * @author jvacek, Kareem
  */
 public abstract class Vehicle implements Task, Drawable {
+
+    /**
+     * The index counter of all the cars
+     */
+    private static int indexCounter = 0;
+    /**
+     * The index of the current car.
+     * <p>
+     * Also should be used as the key in vehicleHolder
+     */
+    private int index;
 
     /**
      * The current value of the vehicle's acceleration km/h
@@ -56,7 +68,7 @@ public abstract class Vehicle implements Task, Drawable {
      */
     private ArrayList<Intersection> traceLog;
 
-        private String imageName = "Lambo";
+    private String imageName = "Lambo";
 
     /**
      * Get the value of imageName
@@ -76,7 +88,6 @@ public abstract class Vehicle implements Task, Drawable {
         this.imageName = imageName;
     }
 
-    
     /*
      * 
      * Constructor
@@ -94,6 +105,8 @@ public abstract class Vehicle implements Task, Drawable {
         setPosition(getStart());
         setDesiredSpeed(0);
         setDistance(0);
+        index = indexCounter++;
+        VehicleHolder.getInstance().add(this);
     }
 
     /*
@@ -205,6 +218,15 @@ public abstract class Vehicle implements Task, Drawable {
         return this.traceLog;
     }
 
+    /**
+     * Get the value of index
+     *
+     * @return the value of index
+     */
+    public int getIndex() {
+        return index;
+    }
+
     /*
      * 
      * Setters
@@ -283,11 +305,69 @@ public abstract class Vehicle implements Task, Drawable {
         int diameter = 8;
         int differentX = end.getX() - start.getX();
         int differentY = end.getY() - start.getY();
-        double angle = Math.tan(differentY/differentX);
-        
-        g.drawImage(ImageMap.getInstance().getImage(getImageName(),angle,0.2),
-                (int) (start.getX()+differentX*percentage), 
-                (int) (start.getY()+differentY*percentage), null);
+        double angle = Math.tan(differentY / differentX);
+
+        g.drawImage(ImageMap.getInstance().getImage(getImageName(), angle, 0.2),
+                (int) (start.getX() + differentX * percentage),
+                (int) (start.getY() + differentY * percentage), null);
+    }
+
+    /*
+     Some stuff for hashing and to see if it is equal. Auto genrated xD
+     */
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 41 * hash + (int) (Double.doubleToLongBits(this.speed) ^ (Double.doubleToLongBits(this.speed) >>> 32));
+        hash = 41 * hash + (int) (Double.doubleToLongBits(this.acceleration) ^ (Double.doubleToLongBits(this.acceleration) >>> 32));
+        hash = 41 * hash + Objects.hashCode(this.destination);
+        hash = 41 * hash + Objects.hashCode(this.start);
+        hash = 41 * hash + this.timeOnRoad;
+        hash = 41 * hash + Objects.hashCode(this.position);
+        hash = 41 * hash + (int) (Double.doubleToLongBits(this.desiredSpeed) ^ (Double.doubleToLongBits(this.desiredSpeed) >>> 32));
+        hash = 41 * hash + (int) (Double.doubleToLongBits(this.distance) ^ (Double.doubleToLongBits(this.distance) >>> 32));
+        hash = 41 * hash + Objects.hashCode(this.traceLog);
+        hash = 41 * hash + Objects.hashCode(this.imageName);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Vehicle other = (Vehicle) obj;
+        if (Double.doubleToLongBits(this.speed) != Double.doubleToLongBits(other.speed)) {
+            return false;
+        }
+        if (Double.doubleToLongBits(this.acceleration) != Double.doubleToLongBits(other.acceleration)) {
+            return false;
+        }
+        if (!Objects.equals(this.destination, other.destination)) {
+            return false;
+        }
+        if (!Objects.equals(this.start, other.start)) {
+            return false;
+        }
+        if (this.timeOnRoad != other.timeOnRoad) {
+            return false;
+        }
+        if (!Objects.equals(this.position, other.position)) {
+            return false;
+        }
+        if (Double.doubleToLongBits(this.desiredSpeed) != Double.doubleToLongBits(other.desiredSpeed)) {
+            return false;
+        }
+        if (Double.doubleToLongBits(this.distance) != Double.doubleToLongBits(other.distance)) {
+            return false;
+        }
+        if (!Objects.equals(this.traceLog, other.traceLog)) {
+            return false;
+        }
+        return Objects.equals(this.imageName, other.imageName);
     }
 
 }
