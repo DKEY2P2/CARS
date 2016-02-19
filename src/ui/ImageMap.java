@@ -4,8 +4,7 @@ import helper.Logger;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.net.URL;
 import java.util.HashMap;
 import javax.imageio.ImageIO;
 
@@ -18,18 +17,17 @@ import javax.imageio.ImageIO;
  * @author Kareem
  */
 public class ImageMap {
-
+    
     private static final ImageMap SINGLETON = new ImageMap();
-
+    
     public static ImageMap getInstance() {
         return SINGLETON;
     }
-
+    
     private final HashMap<String, BufferedImage> STRING_MAP = new HashMap<>();
     private final HashMap<Integer, String> INT_MAP = new HashMap<>(); //link an index to the string so we can link it to the buffered image
 
     private ImageMap() {
-        pitaBread();
     }
 
     /**
@@ -166,20 +164,20 @@ public class ImageMap {
      */
     @Deprecated
     private class IntEncapse {
-
+        
         int a;
-
+        
         public IntEncapse() {
         }
-
+        
         protected void setA(int a) {
             this.a = a;
         }
-
+        
         public int getA() {
             return a;
         }
-
+        
     }
 
     /**
@@ -188,7 +186,23 @@ public class ImageMap {
      * It loads the current resources into the map.
      */
     public void pitaBread() {
-
+        URL parentURL = getClass().getClassLoader().getResource("cars");
+        File parentFile = new File(parentURL.getPath());
+        for (File listFile : parentFile.listFiles()) {
+            if (listFile.isFile()) {
+                if (listFile.getName().endsWith(".png")) {
+                    try {
+                        addImage(ImageIO.read(listFile), listFile.getName().split("\\.")[0]);
+                    } catch (IOException ex) {
+                        Logger.LogError(ex);
+                    }
+                }
+            }
+        }
+    }
+    
+    public static void main(String[] args) {
+        new ImageMap().pitaBread();
     }
 
     /**
