@@ -1,6 +1,7 @@
 package ui;
 
 import helper.Logger;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -17,13 +18,13 @@ import javax.imageio.ImageIO;
  * @author Kareem
  */
 public class ImageMap {
-    
+
     private static final ImageMap SINGLETON = new ImageMap();
-    
+
     public static ImageMap getInstance() {
         return SINGLETON;
     }
-    
+
     private final HashMap<String, BufferedImage> STRING_MAP = new HashMap<>();
     private final HashMap<Integer, String> INT_MAP = new HashMap<>(); //link an index to the string so we can link it to the buffered image
 
@@ -164,20 +165,20 @@ public class ImageMap {
      */
     @Deprecated
     private class IntEncapse {
-        
+
         int a;
-        
+
         public IntEncapse() {
         }
-        
+
         protected void setA(int a) {
             this.a = a;
         }
-        
+
         public int getA() {
             return a;
         }
-        
+
     }
 
     /**
@@ -199,8 +200,14 @@ public class ImageMap {
                 }
             }
         }
+
+        BufferedImage bi = new BufferedImage(100, 100, BufferedImage.TYPE_4BYTE_ABGR);
+        bi.getGraphics().setColor(Color.red);
+        bi.getGraphics().drawOval(100, 100, 100, 100);
+        bi.getGraphics().dispose();
+        addImage(bi, "CircleRed");
     }
-    
+
     public static void main(String[] args) {
         new ImageMap().pitaBread();
     }

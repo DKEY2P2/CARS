@@ -1,19 +1,21 @@
 package map;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import vehicle.Vehicle;
 
 import java.util.ArrayList;
 import java.util.PriorityQueue;
+import ui.Drawable;
 
 /**
- * This class represents a road
- * A road is similar to an edge of a graph, they are also directed
+ * This class represents a road A road is similar to an edge of a graph, they
+ * are also directed
  *
  * @author Lucas Vanparijs
  * @since 18-02-16
  */
-
-public abstract class Road {
+public abstract class Road implements Drawable {
 
     /**
      * The speed limit on the road
@@ -46,11 +48,13 @@ public abstract class Road {
 
     /**
      * The constructor of the Road class
+     *
      * @param start the starting intersection
      * @param end the ending intersection
-     * @param length the length of the road/THIS WILL NEED TO BE CALCULATED AUTOMATICALLY
+     * @param length the length of the road/THIS WILL NEED TO BE CALCULATED
+     * AUTOMATICALLY
      */
-    public Road(Intersection start, Intersection end, double length){
+    public Road(Intersection start, Intersection end, double length) {
         this.start = start;
         this.end = end;
         se.add(start);
@@ -60,75 +64,94 @@ public abstract class Road {
 
     /**
      * Returns the 2 Intersection of the road
+     *
      * @return
      */
-    public ArrayList<Intersection> getAdjacent(){
+    public ArrayList<Intersection> getAdjacent() {
         return se;
     }
 
     /**
      * Returns the speed limit on this road
+     *
      * @return the Speed limit
      */
-    public double getSpeedLimit(){
+    public double getSpeedLimit() {
         return speedLimit;
     }
 
     /**
      * Returns the length of the road
+     *
      * @return LENGTH
      */
-    public double getLength(){
+    public double getLength() {
         return LENGTH;
     }
 
     /**
      * Returns the starting Intersection of the Road
+     *
      * @return The starting Intersection
      */
-    public Intersection getStart(){
+    public Intersection getStart() {
         return start;
     }
 
     /**
      * Returns the ending Intersection of the Road
+     *
      * @return The ending Intersection
      */
-    public Intersection getEnd(){
+    public Intersection getEnd() {
         return end;
     }
 
     /**
      * Returns all the vehicles on the road
+     *
      * @return a queue of all the vehicles on the road
      */
-    public PriorityQueue<Vehicle> getVehicles(){
+    public PriorityQueue<Vehicle> getVehicles() {
         return qv;
     }
 
     /**
      * Sets the road parallel to this one to the parameter
+     *
      * @param r the road to be parallel, WE CAN MAKE THIS GO AUTOMATICALLY
      * @return the new parallel road
      */
-    public Road setParallel(Road r){
+    public Road setParallel(Road r) {
         parallel = r;
         return r;
     }
 
     /**
      * Returns the road parallel to this one, returns null if there is none
+     *
      * @return the parallel road
      */
-    public Road getParallel(){
+    public Road getParallel() {
         return parallel;
     }
 
     /**
      * Sets the speed limit on the road
+     *
      * @param n the speed limit
      */
-    public void setSpeedLimit(int n){
+    public void setSpeedLimit(int n) {
         speedLimit = n;
+    }
+
+    @Override
+    public void draw(Graphics g) {
+        int startX = start.getX();
+        int startY = start.getY();
+        int endY = end.getY();
+        int endX = end.getX();
+        g.setColor(Color.BLACK);
+        g.drawLine(startX, startY, endX, endY);
     }
 }

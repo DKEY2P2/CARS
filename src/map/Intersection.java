@@ -1,8 +1,11 @@
 package map;
 
+import java.awt.Graphics;
 import vehicle.Vehicle;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
+import ui.Drawable;
+import ui.ImageMap;
 
 /**
  * The abstract class for all types of intersections present in the simulation
@@ -12,7 +15,7 @@ import java.util.PriorityQueue;
  * @since 18-02-16
  */
 
-public abstract class Intersection {
+public abstract class Intersection implements Drawable{
 
     /**
      * The x position of an intersection
@@ -122,5 +125,10 @@ public abstract class Intersection {
      */
     public void setY(int n) {
         y = n;
+    }
+
+    @Override
+    public void draw(Graphics g) {
+        g.drawImage(ImageMap.getInstance().getImage("CircleRed"), x, y, null);
     }
 }

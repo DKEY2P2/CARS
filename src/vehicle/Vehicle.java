@@ -9,6 +9,7 @@ import java.awt.Rectangle;
 import map.Intersection;
 import map.Road;
 import ui.Drawable;
+import ui.ImageMap;
 
 /**
  * The abstract class for all vehicles and identities present in the simulation
@@ -55,6 +56,27 @@ public abstract class Vehicle implements Task, Drawable {
      */
     private ArrayList<Intersection> traceLog;
 
+        private String imageName = "Lambo";
+
+    /**
+     * Get the value of imageName
+     *
+     * @return the value of imageName
+     */
+    public String getImageName() {
+        return imageName;
+    }
+
+    /**
+     * Set the value of imageName
+     *
+     * @param imageName new value of imageName
+     */
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
+
+    
     /*
      * 
      * Constructor
@@ -259,12 +281,13 @@ public abstract class Vehicle implements Task, Drawable {
         Intersection start = road.getStart();
         Intersection end = road.getEnd();
         int diameter = 8;
-        Rectangle r = new Rectangle(diameter / 2, diameter / 2);
-        //Waiting for Lucas
-        int differentX = 0; // currently 0
-        int differentY = 0; // currently 0 
-        r.setLocation((int) (differentX * percentage), (int) (differentY * percentage));
-
+        int differentX = end.getX() - start.getX();
+        int differentY = end.getY() - start.getY();
+        double angle = Math.tan(differentY/differentX);
+        
+        g.drawImage(ImageMap.getInstance().getImage(getImageName(),angle,0.2),
+                (int) (start.getX()+differentX*percentage), 
+                (int) (start.getY()+differentY*percentage), null);
     }
 
 }
