@@ -206,6 +206,7 @@ public class ImageMap {
         bi.getGraphics().drawOval(100, 100, 100, 100);
         bi.getGraphics().dispose();
         addImage(bi, "CircleRed");
+        
     }
 
     public static void main(String[] args) {
