@@ -14,8 +14,15 @@ public class ControllerUI {
         c = new Canvas();
     }
 
-    public void drawEverything(Graphics g) {
+    public void draw() {
+        drawEverything(c.getGraphic());
+        c.getScene();
+    }
 
+    public void drawEverything(Graphics g) {
+        drawRoad(g);
+        drawIntersection(g);
+        drawCars(g);
     }
 
     public void drawCars(Graphics g) {
@@ -23,7 +30,6 @@ public class ControllerUI {
     }
 
     public void drawRoad(Graphics g) {
-        
     }
 
     public void drawIntersection(Graphics g) {
