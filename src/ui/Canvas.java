@@ -11,17 +11,14 @@ import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
-import javafx.scene.input.KeyCode;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 /**
  *
  * @author Kareem
  */
 public class Canvas extends JFrame {
-    
+
     public Canvas() {
         setTitle("Traffic simulator");
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -30,22 +27,20 @@ public class Canvas extends JFrame {
         setSize(width, height);
         setLocationRelativeTo(null);
         addKeyListener(new KeyAdapter() {
-            
+
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     System.exit(0);
                 }
             }
-            
+
         });
         setDefaultCloseOperation(3);
 //        setUndecorated(true);
         setVisible(true);
         createBufferStrategy(2);
     }
-    
-    BufferedImage Scene;
 
     /**
      * Get the item to draw everything
@@ -64,9 +59,5 @@ public class Canvas extends JFrame {
         bi.show();
         Toolkit.getDefaultToolkit().sync();
     }
-    
-    public static void main(String[] args) {
-        new Canvas();
-    }
-    
+
 }
