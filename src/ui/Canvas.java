@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ui;
 
 import java.awt.Color;
@@ -15,19 +10,19 @@ import java.awt.image.BufferStrategy;
 import javax.swing.JFrame;
 
 /**
+ * The canvas to draw everything
  *
  * @author Kareem
  */
 public class Canvas extends JFrame {
 
     public Canvas() {
-
         setTitle("Traffic simulator");
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int width = (int) screenSize.getWidth() / 2;
         int height = (int) screenSize.getHeight() / 2;
         setSize(width, height);
-
+        
         addKeyListener(new KeyAdapter() {
 
             @Override
@@ -45,9 +40,8 @@ public class Canvas extends JFrame {
         setLocationRelativeTo(null);
 
     }
-    
-    
-    BufferStrategy bi = this.getBufferStrategy();
+
+    private BufferStrategy bi = this.getBufferStrategy();
 
     /**
      * Get the item to draw everything

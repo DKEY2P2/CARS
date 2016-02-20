@@ -2,8 +2,8 @@ package controller;
 
 import map.Intersection;
 import map.Road;
-import map.TrafficLight;
 import ui.ControllerUI;
+import vehicle.Vehicle;
 
 public class StartDoingStuff {
     
@@ -14,7 +14,7 @@ public class StartDoingStuff {
         TestInter c = new TestInter(100,200);
         TestRoad d = new TestRoad(a, b, 100);
         TestRoad e = new TestRoad(a, c, 100);
-        
+        TestCar car = new TestCar(d, 0.20);
         
         control.getMap().addIntersection(a);
         control.getMap().addIntersection(b);
@@ -25,6 +25,21 @@ public class StartDoingStuff {
 
         new ControllerUI(t);
         t.start("tick");
+        
+    }
+    
+    public static class TestCar extends Vehicle{
+
+        public TestCar(Road start, double percentage) {
+            super(start, percentage);
+        }
+
+       
+
+        @Override
+        public boolean update() {
+            return true;
+        }
         
     }
     

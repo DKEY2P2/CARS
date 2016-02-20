@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import controller.Task;
 import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.util.Objects;
 import map.Intersection;
 import map.Road;
@@ -96,11 +95,12 @@ public abstract class Vehicle implements Task, Drawable {
     /**
      * The default constructor for the Vehicle abstract class
      */
-    public Vehicle() {
+    public Vehicle(Road start, double percentage) {
         setSpeed(0);
         setAcceleration(0);
         setDestination(null);
-        setStart(null);
+        setStart(new SimpleImmutableEntry<Road, Double>(start, percentage));
+        start.getVehicles().add(this);
         setTimeOnRoad(0);
         setPosition(getStart());
         setDesiredSpeed(0);
@@ -307,7 +307,7 @@ public abstract class Vehicle implements Task, Drawable {
         int differentY = end.getY() - start.getY();
         double angle = Math.tan(differentY / differentX);
 
-        g.drawImage(ImageMap.getInstance().getImage(getImageName(), angle, 0.2),
+        g.drawImage(ImageMap.getInstance().getImage(getImageName(), angle, 0.1),
                 (int) (start.getX() + differentX * percentage),
                 (int) (start.getY() + differentY * percentage), null);
     }
