@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.HashMap;
 import javax.imageio.ImageIO;
 
@@ -31,7 +32,7 @@ public class ImageMap {
     private final HashMap<Integer, String> INT_MAP = new HashMap<>(); //link an index to the string so we can link it to the buffered image
 
     private ImageMap() {
-        pitaBread();
+        loadResources();
     }
 
     /**
@@ -189,9 +190,11 @@ public class ImageMap {
      * <p>
      * It loads the current resources into the map.
      */
-    public void pitaBread() {
-        URL parentURL = getClass().getClassLoader().getResource("cars");
+    public void loadResources() {
+        URL parentURL = getClass().getClassLoader().getResource("resources/cars");
         File parentFile = new File(parentURL.getPath());
+        System.out.println(parentFile);
+        System.out.println(parentURL);
         for (File listFile : parentFile.listFiles()) {
             if (listFile.isFile()) {
                 if (listFile.getName().endsWith(".png")) {
@@ -199,6 +202,7 @@ public class ImageMap {
                         addImage(ImageIO.read(listFile), listFile.getName().split("\\.")[0]);
                     } catch (IOException ex) {
                         Logger.LogError(ex);
+                        System.err.println(ex);
                     }
                 }
             }
@@ -214,7 +218,7 @@ public class ImageMap {
     }
 
     public static void main(String[] args) {
-        new ImageMap().pitaBread();
+        new ImageMap().loadResources();
     }
 
     /**
