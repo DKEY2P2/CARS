@@ -1,5 +1,6 @@
 package ui;
 
+import helper.Logger;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -28,6 +29,8 @@ public class Canvas extends JFrame {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    Logger.print();
+                    Logger.printOther();
                     System.exit(0);
                 }
             }
