@@ -62,7 +62,6 @@ public class Canvas extends JFrame {
     public void getScene() {
         bi.show();
         Toolkit.getDefaultToolkit().sync();
-        System.out.println("drawing");
     }
 
 }
