@@ -26,9 +26,13 @@ public class TaskRunnable implements Runnable {
 
     @Override
     public void run() {
-        Boolean results = task.update();
-        if (!results) {
-            Logger.LogAny("Task", "Task failed to run");
+        if (task == null) {
+            Logger.LogAny("Task", "Task failed to run - Nullpointer");
+        } else {
+            Boolean results = task.update();
+            if (!results) {
+                Logger.LogAny("Task", "Task failed to run");
+            }
         }
     }
 
