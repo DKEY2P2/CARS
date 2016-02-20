@@ -1,7 +1,10 @@
 package map;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Stroke;
 import vehicle.Vehicle;
 
 import java.util.ArrayList;
@@ -152,6 +155,7 @@ public abstract class Road implements Drawable {
         int endY = end.getY();
         int endX = end.getX();
         g.setColor(Color.BLACK);
+        ((Graphics2D)g).setStroke(new BasicStroke(10));
         g.drawLine(startX, startY, endX, endY);
     }
 }

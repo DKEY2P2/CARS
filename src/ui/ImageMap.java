@@ -2,6 +2,8 @@ package ui;
 
 import helper.Logger;
 import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -29,6 +31,7 @@ public class ImageMap {
     private final HashMap<Integer, String> INT_MAP = new HashMap<>(); //link an index to the string so we can link it to the buffered image
 
     private ImageMap() {
+        pitaBread();
     }
 
     /**
@@ -201,12 +204,13 @@ public class ImageMap {
             }
         }
 
-        BufferedImage bi = new BufferedImage(100, 100, BufferedImage.TYPE_4BYTE_ABGR);
-        bi.getGraphics().setColor(Color.red);
-        bi.getGraphics().drawOval(100, 100, 100, 100);
-        bi.getGraphics().dispose();
+        BufferedImage bi = new BufferedImage(10, 10, BufferedImage.TYPE_4BYTE_ABGR);
+        Graphics2D g = (Graphics2D) bi.getGraphics();
+        g.setColor(Color.red);
+        g.fill(new Ellipse2D.Double(0, 0, 10, 10));
+        g.dispose();
         addImage(bi, "CircleRed");
-        
+
     }
 
     public static void main(String[] args) {

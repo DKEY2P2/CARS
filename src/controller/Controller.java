@@ -1,6 +1,8 @@
 package controller;
 
+import java.util.ArrayList;
 import map.Map;
+import map.Road;
 import vehicle.VehicleHolder;
 
 /**
@@ -9,7 +11,7 @@ import vehicle.VehicleHolder;
  * @author Kareem
  */
 public class Controller {
-
+    
     private static Controller instance;
 
     /**
@@ -23,16 +25,16 @@ public class Controller {
         }
         return instance;
     }
-
-    private Map map;
-
-    private VehicleHolder vehicles;
+    
+    private Map map = new Map(new ArrayList<>(), new ArrayList<>());
+    
+    private VehicleHolder vehicles = VehicleHolder.getInstance();
 
     /**
      * Made to be private so no one else can use
      */
     private Controller() {
-    }   
+    }
 
     /**
      * Get the value of vehicles
@@ -43,15 +45,7 @@ public class Controller {
         return vehicles;
     }
 
-    /**
-     * Set the value of vehicles
-     *
-     * @param vehicles new value of vehicles
-     */
-    public void setVehicles(VehicleHolder vehicles) {
-        this.vehicles = vehicles;
-    }
-
+    
     /**
      * Get the value of map
      *
@@ -69,5 +63,5 @@ public class Controller {
     public void setMap(Map map) {
         this.map = map;
     }
-
+    
 }

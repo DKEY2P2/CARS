@@ -5,6 +5,7 @@
  */
 package ui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Toolkit;
@@ -20,12 +21,13 @@ import javax.swing.JFrame;
 public class Canvas extends JFrame {
 
     public Canvas() {
+
         setTitle("Traffic simulator");
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int width = (int) screenSize.getWidth() / 2;
         int height = (int) screenSize.getHeight() / 2;
         setSize(width, height);
-        setLocationRelativeTo(null);
+
         addKeyListener(new KeyAdapter() {
 
             @Override
@@ -37,10 +39,15 @@ public class Canvas extends JFrame {
 
         });
         setDefaultCloseOperation(3);
-//        setUndecorated(true);
+        setUndecorated(true);
         setVisible(true);
         createBufferStrategy(2);
+        setLocationRelativeTo(null);
+
     }
+    
+    
+    BufferStrategy bi = this.getBufferStrategy();
 
     /**
      * Get the item to draw everything
@@ -48,16 +55,20 @@ public class Canvas extends JFrame {
      * @return The graphics
      */
     public Graphics getGraphic() {
-        return this.getBufferStrategy().getDrawGraphics();
+        bi = this.getBufferStrategy();
+        Graphics g = bi.getDrawGraphics();
+        g.setColor(Color.gray.darker());
+        g.fillRect(0, 0, getWidth(), getHeight());
+        return g;
     }
 
     /**
      * Draws the image
      */
     public void getScene() {
-        BufferStrategy bi = this.getBufferStrategy();
         bi.show();
         Toolkit.getDefaultToolkit().sync();
+        System.out.println("drawing");
     }
 
 }

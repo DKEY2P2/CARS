@@ -2,7 +2,9 @@ package ui;
 
 import controller.Controller;
 import controller.Observer;
+import controller.Ticker;
 import helper.Logger;
+import java.awt.Color;
 import java.awt.Graphics;
 import map.Intersection;
 import map.Road;
@@ -20,8 +22,10 @@ public class ControllerUI implements Observer {
     /**
      * Creates a canvas
      */
-    public ControllerUI() {
+    public ControllerUI(Ticker t) {
         c = new Canvas();
+        t.addObserver(this);
+
     }
 
     /**
@@ -30,6 +34,7 @@ public class ControllerUI implements Observer {
     public void draw() {
         drawEverything(c.getGraphic());
         c.getScene();
+   
     }
 
     /**
@@ -41,6 +46,7 @@ public class ControllerUI implements Observer {
         drawRoad(g);
         drawIntersection(g);
         drawCars(g);
+        g.dispose();
     }
 
     /**
@@ -81,11 +87,12 @@ public class ControllerUI implements Observer {
 
     @Override
     public void update() {
-        Logger.LogError("Not supported yet", this);
+        update("tick?");
     }
 
     @Override
     public void update(String args) {
         draw();
+
     }
 }

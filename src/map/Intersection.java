@@ -1,6 +1,7 @@
 package map;
 
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import vehicle.Vehicle;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
@@ -127,8 +128,29 @@ public abstract class Intersection implements Drawable{
         y = n;
     }
 
+    private String imageKey = "CircleRed";
+
+    /**
+     * Get the value of imageKey
+     *
+     * @return the value of imageKey
+     */
+    public String getImageKey() {
+        return imageKey;
+    }
+
+    /**
+     * Set the value of imageKey
+     *
+     * @param ImageKey new value of imageKey
+     */
+    public void setImageKey(String ImageKey) {
+        this.imageKey = ImageKey;
+    }
+
     @Override
     public void draw(Graphics g) {
-        g.drawImage(ImageMap.getInstance().getImage("CircleRed"), x, y, null);
+        BufferedImage bi = ImageMap.getInstance().getImage(imageKey);
+        g.drawImage(bi, x-bi.getWidth()/2, y-bi.getHeight()/2, null);
     }
 }
