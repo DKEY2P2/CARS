@@ -3,7 +3,9 @@ package controller;
 /**
  * Interface so that the observable class works
  *
- * @author Kareem
+ * @author Kareem Horstink
+ * @version 1.0
+ * @see Observerable
  */
 public interface Observer {
 

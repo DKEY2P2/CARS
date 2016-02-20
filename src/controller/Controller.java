@@ -2,20 +2,24 @@ package controller;
 
 import java.util.ArrayList;
 import map.Map;
-import map.Road;
 import vehicle.VehicleHolder;
 
 /**
  * Controls the rest of the project
+ * <p>
+ * Currently does no controlling
  *
- * @author Kareem
+ * @author Kareem Horstink
  */
 public class Controller {
-    
+
+    /**
+     * The instance of the Controller
+     */
     private static Controller instance;
 
     /**
-     * Get the singlton instance of the controller
+     * Get the singleton instance of the controller
      *
      * @return A controller
      */
@@ -25,9 +29,15 @@ public class Controller {
         }
         return instance;
     }
-    
+
+    /**
+     * Creates an empty map
+     */
     private Map map = new Map(new ArrayList<>(), new ArrayList<>());
-    
+
+    /**
+     * Holds a reference to the holder of the vehicles
+     */
     private VehicleHolder vehicles = VehicleHolder.getInstance();
 
     /**
@@ -45,7 +55,6 @@ public class Controller {
         return vehicles;
     }
 
-    
     /**
      * Get the value of map
      *
@@ -63,5 +72,5 @@ public class Controller {
     public void setMap(Map map) {
         this.map = map;
     }
-    
+
 }

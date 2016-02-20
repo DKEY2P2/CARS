@@ -5,8 +5,11 @@ import helper.Logger;
 
 /**
  * The runnable to encapsulate the task
+ * <p>
+ * Not done yet
  *
- * @author Kareem
+ * @author Kareem Horstink
+ * @version 0.0001
  */
 public class TaskRunnable implements Runnable {
 

@@ -2,9 +2,8 @@ package ui;
 
 import controller.Controller;
 import controller.Observer;
+import controller.Observerable;
 import controller.Ticker;
-import helper.Logger;
-import java.awt.Color;
 import java.awt.Graphics;
 import map.Intersection;
 import map.Road;
@@ -21,10 +20,13 @@ public class ControllerUI implements Observer {
 
     /**
      * Creates a canvas
+     *
+     * @param o The item that the canvas should reflect. How often it should
+     * refresh
      */
-    public ControllerUI(Ticker t) {
+    public ControllerUI(Observerable o) {
         c = new Canvas();
-        t.addObserver(this);
+        o.addObserver(this);
 
     }
 
@@ -34,7 +36,7 @@ public class ControllerUI implements Observer {
     public void draw() {
         drawEverything(c.getGraphic());
         c.getScene();
-   
+
     }
 
     /**
@@ -56,6 +58,7 @@ public class ControllerUI implements Observer {
      */
     public void drawCars(Graphics g) {
         Controller controller = Controller.getInstance();
+
         for (Vehicle vehicle : controller.getVehicles()) {
             vehicle.draw(g);
         }
@@ -68,6 +71,7 @@ public class ControllerUI implements Observer {
      */
     public void drawRoad(Graphics g) {
         Controller controller = Controller.getInstance();
+
         for (Road road : controller.getMap().getRoads()) {
             road.draw(g);
         }
@@ -80,6 +84,7 @@ public class ControllerUI implements Observer {
      */
     public void drawIntersection(Graphics g) {
         Controller controller = Controller.getInstance();
+
         for (Intersection intersection : controller.getMap().getIntersections()) {
             intersection.draw(g);
         }

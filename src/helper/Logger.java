@@ -166,7 +166,7 @@ public class Logger {
         if (OTHER_LOG.containsKey(log)) {
             System.out.println(OTHER_LOG.get(log).toString());
         } else {
-            Logger.LogError("Could not find logger", Logger.class.getName());
+            Logger.LogError("Could not find logger - " + log, Logger.class.getName());
         }
     }
 
@@ -174,6 +174,8 @@ public class Logger {
      * Saves all the log to a file
      * <p>
      * The file is saved current_date.log in a plain text manner
+     *
+     * Currently doesn't work right now
      */
     public static void saveAll() {
         StringBuilder tmp = new StringBuilder();
@@ -196,14 +198,5 @@ public class Logger {
     public static void exit() {
         print();
         System.exit(0);
-    }
-
-    public static void main(String[] args) {
-        getDate();
-        LogError("Fuck", "You");
-        LogHigh("GG");
-        LogLow("GG");
-        LogAny("Fucktard", "Thats what you are");
-        Logger.saveAll();
     }
 }

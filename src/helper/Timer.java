@@ -5,7 +5,7 @@ package helper;
  * <p>
  * Overhead is around 6276 nanoseconds
  *
- * @author Kareem
+ * @author Kareem Horstink
  */
 public class Timer {
 

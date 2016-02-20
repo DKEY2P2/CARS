@@ -8,22 +8,30 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.HashMap;
 import javax.imageio.ImageIO;
 
 /**
  * Holds all the images used by the UI
  * <p>
+ * Backed with 2 hash maps. One to store the images with the keys representing
+ * the image and another to store int represent of the key of the image if that
+ * makes any sense
+ * <p>
  * Note for moving images, such as gif and the sort, it better to use ints as
  * keys rather than Strings
  *
- * @author Kareem
+ * @author Kareem Horstink
  */
 public class ImageMap {
 
     private static final ImageMap SINGLETON = new ImageMap();
 
+    /**
+     * Get an instance
+     *
+     * @return An instance
+     */
     public static ImageMap getInstance() {
         return SINGLETON;
     }
@@ -31,6 +39,9 @@ public class ImageMap {
     private final HashMap<String, BufferedImage> STRING_MAP = new HashMap<>();
     private final HashMap<Integer, String> INT_MAP = new HashMap<>(); //link an index to the string so we can link it to the buffered image
 
+    /**
+     * Hides the constructor
+     */
     private ImageMap() {
         loadResources();
     }
@@ -94,8 +105,10 @@ public class ImageMap {
         if (rotation == 0 && scaleFactor == 1) {
             return STRING_MAP.get(key);
         }
+
         BufferedImage orginal = STRING_MAP.get(key);
         BufferedImage copy = BufferedImageHelper.deepCopy(orginal);
+
         if (rotation != 0) {
             copy = BufferedImageHelper.rotate(copy, rotation);
         }
@@ -165,44 +178,22 @@ public class ImageMap {
     }
 
     /**
-     * Encapsulation for a single integer. Internal use only. Should be replaced
-     */
-    @Deprecated
-    private class IntEncapse {
-
-        int a;
-
-        public IntEncapse() {
-        }
-
-        protected void setA(int a) {
-            this.a = a;
-        }
-
-        public int getA() {
-            return a;
-        }
-
-    }
-
-    /**
-     * Need to rename.
+     * Load the resources into the image map
      * <p>
-     * It loads the current resources into the map.
+     * Currently only loads .png and .jpg of files in the folder of
+     * resources/cars
      */
     public void loadResources() {
+        //Makes loading item (files) not be dependant on the system or user
         URL parentURL = getClass().getClassLoader().getResource("resources/cars");
         File parentFile = new File(parentURL.getPath());
-        System.out.println(parentFile);
-        System.out.println(parentURL);
         for (File listFile : parentFile.listFiles()) {
             if (listFile.isFile()) {
-                if (listFile.getName().endsWith(".png")) {
+                if (listFile.getName().endsWith(".png") || listFile.getName().endsWith(".jpg")) {
                     try {
                         addImage(ImageIO.read(listFile), listFile.getName().split("\\.")[0]);
                     } catch (IOException ex) {
                         Logger.LogError(ex);
-                        System.err.println(ex);
                     }
                 }
             }

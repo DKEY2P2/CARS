@@ -11,9 +11,11 @@ import java.awt.image.WritableRaster;
 /**
  * A helper class to help with dealing with Buffered Images
  *
- * @author Kareem
+ * @author Kareem Horstink
  */
 public class BufferedImageHelper {
+
+    //To be fair, I copied like all this code
 
     /**
      * Resizes the image to a certain size
@@ -47,6 +49,7 @@ public class BufferedImageHelper {
 
     /**
      * Rotates the image. Uses Bilinear filtering
+     *
      * @param image The image to be rotated
      * @param rotation How much to rotate it by, in radians
      * @return The rotated image

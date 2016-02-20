@@ -7,6 +7,29 @@ package ui;
  */
 public class GraphicsSetting {
 
+    /**
+     * How much you want to scale the UI by
+     */
+    private double scale = 0.5;
+
+    /**
+     * Get the value of scale
+     *
+     * @return the value of scale
+     */
+    public double getScale() {
+        return scale;
+    }
+
+    /**
+     * Set the value of scale
+     *
+     * @param scale new value of scale
+     */
+    public void setScale(double scale) {
+        this.scale = scale;
+    }
+
     private static GraphicsSetting instance;
 
     /**

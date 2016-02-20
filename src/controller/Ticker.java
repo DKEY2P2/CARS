@@ -1,11 +1,13 @@
 package controller;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.text.DecimalFormat;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * A ticker that meant to update the program
+ *
+ * @author jvacek, Kareem Horstink
+ */
 public class Ticker extends Observerable {
 
     /**
@@ -17,15 +19,56 @@ public class Ticker extends Observerable {
      */
     public int tickCount;
 
+    /**
+     * How long between ticks in ms
+     */
+    private int timeBetweenTick = 100;
+
+    /**
+     * Default constructor. It is assumed that the time taken between a tick
+     * will be 100ms then
+     *
+     * @param TickTimeInS The time that one tick represent in seconds
+     */
     public Ticker(double TickTimeInS) {
         setTickTimeInS(TickTimeInS);
-
     }
 
     /**
-     * use this to start the timer
+     * Default constructor.
      *
-     * @param args thd message passed to notifyObservers()
+     * @param TickTimeInS The time that one tick represent in seconds
+     * @param timeBetweenTicks The time between ticks
+     */
+    public Ticker(double TickTimeInS, int timeBetweenTicks) {
+        setTickTimeInS(TickTimeInS);
+        setTimeBetweenTick(timeBetweenTicks);
+    }
+
+    /**
+     * Get the value of timeBetweenTick in ms
+     *
+     * @return the value of timeBetweenTick in ms
+     */
+    public int getTimeBetweenTick() {
+        return timeBetweenTick;
+    }
+
+    /**
+     * Set the value of timeBetweenTick in ms
+     * <p>
+     * Not sure this will actually work once you start the timer
+     *
+     * @param timeBetweenTick new value of timeBetweenTick in ms
+     */
+    public void setTimeBetweenTick(int timeBetweenTick) {
+        this.timeBetweenTick = timeBetweenTick;
+    }
+
+    /**
+     * Use this to start the timer
+     *
+     * @param args The message passed to notifyObservers()
      */
     public void start(String args) {
         Timer t = new Timer();
@@ -36,7 +79,7 @@ public class Ticker extends Observerable {
                 notifyObservers("tick");
 
             }
-        }, 0, 100
+        }, 0, timeBetweenTick
         );
 
     }

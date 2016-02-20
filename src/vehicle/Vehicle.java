@@ -95,12 +95,12 @@ public abstract class Vehicle implements Task, Drawable {
     /**
      * The default constructor for the Vehicle abstract class
      */
-    public Vehicle(Road start, double percentage) {
+    public Vehicle(Road start, double percentage) { //I change this - Kareem
         setSpeed(0);
         setAcceleration(0);
-        setDestination(null);
-        setStart(new SimpleImmutableEntry<Road, Double>(start, percentage));
-        start.getVehicles().add(this);
+        setDestination(null); // This should be different I think
+        setStart(new SimpleImmutableEntry<Road, Double>(start, percentage)); //I change this - Kareem
+        start.getVehicles().add(this); //I did this - Kareem
         setTimeOnRoad(0);
         setPosition(getStart());
         setDesiredSpeed(0);

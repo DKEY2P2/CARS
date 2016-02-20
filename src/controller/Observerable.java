@@ -13,9 +13,9 @@ import java.util.ArrayList;
  * handling systems. The Observer pattern is also a key part in the familiar
  * model–view–controller (MVC) architectural pattern.
  * <p>
- * Should be thread safe
+ * Should be thread safe. Not proven
  *
- * @author Kareem
+ * @author Kareem Horstink
  * @see Observer
  */
 public abstract class Observerable {
@@ -29,12 +29,13 @@ public abstract class Observerable {
      */
     private final ArrayList<Observer> add = new ArrayList<>();
     /**
-     * List of Observers to add ~ to make sure its thread safe
+     * List of Observers to remove ~ to make sure its thread safe
      */
     private final ArrayList<Observer> remove = new ArrayList<>();
 
     /**
-     * If a data in the class is being used
+     * If a data in the class is being edited ~ if its safe to read data from
+     * the object
      */
     private boolean inUse = false;
 
@@ -114,6 +115,11 @@ public abstract class Observerable {
         }
     }
 
+    /**
+     * Returns the number of observers that is observing this object
+     *
+     * @return The number of observers
+     */
     public int getNumberOfObeservers() {
         return OBSERVER.size();
     }

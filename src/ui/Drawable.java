@@ -5,7 +5,7 @@ import java.awt.Graphics;
 /**
  * Allows an object to be drawn
  *
- * @author Kareem
+ * @author Kareem Horstink
  * @version 1.0
  */
 public interface Drawable {
