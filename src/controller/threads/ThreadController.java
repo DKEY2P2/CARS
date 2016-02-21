@@ -6,7 +6,6 @@ import controller.Observerable;
 import controller.Task;
 import helper.Logger;
 import java.util.concurrent.LinkedBlockingDeque;
-import vehicle.Vehicle;
 import vehicle.VehicleHolder;
 
 /**
@@ -85,7 +84,7 @@ public class ThreadController implements Observer {
         //Continues untill there is no more task to do
         while (!tasks.isEmpty()) {
             //Checks if any threads is just chilling
-            for (int i = 0; i < numberOfThreads; i++) {
+            for (int i = 0; i < threads.length; i++) {
                 if (tasks.isEmpty()) {
                     break;
                 }
