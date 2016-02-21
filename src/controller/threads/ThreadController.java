@@ -86,10 +86,17 @@ public class ThreadController implements Observer {
         while (!tasks.isEmpty()) {
             //Checks if any threads is just chilling
             for (int i = 0; i < numberOfThreads; i++) {
+                if (tasks.isEmpty()) {
+                    break;
+                }
                 //The check if its just chilling - new means it has never been ran before while terminated means it finished running a task
-                if (threads[i].getState() == Thread.State.NEW
-                        || threads[i].getState() == Thread.State.TERMINATED) {
+                if (threads[i].getState() == Thread.State.NEW) {
                     giveTask(taskRunnable[i]);
+                    threads[i].start();
+                } else if (threads[i].getState() == Thread.State.TERMINATED) {
+                    //Restarts the thread
+                    giveTask(taskRunnable[i]);
+                    threads[i] = new TaskThread(taskRunnable[i], Integer.toString(i));
                     threads[i].start();
                 }
             }
@@ -102,7 +109,7 @@ public class ThreadController implements Observer {
      */
     private void getTasks() {
         VehicleHolder vh = Controller.getInstance().getVehicles(); //Might change this to make thread safe
-        tasks.addAll(vh);
+        tasks.addAll(vh); //Might change this too
     }
 
     /**
