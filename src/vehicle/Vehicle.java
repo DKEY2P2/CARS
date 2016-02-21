@@ -100,7 +100,7 @@ public abstract class Vehicle implements Task, Drawable {
         setAcceleration(0);
         setDestination(null); // This should be different I think
         setStart(new SimpleImmutableEntry<Road, Double>(start, percentage)); //I change this - Kareem
-        start.getVehicles().add(this); //I did this - Kareem
+        start.getVehicles().offer(this); //I did this - Kareem
         setTimeOnRoad(0);
         setPosition(getStart());
         setDesiredSpeed(0);
