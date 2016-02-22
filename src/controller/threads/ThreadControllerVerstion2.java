@@ -5,9 +5,11 @@ import controller.Observer;
 import controller.Observerable;
 import controller.Task;
 import helper.Logger;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingDeque;
+import java.util.logging.Level;
 import vehicle.VehicleHolder;
 
 /**
@@ -20,19 +22,13 @@ public class ThreadControllerVerstion2 implements Observer {
     /**
      * All the task that should be ran
      */
-    private LinkedBlockingDeque<Task> tasks = new LinkedBlockingDeque<>();
+    private LinkedBlockingDeque<Callable<Object>> tasks = new LinkedBlockingDeque<>();
     /**
      * The number of threads wanted
      */
     private int numberOfThreads = 1;
-    /**
-     * All the threads
-     */
-    private TaskThread[] threads;
-    /**
-     * All the task runner (connected to threads)
-     */
-    private TaskRunnable[] taskRunnable;
+
+    private ExecutorService executorService;
 
     /**
      * Get the value of numberOfThreads
@@ -50,8 +46,7 @@ public class ThreadControllerVerstion2 implements Observer {
      * @param o The object that tells the controller to do a task
      */
     public ThreadControllerVerstion2(int numberOfThreads, Observerable o) {
-        ExecutorService a = Executors.newFixedThreadPool(numberOfThreads);
-
+        executorService = Executors.newFixedThreadPool(numberOfThreads);
         //Adds this object to observer list
         o.addObserver(this);
     }
@@ -62,21 +57,6 @@ public class ThreadControllerVerstion2 implements Observer {
     private boolean running = false;
 
     /**
-     * Runs the controller
-     * <p>
-     * Runs by checking every thread if it is busy. If it is not, it would get
-     * the next task to do and adds it to idling thread then the thread is
-     * started.
-     */
-    private void run() {
-        running = true;
-        
-        
-        
-        running = false;
-    }
-
-    /**
      * Gets the new set of tasks. Currently only the vehicles
      */
     private void getTasks() {
@@ -84,13 +64,13 @@ public class ThreadControllerVerstion2 implements Observer {
         tasks.addAll(vh); //Might change this too
     }
 
-    /**
-     * Give task to the task runner
-     *
-     * @param r The task runner to be given a task
-     */
-    private void giveTask(TaskRunnable r) {
-        r.setTask(tasks.poll());
+    void run() {
+        try {
+            executorService.invokeAll(tasks);
+        } catch (InterruptedException ex) {
+            Logger.LogError(ex);
+            System.err.println("An error has occured");
+        }
     }
 
     @Override

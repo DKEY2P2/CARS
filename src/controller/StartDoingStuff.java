@@ -1,6 +1,6 @@
 package controller;
 
-import controller.threads.ThreadController;
+import controller.threads.ThreadControllerVerstion2;
 import helper.Timer;
 import java.util.ArrayList;
 import map.Intersection;
@@ -18,7 +18,7 @@ public class StartDoingStuff {
         TestInter c = new TestInter(100, 200);
         TestRoad d = new TestRoad(a, b, 100);
         TestRoad e = new TestRoad(a, c, 100);
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 1000; i++) {
             ar.add(new TestCar(d, 0.20));
 
         }
@@ -29,7 +29,7 @@ public class StartDoingStuff {
         control.getMap().addRoad(d);
         control.getMap().addRoad(e);
         Ticker t = new Ticker(1, 1);
-        new ThreadController(100, t);
+        new ThreadControllerVerstion2(1, t);
 //        new ControllerUI(t);
 
         t.start("tick");
