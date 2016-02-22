@@ -19,16 +19,32 @@ public class Timer {
     }
 
     /**
-     * Ends the timer. Gives the answer in nano seconds
+     * Ends the timer. Gives the answer in nanoseconds
      */
-    public static void nano() {
-        System.out.println(System.nanoTime() - time);
+    public static void nanoPrint() {
+        System.out.println(nano());
+    }
+
+    /**
+     * Ends the timer. Gives the answer in nanoseconds
+     * @return Answer in nanoseconds
+     */
+    public static long nano() {
+        return (System.nanoTime() - time);
     }
 
     /**
      * Ends the timer. Gives the answer in milliseconds
      */
-    public static void milli() {
-        System.out.println(1_000_000l / (System.nanoTime() - time));
+    public static void milliPrint() {
+        System.out.println(nano() / 1_000_000l);
+    }
+
+    /**
+     * Ends the timer. Gives the answer in milliseconds 
+     * @return Answer in milliseconds 
+     */
+    public static long milli() {
+        return (nano() / 1_000_000l);
     }
 }

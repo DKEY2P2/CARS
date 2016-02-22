@@ -5,8 +5,11 @@ import controller.Observer;
 import controller.Observerable;
 import controller.Task;
 import helper.Logger;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingDeque;
-import vehicle.Vehicle;
+import java.util.logging.Level;
 import vehicle.VehicleHolder;
 
 /**
@@ -19,19 +22,15 @@ public class ThreadController implements Observer {
     /**
      * All the task that should be ran
      */
-    private LinkedBlockingDeque<Task> tasks = new LinkedBlockingDeque<>();
+    private LinkedBlockingDeque<Callable<Object>> tasks = new LinkedBlockingDeque<>();
     /**
      * The number of threads wanted
      */
     private int numberOfThreads = 1;
     /**
-     * All the threads
+     * The pool of threads that are going to run the tasks
      */
-    private TaskThread[] threads;
-    /**
-     * All the task runner (connected to threads)
-     */
-    private TaskRunnable[] taskRunnable;
+    private ExecutorService executorService;
 
     /**
      * Get the value of numberOfThreads
@@ -49,59 +48,14 @@ public class ThreadController implements Observer {
      * @param o The object that tells the controller to do a task
      */
     public ThreadController(int numberOfThreads, Observerable o) {
-        //Creates some variables
-        this.numberOfThreads = numberOfThreads;
-        taskRunnable = new TaskRunnable[numberOfThreads];
-        threads = new TaskThread[numberOfThreads];
-
-        //Creates all the invidual threads and task runners
-        for (int i = 0; i < numberOfThreads; i++) {
-            //What runs the task
-            taskRunnable[i] = new TaskRunnable();
-            //The threads that actually run the task
-            threads[i] = new TaskThread(taskRunnable[i], Integer.toString(i));
-            //Logs the creation of the thread
-            Logger.LogAny("Thread", "Thread created: " + threads[i].getName());
-        }
-
+        /*
+         * Creates all the pool of threads that are gonna run the tasks
+         *
+         * https://docs.oracle.com/javase/tutorial/essential/concurrency/pools.html
+         */
+        executorService = Executors.newFixedThreadPool(numberOfThreads);
         //Adds this object to observer list
         o.addObserver(this);
-    }
-
-    /**
-     * Shows if the threads are still calculating the tasks
-     */
-    private boolean running = false;
-
-    /**
-     * Runs the controller
-     * <p>
-     * Runs by checking every thread if it is busy. If it is not, it would get
-     * the next task to do and adds it to idling thread then the thread is
-     * started.
-     */
-    private void run() {
-        running = true;
-        //Continues untill there is no more task to do
-        while (!tasks.isEmpty()) {
-            //Checks if any threads is just chilling
-            for (int i = 0; i < numberOfThreads; i++) {
-                if (tasks.isEmpty()) {
-                    break;
-                }
-                //The check if its just chilling - new means it has never been ran before while terminated means it finished running a task
-                if (threads[i].getState() == Thread.State.NEW) {
-                    giveTask(taskRunnable[i]);
-                    threads[i].start();
-                } else if (threads[i].getState() == Thread.State.TERMINATED) {
-                    //Restarts the thread
-                    giveTask(taskRunnable[i]);
-                    threads[i] = new TaskThread(taskRunnable[i], Integer.toString(i));
-                    threads[i].start();
-                }
-            }
-        }
-        running = false;
     }
 
     /**
@@ -113,12 +67,15 @@ public class ThreadController implements Observer {
     }
 
     /**
-     * Give task to the task runner
-     *
-     * @param r The task runner to be given a task
+     * Adds all the new task to threads
      */
-    private void giveTask(TaskRunnable r) {
-        r.setTask(tasks.poll());
+    private void run() {
+        try {
+            executorService.invokeAll(tasks);
+        } catch (InterruptedException ex) {
+            Logger.LogError(ex);
+            System.err.println("An error has occured");
+        }
     }
 
     @Override
@@ -130,14 +87,8 @@ public class ThreadController implements Observer {
     public void update(String args) {
         //Adds a task set to the list of toDo's
         getTasks();
-
-        //Checks if the threads is currently running
-        if (!running) {
-            run();
-        } else {
-            Logger.LogAny("Thread",
-                    "Threads were still calculating previous round of tasks");
-        }
+        //Runs all the task
+        run();
     }
 
 }

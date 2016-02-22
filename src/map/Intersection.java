@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import vehicle.Vehicle;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.PriorityQueue;
 import ui.Drawable;
 import ui.ImageMap;
@@ -92,7 +93,7 @@ public abstract class Intersection implements Drawable{
      * @param r the road to return the vehicles from
      * @return A Queue of all vehicles that are on the specified road
      */
-    public PriorityQueue<Vehicle> getQueue(Road r) {
+    public Deque<Vehicle> getQueue(Road r) {
         return r.getVehicles();
     }
 
