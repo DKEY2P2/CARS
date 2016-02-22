@@ -3,11 +3,13 @@ package vehicle;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
 
+import algorithms.Algorithm;
 import controller.Task;
 import java.awt.Graphics;
 import java.util.Objects;
 import map.Intersection;
 import map.Road;
+import models.Model;
 import ui.Drawable;
 import ui.ImageMap;
 
@@ -95,7 +97,7 @@ public abstract class Vehicle implements Task, Drawable {
     /**
      * The default constructor for the Vehicle abstract class
      */
-    public Vehicle(Road start, double percentage) { //I change this - Kareem
+    public Vehicle(Road start, double percentage, Model m, Algorithm a) { //I change this - Kareem
         setSpeed(0);
         setAcceleration(0);
         setDestination(null); // This should be different I think
