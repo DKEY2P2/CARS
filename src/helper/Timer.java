@@ -19,12 +19,16 @@ public class Timer {
     }
 
     /**
-     * Ends the timer. Gives the answer in nanoPrint seconds
+     * Ends the timer. Gives the answer in nanoseconds
      */
     public static void nanoPrint() {
         System.out.println(nano());
     }
 
+    /**
+     * Ends the timer. Gives the answer in nanoseconds
+     * @return Answer in nanoseconds
+     */
     public static long nano() {
         return (System.nanoTime() - time);
     }
@@ -36,6 +40,10 @@ public class Timer {
         System.out.println(nano() / 1_000_000l);
     }
 
+    /**
+     * Ends the timer. Gives the answer in milliseconds 
+     * @return Answer in milliseconds 
+     */
     public static long milli() {
         return (nano() / 1_000_000l);
     }

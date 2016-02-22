@@ -9,6 +9,9 @@ import java.util.concurrent.Callable;
  */
 public interface Task extends Callable<Object> {
 
+    /*
+     * Just a default action, please don't overwrite unless you know what you are doing xD cause it probably gonna fuck up the threads stuff
+     */
     @Override
     public default Object call() throws Exception {
         update();

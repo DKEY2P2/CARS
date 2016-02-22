@@ -17,7 +17,7 @@ import vehicle.VehicleHolder;
  *
  * @author Kareem Horstink
  */
-public class ThreadControllerVerstion2 implements Observer {
+public class ThreadController implements Observer {
 
     /**
      * All the task that should be ran
@@ -27,7 +27,9 @@ public class ThreadControllerVerstion2 implements Observer {
      * The number of threads wanted
      */
     private int numberOfThreads = 1;
-
+    /**
+     * The pool of threads that are going to run the tasks
+     */
     private ExecutorService executorService;
 
     /**
@@ -45,16 +47,16 @@ public class ThreadControllerVerstion2 implements Observer {
      * @param numberOfThreads The number of threads you want to run
      * @param o The object that tells the controller to do a task
      */
-    public ThreadControllerVerstion2(int numberOfThreads, Observerable o) {
+    public ThreadController(int numberOfThreads, Observerable o) {
+        /*
+         * Creates all the pool of threads that are gonna run the tasks
+         *
+         * https://docs.oracle.com/javase/tutorial/essential/concurrency/pools.html
+         */
         executorService = Executors.newFixedThreadPool(numberOfThreads);
         //Adds this object to observer list
         o.addObserver(this);
     }
-
-    /**
-     * Shows if the threads are still calculating the tasks
-     */
-    private boolean running = false;
 
     /**
      * Gets the new set of tasks. Currently only the vehicles
@@ -64,7 +66,10 @@ public class ThreadControllerVerstion2 implements Observer {
         tasks.addAll(vh); //Might change this too
     }
 
-    void run() {
+    /**
+     * Adds all the new task to threads
+     */
+    private void run() {
         try {
             executorService.invokeAll(tasks);
         } catch (InterruptedException ex) {
@@ -82,14 +87,8 @@ public class ThreadControllerVerstion2 implements Observer {
     public void update(String args) {
         //Adds a task set to the list of toDo's
         getTasks();
-
-        //Checks if the threads is currently running
-        if (!running) {
-            run();
-        } else {
-            Logger.LogAny("Thread",
-                    "Threads were still calculating previous round of tasks");
-        }
+        //Runs all the task
+        run();
     }
 
 }
