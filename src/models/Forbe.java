@@ -11,7 +11,7 @@ import vehicle.Vehicle;
  * @author Kareem
  */
 public class Forbe implements Model {
-    
+
     @Override
     public void calculate(Vehicle veh) {
         Road r = veh.getPosition().getKey();
@@ -34,7 +34,7 @@ public class Forbe implements Model {
             double roadLength = r.getLength();
             double[] x = new double[]{roadLength * percentage[0], roadLength * percentage[1]};
             double[] l = new double[]{veh.getLength(), inFrontVehicle.getLength()};
-            double[] v = new double[]{veh.getSpeed(), inFrontVehicle.getSpeed()};
+            double[] v = new double[]{veh.getSpeed() * 0.277777778, inFrontVehicle.getSpeed() * 0.277777778};
             double[] reactionTime = new double[]{veh.getReactionTime(), inFrontVehicle.getReactionTime()};
             double distance = x[1] - x[0];
             double s = distance;
@@ -42,12 +42,12 @@ public class Forbe implements Model {
             if (s > sMin) {
                 v[0] = Math.max(0, v[0] - veh.getMaxDeceleration());
             } else {
-                v[0] = Math.min(v[0], Math.min(veh.getDesiredSpeed(), r.getSpeedLimit()) + veh.getAcceleration());
+                v[0] = Math.min(Math.min(veh.getDesiredSpeed(), r.getSpeedLimit()) * 0.277777778, v[0] + veh.getMaxAceleration());
             }
             double newPercentage = roadLength / (x[0] + v[0] * Controller.getInstance().getTicker().getTickTimeInS());
-            veh.setSpeed(v[0]);
+            veh.setSpeed(v[0] * 3.6);
             veh.setPosition(new SimpleImmutableEntry<>(r, newPercentage));
         }
     }
-    
+
 }
