@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import algorithms.Algorithm;
 import controller.Task;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.util.Objects;
 import map.Intersection;
 import map.Road;
@@ -174,6 +175,25 @@ public abstract class Vehicle implements Task, Drawable {
         this.reactionTime = reactionTime;
     }
 
+    private Model model;
+
+    /**
+     * Get the value of model
+     *
+     * @return the value of model
+     */
+    public Model getModel() {
+        return model;
+    }
+
+    /**
+     * Set the value of model
+     *
+     * @param model new value of model
+     */
+    public void setModel(Model model) {
+        this.model = model;
+    }
 
     /*
      * 
@@ -199,6 +219,7 @@ public abstract class Vehicle implements Task, Drawable {
         setDesiredSpeed(0);
         setDistance(0);
         setLength(0);
+        setModel(m);
         index = indexCounter++;
         VehicleHolder.getInstance().add(this);
     }
@@ -399,11 +420,11 @@ public abstract class Vehicle implements Task, Drawable {
         int diameter = 8;
         int differentX = end.getX() - start.getX();
         int differentY = end.getY() - start.getY();
-        double angle = Math.tan(differentY / differentX);
-
-        g.drawImage(ImageMap.getInstance().getImage(getImageName(), angle, 0.1),
-                (int) (start.getX() + differentX * percentage),
-                (int) (start.getY() + differentY * percentage), null);
+        double angle = Math.atan2(differentY, differentX);
+        BufferedImage bi = ImageMap.getInstance().getImage(getImageName(), angle, 0.05);
+        g.drawImage(bi,
+                (int) (start.getX() + differentX * percentage - bi.getWidth() / 2),
+                (int) (start.getY() + differentY * percentage - bi.getHeight() / 2), null);
     }
 
     /*
