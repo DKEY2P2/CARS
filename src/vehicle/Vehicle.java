@@ -125,44 +125,44 @@ public abstract class Vehicle implements Task, Drawable {
         return reactionTime;
     }
 
-    private double maxDeceleration = 0;
+    private double maxDecceleration = 0;
 
     /**
-     * Get the value of maxDeceleration
+     * Get the value of maxDecceleration
      *
-     * @return the value of maxDeceleration
+     * @return the value of maxDecceleration
      */
-    public double getMaxDeceleration() {
-        return maxDeceleration;
+    public double getMaxDecceleration() {
+        return maxDecceleration;
     }
 
     /**
-     * Set the value of maxDeceleration
+     * Set the value of maxDecceleration
      *
-     * @param maxDeceleration new value of maxDeceleration
+     * @param maxDecceleration new value of maxDecceleration
      */
-    public void setMaxDeceleration(double maxDeceleration) {
-        this.maxDeceleration = maxDeceleration;
+    public void setMaxDecceleration(double maxDeceleration) {
+        this.maxDecceleration = maxDeceleration;
     }
 
-    private double maxAceleration = 0;
+    private double maxAcceleration = 0;
 
     /**
-     * Get the value of maxAceleration
+     * Get the value of maxAcceleration
      *
-     * @return the value of maxAceleration
+     * @return the value of maxAcceleration
      */
-    public double getMaxAceleration() {
-        return maxAceleration;
+    public double getMaxAcceleration() {
+        return maxAcceleration;
     }
 
     /**
-     * Set the value of maxAceleration
+     * Set the value of maxAcceleration
      *
-     * @param maxAceleration new value of maxAceleration
+     * @param maxAcceleration new value of maxAcceleration
      */
-    public void setMaxAceleration(double maxAceleration) {
-        this.maxAceleration = maxAceleration;
+    public void setMaxAcceleration(double maxAcceleration) {
+        this.maxAcceleration = maxAcceleration;
     }
 
     /**
