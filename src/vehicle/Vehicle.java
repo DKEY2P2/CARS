@@ -3,11 +3,13 @@ package vehicle;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
 
+import algorithms.Algorithm;
 import controller.Task;
 import java.awt.Graphics;
 import java.util.Objects;
 import map.Intersection;
 import map.Road;
+import models.Model;
 import ui.Drawable;
 import ui.ImageMap;
 
@@ -86,6 +88,92 @@ public abstract class Vehicle implements Task, Drawable {
     public void setImageName(String imageName) {
         this.imageName = imageName;
     }
+    /**
+     * Length of car in m
+     */
+    private int length = 0;
+
+    /**
+     * Get the value of length
+     *
+     * @return the value of length
+     */
+    public int getLength() {
+        return length;
+    }
+
+    /**
+     * Set the value of length
+     *
+     * @param length new value of length
+     */
+    public void setLength(int length) {
+        this.length = length;
+    }
+
+    /**
+     * Reaction time in seconds
+     */
+    private double reactionTime = 0;
+
+    /**
+     * Get the value of reactionTime
+     *
+     * @return the value of reactionTime
+     */
+    public double getReactionTime() {
+        return reactionTime;
+    }
+
+    private double maxDecceleration = 0;
+
+    /**
+     * Get the value of maxDecceleration
+     *
+     * @return the value of maxDecceleration
+     */
+    public double getMaxDecceleration() {
+        return maxDecceleration;
+    }
+
+    /**
+     * Set the value of maxDecceleration
+     *
+     * @param maxDecceleration new value of maxDecceleration
+     */
+    public void setMaxDecceleration(double maxDeceleration) {
+        this.maxDecceleration = maxDeceleration;
+    }
+
+    private double maxAcceleration = 0;
+
+    /**
+     * Get the value of maxAcceleration
+     *
+     * @return the value of maxAcceleration
+     */
+    public double getMaxAcceleration() {
+        return maxAcceleration;
+    }
+
+    /**
+     * Set the value of maxAcceleration
+     *
+     * @param maxAcceleration new value of maxAcceleration
+     */
+    public void setMaxAcceleration(double maxAcceleration) {
+        this.maxAcceleration = maxAcceleration;
+    }
+
+    /**
+     * Set the value of reactionTime
+     *
+     * @param reactionTime new value of reactionTime
+     */
+    public void setReactionTime(double reactionTime) {
+        this.reactionTime = reactionTime;
+    }
+
 
     /*
      * 
@@ -94,17 +182,23 @@ public abstract class Vehicle implements Task, Drawable {
      */
     /**
      * The default constructor for the Vehicle abstract class
+     *
+     * @param start
+     * @param percentage
+     * @param m
+     * @param a
      */
-    public Vehicle(Road start, double percentage) { //I change this - Kareem
+    public Vehicle(Road start, double percentage, Model m, Algorithm a) { //I change this - Kareem
         setSpeed(0);
         setAcceleration(0);
         setDestination(null); // This should be different I think
         setStart(new SimpleImmutableEntry<Road, Double>(start, percentage)); //I change this - Kareem
-        start.getVehicles().add(this); //I did this - Kareem
+        start.getVehicles().offer(this); //I did this - Kareem
         setTimeOnRoad(0);
         setPosition(getStart());
         setDesiredSpeed(0);
         setDistance(0);
+        setLength(0);
         index = indexCounter++;
         VehicleHolder.getInstance().add(this);
     }

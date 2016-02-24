@@ -2,6 +2,7 @@ package controller.threads;
 
 import controller.Task;
 import helper.Logger;
+import java.util.concurrent.Callable;
 
 /**
  * The runnable to encapsulate the task
@@ -11,7 +12,7 @@ import helper.Logger;
  * @author Kareem Horstink
  * @version 0.0001
  */
-public class TaskRunnable implements Runnable {
+public class TaskRunnable implements Callable<Object> {
 
     private Task task;
 
@@ -25,7 +26,7 @@ public class TaskRunnable implements Runnable {
     }
 
     @Override
-    public void run() {
+    public Object call() throws Exception {
         if (task == null) {
             Logger.LogAny("Task", "Task failed to run - Nullpointer");
         } else {
@@ -34,6 +35,7 @@ public class TaskRunnable implements Runnable {
                 Logger.LogAny("Task", "Task failed to run");
             }
         }
+        return null;
     }
 
 }
