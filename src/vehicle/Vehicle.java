@@ -88,7 +88,9 @@ public abstract class Vehicle implements Task, Drawable {
     public void setImageName(String imageName) {
         this.imageName = imageName;
     }
-
+    /**
+     * Length of car in m
+     */
     private int length = 0;
 
     /**
@@ -109,6 +111,30 @@ public abstract class Vehicle implements Task, Drawable {
         this.length = length;
     }
 
+    /**
+     * Reaction time in seconds
+     */
+    private double reactionTime = 0;
+
+    /**
+     * Get the value of reactionTime
+     *
+     * @return the value of reactionTime
+     */
+    public double getReactionTime() {
+        return reactionTime;
+    }
+
+    /**
+     * Set the value of reactionTime
+     *
+     * @param reactionTime new value of reactionTime
+     */
+    public void setReactionTime(double reactionTime) {
+        this.reactionTime = reactionTime;
+    }
+
+
     /*
      * 
      * Constructor
@@ -116,6 +142,7 @@ public abstract class Vehicle implements Task, Drawable {
      */
     /**
      * The default constructor for the Vehicle abstract class
+     *
      * @param start
      * @param percentage
      * @param m
