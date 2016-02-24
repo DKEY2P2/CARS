@@ -8,10 +8,10 @@ import map.Intersection;
  */
 public class heuristicXY implements AStarHeuristicCriteria {
     
-    @Override
-    public double calculateHCost(Intersection start, Intersection end) {
-	//TODO check if my pythagoras actually works
-	return ((start.getX()-end.getX())*(start.getX()-end.getX()) + (start.getY()-end.getY())*(start.getY()-end.getY()) );
+    static double scalingFactor = 1;
+    public static double calculateHCost(Intersection start, Intersection end) {
+	//TODO check if my pythagoras actually works :L
+	return scalingFactor*( (start.getX()-end.getX())*(start.getX()-end.getX()) + (start.getY()-end.getY())*(start.getY()-end.getY()) );
     }
     
 }

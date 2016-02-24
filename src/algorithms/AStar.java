@@ -16,6 +16,9 @@ import map.Road;
  */
 public class AStar implements Algorithm {
     
+    private AStarHeuristicCriteria heuristic = new heuristicXY(); 
+    
+    
     /**
      * Little object that stores my A* data
      * 
@@ -148,8 +151,8 @@ public class AStar implements Algorithm {
 		
 		t.setgCost(q.getgCost()+ qtD);
 		//        successor.h = distance from goal to successor
-		//TODO Finish this
-		t.sethCost(t.gethCost());
+
+		t.sethCost(heuristicXY.calculateHCost(t.getElement(), end));
 		//        successor.f = successor.g + successor.h
 		t.setfCost(t.getgCost() + t.gethCost());
 		//
@@ -178,6 +181,7 @@ public class AStar implements Algorithm {
 	    }
 	    
 	    //    push q on the closed list
+	    closed.add(q);
 	    //end
 	}
 	
