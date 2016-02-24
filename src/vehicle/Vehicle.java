@@ -89,6 +89,26 @@ public abstract class Vehicle implements Task, Drawable {
         this.imageName = imageName;
     }
 
+    private int length = 0;
+
+    /**
+     * Get the value of length
+     *
+     * @return the value of length
+     */
+    public int getLength() {
+        return length;
+    }
+
+    /**
+     * Set the value of length
+     *
+     * @param length new value of length
+     */
+    public void setLength(int length) {
+        this.length = length;
+    }
+
     /*
      * 
      * Constructor
@@ -96,6 +116,10 @@ public abstract class Vehicle implements Task, Drawable {
      */
     /**
      * The default constructor for the Vehicle abstract class
+     * @param start
+     * @param percentage
+     * @param m
+     * @param a
      */
     public Vehicle(Road start, double percentage, Model m, Algorithm a) { //I change this - Kareem
         setSpeed(0);
@@ -107,6 +131,7 @@ public abstract class Vehicle implements Task, Drawable {
         setPosition(getStart());
         setDesiredSpeed(0);
         setDistance(0);
+        setLength(0);
         index = indexCounter++;
         VehicleHolder.getInstance().add(this);
     }
