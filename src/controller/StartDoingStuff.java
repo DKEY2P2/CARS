@@ -41,8 +41,10 @@ public class StartDoingStuff {
         //Creates a ticker with the value of 1 ms between each tick which represent 1 second
         Ticker t = new Ticker(1, 1);
 
+        System.out.println(args.length);
+
         //Need to move the if statements around but im too lazy now
-        if (args.length == 0) {
+        if (args.length != 0) {
             //Tries to parse the string to int and input that as the number of threads wanted
             try {
                 int cores = Integer.parseInt(args[0]);
@@ -55,7 +57,7 @@ public class StartDoingStuff {
             }
             //if you don't care about what number it has, it will be put as the default
             //if you don't care about what number it has, it will be put as the default
-        } else if (args[0].matches("([No][Oo])")) {
+        } else if (args.length != 0 && args[0].matches("([No][Oo])")) {
             int cores = Runtime.getRuntime().availableProcessors();
             new ThreadController(cores, t);
         } else {
@@ -77,7 +79,7 @@ public class StartDoingStuff {
     public static class TestCar extends Vehicle {
 
         public TestCar(Road start, double percentage) {
-            super(start, percentage);
+            super(start, percentage, null, null);
         }
 
         @Override
