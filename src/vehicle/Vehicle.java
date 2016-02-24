@@ -43,11 +43,11 @@ public abstract class Vehicle implements Task, Drawable {
     /**
      * The place the vehicle wants to get to
      */
-    private SimpleImmutableEntry<Road, Double> destination;
+    private SimpleImmutableEntry<Intersection, Double> destination;
     /**
      * The starting point of the vehicle
      */
-    private SimpleImmutableEntry<Road, Double> start;
+    private SimpleImmutableEntry<Intersection, Double> start;
     /**
      * The time since the vehicle has left the start point
      */
