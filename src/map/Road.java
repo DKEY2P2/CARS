@@ -5,9 +5,11 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
+import java.util.ArrayDeque;
 import vehicle.Vehicle;
 
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.PriorityQueue;
 import ui.Drawable;
 
@@ -47,7 +49,7 @@ public abstract class Road implements Drawable {
     /**
      * A queue of all the vehicles on this road
      */
-    private PriorityQueue<Vehicle> qv = new PriorityQueue<Vehicle>();
+    private Deque<Vehicle> qv = new ArrayDeque<Vehicle>();
 
     /**
      * The constructor of the Road class
@@ -115,7 +117,7 @@ public abstract class Road implements Drawable {
      *
      * @return a queue of all the vehicles on the road
      */
-    public PriorityQueue<Vehicle> getVehicles() {
+    public Deque<Vehicle> getVehicles() {
         return qv;
     }
 
