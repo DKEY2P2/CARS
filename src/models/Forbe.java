@@ -40,7 +40,7 @@ public class Forbe implements Model {
             double s = distance;
             double sMin = reactionTime[0] * v[0] + l[0];
             if (s > sMin) {
-                v[0] = Math.max(0, v[0] - veh.getMaxDeceleration());
+                v[0] = Math.max(0, v[0] - veh.getMaxDecceleration());
             } else {
                 v[0] = Math.min(v[0], Math.min(veh.getDesiredSpeed(), r.getSpeedLimit()) + veh.getAcceleration());
             }

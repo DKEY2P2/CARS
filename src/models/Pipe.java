@@ -47,9 +47,9 @@ public class Pipe implements Model {
         safeDistance = distanceCars;
         safeDistanceMIN = (lengthCars[0] * v.getDesiredSpeed()) / ((0.447 * 10) + 1);
         if (safeDistance < safeDistanceMIN) {
-            v.setDesiredSpeed(Math.max(0, v.getDesiredSpeed() - v.getMaxDeceleration()));
+            v.setDesiredSpeed(Math.max(0, v.getDesiredSpeed() - v.getMaxDecceleration()));
         } else {
-            v.setDesiredSpeed(Math.min(v.getDesiredSpeed(), v.getDesiredSpeed() + v.getMaxAceleration()));
+            v.setDesiredSpeed(Math.min(v.getDesiredSpeed(), v.getDesiredSpeed() + v.getMaxAcceleration()));
         }
         positionsRoad[0] = positionsRoad[0] + v.getDesiredSpeed() * Controller.getInstance().getTicker().getTickTimeInS();
 
