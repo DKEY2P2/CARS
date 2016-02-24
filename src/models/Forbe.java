@@ -42,9 +42,9 @@ public class Forbe implements Model {
             if (s > sMin) {
                 v[0] = Math.max(0, v[0] - veh.getMaxDecceleration());
             } else {
-                v[0] = Math.min(Math.min(veh.getDesiredSpeed(), r.getSpeedLimit()) * 0.277777778, v[0] + veh.getMaxAceleration());
+                v[0] = Math.min(Math.min(veh.getDesiredSpeed(), r.getSpeedLimit()) * 0.277777778, v[0] + veh.getMaxAcceleration());
             }
-            double newPercentage = roadLength / (x[0] + v[0] * Controller.getInstance().getTicker().getTickTimeInS());
+            double newPercentage = roadLength * 1000 / (x[0] + v[0] * Controller.getInstance().getTicker().getTickTimeInS());
             veh.setSpeed(v[0] * 3.6);
             veh.setPosition(new SimpleImmutableEntry<>(r, newPercentage));
         }
