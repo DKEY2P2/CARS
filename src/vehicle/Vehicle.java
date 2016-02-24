@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import algorithms.Algorithm;
 import controller.Task;
 import java.awt.Graphics;
+import java.util.Iterator;
 import java.util.Objects;
 import map.Intersection;
 import map.Road;
@@ -139,7 +140,7 @@ public abstract class Vehicle implements Task, Drawable {
     /**
      * Set the value of maxDecceleration
      *
-     * @param maxDecceleration new value of maxDecceleration
+     * @param maxDeceleration new value of maxDecceleration
      */
     public void setMaxDecceleration(double maxDeceleration) {
         this.maxDecceleration = maxDeceleration;
@@ -389,6 +390,10 @@ public abstract class Vehicle implements Task, Drawable {
         this.traceLog = traceLog;
     }
 
+    public void addPercentage(double d){
+        position.setValue(position.getValue() + d);
+    }
+
     @Override
     public void draw(Graphics g) {
         SimpleImmutableEntry<Road, Double> position = getPosition();
@@ -462,6 +467,22 @@ public abstract class Vehicle implements Task, Drawable {
             return false;
         }
         return Objects.equals(this.imageName, other.imageName);
+    }
+
+    public Vehicle getPredecessor(){
+        Iterator<Vehicle> vehicles = this.getPosition().getKey().getVehicles().iterator();
+
+        if(vehicles.hasNext()) {
+            Vehicle pre = vehicles.next();
+            Vehicle cur = pre;
+            while (vehicles.hasNext()) {
+                cur = vehicles.next();
+                if (cur == this)
+                    return pre;
+                pre = cur;
+            }
+        }
+        return null;
     }
 
 }
