@@ -14,8 +14,6 @@ public class Pipe implements Model {
      */
 
     private double distanceCars;
-    private int lengthI;
-    private int lengthII;
     private double safeDistance;
     private double safeDistanceMIN;
 
@@ -45,13 +43,13 @@ public class Pipe implements Model {
         double[] speedCars = new double[]{v.getSpeed(), inFrontVehicle.getSpeed()};
 
         safeDistance = distanceCars;
-        safeDistanceMIN = (lengthCars[0] * v.getDesiredSpeed()) / ((0.447 * 10) + 1);
-        if (safeDistance < safeDistanceMIN) {
-            v.setDesiredSpeed(Math.max(0, v.getDesiredSpeed() - v.getMaxDecceleration()));
+        safeDistanceMIN = (lengthCars[0] * speedCars[0]) / ((0.447 * 10) + 1);
+        if (safeDistance > safeDistanceMIN) { // This might be wrong/ right in the text??
+            speedCars[0] = (Math.max(0, speedCars[0] - v.getMaxDecceleration()));
         } else {
-            v.setDesiredSpeed(Math.min(v.getDesiredSpeed(), v.getDesiredSpeed() + v.getMaxAcceleration()));
+            speedCars[0] = (Math.min(v.getDesiredSpeed(), speedCars[0] + v.getMaxAcceleration()));
         }
-        positionsRoad[0] = positionsRoad[0] + v.getDesiredSpeed() * Controller.getInstance().getTicker().getTickTimeInS();
+        positionsRoad[0] = positionsRoad[0] + speedCars[0] * Controller.getInstance().getTicker().getTickTimeInS();
 
     }
 }
