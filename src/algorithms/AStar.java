@@ -22,11 +22,13 @@ public class AStar implements Algorithm {
      * @author jvacek
      */
     public class Twinkle {
-	private double	     gCost = 0;
-	private double	     hCost = 0;
-	private double	     fCost = 0;
-	private Intersection element;
-			     
+	private double		   gCost      = 0;
+	private double		   hCost      = 0;
+	private double		   fCost      = 0;
+	private Intersection	   element;
+	private Twinkle		   parent;
+	private ArrayList<Twinkle> children;
+				   
 	public Twinkle(Intersection e) {
 	    setElement(e);
 	    
@@ -63,6 +65,32 @@ public class AStar implements Algorithm {
 	public void setElement(Intersection element) {
 	    this.element = element;
 	}
+	
+	public Twinkle getParent() {
+	    return parent;
+	}
+	
+	public void setParent(Twinkle parent) {
+	    this.parent = parent;
+	}
+	
+	public void addChild(Twinkle t) {
+	    this.children.add(t);
+	}
+	
+	public void removeChild(Twinkle t) {
+	    try {
+		this.children.remove(t);
+	    } catch (NullPointerException e) {
+		System.out.println(e);
+	    }
+	    
+	}
+	
+	public ArrayList<Twinkle> getChildren() {
+	    return this.children;
+	}
+	
     }
     
     @Override
@@ -94,24 +122,64 @@ public class AStar implements Algorithm {
 	    //    pop q off the open list
 	    open.remove(q);
 	    //    generate q's 8 successors and set their parents to q
-	    for (Road r :q.getElement().getRoads()){
-		System.out.println();
+	    ArrayList<Twinkle> successor = new ArrayList<Twinkle>();
+	    for (Intersection i : q.getElement().getNeighbours()) {
+		Twinkle t = new Twinkle(i);
+		t.setParent(q);
+		successor.add(t);
 	    }
 	    //    for each successor
-	    //    	if successor is the goal, stop the search
-	    //        successor.g = q.g + distance between successor and q
-	    //        successor.h = distance from goal to successor
-	    //        successor.f = successor.g + successor.h
-	    //
-	    //        if a node with the same position as successor is in the OPEN list \
-	    //            which has a lower f than successor, skip this successor
-	    //        if a node with the same position as successor is in the CLOSED list \ 
-	    //            which has a lower f than successor, skip this successor
-	    //        otherwise, add the node to the open list
-	    //    end
+	    for (Twinkle t : successor) {
+		//    	if successor is the goal, stop the search
+		if (t.getElement() == end) {
+		    return result;
+		}
+		//        successor.g = q.g + distance between successor and q
+		double qtD = 0;
+		for (Road r1 : t.getElement().getRoads()){
+		    for (Road r2 : q.getElement().getRoads()){
+			if (r1==r2){
+			    qtD = r1.getLength();
+			    //TODO check this break only breaks these two forloops and not the whole thing
+			    break;
+			}
+		    }
+		}
+		
+		t.setgCost(q.getgCost()+ qtD);
+		//        successor.h = distance from goal to successor
+		//TODO Finish this
+		t.sethCost(t.gethCost());
+		//        successor.f = successor.g + successor.h
+		t.setfCost(t.getgCost() + t.gethCost());
+		//
+		//        if a node with the same position as successor is in the OPEN list which has a lower f than successor, skip this successor
+		boolean skip = false;
+		for (Twinkle u : open) {
+		    if ((u.getElement() == t.getElement()) && (u.getfCost() < t.getfCost())) {
+			//TODO is this what they mean by skip?
+			skip = true;
+		    }
+		}
+		//        if a node with the same position as successor is in the CLOSED list which has a lower f than successor, skip this successor
+		for (Twinkle u : closed) {
+		    if (u.getElement() == t.getElement()) {
+			//TODO is this what they mean by skip?
+			skip = true;
+		    }
+		}
+		//        otherwise, add the node to the open list
+		if (skip==false){
+		    open.add(t);
+		}
+		
+		
+		//    end
+	    }
+	    
+	    //    push q on the closed list
+	    //end
 	}
-	//    push q on the closed list
-	//end
 	
 	return result;
     }
