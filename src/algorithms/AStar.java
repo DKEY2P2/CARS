@@ -18,7 +18,6 @@ public class AStar implements Algorithm {
     
     private AStarHeuristicCriteria heuristic = new heuristicXY(); 
     
-    
     /**
      * Little object that stores my A* data
      * 
