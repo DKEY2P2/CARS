@@ -20,7 +20,7 @@ public class Pipe implements Model {
     @Override
     public void calculate(Vehicle v) {
         Road r = v.getPosition().getKey();
-        Vehicle inFrontVehicle = r.getVehicles().getFirst();
+        Vehicle inFrontVehicle = r.getVehicles().getFirst(); //I made a method that does this, it's called getPredecessor and it's in Vehicle. - Lucas
         int i = 0;
         for (Vehicle vehicle : r.getVehicles()) {
             if (vehicle == v) {
