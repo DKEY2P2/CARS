@@ -73,4 +73,24 @@ public class Controller {
         this.map = map;
     }
 
+    private Ticker ticker;
+
+    /**
+     * Get the value of ticker
+     *
+     * @return the value of ticker
+     */
+    public Ticker getTicker() {
+        return ticker;
+    }
+
+    /**
+     * Set the value of ticker
+     *
+     * @param ticker new value of ticker
+     */
+    public void setTicker(Ticker ticker) {
+        this.ticker = ticker;
+    }
+
 }

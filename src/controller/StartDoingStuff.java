@@ -32,15 +32,15 @@ public class StartDoingStuff {
         for (int i = 0; i < 1; i++) {
             new TestCar(d, 0.20);
         }
-
+        
         control.getMap().addIntersection(a);
         control.getMap().addIntersection(b);
         control.getMap().addIntersection(c);
         control.getMap().addRoad(d);
         control.getMap().addRoad(e);
-        //Creates a ticker with the value of 1 ms between each tick which represent 1 second
-        Ticker t = new Ticker(1, 1);
-
+        //Creates a ticker with the value of 100 ms between each tick which represent 1 second
+        Ticker t = new Ticker(1, 100);
+        control.setTicker(t);//so we can get the ticker later on
         System.out.println(args.length);
 
         //Need to move the if statements around but im too lazy now
@@ -66,43 +66,43 @@ public class StartDoingStuff {
             int cores = Runtime.getRuntime().availableProcessors();
             new ThreadController(cores, t);
         }
-
+        
         new ControllerUI(t);
-
+        
         t.start("tick");
-
+        
     }
 
     /*
      * Test classes. Don't actually use for anything
      */
     public static class TestCar extends Vehicle {
-
+        
         public TestCar(Road start, double percentage) {
             super(start, percentage, null, null);
         }
-
+        
         @Override
         public boolean update() {
             return true;
         }
-
+        
     }
-
+    
     public static class TestRoad extends Road {
-
+        
         public TestRoad(Intersection start, Intersection end, double length) {
             super(start, end, length);
         }
-
+        
     }
-
+    
     public static class TestInter extends Intersection {
-
+        
         public TestInter(int x, int y) {
             super(x, y);
         }
-
+        
     }
-
+    
 }

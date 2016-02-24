@@ -88,7 +88,9 @@ public abstract class Vehicle implements Task, Drawable {
     public void setImageName(String imageName) {
         this.imageName = imageName;
     }
-
+    /**
+     * Length of car in m
+     */
     private int length = 0;
 
     /**
@@ -109,6 +111,70 @@ public abstract class Vehicle implements Task, Drawable {
         this.length = length;
     }
 
+    /**
+     * Reaction time in seconds
+     */
+    private double reactionTime = 0;
+
+    /**
+     * Get the value of reactionTime
+     *
+     * @return the value of reactionTime
+     */
+    public double getReactionTime() {
+        return reactionTime;
+    }
+
+    private double maxDeceleration = 0;
+
+    /**
+     * Get the value of maxDeceleration
+     *
+     * @return the value of maxDeceleration
+     */
+    public double getMaxDeceleration() {
+        return maxDeceleration;
+    }
+
+    /**
+     * Set the value of maxDeceleration
+     *
+     * @param maxDeceleration new value of maxDeceleration
+     */
+    public void setMaxDeceleration(double maxDeceleration) {
+        this.maxDeceleration = maxDeceleration;
+    }
+
+    private double maxAceleration = 0;
+
+    /**
+     * Get the value of maxAceleration
+     *
+     * @return the value of maxAceleration
+     */
+    public double getMaxAceleration() {
+        return maxAceleration;
+    }
+
+    /**
+     * Set the value of maxAceleration
+     *
+     * @param maxAceleration new value of maxAceleration
+     */
+    public void setMaxAceleration(double maxAceleration) {
+        this.maxAceleration = maxAceleration;
+    }
+
+    /**
+     * Set the value of reactionTime
+     *
+     * @param reactionTime new value of reactionTime
+     */
+    public void setReactionTime(double reactionTime) {
+        this.reactionTime = reactionTime;
+    }
+
+
     /*
      * 
      * Constructor
@@ -116,6 +182,7 @@ public abstract class Vehicle implements Task, Drawable {
      */
     /**
      * The default constructor for the Vehicle abstract class
+     *
      * @param start
      * @param percentage
      * @param m
