@@ -4,8 +4,12 @@ import controller.threads.ThreadController;
 import helper.Logger;
 import helper.Timer;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Random;
+import javax.swing.plaf.basic.BasicBorders;
 import map.Intersection;
 import map.Road;
+import models.Forbe;
 import ui.ControllerUI;
 import vehicle.Vehicle;
 
@@ -22,24 +26,31 @@ public class StartDoingStuff {
     public static void main(String[] args) {
         //Creates test items
         Controller control = Controller.getInstance();
-        TestInter a = new TestInter(100, 100);
-        TestInter b = new TestInter(200, 100);
-        TestInter c = new TestInter(100, 200);
-        TestRoad d = new TestRoad(a, b, 100);
-        TestRoad e = new TestRoad(a, c, 100);
+        ArrayList<TestInter> a = new ArrayList<>();
+        ArrayList<TestRoad> b = new ArrayList<>();
+        Random r = new Random();
+
+        for (int i = 0; i < 100; i++) {
+            a.add(new TestInter(r.nextInt(1000), r.nextInt(1000)));
+        }
+
+        for (int i = 0; i < 100; i++) {
+            b.add(new TestRoad((TestInter) getRandom(a), (TestInter) getRandom(a), i));
+//            b.add(new TestRoad(a.get(0), a.get(1), i));
+        }
 
         //Creates n number of cars
         for (int i = 0; i < 1; i++) {
-            new TestCar(d, 0.20);
+            new TestCar((TestRoad) getRandom(b), 0.20);
         }
-        
-        control.getMap().addIntersection(a);
-        control.getMap().addIntersection(b);
-        control.getMap().addIntersection(c);
-        control.getMap().addRoad(d);
-        control.getMap().addRoad(e);
+        for (TestRoad b1 : b) {
+            control.getMap().addRoad(b1);
+        }
+        for (TestInter a1 : a) {
+            control.getMap().addIntersection(a1);
+        }
         //Creates a ticker with the value of 100 ms between each tick which represent 1 second
-        Ticker t = new Ticker(1, 100);
+        Ticker t = new Ticker(10, 100);
         control.setTicker(t);//so we can get the ticker later on
         System.out.println(args.length);
 
@@ -66,43 +77,49 @@ public class StartDoingStuff {
             int cores = Runtime.getRuntime().availableProcessors();
             new ThreadController(cores, t);
         }
-        
+
         new ControllerUI(t);
-        
+
         t.start("tick");
-        
+
+    }
+
+    private static Object getRandom(Collection c) {
+        Random r = new Random();
+        return c.toArray()[r.nextInt(c.size())];
     }
 
     /*
      * Test classes. Don't actually use for anything
      */
     public static class TestCar extends Vehicle {
-        
+
         public TestCar(Road start, double percentage) {
-            super(start, percentage, null, null);
+            super(start, percentage, new Forbe(), null);
         }
-        
+
         @Override
         public boolean update() {
+            getModel().calculate(this);
             return true;
         }
-        
+
     }
-    
+
     public static class TestRoad extends Road {
-        
+
         public TestRoad(Intersection start, Intersection end, double length) {
             super(start, end, length);
         }
-        
+
     }
-    
+
     public static class TestInter extends Intersection {
-        
+
         public TestInter(int x, int y) {
             super(x, y);
         }
-        
+
     }
-    
+
 }
