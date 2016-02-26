@@ -23,11 +23,11 @@ import ui.Drawable;
 public abstract class Road implements Drawable {
 
     /**
-     * The speed limit on the road
+     * The speed limit on the road in m/s
      */
     private double speedLimit;
     /**
-     * The length of the road
+     * The length of the road in meters
      */
     private final double LENGTH;
     /**
