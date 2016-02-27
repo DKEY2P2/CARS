@@ -43,11 +43,11 @@ public abstract class Vehicle implements Task, Drawable {
     /**
      * The place the vehicle wants to get to
      */
-    private SimpleImmutableEntry<Intersection, Double> destination;
+    private Intersection destination;
     /**
      * The starting point of the vehicle
      */
-    private SimpleImmutableEntry<Intersection, Double> start;
+    private Intersection start;
     /**
      * The time since the vehicle has left the start point
      */
@@ -68,7 +68,7 @@ public abstract class Vehicle implements Task, Drawable {
      * Keeps track of all the intersections that a vehicle has passed while on
      * road
      */
-    private ArrayList<Intersection> traceLog;
+    private ArrayList<Intersection> traceLog = new ArrayList<>();
 
     private String imageName = "Lambo";
 
@@ -92,14 +92,14 @@ public abstract class Vehicle implements Task, Drawable {
     /**
      * Length of car in m
      */
-    private int length = 0;
+    private double length = 0;
 
     /**
      * Get the value of length
      *
      * @return the value of length
      */
-    public int getLength() {
+    public double getLength() {
         return length;
     }
 
@@ -108,7 +108,7 @@ public abstract class Vehicle implements Task, Drawable {
      *
      * @param length new value of length
      */
-    public void setLength(int length) {
+    public void setLength(double length) {
         this.length = length;
     }
 
@@ -140,7 +140,7 @@ public abstract class Vehicle implements Task, Drawable {
     /**
      * Set the value of maxDecceleration
      *
-     * @param maxDecceleration new value of maxDecceleration
+     * @param maxDeceleration new value of maxDecceleration
      */
     public void setMaxDecceleration(double maxDeceleration) {
         this.maxDecceleration = maxDeceleration;
@@ -195,6 +195,8 @@ public abstract class Vehicle implements Task, Drawable {
         this.model = model;
     }
 
+    private Algorithm a;
+
     /*
      * 
      * Constructor
@@ -208,18 +210,19 @@ public abstract class Vehicle implements Task, Drawable {
      * @param m
      * @param a
      */
-    public Vehicle(Road start, double percentage, Model m, Algorithm a) { //I change this - Kareem
+    public Vehicle(Road start, double percentage, Model m, Algorithm a) {
         setSpeed(0);
         setAcceleration(0);
-        setDestination(null); // This should be different I think
-        setStart(new SimpleImmutableEntry<Road, Double>(start, percentage)); //I change this - Kareem
-        start.getVehicles().offer(this); //I did this - Kareem
+        setDestination(null);
+        setStart(start.getStart());
+        start.getVehicles().offer(this);
         setTimeOnRoad(0);
-        setPosition(getStart());
+        setPosition(new SimpleImmutableEntry<>(start, percentage));
         setDesiredSpeed(0);
         setDistance(0);
         setLength(0);
         setModel(m);
+        this.a = a;
         index = indexCounter++;
         VehicleHolder.getInstance().add(this);
     }
@@ -230,6 +233,10 @@ public abstract class Vehicle implements Task, Drawable {
      * 
      */
     public abstract boolean update();
+
+    public Intersection nextPlaceToGo() {
+        return a.findShortestPath(getPosition().getKey().getStart(), destination).get(1);
+    }
 
     /*
      * 
@@ -287,14 +294,14 @@ public abstract class Vehicle implements Task, Drawable {
     /**
      * @return
      */
-    public SimpleImmutableEntry<Road, Double> getDestination() {
+    public Intersection getDestination() {
         return this.destination;
     }
 
     /**
      * @return
      */
-    public SimpleImmutableEntry<Road, Double> getStart() {
+    public Intersection getStart() {
         return this.start;
     }
 
@@ -364,14 +371,14 @@ public abstract class Vehicle implements Task, Drawable {
     /**
      * @param destination
      */
-    public void setDestination(SimpleImmutableEntry<Road, Double> destination) {
+    public void setDestination(Intersection destination) {
         this.destination = destination;
     }
 
     /**
      * @param start
      */
-    public void setStart(SimpleImmutableEntry<Road, Double> start) {
+    public void setStart(Intersection start) {
         this.start = start;
     }
 
