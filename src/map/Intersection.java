@@ -259,4 +259,13 @@ public abstract class Intersection implements Drawable {
         BufferedImage bi = ImageMap.getInstance().getImage(imageKey);
         g.drawImage(bi, x - bi.getWidth() / 2, y - bi.getHeight() / 2, null);
     }
+
+    @Override
+    public String toString() {
+        return ("Intersection: x= " + getX()+ ", y= " + getY());
+    }
+    
+    
+    
+    
 }

@@ -29,7 +29,6 @@ public class SportCar extends Vehicle {
             if(getPosition().getKey().getEnd() == getDestination()){
                 System.out.println("done");
             }
-
             //Adds it to the queue if not already in there
             if(!getPosition().getKey().getEnd().getQueue(getPosition().getKey()).contains(this)){
                 getPosition().getKey().getEnd().getQueue(getPosition().getKey()).offer(this);

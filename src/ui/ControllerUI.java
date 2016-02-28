@@ -14,7 +14,7 @@ import vehicle.Vehicle;
  *
  * @author Kareem
  */
-public class ControllerUI implements Observer {
+public class ControllerUI implements Observer{
 
     private Canvas c;
 

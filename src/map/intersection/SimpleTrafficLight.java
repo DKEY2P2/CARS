@@ -5,6 +5,7 @@ import controller.Ticker;
 import helper.Logger;
 import java.util.AbstractMap;
 import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.ArrayList;
 import map.Intersection;
 import map.Road;
 import map.TrafficLight;
@@ -30,21 +31,34 @@ public class SimpleTrafficLight extends Intersection implements Observer {
         TrafficLight tl = getCurrentlyGreen();
         int i = 0;
         while (i++ < tl.getMaxFlow()) {
-            
             if (tl.getQueue().isEmpty()) {
                 return;
-            }else{
-                System.out.println("Green");
             }
             Vehicle v = tl.getQueue().poll();
+            if(v ==null){
+                return;
+            }
             v.addToTraceLog(this);
+            Intersection placeToGo = v.nextPlaceToGo();
+            if(placeToGo == null){
+                Logger.LogHigh("The car doesn't know where it wants to go");
+            }
             Road r = null;
             for (Road road : getRoads()) {
-                if (road.getEnd() == v.nextPlaceToGo()) {
+                if (road.getStart() == placeToGo) {
                     r = road;
                 }
             }
-            Logger.LogError("Vehicle has no where to go", this);
+            if (r == null) {
+                Logger.LogError("Vehicle has no where to go", this);
+                for (Road road : getRoads()) {
+                    if(road.getEnd() != this){
+                        r = road;
+                        break;
+                    }
+                }
+            }
+
             v.setPosition(new SimpleImmutableEntry<>(r, 0d));
         }
 
