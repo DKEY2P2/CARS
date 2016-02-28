@@ -1,6 +1,7 @@
 package vehicle.forbe;
 
 import algorithms.Algorithm;
+import helper.Timer;
 import java.util.AbstractMap;
 import map.Intersection;
 import map.Road;
@@ -26,11 +27,11 @@ public class SportCar extends Vehicle {
     @Override
     public boolean update() {
         if (getPosition().getValue() > 1) {
-            if(getPosition().getKey().getEnd() == getDestination()){
-                System.out.println("done");
+            if (getPosition().getKey().getEnd() == getDestination()) {
+                //TODO do something??
             }
             //Adds it to the queue if not already in there
-            if(!getPosition().getKey().getEnd().getQueue(getPosition().getKey()).contains(this)){
+            if (!getPosition().getKey().getEnd().getQueue(getPosition().getKey()).contains(this)) {
                 getPosition().getKey().getEnd().getQueue(getPosition().getKey()).offer(this);
             }
         } else {

@@ -428,7 +428,8 @@ public abstract class Vehicle implements Task, Drawable {
         int differentX = end.getX() - start.getX();
         int differentY = end.getY() - start.getY();
         double angle = Math.atan2(differentY, differentX);
-        BufferedImage bi = ImageMap.getInstance().getImage(getImageName(), -angle, 0.1);
+        BufferedImage bi = ImageMap.getInstance().getImage(getImageName(), -angle, 0.05);
+//        BufferedImage bi = ImageMap.getInstance().getImage(getImageName(), 0, 0.05);
         g.drawImage(bi,
                 (int) (start.getX() + differentX * percentage - bi.getWidth() / 2),
                 (int) (start.getY() + differentY * percentage - bi.getHeight() / 2), null);
