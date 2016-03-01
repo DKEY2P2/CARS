@@ -4,7 +4,10 @@ import controller.Controller;
 import helper.Timer;
 import java.util.AbstractMap;
 import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.ArrayList;
+
 import map.Road;
+import map.TrafficLight;
 import vehicle.Vehicle;
 
 /**
@@ -103,12 +106,24 @@ public class Forbe implements Model {
                         Math.min(veh.getDesiredSpeed(), r.getSpeedLimit()),
                         v + veh.getMaxAcceleration() * Controller.getInstance().getTicker().getTickTimeInS());
             }
-            //Updates the speed
-            veh.setDistance(veh.getDistance() + v * Controller.getInstance().getTicker().getTickTimeInS());
-            double newPercentage = (x + v * Controller.getInstance().getTicker().getTickTimeInS()) / roadLength;
-            veh.setSpeed(v);
-            //Update the position
-            veh.setPosition(new SimpleImmutableEntry<>(r, newPercentage));
+            ArrayList<TrafficLight> atl = veh.getPosition().getKey().getEnd().getTrafficLights();
+            TrafficLight tl = null;
+            for(TrafficLight t : atl) {
+                if (t.getIn() == veh.getPosition().getKey()) ; //ONLY CONSIDERS 1 ROAD INCOMING
+                    tl = t;
+            }
+
+            if(tl.isGreen()){
+                //Updates the speed
+                veh.setDistance(veh.getDistance() + v * Controller.getInstance().getTicker().getTickTimeInS());
+                double newPercentage = (x + v * Controller.getInstance().getTicker().getTickTimeInS()) / roadLength;
+                veh.setSpeed(v);
+                //Update the position
+                veh.setPosition(new SimpleImmutableEntry<>(r, newPercentage));
+            }else{
+                veh.setPosition(new SimpleImmutableEntry<>(r, veh.getPosition().getValue()));
+            }
+
         }
         if (veh.getIndex() == 1) {
 //            Timer.nanoPrint();

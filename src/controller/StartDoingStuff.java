@@ -9,7 +9,9 @@ import java.util.Collection;
 import java.util.Random;
 import map.Intersection;
 import map.Road;
+import map.TrafficLight;
 import map.intersection.SimpleTrafficLight;
+import map.intersection.TestIntersection;
 import map.road.NormalRoad;
 import ui.ControllerUI;
 import vehicle.forbe.SportCar;
@@ -27,25 +29,33 @@ public class StartDoingStuff {
     public static void main(String[] args) {
         //Creates test items
         Controller control = Controller.getInstance();
-        ArrayList<SimpleTrafficLight> a = new ArrayList<>();
+        ArrayList<TestIntersection> a = new ArrayList<>();
         ArrayList<Road> b = new ArrayList<>();
         Random r = new Random();
         //Creates a ticker with the value of 100 ms between each tick which represent 1 second
         Ticker t = new Ticker(1, 100);
-        SimpleTrafficLight a1 = new SimpleTrafficLight(100, 100, t);
-        SimpleTrafficLight a2 = new SimpleTrafficLight(100, 1000, t);
-        SimpleTrafficLight a3 = new SimpleTrafficLight(1000, 1000, t);
-        SimpleTrafficLight a4 = new SimpleTrafficLight(1000, 100, t);
+        TestIntersection a1 = new TestIntersection(100, 100, t);
+        TestIntersection a2 = new TestIntersection(100, 500, t);
+        TestIntersection a3 = new TestIntersection(500, 500, t);
+        TestIntersection a4 = new TestIntersection(500, 100, t);
+        NormalRoad r1 = new NormalRoad(a1, a2);
+        NormalRoad r2 = new NormalRoad(a2, a3);
+        NormalRoad r3 = new NormalRoad(a3, a4);
+        NormalRoad r4 = new NormalRoad(a4, a1);
+        TrafficLight t1 = new TrafficLight(a1,r4,r1);
+        TrafficLight t2 = new TrafficLight(a2,r1,r2);
+        TrafficLight t3 = new TrafficLight(a3,r2,r3);
+        TrafficLight t4 = new TrafficLight(a4,r3,r4);
         a.add(a4);
         a.add(a3);
         a.add(a2);
         a.add(a1);
-        b.add(new NormalRoad(a1, a2));
-        b.add(new NormalRoad(a2, a3));
-        b.add(new NormalRoad(a3, a4));
-        b.add(new NormalRoad(a4, a1));
+        b.add(r1);
+        b.add(r2);
+        b.add(r3);
+        b.add(r4);
         //Creates n number of cars
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10; i++) {
             new SportCar((NormalRoad) getRandom(b), r.nextDouble(), new TestAl(), (Intersection) getRandom(a));
         }
         b.stream().forEach((b1) -> {

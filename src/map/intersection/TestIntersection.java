@@ -3,38 +3,30 @@ package map.intersection;
 import controller.Observer;
 import controller.Ticker;
 import helper.Logger;
-import java.util.AbstractMap;
-import java.util.AbstractMap.SimpleImmutableEntry;
-import java.util.ArrayList;
 import map.Intersection;
 import map.Road;
 import map.TrafficLight;
 import vehicle.Vehicle;
 
+import java.util.AbstractMap;
+
 /**
- *
- * @author Kareem Horstink
+ * Created by lvanp on 01/03/2016.
  */
-public class SimpleTrafficLight extends Intersection implements Observer {
+public class TestIntersection extends Intersection implements Observer{
 
     private Ticker ticker;
 
-    public SimpleTrafficLight(int x, int y, Ticker t) {
+    public TestIntersection(int x, int y, Ticker t){
         super(x, y);
         t.addObserver(this);
         ticker = t;
     }
 
-    @Override
-    public void update() {
-        updateLights(ticker.getTimeBetweenTick() * 1000);
-        TrafficLight tl = getCurrentlyGreen();
-        int i = 0;
-        /*while (i++ < tl.getMaxFlow()) {
-            if (tl.getQueue().isEmpty()) {
-                return;
-            }
-            Vehicle v = tl.getQueue().poll();
+    public void update(){
+        updateLight(ticker.getTimeBetweenTick());
+        for(TrafficLight tl : getTrafficLights()){
+            Vehicle v = tl.getIn().getVehicles().poll();
             if(v ==null){
                 return;
             }
@@ -58,10 +50,8 @@ public class SimpleTrafficLight extends Intersection implements Observer {
                     }
                 }
             }
-
-            v.setPosition(new SimpleImmutableEntry<>(r, 0d));
-        }*/
-
+            v.setPosition(new AbstractMap.SimpleImmutableEntry<>(r, 0d));
+        }
     }
 
     @Override

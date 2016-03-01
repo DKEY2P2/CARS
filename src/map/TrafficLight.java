@@ -1,5 +1,6 @@
 package map;
 
+import java.awt.*;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -16,7 +17,7 @@ public class TrafficLight {
     /**
      * The time in milliseconds it takes for a green light to turn red
      */
-    private int timerLength = 20000;
+    private int timerLength = 2000;
     /**
      * The time in milliseconds left before the light turns red
      */
@@ -31,56 +32,23 @@ public class TrafficLight {
     private int maxFlow = 20;
 
     /**
-     * All the roads tied to this road
+     * The intersection on which the traffic light stands
      */
-    private ArrayList<Road> roads = new ArrayList<>();
+    private Intersection i;
 
-    /**
-     * All the cars waiting
-     */
-    private Deque<Vehicle> queue = new ArrayDeque<Vehicle>();
-
-    public Deque<Vehicle> getQueue() {
-        return queue;
-    }
-
-
-    /**
-     * If it contains a road
-     *
-     * @param r The road to test
-     * @return If it is contained in the traffic light
-     */
-    public boolean contain(Road r) {
-        return roads.contains(r);
-    }
-
-    /**
-     * Get the value of roads
-     *
-     * @return the value of roads
-     */
-    public ArrayList<Road> getRoads() {
-        return roads;
-    }
+    private Road in,out;
 
     /**
      * Constructor for a traffic light
      *
-     * @param initial The initial road
+     * @param in The initial Intersection
      */
-    public TrafficLight(Road initial) {
+    public TrafficLight(Intersection i, Road in, Road out) {
         timeLeft = timerLength;
-        roads.add(initial);
-    }
-
-    /**
-     * Adds a road to this traffic light
-     *
-     * @param r The road
-     */
-    public void addRoad(Road r) {
-        roads.add(r);
+        this.i = i;
+        this.in = in;
+        this.out = out;
+        i.addTrafficLight(this);
     }
 
     /**
@@ -119,9 +87,9 @@ public class TrafficLight {
      *
      * @return ^
      */
-    public int getMaxFlow() {
+    /*public int getMaxFlow() {
         return maxFlow * roads.size();
-    }
+    }*/
 
     /**
      * Sets the length of time it takes for the light to switch to red.
@@ -163,5 +131,20 @@ public class TrafficLight {
      */
     public void setLight(boolean b) {
         green = b;
+    }
+
+    public void flip(){ green = !green; }
+
+    public Road getIn(){return in;}
+
+    public Road getOut(){return out;}
+
+    public void draw(Graphics g){
+        if(green){
+            g.setColor(Color.green);
+        }else{
+            g.setColor(Color.red);
+        }
+        g.drawOval(i.getX(),i.getY(),5,5);
     }
 }

@@ -21,7 +21,7 @@ import ui.ImageMap;
  */
 public abstract class Intersection implements Drawable {
 
-    int timerLength = 40000;
+    int timerLength = 4000;
 
     /**
      * The x position of an intersection
@@ -70,10 +70,21 @@ public abstract class Intersection implements Drawable {
      */
     public Road addRoad(Road r) {
         roads.add(r);
-        tLights.add(new TrafficLight(r));
-        tLights.get(0).setLight(true);
-
         return r;
+    }
+
+    public TrafficLight addTrafficLight(TrafficLight tl){
+        tLights.add(tl);
+        return tl;
+    }
+
+    public void updateLight(int elapsed){
+        tLights.get(0).setTimeLeft(tLights.get(0).getTimeLeft()-elapsed); //This is just because we will make the lights cycle so they will all change together. THIS WILL CHANGE -Lucas
+        if(tLights.get(0).getTimeLeft() <= 0)
+            for(TrafficLight tl : tLights){
+                tl.flip();
+                tl.setTimeLeft(tl.getTimerLength());
+            }
     }
 
     /**
@@ -148,12 +159,10 @@ public abstract class Intersection implements Drawable {
      * @return A Queue of all vehicles that are on the specified road
      */
     public Deque<Vehicle> getQueue(Road r) {
-        for (TrafficLight tLight : tLights) {
-            if (tLight.contain(r)) {
-                return tLight.getQueue();
-            }
-        }
-        return null;
+        if(roads.contains(r))
+            return r.getVehicles();
+        else
+            return null;
     }
 
     /**
@@ -258,6 +267,8 @@ public abstract class Intersection implements Drawable {
     public void draw(Graphics g) {
         BufferedImage bi = ImageMap.getInstance().getImage(imageKey);
         g.drawImage(bi, x - bi.getWidth() / 2, y - bi.getHeight() / 2, null);
+        for(TrafficLight tl : tLights)
+            tl.draw(g);
     }
 
     @Override
