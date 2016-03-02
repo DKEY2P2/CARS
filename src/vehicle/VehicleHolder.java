@@ -31,7 +31,7 @@ public class VehicleHolder implements Collection<Vehicle> {
     private HashMap<Integer, Vehicle> vehicleMap = new HashMap<>();
 
     /**
-     * Adds a new vehicle with the corespondent key
+     * Adds a new vehicle with the corresponding key
      *
      * @param v The vehicle to add
      * @param key The key that is associated

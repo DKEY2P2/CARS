@@ -42,26 +42,25 @@ public class IntelligentDriver implements Model{
 	 * delta is acceleration exponent (usually set to 4)
 	 * 
 	 */
-
-	public void calculate(Vehicle v) {// TODO: Find a better way to find car infront
-		Road r = v.getPosition().getKey();
-		Vehicle inFrontVehicle = r.getVehicles().getFirst();
-		int i = 0;
+	private Vehicle getInFront(Vehicle v, Road r) {// TODO: Find a better way to do this
+		Vehicle inFrontVehicle = null;
 		for (Vehicle vehicle : r.getVehicles()) {
 			if (vehicle == v) {
 				break;
 			} else {
 				inFrontVehicle = vehicle;
 			}
-
 		}
+		// Get the car ahead of you
+		return inFrontVehicle;
+	}
+	public void calculate(Vehicle v) {// TODO: Find a better way to find car infront
+		Road r = v.getPosition().getKey();
+		Vehicle inFrontVehicle = getInFront(v,r);
+		
+
 		if (inFrontVehicle != null) {
 			pcnt = new double[] { v.getPosition().getValue(), inFrontVehicle.getPosition().getValue() };
-		} else {
-			pcnt = new double[] { v.getPosition().getValue(), 0 };
-		}
-
-		if (inFrontVehicle != null) {
 			desiredVelocity = new double[] { v.getDesiredSpeed(), inFrontVehicle.getDesiredSpeed() };
 			positionsRoad = new double[] { pcnt[0] * r.getLength(), pcnt[1] * r.getLength() };
 			distanceCars = positionsRoad[1] - positionsRoad[0];
@@ -89,6 +88,7 @@ public class IntelligentDriver implements Model{
             
 			
 		} else {
+			pcnt = new double[] { v.getPosition().getValue(), 0 };
 			//??????????????????????????//
 			
 			speedCars = new double[] { v.getSpeed() * 0.277777778};
