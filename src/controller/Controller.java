@@ -2,6 +2,7 @@ package controller;
 
 import java.util.ArrayList;
 import map.Map;
+import ui.ControllerUI;
 import vehicle.VehicleHolder;
 
 /**
@@ -12,6 +13,26 @@ import vehicle.VehicleHolder;
  * @author Kareem Horstink
  */
 public class Controller {
+
+    private ControllerUI UI;
+
+    /**
+     * Get the value of UI
+     *
+     * @return the value of UI
+     */
+    public ControllerUI getUI() {
+        return UI;
+    }
+
+    /**
+     * Set the value of UI
+     *
+     * @param UI new value of UI
+     */
+    public void setUI(ControllerUI UI) {
+        this.UI = UI;
+    }
 
     /**
      * The instance of the Controller

@@ -1,13 +1,20 @@
 package controller;
 
+import algorithms.AStar;
+import algorithms.TestAl;
 import controller.threads.ThreadController;
 import helper.Logger;
-import helper.Timer;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Random;
 import map.Intersection;
 import map.Road;
+import map.TrafficLight;
+import map.intersection.SimpleTrafficLight;
+import map.intersection.TestIntersection;
+import map.road.NormalRoad;
 import ui.ControllerUI;
-import vehicle.Vehicle;
+import vehicle.forbe.SportCar;
 
 public class StartDoingStuff {
 
@@ -22,26 +29,43 @@ public class StartDoingStuff {
     public static void main(String[] args) {
         //Creates test items
         Controller control = Controller.getInstance();
-        TestInter a = new TestInter(100, 100);
-        TestInter b = new TestInter(200, 100);
-        TestInter c = new TestInter(100, 200);
-        TestRoad d = new TestRoad(a, b, 100);
-        TestRoad e = new TestRoad(a, c, 100);
-
-        //Creates n number of cars
-        for (int i = 0; i < 1; i++) {
-            new TestCar(d, 0.20);
-        }
-        
-        control.getMap().addIntersection(a);
-        control.getMap().addIntersection(b);
-        control.getMap().addIntersection(c);
-        control.getMap().addRoad(d);
-        control.getMap().addRoad(e);
+        ArrayList<TestIntersection> a = new ArrayList<>();
+        ArrayList<Road> b = new ArrayList<>();
+        Random r = new Random();
         //Creates a ticker with the value of 100 ms between each tick which represent 1 second
         Ticker t = new Ticker(1, 100);
+        TestIntersection a1 = new TestIntersection(100, 100, t);
+        TestIntersection a2 = new TestIntersection(100, 500, t);
+        TestIntersection a3 = new TestIntersection(500, 500, t);
+        TestIntersection a4 = new TestIntersection(500, 100, t);
+        NormalRoad r1 = new NormalRoad(a1, a2);
+        NormalRoad r2 = new NormalRoad(a2, a3);
+        NormalRoad r3 = new NormalRoad(a3, a4);
+        NormalRoad r4 = new NormalRoad(a4, a1);
+        TrafficLight t1 = new TrafficLight(a1,r4,r1);
+        TrafficLight t2 = new TrafficLight(a2,r1,r2);
+        TrafficLight t3 = new TrafficLight(a3,r2,r3);
+        TrafficLight t4 = new TrafficLight(a4,r3,r4);
+        a.add(a4);
+        a.add(a3);
+        a.add(a2);
+        a.add(a1);
+        b.add(r1);
+        b.add(r2);
+        b.add(r3);
+        b.add(r4);
+        //Creates n number of cars
+        for (int i = 0; i < 10; i++) {
+            new SportCar((NormalRoad) getRandom(b), r.nextDouble(), new TestAl(), (Intersection) getRandom(a));
+        }
+        b.stream().forEach((b1) -> {
+            control.getMap().addRoad(b1);
+        });
+        a.stream().forEach((as) -> {
+            control.getMap().addIntersection(as);
+        });
+
         control.setTicker(t);//so we can get the ticker later on
-        System.out.println(args.length);
 
         //Need to move the if statements around but im too lazy now
         if (args.length != 0) {
@@ -66,43 +90,22 @@ public class StartDoingStuff {
             int cores = Runtime.getRuntime().availableProcessors();
             new ThreadController(cores, t);
         }
-        
-        new ControllerUI(t);
-        
+
+        control.setUI(new ControllerUI());
+
         t.start("tick");
-        
+
     }
 
-    /*
-     * Test classes. Don't actually use for anything
+    /**
+     * Stupid helper thingy, randomly chooses a item of a collection
+     *
+     * @param c
+     * @return
      */
-    public static class TestCar extends Vehicle {
-        
-        public TestCar(Road start, double percentage) {
-            super(start, percentage, null, null);
-        }
-        
-        @Override
-        public boolean update() {
-            return true;
-        }
-        
+    private static Object getRandom(Collection c) {
+        Random r = new Random();
+        return c.toArray()[r.nextInt(c.size())];
     }
-    
-    public static class TestRoad extends Road {
-        
-        public TestRoad(Intersection start, Intersection end, double length) {
-            super(start, end, length);
-        }
-        
-    }
-    
-    public static class TestInter extends Intersection {
-        
-        public TestInter(int x, int y) {
-            super(x, y);
-        }
-        
-    }
-    
+
 }

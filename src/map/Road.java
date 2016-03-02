@@ -64,6 +64,8 @@ public abstract class Road implements Drawable {
         this.end = end;
         se.add(start);
         se.add(end);
+        start.addRoad(this);
+        end.addRoad(this);
         LENGTH = length;
     }
 
@@ -146,7 +148,7 @@ public abstract class Road implements Drawable {
      *
      * @param n the speed limit
      */
-    public void setSpeedLimit(int n) {
+    public void setSpeedLimit(double n) {
         speedLimit = n;
     }
 

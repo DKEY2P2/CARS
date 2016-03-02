@@ -33,6 +33,11 @@ public class ThreadController implements Observer {
     private ExecutorService executorService;
 
     /**
+     * The pool of threads that is going to run the UI
+     */
+    private ExecutorService UIService;
+
+    /**
      * Get the value of numberOfThreads
      *
      * @return the value of numberOfThreads
@@ -54,6 +59,7 @@ public class ThreadController implements Observer {
          * https://docs.oracle.com/javase/tutorial/essential/concurrency/pools.html
          */
         executorService = Executors.newFixedThreadPool(numberOfThreads);
+        UIService = Executors.newSingleThreadExecutor();
         //Adds this object to observer list
         o.addObserver(this);
     }
@@ -72,6 +78,11 @@ public class ThreadController implements Observer {
     private void run() {
         try {
             executorService.invokeAll(tasks);
+            Task c = Controller.getInstance().getUI();
+            if (c != null) {
+                UIService.submit(c);
+
+            }
         } catch (InterruptedException ex) {
             Logger.LogError(ex);
             System.err.println("An error has occured");
