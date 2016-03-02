@@ -1,20 +1,19 @@
 package controller;
 
 import algorithms.AStar;
-import algorithms.TestAl;
 import controller.threads.ThreadController;
 import helper.Logger;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Random;
 import map.Intersection;
 import map.Road;
 import map.TrafficLight;
-import map.intersection.SimpleTrafficLight;
 import map.intersection.TestIntersection;
 import map.road.NormalRoad;
 import ui.ControllerUI;
-import vehicle.forbe.SportCar;
+import vehicle.forbe.SportCarF;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Random;
 
 public class StartDoingStuff {
 
@@ -56,8 +55,9 @@ public class StartDoingStuff {
         b.add(r4);
         //Creates n number of cars
         for (int i = 0; i < 10; i++) {
-            new SportCar((NormalRoad) getRandom(b), r.nextDouble(), new AStar(), (Intersection) getRandom(a));
+            new SportCarF((NormalRoad) getRandom(b), r.nextDouble(), new AStar(), (Intersection) getRandom(a));
         }
+
         b.stream().forEach((b1) -> {
             control.getMap().addRoad(b1);
         });

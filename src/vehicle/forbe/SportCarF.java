@@ -3,8 +3,11 @@ package vehicle.forbe;
 import algorithms.Algorithm;
 import helper.Timer;
 import java.util.AbstractMap;
+import java.util.ArrayList;
+
 import map.Intersection;
 import map.Road;
+import map.TrafficLight;
 import models.Forbe;
 import vehicle.Vehicle;
 
@@ -38,9 +41,18 @@ public class SportCarF extends Vehicle {
                 getPosition().getKey().getEnd().getQueue(getPosition().getKey()).offer(this);
             }
         } else {
-            setTimeOnRoad(getTimeOnRoad() + 1);//add one tick
-            getModel().calculate(this);
+            ArrayList<TrafficLight> atl = getPosition().getKey().getEnd().getTrafficLights();
+            for(TrafficLight tl : atl)
+                if(tl.getIn() == getPosition().getKey())
+                    if(!tl.isGreen() && getPosition().getValue()>0.95) {
+                        setSpeed(0);
+                    }else{
+                        setTimeOnRoad(getTimeOnRoad() + 1);//add one tick
+                        getModel().calculate(this);
+                    }
         }
+
+
         return true;
     }
 
