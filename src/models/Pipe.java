@@ -42,36 +42,31 @@ public class Pipe implements Model {
 		Road r = v.getPosition().getKey();
 		Vehicle inFrontVehicle = getInFront(v, r);
 		speed = v.getSpeed();
+		//System.out.println(speed);
 		if (v.getPosition().getKey() == null) {
 			return;
 		}
 
 		if (inFrontVehicle != null) {
 			pcnt = new double[] { v.getPosition().getValue(), inFrontVehicle.getPosition().getValue() };
-		} else {
-			pcnt = new double[] { v.getPosition().getValue(), 0 };
-		}
-
-		if (inFrontVehicle != null) {
 			positionsRoad = new double[] { pcnt[0] * r.getLength(), pcnt[1] * r.getLength() };
 			distanceCars = positionsRoad[1] - positionsRoad[0];
 			lengthCars = new double[] { v.getLength(), inFrontVehicle.getLength() };
 
 			safeDistance = Math.abs(distanceCars);
 			safeDistanceMIN = lengthCars[0] * speed / ((0.447 * 10) + 1);
-			if (safeDistance > safeDistanceMIN) {
+			if (safeDistance < safeDistanceMIN) {
 				speed = (Math.max(0,
 						speed - v.getMaxDecceleration() * Controller.getInstance().getTicker().getTickTimeInS()));
 			} else {
 				speed = Math.min(Math.min(v.getDesiredSpeed(), r.getSpeedLimit()),
 						speed + v.getMaxAcceleration() * Controller.getInstance().getTicker().getTickTimeInS());
 			}
-			double newPosition = r.getLength() * 1000
-					/ (positionsRoad[0] + speed * Controller.getInstance().getTicker().getTickTimeInS());
+			double newPosition = (speed + positionsRoad[0]*Controller.getInstance().getTicker().getTickTimeInS())/ r.getLength();
 			v.setSpeed(speed);
 			v.setPosition(new SimpleImmutableEntry<>(r, newPosition));
 		} else {
-
+			pcnt = new double[] { v.getPosition().getValue(), 0 };
 			positionsRoad = new double[] { pcnt[0] * r.getLength() };
 			double distanceLight = Math.abs(positionsRoad[0] - r.getLength());
 			if (distanceLight < safeDistanceMIN) {
@@ -92,7 +87,6 @@ public class Pipe implements Model {
 
 			if (tl.isGreen()) {
 				// Updates the speed
-				System.out.println("Distance: " + v.getDistance() + "   Speed: " + speed);
 				v.setDistance(v.getDistance() + speed * Controller.getInstance().getTicker().getTickTimeInS());
 				double newPosition = (positionsRoad[0] + speed * Controller.getInstance().getTicker().getTickTimeInS())
 						/ r.getLength();

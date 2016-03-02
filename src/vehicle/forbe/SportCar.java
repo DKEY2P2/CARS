@@ -17,7 +17,7 @@ import vehicle.Vehicle;
 public class SportCar extends Vehicle {
 
     public SportCar(Road start, double percentage, Algorithm a, Intersection destination) {
-        super(start, percentage, new Forbe(), a);
+        super(start, percentage, new Pipe(), a);
         setDesiredSpeed(27.777777778);//100kmh
         setMaxAcceleration(4.5);// Jaguar XK Coupe 2007 - http://hypertextbook.com/facts/2001/MeredithBarricella.shtml
         setMaxDecceleration(2.98704);//Traffic Engineering Handbook, 5th ed. (J. L. Prine, ed.). ITE, Washington, D.C., 1999.
