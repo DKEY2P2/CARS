@@ -139,9 +139,11 @@ public class Logger {
      * or Low importance
      */
     public static void print() {
-        printError();
-        printLogHigh();
-        printLogLow();
+        StringBuilder tmp = new StringBuilder();
+        tmp.append("Error Log:").append("\n").append(ERROR).append("\n");
+        tmp.append("High Log:").append("\n").append(LOGHIGH).append("\n");
+        tmp.append("Low Log:").append("\n").append(LOGLOW).append("\n");
+        System.out.println(tmp);
     }
 
     /**

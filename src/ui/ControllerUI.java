@@ -3,6 +3,7 @@ package ui;
 import controller.Controller;
 import controller.Observer;
 import controller.Observerable;
+import controller.Task;
 import controller.Ticker;
 import java.awt.Graphics;
 import map.Intersection;
@@ -14,7 +15,7 @@ import vehicle.Vehicle;
  *
  * @author Kareem
  */
-public class ControllerUI implements Observer {
+public class ControllerUI implements Task {
 
     private Canvas c;
 
@@ -24,10 +25,8 @@ public class ControllerUI implements Observer {
      * @param o The item that the canvas should reflect. How often it should
      * refresh
      */
-    public ControllerUI(Observerable o) {
+    public ControllerUI() {
         c = new Canvas();
-        o.addObserver(this);
-
     }
 
     /**
@@ -91,13 +90,8 @@ public class ControllerUI implements Observer {
     }
 
     @Override
-    public void update() {
-        update("tick?");
-    }
-
-    @Override
-    public void update(String args) {
+    public boolean update() {
         draw();
-
+        return true;
     }
 }

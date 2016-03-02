@@ -1,9 +1,13 @@
 package models;
 
 import controller.Controller;
+import helper.Timer;
 import java.util.AbstractMap;
 import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.ArrayList;
+
 import map.Road;
+import map.TrafficLight;
 import vehicle.Vehicle;
 
 /**
@@ -12,11 +16,14 @@ import vehicle.Vehicle;
  */
 public class Forbe implements Model {
 
-    @Override
-    public void calculate(Vehicle veh) {
-        Road r = veh.getPosition().getKey();
+    private Vehicle getInFront(Vehicle veh, Road r) {
         Vehicle inFrontVehicle = null;
-        int i = 0;
+//        int i = 0;
+//        i = r.getVehicles().indexOf(veh);
+//        if(i == r.getVehicles().size()-1){
+//            return null;
+//        }
+//        return r.getVehicles().get(i+1);
         for (Vehicle vehicle : r.getVehicles()) {
             if (vehicle == veh) {
                 break;
@@ -24,38 +31,102 @@ public class Forbe implements Model {
                 inFrontVehicle = vehicle;
             }
         }
+        //Get the car ahead of you
+        return inFrontVehicle;
+    }
+
+    @Override
+    public void calculate(Vehicle veh) {
+        if (veh.getIndex() == 1) {
+//            Timer.start();
+        }
+        Road r = veh.getPosition().getKey();
+        double roadLength = r.getLength();
+        double v = veh.getSpeed();
+        double l = veh.getLength();
+        double reactionTime = veh.getReactionTime();
+        double sMin = reactionTime * v + l;
+
+        Vehicle inFrontVehicle = getInFront(veh, r);
+
+        //Waiting at the traffic light
+        if (veh.getPosition().getKey() == null) {
+            return;
+        }
+        //If you are in the end of the road it shouldn't bother
+        if (veh.getPosition().getValue() > 1) {
+            return;
+        }
+        //Get the road your on
+
+        //Get the percentage dunno why I split it when I split later on
         double[] percentage;
         if (inFrontVehicle != null) {
             percentage = new double[]{veh.getPosition().getValue(), inFrontVehicle.getPosition().getValue()};
         } else {
             percentage = new double[]{veh.getPosition().getValue(), 0};
         }
+
+        //If there is a car ahead of you
         if (inFrontVehicle != null) {
-            double roadLength = r.getLength();
+            //Get various of data
             double[] x = new double[]{roadLength * percentage[0], roadLength * percentage[1]};
-            double[] l = new double[]{veh.getLength(), inFrontVehicle.getLength()};
-            double[] v = new double[]{veh.getSpeed() * 0.277777778, inFrontVehicle.getSpeed() * 0.277777778};
-            double[] reactionTime = new double[]{veh.getReactionTime(), inFrontVehicle.getReactionTime()};
+            //Distance between the two cars
             double distance = x[1] - x[0];
-            double s = distance;
-            double sMin = reactionTime[0] * v[0] + l[0];
-            if (s > sMin) {
-                v[0] = Math.max(0, v[0] - veh.getMaxDecceleration());
+            double s = Math.abs(distance);
+            //Time it takes you to react
+
+            //If you can react fast enough
+            if (s < sMin) {
+                v = Math.max(0,
+                        v - veh.getMaxDecceleration() * Controller.getInstance().getTicker().getTickTimeInS());
             } else {
-                v[0] = Math.min(Math.min(veh.getDesiredSpeed(), r.getSpeedLimit()) * 0.277777778, v[0] + veh.getMaxAcceleration());
+                v = Math.min(
+                        Math.min(veh.getDesiredSpeed(), r.getSpeedLimit()),
+                        v + veh.getMaxAcceleration() * Controller.getInstance().getTicker().getTickTimeInS());
             }
-            double newPercentage = roadLength * 1000 / (x[0] + v[0] * Controller.getInstance().getTicker().getTickTimeInS());
-            veh.setSpeed(v[0] * 3.6);
+            //Updates the speed
+            double newPercentage = (x[0] + v * Controller.getInstance().getTicker().getTickTimeInS()) / roadLength;
+            veh.setSpeed(v);
+            //Update the position
             veh.setPosition(new SimpleImmutableEntry<>(r, newPercentage));
         } else {
-            double roadLength = r.getLength();
-            double[] v = new double[]{veh.getSpeed() * 0.277777778};
-            double[] x = new double[]{roadLength * percentage[0]};
-            v[0] = Math.min(Math.min(veh.getDesiredSpeed(), r.getSpeedLimit()) * 0.277777778, v[0] + veh.getMaxAcceleration());
-            double newPercentage = roadLength * 1000 / (x[0] + v[0] * Controller.getInstance().getTicker().getTickTimeInS());
-            veh.setSpeed(v[0] * 3.6);
-            veh.setPosition(new SimpleImmutableEntry<>(r, newPercentage));
+            //Get various of data
+            double x = roadLength * percentage[0];
 
+            //Distance between you and the traffic light
+            double s = Math.abs(x - roadLength);
+            //Time it takes you to react
+            //If you can react fast enough
+            if (s < sMin) {
+                v = Math.max(0,
+                        v - veh.getMaxDecceleration() * Controller.getInstance().getTicker().getTickTimeInS());
+            } else {
+                v = Math.min(
+                        Math.min(veh.getDesiredSpeed(), r.getSpeedLimit()),
+                        v + veh.getMaxAcceleration() * Controller.getInstance().getTicker().getTickTimeInS());
+            }
+            ArrayList<TrafficLight> atl = veh.getPosition().getKey().getEnd().getTrafficLights();
+            TrafficLight tl = null;
+            for(TrafficLight t : atl) {
+                if (t.getIn() == veh.getPosition().getKey()) ; //ONLY CONSIDERS 1 ROAD INCOMING
+                    tl = t;
+            }
+
+            if(tl.isGreen()){
+                //Updates the speed
+                veh.setDistance(veh.getDistance() + v * Controller.getInstance().getTicker().getTickTimeInS());
+                double newPercentage = (x + v * Controller.getInstance().getTicker().getTickTimeInS()) / roadLength;
+                veh.setSpeed(v);
+                //Update the position
+                veh.setPosition(new SimpleImmutableEntry<>(r, newPercentage));
+            }else{
+                veh.setPosition(new SimpleImmutableEntry<>(r, veh.getPosition().getValue()));
+            }
+
+        }
+        if (veh.getIndex() == 1) {
+//            Timer.nanoPrint();
         }
     }
 
