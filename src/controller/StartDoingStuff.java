@@ -56,7 +56,7 @@ public class StartDoingStuff {
         b.add(r4);
         //Creates n number of cars
         for (int i = 0; i < 10; i++) {
-            new SportCar((NormalRoad) getRandom(b), r.nextDouble(), new TestAl(), (Intersection) getRandom(a));
+            new SportCar((NormalRoad) getRandom(b), r.nextDouble(), new AStar(), (Intersection) getRandom(a));
         }
         b.stream().forEach((b1) -> {
             control.getMap().addRoad(b1);

@@ -6,7 +6,11 @@ import java.util.ArrayList;
 import algorithms.Algorithm;
 import controller.Task;
 import java.awt.Graphics;
+
 import java.awt.image.BufferedImage;
+
+import java.util.Iterator;
+
 import java.util.Objects;
 import map.Intersection;
 import map.Road;
@@ -419,6 +423,34 @@ public abstract class Vehicle implements Task, Drawable {
 	public void setStart(Intersection start) {
 		this.start = start;
 	}
+    public void addPercentage(double d){
+        position.setValue(position.getValue() + d);
+    }
+
+    public void draw(Graphics g) {
+        SimpleImmutableEntry<Road, Double> position = getPosition();
+        Road road = position.getKey();
+        double percentage = position.getValue();
+        Intersection start = road.getStart();
+        Intersection end = road.getEnd();
+        int diameter = 8;
+        int width = 8;
+        int height = 4;
+        
+        int differentX = end.getX() - start.getX();
+        int differentY = end.getY() - start.getY();
+        double angle = Math.atan2(differentY, differentX);
+        
+//        BufferedImage bi = ImageMap.getInstance().getImage(getImageName(), -angle, 0.05);
+//        /*BufferedImage bi = ImageMap.getInstance().getImage(getImageName(), 0, 0.05);*/
+//        g.drawImage(bi,
+//                (int) (start.getX() + differentX * percentage - bi.getWidth() / 2),
+//                (int) (start.getY() + differentY * percentage - bi.getHeight() / 2), null);
+        
+        g.drawRect((int) (start.getX() + differentX * percentage - width / 2),
+              (int) (start.getY() + differentY * percentage - height / 2), width, height);
+        
+    }
 
 	/**
 	 * @param timeOnRoad
@@ -472,7 +504,7 @@ public abstract class Vehicle implements Task, Drawable {
 		this.traceLog = traceLog;
 	}
 
-	@Override
+	/*@Override
 	public void draw(Graphics g) {
 		SimpleImmutableEntry<Road, Double> position = getPosition();
 		Road road = position.getKey();
@@ -488,7 +520,7 @@ public abstract class Vehicle implements Task, Drawable {
 		// 0.05);
 		g.drawImage(bi, (int) (start.getX() + differentX * percentage - bi.getWidth() / 2),
 				(int) (start.getY() + differentY * percentage - bi.getHeight() / 2), null);
-	}
+	}*/
 
 	/*
 	 * Some stuff for hashing and to see if it is equal. Auto genrated xD
@@ -550,5 +582,21 @@ public abstract class Vehicle implements Task, Drawable {
 		}
 		return Objects.equals(this.imageName, other.imageName);
 	}
+
+    public Vehicle getPredecessor(){
+        Iterator<Vehicle> vehicles = this.getPosition().getKey().getVehicles().iterator();
+
+        if(vehicles.hasNext()) {
+            Vehicle pre = vehicles.next();
+            Vehicle cur = pre;
+            while (vehicles.hasNext()) {
+                cur = vehicles.next();
+                if (cur == this)
+                    return pre;
+                pre = cur;
+            }
+        }
+        return null;
+    }
 
 }
