@@ -433,14 +433,22 @@ public abstract class Vehicle implements Task, Drawable {
         Intersection start = road.getStart();
         Intersection end = road.getEnd();
         int diameter = 8;
+        int width = 8;
+        int height = 4;
+        
         int differentX = end.getX() - start.getX();
         int differentY = end.getY() - start.getY();
         double angle = Math.atan2(differentY, differentX);
-        BufferedImage bi = ImageMap.getInstance().getImage(getImageName(), -angle, 0.05);
-//        BufferedImage bi = ImageMap.getInstance().getImage(getImageName(), 0, 0.05);
-        g.drawImage(bi,
-                (int) (start.getX() + differentX * percentage - bi.getWidth() / 2),
-                (int) (start.getY() + differentY * percentage - bi.getHeight() / 2), null);
+        
+//        BufferedImage bi = ImageMap.getInstance().getImage(getImageName(), -angle, 0.05);
+//        /*BufferedImage bi = ImageMap.getInstance().getImage(getImageName(), 0, 0.05);*/
+//        g.drawImage(bi,
+//                (int) (start.getX() + differentX * percentage - bi.getWidth() / 2),
+//                (int) (start.getY() + differentY * percentage - bi.getHeight() / 2), null);
+        
+        g.drawRect((int) (start.getX() + differentX * percentage - width / 2),
+              (int) (start.getY() + differentY * percentage - height / 2), width, height);
+        
     }
 
     /*

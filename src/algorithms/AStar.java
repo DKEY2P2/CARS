@@ -2,9 +2,7 @@ package algorithms;
 
 import java.util.ArrayList;
 
-import controller.Controller;
 import map.Intersection;
-import map.Map;
 import map.Road;
 
 /**
@@ -151,9 +149,7 @@ public class AStar implements Algorithm {
 			result.add(0, next.getElement());
 			next = next.getParent();
 		    }
-		    
-		    
-		    
+		    //SUCCESS!
 		    return result;
 		}
 		
