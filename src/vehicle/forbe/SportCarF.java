@@ -9,12 +9,15 @@ import models.Forbe;
 import vehicle.Vehicle;
 
 /**
+ * A sport modelled after Jaguar XK coupe 2007
+ * <p>
+ * Using Forbe's model
  *
- * @author Kareem
+ * @author Kareem Horstink
  */
-public class SportCar extends Vehicle {
+public class SportCarF extends Vehicle {
 
-    public SportCar(Road start, double percentage, Algorithm a, Intersection destination) {
+    public SportCarF(Road start, double percentage, Algorithm a, Intersection destination) {
         super(start, percentage, new Forbe(), a);
         setDesiredSpeed(27.777777778);//100kmh
         setMaxAcceleration(4.5);// Jaguar XK Coupe 2007 - http://hypertextbook.com/facts/2001/MeredithBarricella.shtml
