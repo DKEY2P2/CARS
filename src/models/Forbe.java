@@ -115,6 +115,7 @@ public class Forbe implements Model {
 
             if(tl.isGreen()){
                 //Updates the speed
+            	System.out.println("Distance: " + veh.getDistance() + "   Speed: " + v);
                 veh.setDistance(veh.getDistance() + v * Controller.getInstance().getTicker().getTickTimeInS());
                 double newPercentage = (x + v * Controller.getInstance().getTicker().getTickTimeInS()) / roadLength;
                 veh.setSpeed(v);

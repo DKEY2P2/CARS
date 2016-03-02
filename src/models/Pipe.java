@@ -1,9 +1,11 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.AbstractMap.SimpleImmutableEntry;
 
 import controller.Controller;
 import map.Road;
+import map.TrafficLight;
 import vehicle.Vehicle;
 
 public class Pipe implements Model {
@@ -21,20 +23,29 @@ public class Pipe implements Model {
 	private double[] pcnt;
 	double[] positionsRoad;
 	double[] lengthCars;
-	double[] speedCars;
+	double speed;
 
-	public void calculate(Vehicle v) {
-		Road r = v.getPosition().getKey();
-		Vehicle inFrontVehicle = r.getVehicles().getFirst();
-		int i = 0;
+	private Vehicle getInFront(Vehicle v, Road r) {
+		Vehicle inFrontVehicle = null;
 		for (Vehicle vehicle : r.getVehicles()) {
 			if (vehicle == v) {
 				break;
 			} else {
 				inFrontVehicle = vehicle;
 			}
-
 		}
+		// Get the car ahead of you
+		return inFrontVehicle;
+	}
+
+	public void calculate(Vehicle v) {
+		Road r = v.getPosition().getKey();
+		Vehicle inFrontVehicle = getInFront(v, r);
+		speed = v.getSpeed();
+		if (v.getPosition().getKey() == null) {
+			return;
+		}
+
 		if (inFrontVehicle != null) {
 			pcnt = new double[] { v.getPosition().getValue(), inFrontVehicle.getPosition().getValue() };
 		} else {
@@ -42,32 +53,55 @@ public class Pipe implements Model {
 		}
 
 		if (inFrontVehicle != null) {
-			positionsRoad = new double[] { pcnt[0] * r.getLength(), pcnt[1] * r.getLength()};
+			positionsRoad = new double[] { pcnt[0] * r.getLength(), pcnt[1] * r.getLength() };
 			distanceCars = positionsRoad[1] - positionsRoad[0];
 			lengthCars = new double[] { v.getLength(), inFrontVehicle.getLength() };
-			speedCars = new double[] { v.getSpeed() * 0.277777778, inFrontVehicle.getSpeed()* 0.277777778};
 
-			safeDistance = distanceCars;
-			safeDistanceMIN = (lengthCars[0] * speedCars[0]) / ((0.447 * 10) + 1);
-			if (safeDistance > safeDistanceMIN) { // This might be wrong/ right
-													// in the text??
-				speedCars[0] = (Math.max(0, speedCars[0] - v.getMaxDecceleration()));
+			safeDistance = Math.abs(distanceCars);
+			safeDistanceMIN = lengthCars[0] * speed / ((0.447 * 10) + 1);
+			if (safeDistance > safeDistanceMIN) {
+				speed = (Math.max(0,
+						speed - v.getMaxDecceleration() * Controller.getInstance().getTicker().getTickTimeInS()));
 			} else {
-				speedCars[0] = Math.min(Math.min(v.getDesiredSpeed(), r.getSpeedLimit()) * 0.277777778,
-						speedCars[0] + v.getMaxAcceleration());
+				speed = Math.min(Math.min(v.getDesiredSpeed(), r.getSpeedLimit()),
+						speed + v.getMaxAcceleration() * Controller.getInstance().getTicker().getTickTimeInS());
 			}
-			double newPosition = r.getLength() * 1000 / (positionsRoad[0] + speedCars[0] * Controller.getInstance().getTicker().getTickTimeInS());
-			v.setSpeed(speedCars[0] * 3.6);
+			double newPosition = r.getLength() * 1000
+					/ (positionsRoad[0] + speed * Controller.getInstance().getTicker().getTickTimeInS());
+			v.setSpeed(speed);
 			v.setPosition(new SimpleImmutableEntry<>(r, newPosition));
 		} else {
-		
-			speedCars = new double[] { v.getSpeed() * 0.277777778};
-			positionsRoad = new double[]{pcnt[0] * r.getLength()};
-		
-			speedCars[0] = Math.min(Math.min(v.getDesiredSpeed(), r.getSpeedLimit()) * 0.277777778,	speedCars[0] + v.getMaxAcceleration());
-			double newPosition = r.getLength() * 1000 / (positionsRoad[0] + speedCars[0] * Controller.getInstance().getTicker().getTickTimeInS());
-			v.setSpeed(speedCars[0] * 3.6);
-			v.setPosition(new SimpleImmutableEntry<>(r, newPosition));
+
+			positionsRoad = new double[] { pcnt[0] * r.getLength() };
+			double distanceLight = Math.abs(positionsRoad[0] - r.getLength());
+			if (distanceLight < safeDistanceMIN) {
+				speed = (Math.max(0,
+						speed - v.getMaxDecceleration() * Controller.getInstance().getTicker().getTickTimeInS()));
+			} else {
+				speed = Math.min(Math.min(v.getDesiredSpeed(), r.getSpeedLimit()),
+						speed + v.getMaxAcceleration() * Controller.getInstance().getTicker().getTickTimeInS());
+			}
+
+		}
+		ArrayList<TrafficLight> atl = v.getPosition().getKey().getEnd().getTrafficLights();
+		TrafficLight tl = null;
+		for (TrafficLight t : atl) {
+			if (t.getIn() == v.getPosition().getKey())
+				; // ONLY CONSIDERS 1 ROAD INCOMING
+			tl = t;
+
+			if (tl.isGreen()) {
+				// Updates the speed
+				System.out.println("Distance: " + v.getDistance() + "   Speed: " + speed);
+				v.setDistance(v.getDistance() + speed * Controller.getInstance().getTicker().getTickTimeInS());
+				double newPosition = (positionsRoad[0] + speed * Controller.getInstance().getTicker().getTickTimeInS())
+						/ r.getLength();
+				v.setSpeed(speed);
+				// Update the position
+				v.setPosition(new SimpleImmutableEntry<>(r, newPosition));
+			} else {
+				v.setPosition(new SimpleImmutableEntry<>(r, v.getPosition().getValue()));
+			}
 
 		}
 	}
