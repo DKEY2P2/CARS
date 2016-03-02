@@ -45,7 +45,7 @@ public class IntelligentDriver implements Model{
 	 * 
 	 */
 
-	public void calculate(Vehicle v) {
+	public void calculate(Vehicle v) {// TODO: Find a better way to find car infront
 		Road r = v.getPosition().getKey();
 		Vehicle inFrontVehicle = r.getVehicles().getFirst();
 		int i = 0;
@@ -68,7 +68,7 @@ public class IntelligentDriver implements Model{
 			positionsRoad = new double[] { pcnt[0] * r.getLength(), pcnt[1] * r.getLength() };
 			distanceCars = positionsRoad[1] - positionsRoad[0];
 			lengthCars = new double[] { v.getLength(), inFrontVehicle.getLength() };
-			speedCars = new double[] { v.getSpeed() * 0.277777778, inFrontVehicle.getSpeed() * 0.277777778 };
+			speedCars = new double[] { v.getSpeed(), inFrontVehicle.getSpeed() };
 			maxVehicleAcceleration = new double[] { v.getMaxAcceleration(), inFrontVehicle.getMaxAcceleration() };
 			desiredDeceleration = new double[] { v.getDesiredBraking(), inFrontVehicle.getDesiredBraking() };
 			delta = 4;
@@ -76,18 +76,17 @@ public class IntelligentDriver implements Model{
 
 			/* !http://nexus.umn.edu/Courses/ce3201/CE3201-L2-02.pdf */
 			timeHeadway = new double[] { (speedCars[0] * lengthCars[0]) * distanceCars,(speedCars[1] * lengthCars[1]) * distanceCars };
-			// TODO:Supposed to be Calculating the time headway (Check if I'm
-			// being blond..)
+			// TODO:Supposed to be Calculating the time headway (Check if I'm being blond..)
 
 			approachingRate = speedCars[1] - speedCars[0];
 			double s = desiredDistance[0] + (speedCars[0]*timeHeadway[0]) + ((speedCars[0]*approachingRate)/2*(Math.sqrt(maxVehicleAcceleration[0]*desiredDeceleration[0])));
 			speedCars[0] = maxVehicleAcceleration[0]*(1 - Math.pow((speedCars[0]/ desiredVelocity[0]),delta))- Math.pow((s/ distanceCars),2);
 			
-			//Updates the speed
 			double newPosition = r.getLength() * 1000 / (positionsRoad[0] + speedCars[0] * Controller.getInstance().getTicker().getTickTimeInS());
-            v.setSpeed(speedCars[0]);
-            //Update the position
-            v.setPosition(new SimpleImmutableEntry<>(r, newPosition));
+			v.setPosition(new SimpleImmutableEntry<>(r, newPosition));
+			v.setSpeed(speedCars[0]);
+           
+            
 			
 		} else {
 			//??????????????????????????//

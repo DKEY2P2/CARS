@@ -7,15 +7,13 @@ import controller.Controller;
 import map.Road;
 import map.TrafficLight;
 import vehicle.Vehicle;
-
+/**
+ * http://people.umass.edu/ndh/TFT/Ch17%20Pipes.pdf
+ *
+ * @author B
+ *
+ */
 public class Pipe implements Model {
-
-	/**
-	 * http://people.umass.edu/ndh/TFT/Ch17%20Pipes.pdf
-	 *
-	 * @author B
-	 *
-	 */
 
 	private double distanceCars;
 	private double safeDistance;
@@ -25,7 +23,7 @@ public class Pipe implements Model {
 	double[] lengthCars;
 	double speed;
 
-	private Vehicle getInFront(Vehicle v, Road r) {
+	private Vehicle getInFront(Vehicle v, Road r) {// TODO: Find a better way to do this
 		Vehicle inFrontVehicle = null;
 		for (Vehicle vehicle : r.getVehicles()) {
 			if (vehicle == v) {
@@ -62,10 +60,11 @@ public class Pipe implements Model {
 				speed = Math.min(Math.min(v.getDesiredSpeed(), r.getSpeedLimit()),
 						speed + v.getMaxAcceleration() * Controller.getInstance().getTicker().getTickTimeInS());
 			}
-			double newPosition = (speed + positionsRoad[0]*Controller.getInstance().getTicker().getTickTimeInS())/ r.getLength();
+			double newPosition = (positionsRoad[0] + speed*Controller.getInstance().getTicker().getTickTimeInS())/ r.getLength();
 			v.setSpeed(speed);
 			v.setPosition(new SimpleImmutableEntry<>(r, newPosition));
 		} else {
+			
 			pcnt = new double[] { v.getPosition().getValue(), 0 };
 			positionsRoad = new double[] { pcnt[0] * r.getLength() };
 			double distanceLight = Math.abs(positionsRoad[0] - r.getLength());
@@ -76,6 +75,9 @@ public class Pipe implements Model {
 				speed = Math.min(Math.min(v.getDesiredSpeed(), r.getSpeedLimit()),
 						speed + v.getMaxAcceleration() * Controller.getInstance().getTicker().getTickTimeInS());
 			}
+			double newPosition = (positionsRoad[0] + speed*Controller.getInstance().getTicker().getTickTimeInS())/ r.getLength();
+			v.setSpeed(speed);
+			v.setPosition(new SimpleImmutableEntry<>(r, newPosition));
 
 		}
 		ArrayList<TrafficLight> atl = v.getPosition().getKey().getEnd().getTrafficLights();
