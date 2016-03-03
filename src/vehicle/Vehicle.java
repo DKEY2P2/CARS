@@ -44,6 +44,12 @@ public abstract class Vehicle implements Task, Drawable {
 	 * The current value of the vehicle's acceleration in m/s^2
 	 */
 	private double acceleration;
+
+	/**
+	 * The current value of the vehicle's braking speed
+	 */
+	private double braking;
+
 	/**
 	 * The place the vehicle wants to get to
 	 */
@@ -235,6 +241,7 @@ public abstract class Vehicle implements Task, Drawable {
 	 */
 	public Vehicle(Road start, double percentage, Model m, Algorithm a) {
 		setSpeed(0);
+		setBraking(0);
 		setAcceleration(0);
 		setDestination(null);
 		setStart(start.getStart());
@@ -281,8 +288,7 @@ public abstract class Vehicle implements Task, Drawable {
 	 * Increases the amount of how much distance a vehicle has travelled by the
 	 * amount x
 	 *
-	 * @param x
-	 *            the amount to increase by (negative for decrease)
+	 * @param x the amount to increase by (negative for decrease)
 	 */
 	public void plusDistance(double x) {
 		this.distance += x;
@@ -315,6 +321,14 @@ public abstract class Vehicle implements Task, Drawable {
 	 */
 	public double getAcceleration() {
 		return this.acceleration;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public double getBraking() {
+		return this.braking;
 	}
 
 	/**
@@ -359,7 +373,7 @@ public abstract class Vehicle implements Task, Drawable {
 	public double getDesiredBraking() {
 		return this.desiredBraking;
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -411,6 +425,13 @@ public abstract class Vehicle implements Task, Drawable {
 	}
 
 	/**
+	 * @param braking
+	 */
+	public void setBraking(double braking) {
+		this.braking = braking;
+	}
+
+	/**
 	 * @param destination
 	 */
 	public void setDestination(Intersection destination) {
@@ -423,34 +444,35 @@ public abstract class Vehicle implements Task, Drawable {
 	public void setStart(Intersection start) {
 		this.start = start;
 	}
-    public void addPercentage(double d){
-        position.setValue(position.getValue() + d);
-    }
 
-    public void draw(Graphics g) {
-        SimpleImmutableEntry<Road, Double> position = getPosition();
-        Road road = position.getKey();
-        double percentage = position.getValue();
-        Intersection start = road.getStart();
-        Intersection end = road.getEnd();
-        int diameter = 8;
-        int width = 8;
-        int height = 4;
-        
-        int differentX = end.getX() - start.getX();
-        int differentY = end.getY() - start.getY();
-        double angle = Math.atan2(differentY, differentX);
-        
+	public void addPercentage(double d) {
+		position.setValue(position.getValue() + d);
+	}
+
+	public void draw(Graphics g) {
+		SimpleImmutableEntry<Road, Double> position = getPosition();
+		Road road = position.getKey();
+		double percentage = position.getValue();
+		Intersection start = road.getStart();
+		Intersection end = road.getEnd();
+		int diameter = 8;
+		int width = 8;
+		int height = 4;
+
+		int differentX = end.getX() - start.getX();
+		int differentY = end.getY() - start.getY();
+		double angle = Math.atan2(differentY, differentX);
+
 //        BufferedImage bi = ImageMap.getInstance().getImage(getImageName(), -angle, 0.05);
 //        /*BufferedImage bi = ImageMap.getInstance().getImage(getImageName(), 0, 0.05);*/
 //        g.drawImage(bi,
 //                (int) (start.getX() + differentX * percentage - bi.getWidth() / 2),
 //                (int) (start.getY() + differentY * percentage - bi.getHeight() / 2), null);
-        
-        g.drawRect((int) (start.getX() + differentX * percentage - width / 2),
-              (int) (start.getY() + differentY * percentage - height / 2), width, height);
-        
-    }
+
+		g.drawRect((int) (start.getX() + differentX * percentage - width / 2),
+				(int) (start.getY() + differentY * percentage - height / 2), width, height);
+
+	}
 
 	/**
 	 * @param timeOnRoad
@@ -583,20 +605,20 @@ public abstract class Vehicle implements Task, Drawable {
 		return Objects.equals(this.imageName, other.imageName);
 	}
 
-    public Vehicle getPredecessor(){
-        Iterator<Vehicle> vehicles = this.getPosition().getKey().getVehicles().iterator();
+	public Vehicle getPredecessor() {
+		Iterator<Vehicle> vehicles = this.getPosition().getKey().getVehicles().iterator();
 
-        if(vehicles.hasNext()) {
-            Vehicle pre = vehicles.next();
-            Vehicle cur = pre;
-            while (vehicles.hasNext()) {
-                cur = vehicles.next();
-                if (cur == this)
-                    return pre;
-                pre = cur;
-            }
-        }
-        return null;
-    }
+		if (vehicles.hasNext()) {
+			Vehicle pre = vehicles.next();
+			Vehicle cur = pre;
+			while (vehicles.hasNext()) {
+				cur = vehicles.next();
+				if (cur == this)
+					return pre;
+				pre = cur;
+			}
+		}
+		return null;
+	}
 
 }

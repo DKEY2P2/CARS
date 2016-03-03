@@ -40,7 +40,6 @@ public class Pipe implements Model {
 		Road r = v.getPosition().getKey();
 		Vehicle inFrontVehicle = getInFront(v, r);
 		speed = v.getSpeed();
-		//System.out.println(speed);
 		if (v.getPosition().getKey() == null) {
 			return;
 		}
