@@ -50,6 +50,15 @@ public abstract class Intersection implements Drawable {
     public ArrayList<TrafficLight> getTrafficLights() {
         return tLights;
     }
+    
+    public TrafficLight getTrafficLight(Road r){
+        for (TrafficLight tLight : tLights) {
+            if(tLight.getIn() == r){
+                return tLight;
+            }
+        }
+        return null;
+    }
 
     /**
      * The constructor of the abstract class
@@ -261,6 +270,14 @@ public abstract class Intersection implements Drawable {
 
         }
         return ret;
+    }
+
+    public Road hasRoad(Intersection i){
+        for(Road r1 : getRoads())
+            for(Road r2 : i.getRoads())
+                if(r1 == r2)
+                    return r1;
+        return null;
     }
 
     @Override

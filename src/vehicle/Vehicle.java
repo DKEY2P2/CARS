@@ -1,11 +1,11 @@
 package vehicle;
 
+import java.awt.*;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
 
 import algorithms.Algorithm;
 import controller.Task;
-import java.awt.Graphics;
 
 import java.awt.image.BufferedImage;
 
@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.Objects;
 import map.Intersection;
 import map.Road;
+import map.TrafficLight;
 import models.Model;
 import ui.Drawable;
 import ui.ImageMap;
@@ -199,6 +200,34 @@ public abstract class Vehicle implements Task, Drawable {
 	}
 
 	private Model model;
+    public Intersection nextPlaceToGo() {
+        return a.findShortestPath(getPosition().getKey().getEnd(), destination).get(0);
+    }
+
+    public ArrayList<Intersection> getRoute() {
+        return a.findShortestPath(getPosition().getKey().getEnd(), destination);
+    }
+
+    public TrafficLight getNextLight() {
+        Road r = getPosition().getKey();
+        Intersection next = getRoute().get(0);
+        Road rNext = next.hasRoad(r.getEnd());
+        for (TrafficLight tl : r.getEnd().getTrafficLights()) {
+            if (tl.getIn() == r && helpme(tl.getOut(), rNext)) {
+                return tl;
+            }
+        }
+        return null;
+    }
+
+    private boolean helpme(Object[] array, Object o) {
+        for (Object array1 : array) {
+            if (o == array1) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 	/**
 	 * Get the value of model
@@ -260,20 +289,11 @@ public abstract class Vehicle implements Task, Drawable {
 	 */
 	public abstract boolean update();
 
-	public Intersection nextPlaceToGo() {
-		return a.findShortestPath(getPosition().getKey().getStart(), destination).get(0);
-	}
 
-	/*
-	 * 
-	 * Fun stuff
-	 * 
-	 */
 	/**
 	 * Adds an intersection to the trace log of the journey
 	 *
-	 * @param e
-	 *            the traversed Intersection
+	 * @param e the traversed Intersection
 	 */
 	public void addToTraceLog(Intersection e) {
 		this.traceLog.add(e);
@@ -408,7 +428,6 @@ public abstract class Vehicle implements Task, Drawable {
 	public void setSpeed(double speed) {
 		this.speed = speed;
 	}
-
 	/**
 	 * @param acceleration
 	 */
@@ -441,31 +460,30 @@ public abstract class Vehicle implements Task, Drawable {
 		position.setValue(position.getValue() + d);
 	}
 
-	public void draw(Graphics g) {
-		SimpleImmutableEntry<Road, Double> position = getPosition();
-		Road road = position.getKey();
-		double percentage = position.getValue();
-		Intersection start = road.getStart();
-		Intersection end = road.getEnd();
-		int diameter = 8;
-		int width = 8;
-		int height = 4;
+    @Override
+    public void draw(Graphics g) {
+        g.setColor(Color.orange);
+        SimpleImmutableEntry<Road, Double> position = this.position;
+        Road road = position.getKey();
+        double percentage = position.getValue();
+        Intersection start = road.getStart();
+        Intersection end = road.getEnd();
+        int width = 1;
+        int height = 1;
 
-		int differentX = end.getX() - start.getX();
-		int differentY = end.getY() - start.getY();
-		double angle = Math.atan2(differentY, differentX);
+        int differentX = end.getX() - start.getX();
+        int differentY = end.getY() - start.getY();
+        double angle = Math.atan2(differentY, differentX);
 
 //        BufferedImage bi = ImageMap.getInstance().getImage(getImageName(), -angle, 0.05);
 //        /*BufferedImage bi = ImageMap.getInstance().getImage(getImageName(), 0, 0.05);*/
 //        g.drawImage(bi,
 //                (int) (start.getX() + differentX * percentage - bi.getWidth() / 2),
 //                (int) (start.getY() + differentY * percentage - bi.getHeight() / 2), null);
+        g.drawOval((int) (start.getX() + differentX * percentage - width / 2),
+                (int) (start.getY() + differentY * percentage - height / 2), width, height);
 
-		g.drawRect((int) (start.getX() + differentX * percentage - width / 2),
-				(int) (start.getY() + differentY * percentage - height / 2), width, height);
-
-	}
-
+    }
 	/**
 	 * @param timeOnRoad
 	 */
@@ -604,5 +622,10 @@ public abstract class Vehicle implements Task, Drawable {
 		}
 		return null;
 	}
+
+    public double getBreakingDistance() {
+        Road r = getPosition().getKey();
+        return Math.pow(speed, 2) / (2 * r.getFrictionCoefficient() * r.getGravityConstant());
+    }
 
 }

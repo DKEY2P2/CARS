@@ -4,6 +4,7 @@ import java.awt.*;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
+import java.util.LinkedList;
 import vehicle.Vehicle;
 
 /**
@@ -36,14 +37,24 @@ public class TrafficLight {
      */
     private Intersection i;
 
-    private Road in,out;
+    private Road in;
+    
+    private Road[] out;
+    
+    private Deque<Vehicle> waiting = new LinkedList<>();
+
+    public Deque<Vehicle> getWaiting() {
+        return waiting;
+    }
+    
+    
 
     /**
      * Constructor for a traffic light
      *
      * @param in The initial Intersection
      */
-    public TrafficLight(Intersection i, Road in, Road out) {
+    public TrafficLight(Intersection i, Road in, Road... out) {
         timeLeft = timerLength;
         this.i = i;
         this.in = in;
@@ -88,9 +99,8 @@ public class TrafficLight {
      * @return ^
      */
     /*public int getMaxFlow() {
-        return maxFlow * roads.size();
-    }*/
-
+     return maxFlow * roads.size();
+     }*/
     /**
      * Sets the length of time it takes for the light to switch to red.
      *
@@ -133,18 +143,24 @@ public class TrafficLight {
         green = b;
     }
 
-    public void flip(){ green = !green; }
+    public void flip() {
+        green = !green;
+    }
 
-    public Road getIn(){return in;}
+    public Road getIn() {
+        return in;
+    }
 
-    public Road getOut(){return out;}
+    public Road[] getOut() {
+        return out;
+    }
 
-    public void draw(Graphics g){
-        if(green){
+    public void draw(Graphics g) {
+        if (green) {
             g.setColor(Color.green);
-        }else{
+        } else {
             g.setColor(Color.red);
         }
-        g.drawOval(i.getX(),i.getY(),5,5);
+        g.drawOval(i.getX(), i.getY(), 5, 5);
     }
 }

@@ -42,6 +42,16 @@ public abstract class Road implements Drawable {
      * A parallel road, wee limit ourselves to 2 lane roads
      */
     private Road parallel;
+
+    /**
+     * This is the friction coefficient for tarmac road in dry conditions
+     */
+    private double frictionCoefficient = 0.72;
+
+    /**
+     * Earths gravity in m/s2
+     */
+    private double gravityConstant = 9.80665;
     /**
      * Start and end intersection wrapped in an ArrayList
      */
@@ -162,4 +172,22 @@ public abstract class Road implements Drawable {
         ((Graphics2D)g).setStroke(new BasicStroke(10));
         g.drawLine(startX, startY, endX, endY);
     }
+
+    public double getFrictionCoefficient() {
+        return frictionCoefficient;
+    }
+
+    public void setFrictionCoefficient(double frictionCoefficient) {
+        this.frictionCoefficient = frictionCoefficient;
+    }
+
+    public double getGravityConstant() {
+        return gravityConstant;
+    }
+
+    public void setGravityConstant(double gravityConstant) {
+        this.gravityConstant = gravityConstant;
+    }
+
+
 }
