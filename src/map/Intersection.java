@@ -128,7 +128,6 @@ public abstract class Intersection implements Drawable {
                 //This is if the last light is one and which case we go back to
                 //beginning 
                 if (tmp + 1 == tLights.size() && get.getTimeLeft() == 0) {
-                    System.out.println("ello");
                     get.flip();
                     get.setTimeLeft(get.getTimerLength());
                     tLights.get(0).flip();
