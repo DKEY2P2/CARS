@@ -25,16 +25,6 @@ public class Ticker extends Observerable {
     private int timeBetweenTick = 100;
 
     /**
-     * Default constructor. It is assumed that the time taken between a tick
-     * will be 100ms then
-     *
-     * @param TickTimeInS The time that one tick represent in seconds
-     */
-    public Ticker(double TickTimeInS) {
-        setTickTimeInS(TickTimeInS);
-    }
-
-    /**
      * Default constructor.
      *
      * @param TickTimeInS The time that one tick represent in seconds
@@ -77,7 +67,7 @@ public class Ticker extends Observerable {
             @Override
             public void run() {
                 notifyObservers("tick");
-
+                tickCount++;
             }
         }, 0, timeBetweenTick
         );
