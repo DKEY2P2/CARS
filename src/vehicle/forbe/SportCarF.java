@@ -6,7 +6,7 @@ import algorithms.Algorithm;
 import map.Intersection;
 import map.Road;
 import map.TrafficLight;
-import models.Forbe;
+import models.IntelligentDriver;
 import vehicle.Vehicle;
 
 /**
@@ -19,7 +19,7 @@ import vehicle.Vehicle;
 public class SportCarF extends Vehicle {
 
     public SportCarF(Road start, double percentage, Algorithm a, Intersection destination) {
-        super(start, percentage, new Forbe(), a);
+        super(start, percentage, new IntelligentDriver(), a);
         setDesiredSpeed(27.777777778);//100kmh
         setDesiredBraking(1.6777); //http://home2.fvcc.edu/~dhicketh/DiffEqns/Spring11projects/Scott_Miller/Project.pdf
         setMaxAcceleration(4.5);// Jaguar XK Coupe 2007 - http://hypertextbook.com/facts/2001/MeredithBarricella.shtml

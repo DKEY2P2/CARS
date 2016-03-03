@@ -50,7 +50,7 @@ public class TestIntersection extends Intersection implements Observer{
                     }
                 }
             }
-            v.setPosition(new AbstractMap.SimpleImmutableEntry<>(r, 0d));
+    //        v.setPosition(new AbstractMap.SimpleImmutableEntry<>(r, 0d));
         }
     }
 

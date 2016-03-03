@@ -33,7 +33,7 @@ public class StartDoingStuff {
         ArrayList<Road> b = new ArrayList<>();
         Random r = new Random();
         //Creates a ticker with the value of 100 ms between each tick which represent 1 second
-        Ticker t = new Ticker(1, 10);
+        Ticker t = new Ticker(1, 1);
         TestIntersection a1 = new TestIntersection(100, 100, t);
         TestIntersection a2 = new TestIntersection(100, 500, t);
         TestIntersection a3 = new TestIntersection(500, 500, t);
