@@ -1,16 +1,11 @@
 package vehicle.forbe;
 
 import algorithms.Algorithm;
-import helper.Timer;
-import java.util.AbstractMap;
-import java.util.ArrayList;
 import java.util.Random;
 
 import map.Intersection;
 import map.Road;
-import map.TrafficLight;
 import models.Forbe;
-import models.OVM;
 import vehicle.Vehicle;
 
 /**
@@ -43,14 +38,16 @@ public class SportCarF extends Vehicle {
             //Adds it to the queue if not already in there
             if (!getPosition().getKey().getEnd().getTrafficLight(getPosition().getKey()).getWaiting().contains(this)) {
                 getPosition().getKey().getEnd().getTrafficLight(getPosition().getKey()).getWaiting().offer(this);
+                setSpeed(0);
+                setAcceleration(0);
             }
         } else {
-            ArrayList<TrafficLight> atl = getPosition().getKey().getEnd().getTrafficLights();
-            for (TrafficLight tl : atl) {
-                if (tl.getIn() == getPosition().getKey()) {
-                    setTimeOnRoad(getTimeOnRoad() + 1);//add one tick
-                }
-            }
+//            ArrayList<TrafficLight> atl = getPosition().getKey().getEnd().getTrafficLights();
+//            for (TrafficLight tl : atl) {
+//                if (tl.getIn() == getPosition().getKey()) {
+            setTimeOnRoad(getTimeOnRoad() + 1);//add one tick
+//                }
+//            }
             getModel().calculate(this);
             /*if(!tl.isGreen() && getPosition().getValue()>0.95) {
              setSpeed(0);
