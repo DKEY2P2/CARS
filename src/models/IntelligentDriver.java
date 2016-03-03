@@ -107,21 +107,22 @@ public class IntelligentDriver implements Model {
 			acceleration[0]= maxAcceleration * Math.abs((1 - Math.pow((velCars[0] / desiredVelocity), delta)
 					- Math.pow((s / distanceCars), 2)));
 			System.out.println("Acceleration : " + acceleration[0]);
-			
-			if(distanceCars < s){
-				brakingCars[0] = -maxAcceleration * Math.pow((s / distanceCars), 2);
-				// Braking should only happen when actual distance between two cars is smaller than s
-			}
+			System.out.println(positionsRoad[0]);
+			System.out.println((positionsRoad[0] + velCars[0] * Controller.getInstance().getTicker().getTickTimeInS()));
+//			if(distanceCars < s){
+//				brakingCars[0] = -follower.getMaxDecceleration() * Math.pow((s / distanceCars), 2);
+//				System.out.println("I'm braking!!");
+//				// Braking should only happen when actual distance between two cars is smaller than s
+//			}
 			acceleration[0]=5;
 			velCars[0] = velCars[0] + (acceleration[0]* Controller.getInstance().getTicker().getTickTimeInS());
-			
 			double newPosition = (positionsRoad[0] + velCars[0] * Controller.getInstance().getTicker().getTickTimeInS())/ r.getLength();
 			follower.setAcceleration(acceleration[0]);
 			follower.setSpeed(velCars[0]);
 	//		System.out.println("Follower's Speed : " +follower.getSpeed() + "FrontCar Speed : "+ inFrontVehicle.getSpeed());
 	//		System.out.println("Position Road : "+ positionsRoad[0] + "\n Acceleration : "+ acceleration[0]);
-			follower.setBraking(brakingCars[0]);
 			follower.setPosition(new SimpleImmutableEntry<>(r, newPosition));
+			System.out.println("POTAOT");
 
 		
 		} else {
