@@ -4,6 +4,7 @@ import algorithms.Algorithm;
 import helper.Timer;
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Random;
 
 import map.Intersection;
 import map.Road;
@@ -22,11 +23,12 @@ import vehicle.Vehicle;
 public class SportCarF extends Vehicle {
 
     public SportCarF(Road start, double percentage, Algorithm a, Intersection destination) {
-        super(start, percentage, new OVM(), a);
-        setDesiredSpeed(27.777777778);//100kmh
-        setMaxAcceleration(4.5);// Jaguar XK Coupe 2007 - http://hypertextbook.com/facts/2001/MeredithBarricella.shtml
-        setMaxDecceleration(2.98704);//Traffic Engineering Handbook, 5th ed. (J. L. Prine, ed.). ITE, Washington, D.C., 1999.
-        setReactionTime(2.3);//average human - http://copradar.com/redlight/factors/
+        super(start, percentage, new Forbe(), a);
+        Random r = new Random();
+        setDesiredSpeed(27.777777778 + r.nextInt(10));//100kmh
+        setMaxAcceleration(4.5 + r.nextInt(3));// Jaguar XK Coupe 2007 - http://hypertextbook.com/facts/2001/MeredithBarricella.shtml
+        setMaxDecceleration(2.98704 + r.nextInt(1));//Traffic Engineering Handbook, 5th ed. (J. L. Prine, ed.). ITE, Washington, D.C., 1999.
+        setReactionTime(2.3+r.nextDouble());//average human - http://copradar.com/redlight/factors/
         setLength(4.7904400000000002535);//Jaguar Xk Coupe 2007 - http://www.edmunds.com/jaguar/xk-series/2007/features-specs/
         setDestination(destination);
     }
@@ -38,8 +40,8 @@ public class SportCarF extends Vehicle {
                 //TODO do something??
             }
             //Adds it to the queue if not already in there
-            if (!getPosition().getKey().getEnd().getQueue(getPosition().getKey()).contains(this)) {
-                getPosition().getKey().getEnd().getQueue(getPosition().getKey()).offer(this);
+            if (!getPosition().getKey().getEnd().getTrafficLight(getPosition().getKey()).getWaiting().contains(this)) {
+                getPosition().getKey().getEnd().getTrafficLight(getPosition().getKey()).getWaiting().offer(this);
             }
         } else {
             ArrayList<TrafficLight> atl = getPosition().getKey().getEnd().getTrafficLights();
