@@ -84,15 +84,64 @@ public abstract class Intersection implements Drawable {
 
     public TrafficLight addTrafficLight(TrafficLight tl) {
         tLights.add(tl);
+        //Checks if at least one light is green
+        boolean hasGreen = false;
+        for (TrafficLight tLight : tLights) {
+            if (tLight.isGreen()) {
+                hasGreen = true;
+            }
+        }
+        if (!hasGreen) {
+            tLights.get(0).flip();
+            tLights.get(0).setTimeLeft(tLights.get(0).getTimerLength());
+        }
         return tl;
     }
 
     public void updateLight(double elapsed) {
-        tLights.get(0).setTimeLeft(tLights.get(0).getTimeLeft() - elapsed); //This is just because we will make the lights cycle so they will all change together. THIS WILL CHANGE -Lucas
-        if (tLights.get(0).getTimeLeft() <= 0) {
-            for (TrafficLight tl : tLights) {
-                tl.flip();
-                tl.setTimeLeft(tl.getTimerLength());
+        //Check which use case to use
+        if (tLights.size() != 1) {
+            //If more than one light at a traffic light
+
+            //Does the flipping
+            //Intially set the tmp value to minus infinite
+            int tmp = -Integer.MAX_VALUE;
+            //Goes through all the lights
+            for (int i = 0; i < tLights.size(); i++) {
+                //The current light
+                TrafficLight get = tLights.get(i);
+                //if the current light is green
+                if (get.isGreen()) {
+                    //set the tmp value to index of the the green light
+                    tmp = i;
+                    //increments the time
+                    tLights.get(i).setTimeLeft(tLights.get(i).getTimeLeft() - elapsed);
+                }
+                //Checks if the time for the light is up and switches the next
+                //light on
+                if (tmp + 1 == i && tLights.get(tmp).getTimeLeft() == 0) {
+                    get.flip();
+                    get.setTimeLeft(get.getTimerLength());
+                    tLights.get(tmp).flip();
+                    tLights.get(tmp).setTimeLeft(tLights.get(tmp).getTimerLength());
+                }
+                //This is if the last light is one and which case we go back to
+                //beginning 
+                if (tmp + 1 == tLights.size() && get.getTimeLeft() == 0) {
+                    System.out.println("ello");
+                    get.flip();
+                    get.setTimeLeft(get.getTimerLength());
+                    tLights.get(0).flip();
+                    tLights.get(0).setTimeLeft(tLights.get(0).getTimerLength());
+                }
+            }
+        } else {
+            tLights.get(0).setTimeLeft(tLights.get(0).getTimeLeft() - elapsed); //This is just because we will make the lights cycle so they will all change together. THIS WILL CHANGE -Lucas
+            if (tLights.get(0).getTimeLeft() <= 0) {
+                for (TrafficLight tl : tLights) {
+                    tl.flip();
+                    tl.setTimeLeft(tl.getTimerLength());
+                }
             }
         }
     }
