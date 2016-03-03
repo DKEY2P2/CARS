@@ -50,10 +50,10 @@ public abstract class Intersection implements Drawable {
     public ArrayList<TrafficLight> getTrafficLights() {
         return tLights;
     }
-    
-    public TrafficLight getTrafficLight(Road r){
+
+    public TrafficLight getTrafficLight(Road r) {
         for (TrafficLight tLight : tLights) {
-            if(tLight.getIn() == r){
+            if (tLight.getIn() == r) {
                 return tLight;
             }
         }
@@ -82,18 +82,19 @@ public abstract class Intersection implements Drawable {
         return r;
     }
 
-    public TrafficLight addTrafficLight(TrafficLight tl){
+    public TrafficLight addTrafficLight(TrafficLight tl) {
         tLights.add(tl);
         return tl;
     }
 
-    public void updateLight(int elapsed){
-        tLights.get(0).setTimeLeft(tLights.get(0).getTimeLeft()-elapsed); //This is just because we will make the lights cycle so they will all change together. THIS WILL CHANGE -Lucas
-        if(tLights.get(0).getTimeLeft() <= 0)
-            for(TrafficLight tl : tLights){
+    public void updateLight(double elapsed) {
+        tLights.get(0).setTimeLeft(tLights.get(0).getTimeLeft() - elapsed); //This is just because we will make the lights cycle so they will all change together. THIS WILL CHANGE -Lucas
+        if (tLights.get(0).getTimeLeft() <= 0) {
+            for (TrafficLight tl : tLights) {
                 tl.flip();
                 tl.setTimeLeft(tl.getTimerLength());
             }
+        }
     }
 
     /**
@@ -168,10 +169,11 @@ public abstract class Intersection implements Drawable {
      * @return A Queue of all vehicles that are on the specified road
      */
     public Deque<Vehicle> getQueue(Road r) {
-        if(roads.contains(r))
+        if (roads.contains(r)) {
             return r.getVehicles();
-        else
+        } else {
             return null;
+        }
     }
 
     /**
@@ -249,7 +251,9 @@ public abstract class Intersection implements Drawable {
     }
 
     /**
-     * Returns all the neighbouring intersections <p> Works by my understanding, moved one thing
+     * Returns all the neighbouring intersections
+     * <p>
+     * Works by my understanding, moved one thing
      *
      * @author jvacek, Kareem
      * @return ArrayList&#60;Intersection&#62; with all the neighbouring
@@ -272,11 +276,14 @@ public abstract class Intersection implements Drawable {
         return ret;
     }
 
-    public Road hasRoad(Intersection i){
-        for(Road r1 : getRoads())
-            for(Road r2 : i.getRoads())
-                if(r1 == r2)
+    public Road hasRoad(Intersection i) {
+        for (Road r1 : getRoads()) {
+            for (Road r2 : i.getRoads()) {
+                if (r1 == r2) {
                     return r1;
+                }
+            }
+        }
         return null;
     }
 
@@ -284,16 +291,15 @@ public abstract class Intersection implements Drawable {
     public void draw(Graphics g) {
         BufferedImage bi = ImageMap.getInstance().getImage(imageKey);
         g.drawImage(bi, x - bi.getWidth() / 2, y - bi.getHeight() / 2, null);
-        for(TrafficLight tl : tLights)
-            tl.draw(g);
+        int i = 0;
+        for (TrafficLight tLight : tLights) {
+            tLight.draw(g, i++);
+        }
     }
 
     @Override
     public String toString() {
-        return ("Intersection: x= " + getX()+ ", y= " + getY());
+        return ("Intersection: x= " + getX() + ", y= " + getY());
     }
-    
-    
-    
-    
+
 }
