@@ -243,19 +243,29 @@ public abstract class Vehicle implements Task, Drawable {
         return a.findShortestPath(getPosition().getKey().getEnd(), destination).get(0);
     }
 
-    public ArrayList<Intersection> getRoute(){
-        return a.findShortestPath(getPosition().getKey().getEnd(),destination);
+    public ArrayList<Intersection> getRoute() {
+        return a.findShortestPath(getPosition().getKey().getEnd(), destination);
     }
 
-    public TrafficLight getNextLight(){
+    public TrafficLight getNextLight() {
         Road r = getPosition().getKey();
         Intersection next = getRoute().get(0);
         Road rNext = next.hasRoad(r.getEnd());
-        for(TrafficLight tl : r.getEnd().getTrafficLights())
-            if(tl.getIn() == r && tl.getOut() == rNext)
+        for (TrafficLight tl : r.getEnd().getTrafficLights()) {
+            if (tl.getIn() == r && helpme(tl.getOut(), rNext)) {
                 return tl;
+            }
+        }
         return null;
+    }
 
+    private boolean helpme(Object[] array, Object o) {
+        for (Object array1 : array) {
+            if (o == array1) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /*
@@ -437,36 +447,33 @@ public abstract class Vehicle implements Task, Drawable {
         this.traceLog = traceLog;
     }
 
-    public void addPercentage(double d){
+    public void addPercentage(double d) {
         position.setValue(position.getValue() + d);
     }
 
     @Override
     public void draw(Graphics g) {
-        g.setColor(Color.YELLOW);
-        SimpleImmutableEntry<Road, Double> position = getPosition();
+        g.setColor(Color.orange);
+        SimpleImmutableEntry<Road, Double> position = this.position;
         Road road = position.getKey();
         double percentage = position.getValue();
         Intersection start = road.getStart();
         Intersection end = road.getEnd();
-        int diameter = 8;
-        int width = 8;
-        int height = 4;
-        
+        int width = 1;
+        int height = 1;
+
         int differentX = end.getX() - start.getX();
         int differentY = end.getY() - start.getY();
         double angle = Math.atan2(differentY, differentX);
-        
+
 //        BufferedImage bi = ImageMap.getInstance().getImage(getImageName(), -angle, 0.05);
 //        /*BufferedImage bi = ImageMap.getInstance().getImage(getImageName(), 0, 0.05);*/
 //        g.drawImage(bi,
 //                (int) (start.getX() + differentX * percentage - bi.getWidth() / 2),
 //                (int) (start.getY() + differentY * percentage - bi.getHeight() / 2), null);
-        
-        g.drawRect((int) (start.getX() + differentX * percentage - width / 2),
-              (int) (start.getY() + differentY * percentage - height / 2), width, height);
+        g.drawOval((int) (start.getX() + differentX * percentage - width / 2),
+                (int) (start.getY() + differentY * percentage - height / 2), width, height);
 
-        
     }
 
     /*
@@ -527,18 +534,20 @@ public abstract class Vehicle implements Task, Drawable {
         return Objects.equals(this.imageName, other.imageName);
     }
 
-    public Vehicle getPredecessor(){
+    public Vehicle getPredecessor() {
         Iterator<Vehicle> vehicles = this.getPosition().getKey().getVehicles().iterator();
 
-        if(vehicles.hasNext()) {
+        if (vehicles.hasNext()) {
             Vehicle pre = vehicles.next();
             Vehicle cur = pre;
-            if(cur == this)
+            if (cur == this) {
                 return null;
+            }
             while (vehicles.hasNext()) {
                 cur = vehicles.next();
-                if (cur == this)
+                if (cur == this) {
                     return pre;
+                }
                 pre = cur;
             }
         }
@@ -547,7 +556,7 @@ public abstract class Vehicle implements Task, Drawable {
 
     public double getBreakingDistance() {
         Road r = getPosition().getKey();
-        return Math.pow(speed,2)/(2*r.getFrictionCoefficient()*r.getGravityConstant());
+        return Math.pow(speed, 2) / (2 * r.getFrictionCoefficient() * r.getGravityConstant());
     }
 
 }
