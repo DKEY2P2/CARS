@@ -132,7 +132,9 @@ public class TrafficLight {
      * @param n the new time left in milliseconds
      */
     public void setTimeLeft(double n) {
-        if (n > timerLength || n < 0) {
+        if (n > timerLength) {
+            timerLength = 0;
+        } else if (n < 0) {
             return;
         } else {
             timeLeft = n;
@@ -176,6 +178,12 @@ public class TrafficLight {
         } else {
             g.setColor(Color.red);
         }
-        g.drawString(Integer.toString(index), this.i.getX() + i * 2, this.i.getY());
+        g.drawString(Integer.toString(index), this.i.getX() + i * 10, this.i.getY());
     }
+
+    @Override
+    public String toString() {
+        return "Traffic Light " + index + " is " + (isGreen() ? "green" : "red");
+    }
+
 }
