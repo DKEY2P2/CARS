@@ -1,6 +1,7 @@
 package controller;
 
 import algorithms.AStar;
+import algorithms.TestAl;
 import controller.threads.ThreadController;
 import helper.Logger;
 import map.Intersection;
@@ -32,7 +33,7 @@ public class StartDoingStuff {
         ArrayList<Road> b = new ArrayList<>();
         Random r = new Random();
         //Creates a ticker with the value of 100 ms between each tick which represent 1 second
-        Ticker t = new Ticker(1, 100);
+        Ticker t = new Ticker(1, 10);
         TestIntersection a1 = new TestIntersection(100, 100, t);
         TestIntersection a2 = new TestIntersection(100, 500, t);
         TestIntersection a3 = new TestIntersection(500, 500, t);
@@ -55,7 +56,7 @@ public class StartDoingStuff {
         b.add(r4);
         //Creates n number of cars
         for (int i = 0; i < 10; i++) {
-            new SportCarF((NormalRoad) getRandom(b), r.nextDouble(), new AStar(), (Intersection) getRandom(a));
+            new SportCarF((NormalRoad) getRandom(b), r.nextDouble(), new TestAl(), (Intersection) getRandom(a));
         }
 
         b.stream().forEach((b1) -> {

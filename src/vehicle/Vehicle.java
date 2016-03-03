@@ -77,11 +77,6 @@ public abstract class Vehicle implements Task, Drawable {
 	private double desiredBraking;
 
 	/**
-	 * Minimum Desired distance between two cars.
-	 */
-	private double desiredDistance;
-
-	/**
 	 * The amount of distance travelled during the journey
 	 */
 	private double distance;
@@ -378,9 +373,6 @@ public abstract class Vehicle implements Task, Drawable {
 	 * 
 	 * @return
 	 */
-	public double getDesiredDistance() {
-		return this.desiredDistance;
-	}
 
 	/**
 	 * @return
@@ -503,14 +495,6 @@ public abstract class Vehicle implements Task, Drawable {
 		this.desiredBraking = desiredBraking;
 	}
 
-	/**
-	 * 
-	 * @param desiredDistance
-	 */
-
-	public void setDesiredDistance(double desiredDistance) {
-		this.desiredDistance = desiredDistance;
-	}
 
 	/**
 	 * @param distance
