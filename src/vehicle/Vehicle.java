@@ -1,11 +1,11 @@
 package vehicle;
 
+import java.awt.*;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
 
 import algorithms.Algorithm;
 import controller.Task;
-import java.awt.Graphics;
 
 import java.awt.image.BufferedImage;
 
@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.Objects;
 import map.Intersection;
 import map.Road;
+import map.TrafficLight;
 import models.Model;
 import ui.Drawable;
 import ui.ImageMap;
@@ -239,7 +240,22 @@ public abstract class Vehicle implements Task, Drawable {
     public abstract boolean update();
 
     public Intersection nextPlaceToGo() {
-        return a.findShortestPath(getPosition().getKey().getStart(), destination).get(0);
+        return a.findShortestPath(getPosition().getKey().getEnd(), destination).get(0);
+    }
+
+    public ArrayList<Intersection> getRoute(){
+        return a.findShortestPath(getPosition().getKey().getEnd(),destination);
+    }
+
+    public TrafficLight getNextLight(){
+        Road r = getPosition().getKey();
+        Intersection next = getRoute().get(0);
+        Road rNext = next.hasRoad(r.getEnd());
+        for(TrafficLight tl : r.getEnd().getTrafficLights())
+            if(tl.getIn() == r && tl.getOut() == rNext)
+                return tl;
+        return null;
+
     }
 
     /*
@@ -427,6 +443,7 @@ public abstract class Vehicle implements Task, Drawable {
 
     @Override
     public void draw(Graphics g) {
+        g.setColor(Color.YELLOW);
         SimpleImmutableEntry<Road, Double> position = getPosition();
         Road road = position.getKey();
         double percentage = position.getValue();
@@ -448,6 +465,7 @@ public abstract class Vehicle implements Task, Drawable {
         
         g.drawRect((int) (start.getX() + differentX * percentage - width / 2),
               (int) (start.getY() + differentY * percentage - height / 2), width, height);
+
         
     }
 
@@ -515,6 +533,8 @@ public abstract class Vehicle implements Task, Drawable {
         if(vehicles.hasNext()) {
             Vehicle pre = vehicles.next();
             Vehicle cur = pre;
+            if(cur == this)
+                return null;
             while (vehicles.hasNext()) {
                 cur = vehicles.next();
                 if (cur == this)
@@ -523,6 +543,11 @@ public abstract class Vehicle implements Task, Drawable {
             }
         }
         return null;
+    }
+
+    public double getBreakingDistance() {
+        Road r = getPosition().getKey();
+        return Math.pow(speed,2)/(2*r.getFrictionCoefficient()*r.getGravityConstant());
     }
 
 }

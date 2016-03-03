@@ -9,6 +9,7 @@ import map.Intersection;
 import map.Road;
 import map.TrafficLight;
 import models.Forbe;
+import models.OVM;
 import vehicle.Vehicle;
 
 /**
@@ -21,7 +22,7 @@ import vehicle.Vehicle;
 public class SportCarF extends Vehicle {
 
     public SportCarF(Road start, double percentage, Algorithm a, Intersection destination) {
-        super(start, percentage, new Forbe(), a);
+        super(start, percentage, new OVM(), a);
         setDesiredSpeed(27.777777778);//100kmh
         setMaxAcceleration(4.5);// Jaguar XK Coupe 2007 - http://hypertextbook.com/facts/2001/MeredithBarricella.shtml
         setMaxDecceleration(2.98704);//Traffic Engineering Handbook, 5th ed. (J. L. Prine, ed.). ITE, Washington, D.C., 1999.
@@ -44,12 +45,14 @@ public class SportCarF extends Vehicle {
             ArrayList<TrafficLight> atl = getPosition().getKey().getEnd().getTrafficLights();
             for(TrafficLight tl : atl)
                 if(tl.getIn() == getPosition().getKey())
-                    if(!tl.isGreen() && getPosition().getValue()>0.95) {
+                    setTimeOnRoad(getTimeOnRoad() + 1);//add one tick
+                     getModel().calculate(this);
+                    /*if(!tl.isGreen() && getPosition().getValue()>0.95) {
                         setSpeed(0);
+                        setAcceleration(0);
                     }else{
-                        setTimeOnRoad(getTimeOnRoad() + 1);//add one tick
-                        getModel().calculate(this);
-                    }
+
+                    }*/
         }
 
 

@@ -263,6 +263,14 @@ public abstract class Intersection implements Drawable {
         return ret;
     }
 
+    public Road hasRoad(Intersection i){
+        for(Road r1 : getRoads())
+            for(Road r2 : i.getRoads())
+                if(r1 == r2)
+                    return r1;
+        return null;
+    }
+
     @Override
     public void draw(Graphics g) {
         BufferedImage bi = ImageMap.getInstance().getImage(imageKey);

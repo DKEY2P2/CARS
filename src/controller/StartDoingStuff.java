@@ -1,6 +1,7 @@
 package controller;
 
 import algorithms.AStar;
+import algorithms.TestAl;
 import controller.threads.ThreadController;
 import helper.Logger;
 import map.Intersection;
@@ -54,8 +55,8 @@ public class StartDoingStuff {
         b.add(r3);
         b.add(r4);
         //Creates n number of cars
-        for (int i = 0; i < 10; i++) {
-            new SportCarF((NormalRoad) getRandom(b), r.nextDouble(), new AStar(), (Intersection) getRandom(a));
+        for (int i = 0; i < 1; i++) {
+            new SportCarF((NormalRoad) getRandom(b), r.nextDouble(), new TestAl(), (Intersection) getRandom(a));
         }
 
         b.stream().forEach((b1) -> {
