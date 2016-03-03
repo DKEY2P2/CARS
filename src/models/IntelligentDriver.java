@@ -78,9 +78,9 @@ public class IntelligentDriver implements Model {
 		maxAcceleration = follower.getMaxAcceleration();
 		desiredDeceleration = follower.getDesiredBraking();
 		delta = 4; // set Delta (acceleration exponent) to 4 : http://home2.fvcc.edu/~dhicketh/DiffEqns/Spring11projects/Scott_Miller/Project.pdf
-		acceleration = new double[]{follower.getAcceleration(), inFrontVehicle.getAcceleration()};
 		
 		if (inFrontVehicle != null) {
+			acceleration = new double[]{follower.getAcceleration(), inFrontVehicle.getAcceleration()};
 			velCars = new double[] { follower.getSpeed(), inFrontVehicle.getSpeed() }; // Velocity of the two cars
 			if(velCars[0] == 0|| velCars[1] == 0){
 				velCars[0] = 0.01;
@@ -101,32 +101,24 @@ public class IntelligentDriver implements Model {
 			double s = jamDistance + jamDistanceB*Math.sqrt((velCars[0]/desiredVelocity))+  (velCars[0] * timeHeadway) +
 					+ ((velCars[0] * approachingRate) / (2 * Math.sqrt(maxAcceleration * desiredDeceleration)));
 			s = Math.abs(s);
-			System.out.println("\n JamDistance: " + jamDistance+ "\n jamDistanceB: " + jamDistanceB + "\n velCars[0]: " + velCars[0] + "\n Desired Velocity: " +desiredVelocity + "\n timeHeadway: " + timeHeadway + "\n approachingRate: " + approachingRate + "\n maxAcceleration: " + maxAcceleration + "\n DesiredDe: " +desiredDeceleration);
-			System.out.println("\n\nS : " +Math.pow((s / distanceCars), 2));;
 			
 			acceleration[0]= maxAcceleration * Math.abs((1 - Math.pow((velCars[0] / desiredVelocity), delta)
 					- Math.pow((s / distanceCars), 2)));
-			System.out.println("Acceleration : " + acceleration[0]);
-			System.out.println(positionsRoad[0]);
-			System.out.println((positionsRoad[0] + velCars[0] * Controller.getInstance().getTicker().getTickTimeInS()));
 //			if(distanceCars < s){
 //				brakingCars[0] = -follower.getMaxDecceleration() * Math.pow((s / distanceCars), 2);
 //				System.out.println("I'm braking!!");
 //				// Braking should only happen when actual distance between two cars is smaller than s
 //			}
-			acceleration[0]=5;
 			velCars[0] = velCars[0] + (acceleration[0]* Controller.getInstance().getTicker().getTickTimeInS());
 			double newPosition = (positionsRoad[0] + velCars[0] * Controller.getInstance().getTicker().getTickTimeInS())/ r.getLength();
 			follower.setAcceleration(acceleration[0]);
 			follower.setSpeed(velCars[0]);
-	//		System.out.println("Follower's Speed : " +follower.getSpeed() + "FrontCar Speed : "+ inFrontVehicle.getSpeed());
-	//		System.out.println("Position Road : "+ positionsRoad[0] + "\n Acceleration : "+ acceleration[0]);
 			follower.setPosition(new SimpleImmutableEntry<>(r, newPosition));
-			System.out.println("POTAOT");
 
 		
 		} else {
-			System.out.println("IN ELSE  ++++++++++++++++++++");
+			double acceleration = follower.getAcceleration();
+
 			double positionRoad = follower.getPosition().getValue() * r.getLength(); // Position (in percentage) of the car relative to road																											// Position
 			double velCar = follower.getSpeed(); // Velocity of the car
 			if(velCar == 0){
@@ -137,24 +129,23 @@ public class IntelligentDriver implements Model {
 			approachingRate = velCar;
             double x = r.getLength() * positionRoad;
             double trafficLightDistance = Math.abs(x - r.getLength());//Distance between car and the traffic light
-            System.out.println("Traffic Light Distance:" + trafficLightDistance);
             timeHeadway =  trafficLightDistance / velCar;
             
 
             double s = jamDistance + jamDistanceB*Math.sqrt((velCar/desiredVelocity)) +  (velCar * timeHeadway) +
 					+ ((velCar * approachingRate) / (2 * Math.sqrt(maxAcceleration * desiredDeceleration)));
 
-			if(trafficLightDistance < s){
-				brakingCars[0] = -maxAcceleration * Math.pow((s / trafficLightDistance), 2);
-				// Braking should only happen when actual distance between two cars is smaller than s
-			}
-			acceleration[0]= maxAcceleration * Math.abs((1 - Math.pow((velCar / desiredVelocity), delta)
+//			if(trafficLightDistance < s){
+//				brakingCars[0] = -maxAcceleration * Math.pow((s / trafficLightDistance), 2);
+//				// Braking should only happen when actual distance between two cars is smaller than s
+//			}
+            
+			acceleration= maxAcceleration * Math.abs((1 - Math.pow((velCar / desiredVelocity), delta)
 					- Math.pow((s / trafficLightDistance), 2)));
-			System.out.println("ELSE ACCELERATION: " + acceleration[0] + "                  ++++++++++");
 
-			velCar = velCar + (acceleration[0]* Controller.getInstance().getTicker().getTickTimeInS());
+			velCar = velCar + (acceleration* Controller.getInstance().getTicker().getTickTimeInS());
 			double newPosition = (positionRoad + velCar * Controller.getInstance().getTicker().getTickTimeInS()/ r.getLength());
-			follower.setAcceleration(acceleration[0]);
+			follower.setAcceleration(acceleration);
 			follower.setSpeed(velCar);
 			follower.setPosition(new SimpleImmutableEntry<>(r, newPosition));
 			
