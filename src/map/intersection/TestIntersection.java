@@ -24,29 +24,33 @@ public class TestIntersection extends Intersection implements Observer {
     }
 
     public void update() {
-        updateLight(ticker.getTimeBetweenTick());
+        updateLight(ticker.getTickTimeInS());
         for (TrafficLight tl : getTrafficLights()) {
-            Vehicle v = tl.getWaiting().poll();
-            if (v == null) {
-                return;
-            }
-            v.addToTraceLog(this);
-            Intersection placeToGo = v.nextPlaceToGo();
-            Road r = null;
-            for (Road road : getRoads()) {
-                if (road.getStart() == placeToGo) {
-                    r = road;
-                }
-            }
-            if (r == null) {
-                for (Road road : getRoads()) {
-                    if (road.getEnd() != this) {
-                        r = road;
-                        break;
+            if (tl.isGreen()) {
+                for (int i = 0; i < tl.getMaxFlow(); i++) {
+                    Vehicle v = tl.getWaiting().poll();
+                    if (v == null) {
+                        return;
                     }
+                    v.addToTraceLog(this);
+                    Intersection placeToGo = v.nextPlaceToGo();
+                    Road r = null;
+                    for (Road road : getRoads()) {
+                        if (road.getStart() == placeToGo) {
+                            r = road;
+                        }
+                    }
+                    if (r == null) {
+                        for (Road road : getRoads()) {
+                            if (road.getEnd() != this) {
+                                r = road;
+                                break;
+                            }
+                        }
+                    }
+                    v.setPosition(new AbstractMap.SimpleImmutableEntry<>(r, 0d));
                 }
             }
-            v.setPosition(new AbstractMap.SimpleImmutableEntry<>(r, 0d));
         }
     }
 
