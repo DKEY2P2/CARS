@@ -1,6 +1,7 @@
 package map;
 
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -15,14 +16,20 @@ import vehicle.Vehicle;
  */
 public class TrafficLight {
 
+    private static int indexGlobal = 0;
+    /**
+     * Index
+     */
+    private int index;
+
     /**
      * The time in milliseconds it takes for a green light to turn red
      */
-    private int timerLength = 2000;
+    private int timerLength = 40;
     /**
      * The time in milliseconds left before the light turns red
      */
-    private int timeLeft = 0;
+    private double timeLeft = 0;
     /**
      * True if the light is green, false if it is red
      */
@@ -38,16 +45,23 @@ public class TrafficLight {
     private Intersection i;
 
     private Road in;
-    
+
     private Road[] out;
-    
+
     private Deque<Vehicle> waiting = new LinkedList<>();
 
     public Deque<Vehicle> getWaiting() {
         return waiting;
     }
-    
-    
+
+    /**
+     * Gets the max flow
+     *
+     * @return ^
+     */
+    public int getMaxFlow() {
+        return maxFlow;
+    }
 
     /**
      * Constructor for a traffic light
@@ -55,6 +69,7 @@ public class TrafficLight {
      * @param in The initial Intersection
      */
     public TrafficLight(Intersection i, Road in, Road... out) {
+        index = indexGlobal++;
         timeLeft = timerLength;
         this.i = i;
         this.in = in;
@@ -89,7 +104,7 @@ public class TrafficLight {
      * @return integer of how many milliseconds are left before the light turns
      * red
      */
-    public int getTimeLeft() {
+    public double getTimeLeft() {
         return timeLeft;
     }
 
@@ -116,7 +131,7 @@ public class TrafficLight {
      *
      * @param n the new time left in milliseconds
      */
-    public void setTimeLeft(int n) {
+    public void setTimeLeft(double n) {
         if (n > timerLength || n < 0) {
             return;
         } else {
@@ -155,12 +170,12 @@ public class TrafficLight {
         return out;
     }
 
-    public void draw(Graphics g) {
-        if (green) {
+    public void draw(Graphics g, int i) {
+        if (isGreen()) {
             g.setColor(Color.green);
         } else {
             g.setColor(Color.red);
         }
-        g.drawOval(i.getX(), i.getY(), 5, 5);
+        g.drawString(Integer.toString(index), this.i.getX() + i * 2, this.i.getY());
     }
 }
