@@ -36,20 +36,18 @@ public class StartDoingStuff {
         TestIntersection a2 = new TestIntersection(100, 500, t);
         TestIntersection a3 = new TestIntersection(500, 500, t);
         TestIntersection a4 = new TestIntersection(500, 100, t);
-//        TestIntersection a5 = new TestIntersection(800, 100, t);
-//        TestIntersection a6 = new TestIntersection(1000, 100, t);
         NormalRoad r1 = new NormalRoad(a1, a2);
         NormalRoad r2 = new NormalRoad(a2, a3);
         NormalRoad r3 = new NormalRoad(a3, a4);
         NormalRoad r4 = new NormalRoad(a4, a1);
-//        NormalRoad r5 = new NormalRoad(a4, a5);
+        NormalRoad r5 = new NormalRoad(a1, a3);
 //        NormalRoad r6 = new NormalRoad(a5, a6);
 //        NormalRoad r7 = new NormalRoad(a6, a3);
-        TrafficLight t1 = new TrafficLight(a1, r4, r1);
+        TrafficLight t1 = new TrafficLight(a1, r4, r1,r5);
         TrafficLight t2 = new TrafficLight(a2, r1, r2);
         TrafficLight t3 = new TrafficLight(a3, r2, r3);
         TrafficLight t4 = new TrafficLight(a4, r3, r4);
-//        TrafficLight t6 = new TrafficLight(a5, r5, r6);
+        TrafficLight t6 = new TrafficLight(a3, r5, r3);
 //        TrafficLight t7 = new TrafficLight(a6, r6, r7);
 //        a.add(a6);
 //        a.add(a5);
@@ -61,7 +59,7 @@ public class StartDoingStuff {
         b.add(r2);
         b.add(r3);
         b.add(r4);
-//        b.add(r5);
+        b.add(r5);
 //        b.add(r6);
 //        b.add(r7);
         //Creates n number of cars
