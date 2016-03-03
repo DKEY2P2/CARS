@@ -537,7 +537,7 @@ public abstract class Vehicle implements Task, Drawable {
     public Vehicle getPredecessor() {
         Iterator<Vehicle> vehicles = this.getPosition().getKey().getVehicles().iterator();
 
-        if (vehicles.hasNext()) {
+        while (vehicles.hasNext()) {
             Vehicle pre = vehicles.next();
             Vehicle cur = pre;
             if (cur == this) {
