@@ -86,14 +86,14 @@ public class OVM implements Model{
             if(v.getPosition().getValue() >= 99) {
                 if (v.getAcceleration() >= 0) {
                     v.setSpeed(speed + v.getAcceleration() * t);
-                    v.setPosition(new AbstractMap.SimpleImmutableEntry<Road, Double>(trl.getOut(), 0d));
+       //             v.setPosition(new AbstractMap.SimpleImmutableEntry<Road, Double>(trl.getOut(), 0d));
                 } else {
                     if (speed <= v.getAcceleration()) {
                         v.setSpeed(0);
                     } else {
                         v.setSpeed(speed + v.getAcceleration() * t);
                     }
-                    v.setPosition(new AbstractMap.SimpleImmutableEntry<Road, Double>(trl.getOut(), 0d));
+       //             v.setPosition(new AbstractMap.SimpleImmutableEntry<Road, Double>(trl.getOut(), 0d));
                 }
             }else{
                 if (v.getAcceleration() >= 0) {

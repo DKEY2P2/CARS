@@ -468,8 +468,8 @@ public abstract class Vehicle implements Task, Drawable {
         double percentage = position.getValue();
         Intersection start = road.getStart();
         Intersection end = road.getEnd();
-        int width = 1;
-        int height = 1;
+        int width = 5;
+        int height = 5;
 
         int differentX = end.getX() - start.getX();
         int differentY = end.getY() - start.getY();
