@@ -621,7 +621,7 @@ public abstract class Vehicle implements Task, Drawable {
 			}
 		}
 		return null;
-	}
+    }
 
     public double getBreakingDistance() {
         Road r = getPosition().getKey();

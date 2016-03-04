@@ -50,9 +50,6 @@ public class VehicleHolder implements Collection<Vehicle> {
         return vehicleMap.remove(key);
     }
 
-    /*
-     Collection stuff. Ignore 
-     */
     @Override
     public int size() {
         return vehicleMap.size();
@@ -124,33 +121,17 @@ public class VehicleHolder implements Collection<Vehicle> {
      */
     @Override
     public boolean containsAll(Collection<?> c) {
-        for (Object c1 : c) {
-            if(!contains(c1)){
-                return false;
-            }
-        }
-        return true;
+        return c.stream().noneMatch((c1) -> (!contains(c1)));
     }
 
-  
     @Override
     public boolean addAll(Collection<? extends Vehicle> c) {
-        for (Vehicle c1 : c) {
-            if (!add(c1)) {
-                return false;
-            }
-        }
-        return true;
+        return c.stream().noneMatch((c1) -> (!add(c1)));
     }
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        for (Object c1 : c) {
-            if (!this.remove(c1)) {
-                return false;
-            }
-        }
-        return true;
+        return c.stream().noneMatch((c1) -> (!this.remove(c1)));
     }
 
     /**

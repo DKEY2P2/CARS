@@ -6,6 +6,7 @@
 package algorithms;
 
 import helper.Logger;
+import helper.StupidHelper;
 import java.util.ArrayList;
 import map.Intersection;
 import map.Road;
@@ -29,13 +30,16 @@ public class TestAl implements Algorithm {
                         continue;
                     }
                     tmp.add(a1.getStart());
-                    break loop;
                 }
             }
         }
-        if(tmp.isEmpty()){
+        if (tmp.isEmpty()) {
             Logger.LogError("Next is empty", this);
         }
+        
+        Intersection a = (Intersection) StupidHelper.getRandom(tmp);
+        tmp = new ArrayList<>();
+        tmp.add(a);
         return tmp;
 
     }

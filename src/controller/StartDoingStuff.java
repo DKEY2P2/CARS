@@ -1,6 +1,5 @@
 package controller;
 
-import algorithms.AStar;
 import algorithms.TestAl;
 import controller.threads.ThreadController;
 import helper.Logger;
@@ -11,9 +10,8 @@ import map.intersection.TestIntersection;
 import map.road.NormalRoad;
 import ui.ControllerUI;
 import vehicle.forbe.SportCarF;
-
+import helper.StupidHelper;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Random;
 
 public class StartDoingStuff {
@@ -42,10 +40,17 @@ public class StartDoingStuff {
         NormalRoad r2 = new NormalRoad(a2, a3);
         NormalRoad r3 = new NormalRoad(a3, a4);
         NormalRoad r4 = new NormalRoad(a4, a1);
-        TrafficLight t1 = new TrafficLight(a1,r4,r1);
-        TrafficLight t2 = new TrafficLight(a2,r1,r2);
-        TrafficLight t3 = new TrafficLight(a3,r2,r3);
-        TrafficLight t4 = new TrafficLight(a4,r3,r4);
+        NormalRoad r5 = new NormalRoad(a1, a3);
+//        NormalRoad r6 = new NormalRoad(a5, a6);
+//        NormalRoad r7 = new NormalRoad(a6, a3);
+        TrafficLight t1 = new TrafficLight(a1, r4, r1,r5);
+        TrafficLight t2 = new TrafficLight(a2, r1, r2);
+        TrafficLight t3 = new TrafficLight(a3, r2, r3);
+        TrafficLight t4 = new TrafficLight(a4, r3, r4);
+        TrafficLight t6 = new TrafficLight(a3, r5, r3);
+//        TrafficLight t7 = new TrafficLight(a6, r6, r7);
+//        a.add(a6);
+//        a.add(a5);
         a.add(a4);
         a.add(a3);
         a.add(a2);
@@ -54,9 +59,13 @@ public class StartDoingStuff {
         b.add(r2);
         b.add(r3);
         b.add(r4);
+        b.add(r5);
+//        b.add(r6);
+//        b.add(r7);
         //Creates n number of cars
+
         for (int i = 0; i < 10; i++) {
-            new SportCarF((NormalRoad) getRandom(b), r.nextDouble(), new TestAl(), (Intersection) getRandom(a));
+            new SportCarF((NormalRoad) StupidHelper.getRandom(b), r.nextDouble(), new TestAl(), (Intersection) StupidHelper.getRandom(a));
         }
 
         b.stream().forEach((b1) -> {
@@ -98,15 +107,6 @@ public class StartDoingStuff {
 
     }
 
-    /**
-     * Stupid helper thingy, randomly chooses a item of a collection
-     *
-     * @param c
-     * @return
-     */
-    private static Object getRandom(Collection c) {
-        Random r = new Random();
-        return c.toArray()[r.nextInt(c.size())];
-    }
+
 
 }
