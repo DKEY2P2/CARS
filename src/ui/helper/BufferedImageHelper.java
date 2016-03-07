@@ -1,4 +1,4 @@
-package ui;
+package ui.helper;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -16,7 +16,6 @@ import java.awt.image.WritableRaster;
 public class BufferedImageHelper {
 
     //To be fair, I copied like all this code
-
     /**
      * Resizes the image to a certain size
      *
@@ -40,7 +39,7 @@ public class BufferedImageHelper {
      * @param image The image to be copied
      * @return A clone of a bufferedImage
      */
-    protected static BufferedImage deepCopy(BufferedImage image) {
+    public static BufferedImage deepCopy(BufferedImage image) {
         ColorModel cm = image.getColorModel();
         boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
         WritableRaster raster = image.copyData(null);
@@ -54,7 +53,7 @@ public class BufferedImageHelper {
      * @param rotation How much to rotate it by, in radians
      * @return The rotated image
      */
-    protected static BufferedImage rotate(BufferedImage image, double rotation) {
+    public static BufferedImage rotate(BufferedImage image, double rotation) {
         AffineTransform transform = new AffineTransform();
         transform.rotate(rotation, image.getWidth() / 2, image.getHeight() / 2);
         AffineTransformOp op = new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR);

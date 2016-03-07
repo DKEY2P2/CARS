@@ -1,4 +1,4 @@
-package ui;
+package ui.setting;
 
 /**
  * Contains some settings for the drawing of the map

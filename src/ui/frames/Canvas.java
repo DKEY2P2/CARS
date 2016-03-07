@@ -1,5 +1,6 @@
-package ui;
+package ui.frames;
 
+import ui.setting.GraphicsSetting;
 import helper.Logger;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -13,7 +14,7 @@ import javax.swing.JFrame;
 /**
  * The canvas to draw everything on. May be turn into a Jpanel at a later date
  *
- * @author Kareem
+ * @author Kareems
  */
 public class Canvas extends JFrame {
 
@@ -26,9 +27,11 @@ public class Canvas extends JFrame {
 
         //To get the size of the screen
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        
         //Sets the size of the UI
         int width = (int) (screenSize.getWidth() * GraphicsSetting.getInstance().getScale());
         int height = (int) (screenSize.getHeight() * GraphicsSetting.getInstance().getScale());
+        
         setSize(width, height);
 
         //Allows the user to exit the program
@@ -51,7 +54,8 @@ public class Canvas extends JFrame {
 
         //Hides the System specfic (eg Windows, Apple) elments. Only to allow 
         //the double bufferStrategy to work
-        setUndecorated(true);
+//        setUndecorated(true);
+        setIgnoreRepaint(true);
 
         //Makes the UI visable
         setVisible(true);

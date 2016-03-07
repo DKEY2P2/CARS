@@ -1,5 +1,6 @@
 package ui;
 
+import ui.frames.Canvas;
 import controller.Controller;
 import controller.Observer;
 import controller.Observerable;
