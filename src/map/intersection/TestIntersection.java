@@ -28,19 +28,20 @@ public class TestIntersection extends Intersection implements Observer {
         for (TrafficLight tl : getTrafficLights()) {
             if (tl.isGreen()) {
                 for (int i = 0; i < tl.getMaxFlow(); i++) {
-                    Vehicle v = tl.getWaiting().poll();
-                    if (v == null) {
+                    Vehicle veh = tl.getWaiting().poll();
+                    if (veh == null) {
                         return;
                     }
-                    v.addToTraceLog(this);
-                    Intersection placeToGo = v.nextPlaceToGo();
+                    veh.addToTraceLog(this);
+                    Intersection placeToGo = veh.nextPlaceToGo();
                     Road r = null;
                     for (Road road : getRoads()) {
-                        if (road.getStart() == placeToGo) {
+                        if (road.getEnd() == placeToGo) {
                             r = road;
                         }
                     }
                     if (r == null) {
+                        Logger.LogError("Can't find a place to go to reach destination", veh);
                         for (Road road : getRoads()) {
                             if (road.getEnd() != this) {
                                 r = road;
@@ -48,7 +49,7 @@ public class TestIntersection extends Intersection implements Observer {
                             }
                         }
                     }
-                    v.setPosition(new AbstractMap.SimpleImmutableEntry<>(r, 0d));
+                    veh.setPosition(new AbstractMap.SimpleImmutableEntry<>(r, 0d));
                 }
             }
         }
