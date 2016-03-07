@@ -12,12 +12,15 @@ import java.util.AbstractMap;
 
 /**
  * Created by lvanp on 01/03/2016.
+ *
+ * @author lvanp, Kareem
+ * @since 07.03.16
  */
-public class TestIntersection extends Intersection implements Observer {
+public class DefaultTrafficLight extends Intersection implements Observer {
 
     private Ticker ticker;
 
-    public TestIntersection(int x, int y, Ticker t) {
+    public DefaultTrafficLight(int x, int y, Ticker t) {
         super(x, y);
         t.addObserver(this);
         ticker = t;
