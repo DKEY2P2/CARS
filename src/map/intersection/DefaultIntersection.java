@@ -9,6 +9,7 @@ import map.TrafficLight;
 import vehicle.Vehicle;
 
 import java.util.AbstractMap;
+import java.util.ArrayList;
 
 /**
  * Created by lvanp on 01/03/2016.
@@ -16,11 +17,11 @@ import java.util.AbstractMap;
  * @author lvanp, Kareem
  * @since 07.03.16
  */
-public class DefaultTrafficLight extends Intersection implements Observer {
+public class DefaultIntersection extends Intersection implements Observer {
 
     private Ticker ticker;
 
-    public DefaultTrafficLight(int x, int y, Ticker t) {
+    public DefaultIntersection(int x, int y, Ticker t) {
         super(x, y);
         t.addObserver(this);
         ticker = t;
@@ -57,6 +58,33 @@ public class DefaultTrafficLight extends Intersection implements Observer {
             }
         }
     }
+
+    @Override
+    public Road addRoad(Road r) {
+        getRoads().add(r);
+        boolean flag = false;
+        if (r.getStart() == this) {
+            out.add(r);
+            flag = true;
+        } else {
+            in.add(r);
+        }
+
+        if (flag) {
+            getTrafficLights().stream().forEach((trafficLight) -> {
+                trafficLight.addOut(r);
+            });
+        } else {
+            System.out.println("add new traffic light " + this);
+            getTrafficLights().add(new TrafficLight(this, r, out.toArray(new Road[out.size()])));
+            System.out.println((getTrafficLights().size()));
+        }
+
+        return r;
+    }
+
+    ArrayList<Road> in = new ArrayList<>();
+    ArrayList<Road> out = new ArrayList<>();
 
     @Override
     public void update(String args) {

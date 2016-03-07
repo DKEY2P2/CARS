@@ -74,8 +74,8 @@ public abstract class Road implements Drawable {
         this.end = end;
         se.add(start);
         se.add(end);
-        start.addRoad(this);
         end.addRoad(this);
+        start.addRoad(this);
         LENGTH = length;
     }
 
