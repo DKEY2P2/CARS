@@ -23,8 +23,6 @@ public class ControllerUI implements Task {
     /**
      * Creates a canvas
      *
-     * @param o The item that the canvas should reflect. How often it should
-     * refresh
      */
     public ControllerUI() {
         c = new Canvas();
