@@ -99,6 +99,9 @@ public abstract class Intersection implements Drawable {
     }
 
     public void updateLight(double elapsed) {
+        if(tLights.isEmpty()){
+            return;
+        }
         //Check which use case to use
         if (tLights.size() != 1) {
             //If more than one light at a traffic light

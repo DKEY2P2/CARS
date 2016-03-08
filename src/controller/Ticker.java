@@ -68,10 +68,17 @@ public class Ticker extends Observerable {
             public void run() {
                 notifyObservers("tick");
                 tickCount++;
+                timeElapsed += 1 * tickTimeInS;
             }
         }, 0, timeBetweenTick
         );
 
+    }
+
+    double timeElapsed = 0;
+
+    public double getTimeElapsed() {
+        return timeElapsed;
     }
 
     /**

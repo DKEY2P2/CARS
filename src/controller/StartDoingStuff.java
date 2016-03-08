@@ -107,6 +107,7 @@ public class StartDoingStuff {
 
         //Starts the UI
         control.setUI(new ControllerUI());
+        control.getUI().update();
 
     }
     private static boolean start = false;

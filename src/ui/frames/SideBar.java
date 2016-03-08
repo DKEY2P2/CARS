@@ -30,6 +30,7 @@ import ui.setting.GraphicsSetting;
 public class SideBar extends JFrame {
 
     JLabel tickCounterL;
+    JLabel timeL;
 
     public SideBar(JFrame parent) throws HeadlessException {
         addKeyListener(new KeyAdapter() {
@@ -55,7 +56,6 @@ public class SideBar extends JFrame {
         if (!GraphicsSetting.getInstance().isDecorated()) {
             setUndecorated(true);
         }
-        setVisible(true);
         JButton button = new JButton("Start");
         button.addActionListener((ActionEvent e) -> {
             StartDoingStuff.start();
@@ -65,14 +65,20 @@ public class SideBar extends JFrame {
         tickCounterL = new JLabel("0");
         tickCounterP.add(new JLabel("Tick counter:"));
         tickCounterP.add(tickCounterL);
+        JPanel timeP = new JPanel();
+        timeP.add(new JLabel("Time elapsed (s):"));
+        timeL = new JLabel("0");
+        timeP.add(timeL);
         add(tickCounterP);
+        add(timeP);
         JPanel speedP = new JPanel();
         SpinnerModel spinnerModel = new SpinnerNumberModel(1000, 1, 10000, 1);
         JSpinner speedSpinner = new JSpinner(spinnerModel);
         speedSpinner.addChangeListener(new ChangeListenerCustom());
-        speedP.add(new JLabel("Speed of animation"));
+        speedP.add(new JLabel("Speed of animation (ms)"));
         speedP.add(speedSpinner);
         add(speedP);
+        setVisible(true);
 
     }
 
@@ -81,6 +87,7 @@ public class SideBar extends JFrame {
         super.repaint();
         int n = controller.Controller.getInstance().getTicker().getTickCount();
         tickCounterL.setText(Integer.toString(n));
+        timeL.setText(Double.toString(Math.round(controller.Controller.getInstance().getTicker().getTimeElapsed() * 100) / 100d));
     }
 
     private class ChangeListenerCustom implements ChangeListener {
