@@ -108,8 +108,14 @@ public class StartDoingStuff {
         //Starts the UI
         control.setUI(new ControllerUI());
 
-        //Starts the program
-        t.start("tick");
+    }
+    private static boolean start = false;
+
+    public static void start() {
+        if (!start) {
+            Controller.getInstance().getTicker().start("tick");
+            start = true;
+        }
 
     }
 

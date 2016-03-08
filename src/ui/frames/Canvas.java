@@ -27,11 +27,11 @@ public class Canvas extends JFrame {
 
         //To get the size of the screen
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        
+
         //Sets the size of the UI
-        int width = (int) (screenSize.getWidth() * GraphicsSetting.getInstance().getScale());
+        int width = (int) (screenSize.getWidth() * GraphicsSetting.getInstance().getScale() * 0.7);
         int height = (int) (screenSize.getHeight() * GraphicsSetting.getInstance().getScale());
-        
+
         setSize(width, height);
 
         //Allows the user to exit the program
@@ -54,7 +54,10 @@ public class Canvas extends JFrame {
 
         //Hides the System specfic (eg Windows, Apple) elments. Only to allow 
         //the double bufferStrategy to work
-//        setUndecorated(true);
+        if (!GraphicsSetting.getInstance().isDecorated()) {
+            setUndecorated(true);
+        }
+
         setIgnoreRepaint(true);
 
         //Makes the UI visable

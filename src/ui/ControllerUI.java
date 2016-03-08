@@ -20,6 +20,7 @@ import vehicle.Vehicle;
 public class ControllerUI implements Task {
 
     private Canvas c;
+    private SideBar s;
 
     /**
      * Creates a canvas
@@ -27,7 +28,7 @@ public class ControllerUI implements Task {
      */
     public ControllerUI() {
         c = new Canvas();
-        SideBar s = new SideBar(c);
+        s = new SideBar(c);
         c.toFront();
     }
 
@@ -94,6 +95,7 @@ public class ControllerUI implements Task {
     @Override
     public boolean update() {
         draw();
+        s.repaint();
         return true;
     }
 }

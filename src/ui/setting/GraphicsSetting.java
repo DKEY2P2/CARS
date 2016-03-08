@@ -6,6 +6,27 @@ package ui.setting;
  * @author Kareem
  */
 public class GraphicsSetting {
+    
+    private boolean decorated = true;
+
+    /**
+     * Get the value of decorated
+     *
+     * @return the value of decorated
+     */
+    public boolean isDecorated() {
+        return decorated;
+    }
+
+    /**
+     * Set the value of decorated
+     *
+     * @param decorated new value of decorated
+     */
+    public void setDecorated(boolean decorated) {
+        this.decorated = decorated;
+    }
+
 
     /**
      * How much you want to scale the UI by
