@@ -28,9 +28,9 @@ import ui.setting.GraphicsSetting;
  * @author Kareem Horstink
  */
 public class SideBar extends JFrame {
-    
+
     JLabel tickCounterL;
-    
+
     public SideBar(JFrame parent) throws HeadlessException {
         addKeyListener(new KeyAdapter() {
             @Override
@@ -50,19 +50,15 @@ public class SideBar extends JFrame {
         setIconImage(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        setSize((int) (GraphicsSetting.getInstance().getScale() * 0.3*screenSize.getWidth()), parent.getHeight());
+        setSize((int) (GraphicsSetting.getInstance().getScale() * 0.3 * screenSize.getWidth()), parent.getHeight());
         setLocation(parent.getX() + parent.getWidth(), parent.getY());
         if (!GraphicsSetting.getInstance().isDecorated()) {
             setUndecorated(true);
         }
         setVisible(true);
-        JButton button = new JButton("fick");
-        button.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                StartDoingStuff.start();
-            }
+        JButton button = new JButton("Start");
+        button.addActionListener((ActionEvent e) -> {
+            StartDoingStuff.start();
         });
         add(button);
         JPanel tickCounterP = new JPanel();
@@ -77,18 +73,18 @@ public class SideBar extends JFrame {
         speedP.add(new JLabel("Speed of animation"));
         speedP.add(speedSpinner);
         add(speedP);
-        
+
     }
-    
+
     @Override
     public void repaint() {
         super.repaint();
         int n = controller.Controller.getInstance().getTicker().getTickCount();
         tickCounterL.setText(Integer.toString(n));
     }
-    
+
     private class ChangeListenerCustom implements ChangeListener {
-        
+
         @Override
         public void stateChanged(ChangeEvent e) {
             if (e.getSource() instanceof JSpinner) {
@@ -96,7 +92,7 @@ public class SideBar extends JFrame {
                 controller.Controller.getInstance().getTicker().setTickTimeInS(((Integer) s.getModel().getValue()) / 1000d);
             }
         }
-        
+
     }
-    
+
 }
