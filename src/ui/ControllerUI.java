@@ -9,6 +9,7 @@ import controller.Ticker;
 import java.awt.Graphics;
 import map.Intersection;
 import map.Road;
+import ui.frames.SideBar;
 import vehicle.Vehicle;
 
 /**
@@ -26,6 +27,8 @@ public class ControllerUI implements Task {
      */
     public ControllerUI() {
         c = new Canvas();
+        SideBar s = new SideBar(c);
+        c.toFront();
     }
 
     /**

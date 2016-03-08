@@ -1,5 +1,6 @@
 package algorithms;
 
+import helper.Logger;
 import java.util.ArrayList;
 
 import map.Intersection;
@@ -92,8 +93,8 @@ public class AStar implements Algorithm {
 	    try {
 		this.children.remove(t);
 	    } catch (NullPointerException e) {
-		System.out.println(e);
-	    }
+                Logger.LogError(e);
+            }
 	}
 	
 	public ArrayList<Twinkle> getChildren() {
