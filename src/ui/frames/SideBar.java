@@ -2,20 +2,17 @@ package ui.frames;
 
 import controller.StartDoingStuff;
 import helper.Logger;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
@@ -24,15 +21,17 @@ import javax.swing.event.ChangeListener;
 import ui.setting.GraphicsSetting;
 
 /**
+ * A sidebar to hold all the items that control the simulation
  *
  * @author Kareem Horstink
  */
 public class SideBar extends JFrame {
 
-    JLabel tickCounterL;
-    JLabel timeL;
+    private JLabel tickCounterL;
+    private JLabel timeL;
 
-    public SideBar(JFrame parent) throws HeadlessException {
+    public SideBar(JFrame parent) {
+        //Exits if escape key has been pressed
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -47,30 +46,45 @@ public class SideBar extends JFrame {
             }
 
         });
+
+        //Set the layout
         setLayout(new GridLayout(0, 1));
-        setIconImage(null);
+        //Set it to hid when you close it
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        //Gets the size of the screen
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        //Set the size of the window
         setSize((int) (GraphicsSetting.getInstance().getScale() * 0.3 * screenSize.getWidth()), parent.getHeight());
+        //Set the location of the window to be next to the main screen
         setLocation(parent.getX() + parent.getWidth(), parent.getY());
+
+        //Whether the OS decoration should be enabled
         if (!GraphicsSetting.getInstance().isDecorated()) {
             setUndecorated(true);
         }
+        /*Add the buttons to the interface*/
+        //Start button is added
         JButton button = new JButton("Start");
         button.addActionListener((ActionEvent e) -> {
             StartDoingStuff.start();
         });
         add(button);
+
+        //The ticker counter is added
         JPanel tickCounterP = new JPanel();
         tickCounterL = new JLabel("0");
         tickCounterP.add(new JLabel("Tick counter:"));
         tickCounterP.add(tickCounterL);
+
+        //The time elapsed is added
         JPanel timeP = new JPanel();
         timeP.add(new JLabel("Time elapsed (s):"));
         timeL = new JLabel("0");
         timeP.add(timeL);
         add(tickCounterP);
         add(timeP);
+
+        //The speed of the simulation changer is added
         JPanel speedP = new JPanel();
         SpinnerModel spinnerModel = new SpinnerNumberModel(1000, 1, 10000, 1);
         JSpinner speedSpinner = new JSpinner(spinnerModel);
@@ -78,18 +92,22 @@ public class SideBar extends JFrame {
         speedP.add(new JLabel("Speed of animation (ms)"));
         speedP.add(speedSpinner);
         add(speedP);
+
+        //Set it to visiable
         setVisible(true);
 
     }
 
     @Override
     public void repaint() {
-        super.repaint();
+        //Updates some elements
         int n = controller.Controller.getInstance().getTicker().getTickCount();
         tickCounterL.setText(Integer.toString(n));
         timeL.setText(Double.toString(Math.round(controller.Controller.getInstance().getTicker().getTimeElapsed() * 100) / 100d));
+        super.repaint();
     }
 
+    //The change listener for the spinner
     private class ChangeListenerCustom implements ChangeListener {
 
         @Override
