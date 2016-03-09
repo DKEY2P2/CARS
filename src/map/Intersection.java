@@ -346,7 +346,7 @@ public abstract class Intersection implements Drawable {
     @Override
     public void draw(Graphics g) {
         BufferedImage bi = ImageMap.getInstance().getImage(imageKey, 0, GraphicsSetting.getInstance().getZoom());
-        g.drawImage(bi, (int) ((x - bi.getWidth() / 2) * GraphicsSetting.getInstance().getZoom()), (int) ((y - bi.getHeight() / 2) * GraphicsSetting.getInstance().getZoom()), null);
+        g.drawImage(bi, (int) ((x - bi.getWidth() / 2) * GraphicsSetting.getInstance().getZoom())+ GraphicsSetting.getInstance().getPanX(), (int) ((y - bi.getHeight() / 2) * GraphicsSetting.getInstance().getZoom())+ GraphicsSetting.getInstance().getPanY(), null);
         int i = 0;
         for (TrafficLight tLight : tLights) {
             tLight.draw(g, i++);

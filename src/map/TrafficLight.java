@@ -179,7 +179,7 @@ public class TrafficLight {
         } else {
             g.setColor(Color.red);
         }
-        g.drawString(Integer.toString(index), (int) ((this.i.getX() + i * 10*GraphicsSetting.getInstance().getZoom()) * GraphicsSetting.getInstance().getZoom()), (int) ((this.i.getY()) * GraphicsSetting.getInstance().getZoom()));
+        g.drawString(Integer.toString(index), (int) ((this.i.getX() + i * 10 * GraphicsSetting.getInstance().getZoom()) * GraphicsSetting.getInstance().getZoom())+ GraphicsSetting.getInstance().getPanX(), (int) ((this.i.getY()) * GraphicsSetting.getInstance().getZoom())+ GraphicsSetting.getInstance().getPanY());
     }
 
     @Override

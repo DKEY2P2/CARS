@@ -467,9 +467,12 @@ public abstract class Vehicle implements Task, Drawable {
         int height = 1;
         int differentX = end.getX() - start.getX();
         int differentY = end.getY() - start.getY();
-        g.drawOval((int) ((start.getX() + differentX * percentage - width / 2)*GraphicsSetting.getInstance().getZoom()),
-                (int) ((start.getY() + differentY * percentage - height / 2)*GraphicsSetting.getInstance().getZoom())
-                , width, height);
+        g.drawOval((int) ((start.getX() + differentX * percentage - width / 2) * GraphicsSetting.getInstance().getZoom()) + GraphicsSetting.getInstance().getPanX(),
+                (int) ((start.getY() + differentY * percentage - height / 2) * GraphicsSetting.getInstance().getZoom())+ GraphicsSetting.getInstance().getPanY()
+                , width, height
+    
+
+    );
 
     }
 
