@@ -1,7 +1,9 @@
 package controller;
 
+import algorithms.TestAl;
 import java.util.Timer;
 import java.util.TimerTask;
+import models.Forbe;
 
 /**
  * A ticker that meant to update the program
@@ -69,6 +71,12 @@ public class Ticker extends Observerable {
                 notifyObservers("tick");
                 tickCount++;
                 timeElapsed += 1 * tickTimeInS;
+
+                if (tickCount % 150 == 0) {
+                    for (int i = 0; i < 40; i++) {
+                        vehicle.VehicleFactory.getFactory().createVehicle("Sport", new Forbe(), new TestAl());
+                    }
+                }
             }
         }, 0, timeBetweenTick
         );

@@ -1,6 +1,7 @@
 package controller;
 
 import algorithms.AStar;
+import algorithms.TestAl;
 import controller.threads.ThreadController;
 import helper.Logger;
 import map.Intersection;
@@ -8,10 +9,11 @@ import map.Road;
 import map.intersection.DefaultIntersection;
 import map.road.NormalRoad;
 import ui.ControllerUI;
-import vehicle.forbe.SportCarF;
+import vehicle.SportCar;
 import helper.StupidHelper;
 import java.util.ArrayList;
 import java.util.Random;
+import models.Forbe;
 
 /**
  * A start class for the rest of the system
@@ -65,11 +67,6 @@ public class StartDoingStuff {
         b.add(r4);
         b.add(r5);
 
-        //Creates n number of cars
-        for (int i = 0; i < 100; i++) {
-            new SportCarF((NormalRoad) StupidHelper.getRandom(b), r.nextDouble(), new AStar(), (Intersection) StupidHelper.getRandom(a));
-        }
-
         //Add the item to the controller
         b.stream().forEach((b1) -> {
             control.getMap().addRoad(b1);
@@ -77,7 +74,11 @@ public class StartDoingStuff {
         a.stream().forEach((as) -> {
             control.getMap().addIntersection(as);
         });
-
+        
+        //Creates n number of cars
+        for (int i = 0; i < 100; i++) {
+            vehicle.VehicleFactory.getFactory().createVehicle("Sport", new Forbe(), new TestAl());
+        }
         //Add the ticker to the controller
         control.setTicker(t);//so we can get the ticker later on
 
