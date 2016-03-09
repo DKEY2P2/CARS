@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 import ui.Drawable;
 import ui.ImageMap;
+import ui.setting.GraphicsSetting;
 
 /**
  * The abstract class for all types of intersections present in the simulation
@@ -17,7 +18,7 @@ import ui.ImageMap;
  * An intersection is similar to a Node/Vertex of a graph
  *
  * @author Lucas Vanparijs, Kareem Horstink
- * @since 27-02-16
+ * @since 09-03-16
  */
 public abstract class Intersection implements Drawable {
 
@@ -99,7 +100,7 @@ public abstract class Intersection implements Drawable {
     }
 
     public void updateLight(double elapsed) {
-        if(tLights.isEmpty()){
+        if (tLights.isEmpty()) {
             return;
         }
         //Check which use case to use
@@ -344,8 +345,8 @@ public abstract class Intersection implements Drawable {
 
     @Override
     public void draw(Graphics g) {
-        BufferedImage bi = ImageMap.getInstance().getImage(imageKey);
-        g.drawImage(bi, x - bi.getWidth() / 2, y - bi.getHeight() / 2, null);
+        BufferedImage bi = ImageMap.getInstance().getImage(imageKey, 0, GraphicsSetting.getInstance().getZoom());
+        g.drawImage(bi, (int) ((x - bi.getWidth() / 2) * GraphicsSetting.getInstance().getZoom())+ GraphicsSetting.getInstance().getPanX(), (int) ((y - bi.getHeight() / 2) * GraphicsSetting.getInstance().getZoom())+ GraphicsSetting.getInstance().getPanY(), null);
         int i = 0;
         for (TrafficLight tLight : tLights) {
             tLight.draw(g, i++);

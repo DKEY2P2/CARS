@@ -1,5 +1,6 @@
 package ui.frames;
 
+import controller.StartDoingStuff;
 import ui.setting.GraphicsSetting;
 import helper.Logger;
 import java.awt.Color;
@@ -8,28 +9,24 @@ import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseWheelEvent;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.Popup;
-import javax.swing.PopupFactory;
+import javax.swing.event.MouseInputListener;
 import map.Intersection;
 import map.Road;
 import map.intersection.DefaultIntersection;
 import map.road.NormalRoad;
 
 /**
- * The canvas to draw everything on. May be turn into a Jpanel at a later date
+ * The canvas to draw everything on. May be turn into a JPanel at a later date
  *
- * @author Kareems
+ * @author Kareem Horstink
  */
 public class Canvas extends JFrame {
 
@@ -51,6 +48,13 @@ public class Canvas extends JFrame {
 
         setSize(width, height);
 
+        addMouseWheelListener(new MouseAdapter() {
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                GraphicsSetting.getInstance().setZoom(GraphicsSetting.getInstance().getZoom() + e.getPreciseWheelRotation() * 0.05);
+            }
+        });
+
         //Allows the user to exit the program
         addKeyListener(new KeyAdapter() {
             @Override
@@ -61,6 +65,8 @@ public class Canvas extends JFrame {
                     Logger.printOther();
                     //Exit the application
                     System.exit(0);
+                } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    StartDoingStuff.start();
                 } else {
                     keyCode = e.getKeyCode();
                     if (e.isControlDown()) {
@@ -72,7 +78,9 @@ public class Canvas extends JFrame {
             }
 
         });
-        addMouseListener(new MouseListenerCustom());
+        MouseListenerCustom a = new MouseListenerCustom();
+        addMouseListener(a);
+        addMouseMotionListener(a);
         //Set the default operation to close the java application
         setDefaultCloseOperation(3);
 
@@ -124,7 +132,9 @@ public class Canvas extends JFrame {
         Toolkit.getDefaultToolkit().sync();
     }
 
-    private class MouseListenerCustom implements MouseListener {
+    private class MouseListenerCustom implements MouseInputListener {
+
+        boolean click;
 
         private Intersection start;
 
@@ -139,9 +149,17 @@ public class Canvas extends JFrame {
                 System.out.println("End point selected");
                 Intersection end = findClosest(x, y);
                 System.out.println(end);
-                Road r = new NormalRoad(start, end);
-                m.addRoad(r);
+                Road r = null;
+                try {
+                    r = new NormalRoad(start, end);
+                } catch (Exception e) {
+                    Logger.LogError(e);
+                }
+                if (r != null) {
+                    m.addRoad(r);
+                }
                 start = null;
+
             } else {
                 System.out.println("Start point selected");
                 start = findClosest(x, y);
@@ -169,11 +187,12 @@ public class Canvas extends JFrame {
         @Override
         public void mouseClicked(MouseEvent e) {
             System.out.println("clicked");
+
             if (keyCode == -1) {
                 addIntersection(e.getX(), e.getY());
             } else if (keyCode == -2) {
                 connect(e.getX(), e.getY());
-            }else{
+            } else {
                 System.out.println("Reset");
                 start = null;
             }
@@ -182,11 +201,12 @@ public class Canvas extends JFrame {
 
         @Override
         public void mousePressed(MouseEvent e) {
-
+            click = true;
         }
 
         @Override
         public void mouseReleased(MouseEvent e) {
+            click = false;
         }
 
         @Override
@@ -195,6 +215,26 @@ public class Canvas extends JFrame {
 
         @Override
         public void mouseExited(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseDragged(MouseEvent e) {
+            GraphicsSetting.getInstance().setPanX(GraphicsSetting.getInstance().getPanX() + (e.getX() - x));
+            GraphicsSetting.getInstance().setPanY(GraphicsSetting.getInstance().getPanY() + (e.getY() - y));
+            x = e.getX();
+            y = e.getY();
+        }
+
+        int x = 0;
+        int y = 0;
+
+        @Override
+        public void mouseMoved(MouseEvent e) {
+            if (!click) {
+                x = e.getX();
+                y = e.getY();
+            } 
+
         }
 
     }

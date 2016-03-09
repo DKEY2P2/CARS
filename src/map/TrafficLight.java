@@ -6,6 +6,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
+import ui.setting.GraphicsSetting;
 import vehicle.Vehicle;
 
 /**
@@ -178,15 +179,15 @@ public class TrafficLight {
         } else {
             g.setColor(Color.red);
         }
-        g.drawString(Integer.toString(index), this.i.getX() + i * 10, this.i.getY());
+        g.drawString(Integer.toString(index), (int) ((this.i.getX() + i * 10 * GraphicsSetting.getInstance().getZoom()) * GraphicsSetting.getInstance().getZoom())+ GraphicsSetting.getInstance().getPanX(), (int) ((this.i.getY()) * GraphicsSetting.getInstance().getZoom())+ GraphicsSetting.getInstance().getPanY());
     }
 
     @Override
     public String toString() {
         return "Traffic Light " + index + " is " + (isGreen() ? "green" : "red");
     }
-    
-    public void addOut(Road out){
+
+    public void addOut(Road out) {
         Road[] r = new Road[this.out.length + 1];
         System.arraycopy(this.out, 0, r, 0, this.out.length);
         r[this.out.length] = out;
