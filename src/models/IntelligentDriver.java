@@ -94,7 +94,7 @@ public class IntelligentDriver implements Model {
 
 		desiredVelocity = follower.getDesiredSpeed(); //  Desired Speed that front car wants to drive at max.
 		maxAcceleration = follower.getMaxAcceleration();
-		desiredDeceleration = follower.getDesiredBraking();
+		desiredDeceleration = follower.getDesiredDeceleration();
 		delta = 4; // set Delta (acceleration exponent) to 4 : http://home2.fvcc.edu/~dhicketh/DiffEqns/Spring11projects/Scott_Miller/Project.pdf
 
 		if (inFrontVehicle != null) {
