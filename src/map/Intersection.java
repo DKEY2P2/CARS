@@ -230,6 +230,23 @@ public abstract class Intersection implements Drawable {
             return null;
         }
     }
+    public ArrayList<Road> getIns(){
+        ArrayList<Road> ins = new ArrayList<Road>();
+        for(Road r: getRoads()){
+            if(r.getEnd()==this)
+                ins.add(r);
+        }
+        return ins;
+    }
+
+    public ArrayList<Road> getOuts(){
+        ArrayList<Road> outs = new ArrayList<Road>();
+        for(Road r: getRoads()){
+            if(r.getStart()==this)
+                outs.add(r);
+        }
+        return outs;
+    }
 
     /**
      * Returns the X coordinate of the intersection

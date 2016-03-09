@@ -6,6 +6,7 @@ import java.util.Random;
 import map.Intersection;
 import map.Road;
 import models.Forbe;
+import models.OVM;
 import models.Pipe;
 import vehicle.Vehicle;
 
@@ -19,7 +20,7 @@ import vehicle.Vehicle;
 public class SportCarP extends Vehicle {
 
     public SportCarP(Road start, double percentage, Algorithm a, Intersection destination) {
-        super(start, percentage, new Pipe(), a);
+        super(start, percentage, new OVM(), a);
         Random r = new Random();
         setDesiredSpeed(27.777777778 + r.nextInt(10));//100kmh
         setMaxAcceleration(4.5 + r.nextInt(3));// Jaguar XK Coupe 2007 - http://hypertextbook.com/facts/2001/MeredithBarricella.shtml
@@ -49,6 +50,7 @@ public class SportCarP extends Vehicle {
             setTimeOnRoad(getTimeOnRoad() + 1);//add one tick
 //                }
 //            }
+            System.out.println("HERE");
             getModel().calculate(this);
             /*if(!tl.isGreen() && getPosition().getValue()>0.95) {
              setSpeed(0);

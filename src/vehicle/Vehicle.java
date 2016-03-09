@@ -252,7 +252,7 @@ public abstract class Vehicle implements Task, Drawable {
 
     public TrafficLight getNextLight() {
         Road r = getPosition().getKey();
-        Intersection next = getRoute().get(0);
+        Intersection next = nextPlaceToGo();
         Road rNext = next.hasRoad(r.getEnd());
         for (TrafficLight tl : r.getEnd().getTrafficLights()) {
             if (tl.getIn() == r && helpme(tl.getOut(), rNext)) {
@@ -262,7 +262,7 @@ public abstract class Vehicle implements Task, Drawable {
         return null;
     }
 
-    private boolean helpme(Object[] array, Object o) {
+    private boolean helpme(ArrayList<Road> array, Object o) {
         for (Object array1 : array) {
             if (o == array1) {
                 return true;
@@ -271,11 +271,6 @@ public abstract class Vehicle implements Task, Drawable {
         return false;
     }
 
-    /*
-     * 
-     * Fun stuff
-     * 
-     */
     /**
      * Adds an intersection to the trace log of the journey
      *

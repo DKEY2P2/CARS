@@ -1,15 +1,13 @@
 package ui.frames;
 
+import map.TrafficLight;
 import ui.setting.GraphicsSetting;
 import helper.Logger;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Toolkit;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
@@ -124,7 +122,7 @@ public class Canvas extends JFrame {
         Toolkit.getDefaultToolkit().sync();
     }
 
-    private class MouseListenerCustom implements MouseListener {
+    private class MouseListenerCustom extends MouseAdapter {
 
         private Intersection start;
 

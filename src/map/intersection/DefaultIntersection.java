@@ -75,7 +75,7 @@ public class DefaultIntersection extends Intersection implements Observer {
                 trafficLight.addOut(r);
             });
         } else {
-            getTrafficLights().add(new TrafficLight(this, r, out.toArray(new Road[out.size()])));
+            getTrafficLights().add(new TrafficLight(this, r, out));
         }
 
         return r;
