@@ -21,7 +21,9 @@ public class TestAl implements Algorithm {
 
         ArrayList<Road> r = start.getRoads();
         for (Road r1 : r) {
-            if(r1)
+            if (r1.getStart() == start) {
+                tmp.add(r1.getEnd());
+            }
         }
         if (tmp.isEmpty()) {
             Logger.LogError("Next is empty", this);

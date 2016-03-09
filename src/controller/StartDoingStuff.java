@@ -14,6 +14,8 @@ import helper.StupidHelper;
 import java.util.ArrayList;
 import java.util.Random;
 import models.Forbe;
+import models.Model;
+import vehicle.VehicleFactory;
 
 /**
  * A start class for the rest of the system
@@ -31,6 +33,12 @@ public class StartDoingStuff {
      * consider it the same as if you left it blank
      */
     public static void main(String[] args) {
+        /* Set what model to use for the rest of the application */
+        SimulationSettings.getInstance().setModel(new Forbe());
+
+        /* Set what path finding AI to use for the rest of the application */
+        SimulationSettings.getInstance().setPathFindingAI(new TestAl());
+
         /* Creates the controller */
         Controller control = Controller.getInstance();
 
@@ -74,10 +82,10 @@ public class StartDoingStuff {
         a.stream().forEach((as) -> {
             control.getMap().addIntersection(as);
         });
-        
+
         //Creates n number of cars
         for (int i = 0; i < 100; i++) {
-            vehicle.VehicleFactory.getFactory().createVehicle("Sport", new Forbe(), new TestAl());
+            VehicleFactory.getFactory().createVehicle(VehicleFactory.SPORT_CAR);
         }
         //Add the ticker to the controller
         control.setTicker(t);//so we can get the ticker later on

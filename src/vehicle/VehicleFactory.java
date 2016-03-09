@@ -1,7 +1,7 @@
 package vehicle;
 
-import algorithms.AStar;
 import algorithms.Algorithm;
+import controller.SimulationSettings;
 import helper.StupidHelper;
 import java.util.ArrayList;
 import java.util.Random;
@@ -15,6 +15,11 @@ import models.Model;
  * @author Kareem Horstink
  */
 public class VehicleFactory {
+
+    /**
+     *
+     */
+    public static final String SPORT_CAR = "Sport";
 
     /**
      * The private instance of the factory
@@ -45,7 +50,7 @@ public class VehicleFactory {
     }
 
     /**
-     * Creates a car with the type specified
+     * Creates a car with the type specified, model and algorithm
      *
      * @param type The type of car
      * @param m The model of the car
@@ -62,5 +67,17 @@ public class VehicleFactory {
                         (Intersection) StupidHelper.getRandom(a));
         }
         return null;
+    }
+
+    public Vehicle createVehicle(String type, Model m) {
+        return createVehicle(type, m, SimulationSettings.getInstance().getPathFindingAI());
+    }
+
+    public Vehicle createVehicle(String type, Algorithm al) {
+        return createVehicle(type, SimulationSettings.getInstance().getModel(), al);
+    }
+
+    public Vehicle createVehicle(String type) {
+        return createVehicle(type, SimulationSettings.getInstance().getModel(), SimulationSettings.getInstance().getPathFindingAI());
     }
 }
