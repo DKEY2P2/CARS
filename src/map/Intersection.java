@@ -99,6 +99,9 @@ public abstract class Intersection implements Drawable {
     }
 
     public void updateLight(double elapsed) {
+        if(tLights.isEmpty()){
+            return;
+        }
         //Check which use case to use
         if (tLights.size() != 1) {
             //If more than one light at a traffic light
@@ -117,6 +120,7 @@ public abstract class Intersection implements Drawable {
                     //increments the time
                     tLights.get(i).setTimeLeft(tLights.get(i).getTimeLeft() - elapsed);
                 }
+
                 //Checks if the time for the light is up and switches the next
                 //light on
                 if (tmp + 1 == i && tLights.get(tmp).getTimeLeft() == 0) {
@@ -133,6 +137,9 @@ public abstract class Intersection implements Drawable {
                     tLights.get(0).flip();
                     tLights.get(0).setTimeLeft(tLights.get(0).getTimerLength());
                 }
+            }
+            if (tmp == -Integer.MAX_VALUE) {
+                tLights.get(0).flip();
             }
         } else {
             tLights.get(0).setTimeLeft(tLights.get(0).getTimeLeft() - elapsed); //This is just because we will make the lights cycle so they will all change together. THIS WILL CHANGE -Lucas

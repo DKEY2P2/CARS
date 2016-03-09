@@ -1,5 +1,6 @@
 package map;
 
+import helper.Logger;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -70,12 +71,16 @@ public abstract class Road implements Drawable {
      * AUTOMATICALLY
      */
     public Road(Intersection start, Intersection end, double length) {
+        if (start == end) {
+            Logger.LogError("Start and end point are the same", this);
+            throw new IllegalArgumentException("Start and end points are the same");
+        }
         this.start = start;
         this.end = end;
         se.add(start);
         se.add(end);
-        start.addRoad(this);
         end.addRoad(this);
+        start.addRoad(this);
         LENGTH = length;
     }
 
@@ -169,7 +174,7 @@ public abstract class Road implements Drawable {
         int endY = end.getY();
         int endX = end.getX();
         g.setColor(Color.BLACK);
-        ((Graphics2D)g).setStroke(new BasicStroke(10));
+        ((Graphics2D) g).setStroke(new BasicStroke(10));
         g.drawLine(startX, startY, endX, endY);
     }
 
@@ -188,6 +193,5 @@ public abstract class Road implements Drawable {
     public void setGravityConstant(double gravityConstant) {
         this.gravityConstant = gravityConstant;
     }
-
 
 }

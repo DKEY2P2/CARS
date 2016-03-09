@@ -1,13 +1,13 @@
 package ui;
 
+import ui.frames.Canvas;
 import controller.Controller;
-import controller.Observer;
-import controller.Observerable;
 import controller.Task;
-import controller.Ticker;
 import java.awt.Graphics;
+import javax.swing.JOptionPane;
 import map.Intersection;
 import map.Road;
+import ui.frames.SideBar;
 import vehicle.Vehicle;
 
 /**
@@ -18,15 +18,21 @@ import vehicle.Vehicle;
 public class ControllerUI implements Task {
 
     private Canvas c;
+    private SideBar s;
 
     /**
      * Creates a canvas
      *
-     * @param o The item that the canvas should reflect. How often it should
-     * refresh
      */
     public ControllerUI() {
         c = new Canvas();
+        s = new SideBar(c);
+        c.toFront();
+        update();
+        JOptionPane.showMessageDialog(null, "Hold control and click to make a new intersection "
+                + "\nHold shift and click to make a new road (click on the start intersection then the end intersection"
+                + "\nPress start (on the side bar) to start the timer)");
+
     }
 
     /**
@@ -92,6 +98,7 @@ public class ControllerUI implements Task {
     @Override
     public boolean update() {
         draw();
+        s.repaint();
         return true;
     }
 }

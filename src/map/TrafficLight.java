@@ -12,7 +12,7 @@ import vehicle.Vehicle;
  * A class made to represent the traffic lights on the road network
  *
  * @author Lucas Vanparijs, Kareem Horstink
- * @since 27/02/2016
+ * @since 07/03/2016
  */
 public class TrafficLight {
 
@@ -74,7 +74,7 @@ public class TrafficLight {
         this.i = i;
         this.in = in;
         this.out = out;
-        i.addTrafficLight(this);
+//        i.addTrafficLight(this);
     }
 
     /**
@@ -185,5 +185,10 @@ public class TrafficLight {
     public String toString() {
         return "Traffic Light " + index + " is " + (isGreen() ? "green" : "red");
     }
-
+    
+    public void addOut(Road out){
+        Road[] r = new Road[this.out.length + 1];
+        System.arraycopy(this.out, 0, r, 0, this.out.length);
+        r[this.out.length] = out;
+    }
 }

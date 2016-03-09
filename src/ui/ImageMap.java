@@ -1,5 +1,6 @@
 package ui;
 
+import ui.helper.BufferedImageHelper;
 import helper.Logger;
 import java.awt.Color;
 import java.awt.Graphics2D;

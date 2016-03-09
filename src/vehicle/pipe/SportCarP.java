@@ -1,13 +1,13 @@
-package vehicle.forbe;
-
-import java.util.Random;
+package vehicle.pipe;
 
 import algorithms.Algorithm;
+import java.util.Random;
+
 import map.Intersection;
 import map.Road;
-import models.IntelligentDriver;
+import models.Forbe;
+import models.Pipe;
 import vehicle.Vehicle;
-import vehicle.VehicleHolder;
 
 /**
  * A sport modelled after Jaguar XK coupe 2007
@@ -16,12 +16,11 @@ import vehicle.VehicleHolder;
  *
  * @author Kareem Horstink
  */
-public class SportCarF extends Vehicle {
+public class SportCarP extends Vehicle {
 
-    public SportCarF(Road start, double percentage, Algorithm a, Intersection destination) {
-        super(start, percentage, new IntelligentDriver(), a);
+    public SportCarP(Road start, double percentage, Algorithm a, Intersection destination) {
+        super(start, percentage, new Pipe(), a);
         Random r = new Random();
-        setDesiredBraking(1.67);
         setDesiredSpeed(27.777777778 + r.nextInt(10));//100kmh
         setMaxAcceleration(4.5 + r.nextInt(3));// Jaguar XK Coupe 2007 - http://hypertextbook.com/facts/2001/MeredithBarricella.shtml
         setMaxDecceleration(2.98704 + r.nextInt(1));//Traffic Engineering Handbook, 5th ed. (J. L. Prine, ed.). ITE, Washington, D.C., 1999.
@@ -32,7 +31,6 @@ public class SportCarF extends Vehicle {
 
     @Override
     public boolean update() {
-    	if(VehicleHolder.getInstance().contains(this))
         if (getPosition().getValue() > 1) {
             if (getPosition().getKey().getEnd() == getDestination()) {
                 //Kills the car
@@ -45,13 +43,22 @@ public class SportCarF extends Vehicle {
                 setAcceleration(0);
             }
         } else {
+//            ArrayList<TrafficLight> atl = getPosition().getKey().getEnd().getTrafficLights();
+//            for (TrafficLight tl : atl) {
+//                if (tl.getIn() == getPosition().getKey()) {
             setTimeOnRoad(getTimeOnRoad() + 1);//add one tick
+//                }
+//            }
             getModel().calculate(this);
-        
-        return true;
-    }
+            /*if(!tl.isGreen() && getPosition().getValue()>0.95) {
+             setSpeed(0);
+             setAcceleration(0);
+             }else{
 
-        return false;
+             }*/
+        }
+
+        return true;
     }
 
 }

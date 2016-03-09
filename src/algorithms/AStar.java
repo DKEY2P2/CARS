@@ -1,5 +1,6 @@
 package algorithms;
 
+import helper.Logger;
 import java.util.ArrayList;
 
 import map.Intersection;
@@ -27,6 +28,12 @@ public class AStar implements Algorithm {
      * @author jvacek
      */
     public class Twinkle {
+
+        @Override
+        public String toString() {
+            return element.toString();
+        }
+        
 	private double		   gCost = 0;
 	private double		   hCost = 0;
 	private double		   fCost = 0;
@@ -86,8 +93,8 @@ public class AStar implements Algorithm {
 	    try {
 		this.children.remove(t);
 	    } catch (NullPointerException e) {
-		System.out.println(e);
-	    }
+                Logger.LogError(e);
+            }
 	}
 	
 	public ArrayList<Twinkle> getChildren() {
@@ -140,12 +147,11 @@ public class AStar implements Algorithm {
 		t_successor.setParent(q);
 		successor.add(t_successor);
 	    }
-	    
-	    for (Twinkle t_successor : successor) { //for each successor
+    	    for (Twinkle t_successor : successor) { //for each successor
 		
 		if (t_successor.getElement() == end) { //if successor is the goal, stop the search
 		    Twinkle next = t_successor;
-		    while (next.getParent()!=null){
+		    while (next.getParent() !=null){
 			result.add(0, next.getElement());
 			next = next.getParent();
 		    }
