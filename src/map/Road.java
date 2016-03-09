@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.PriorityQueue;
 import ui.Drawable;
+import ui.setting.GraphicsSetting;
 
 /**
  * This class represents a road A road is similar to an edge of a graph, they
@@ -72,7 +73,6 @@ public abstract class Road implements Drawable {
      */
     public Road(Intersection start, Intersection end, double length) {
         if (start == end) {
-            Logger.LogError("Start and end point are the same", this);
             throw new IllegalArgumentException("Start and end points are the same");
         }
         this.start = start;
@@ -169,12 +169,13 @@ public abstract class Road implements Drawable {
 
     @Override
     public void draw(Graphics g) {
-        int startX = start.getX();
-        int startY = start.getY();
-        int endY = end.getY();
-        int endX = end.getX();
+        int startX = (int) (start.getX() * GraphicsSetting.getInstance().getZoom()) + GraphicsSetting.getInstance().getPanX();
+        int startY = (int) (start.getY() * GraphicsSetting.getInstance().getZoom()) + GraphicsSetting.getInstance().getPanY();
+        int endY = (int) (end.getY() * GraphicsSetting.getInstance().getZoom()) + GraphicsSetting.getInstance().getPanY();
+        int endX = (int) (end.getX() * GraphicsSetting.getInstance().getZoom()) + GraphicsSetting.getInstance().getPanX();
         g.setColor(Color.BLACK);
-        ((Graphics2D) g).setStroke(new BasicStroke(10));
+        ((Graphics2D) g).setStroke(
+                new BasicStroke((float) (10 * GraphicsSetting.getInstance().getZoom() > 0 ? 10 * GraphicsSetting.getInstance().getZoom() : 1)));
         g.drawLine(startX, startY, endX, endY);
     }
 

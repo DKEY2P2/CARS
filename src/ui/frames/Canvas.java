@@ -9,8 +9,11 @@ import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseWheelEvent;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 import javax.swing.JFrame;
@@ -20,11 +23,13 @@ import map.intersection.DefaultIntersection;
 import map.road.NormalRoad;
 
 /**
- * The canvas to draw everything on. May be turn into a Jpanel at a later date
+ * The canvas to draw everything on. May be turn into a JPanel at a later date
  *
- * @author Kareems
+ * @author Kareem Horstink
  */
 public class Canvas extends JFrame {
+
+    protected static boolean click = false;
 
     private int keyCode = -Integer.MAX_VALUE;
 
@@ -43,6 +48,34 @@ public class Canvas extends JFrame {
         int height = (int) (screenSize.getHeight() * GraphicsSetting.getInstance().getScale());
 
         setSize(width, height);
+
+        addMouseMotionListener(new MouseMotionAdapter() {
+            int x = 0;
+            int y = 0;
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                if (click) {
+                    x = e.getX();
+                    y = e.getY();
+                } else {
+                    GraphicsSetting.getInstance().setPanX(GraphicsSetting.getInstance().getPanX() + (e.getX() - x));
+                    GraphicsSetting.getInstance().setPanY(GraphicsSetting.getInstance().getPanY() + (e.getY() - y));
+                    x = e.getX();
+                    y = e.getY();
+                }
+
+            }
+
+        }
+        );
+
+        addMouseWheelListener(new MouseAdapter() {
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                GraphicsSetting.getInstance().setZoom(GraphicsSetting.getInstance().getZoom() + e.getPreciseWheelRotation() * 0.05);
+            }
+        });
 
         //Allows the user to exit the program
         addKeyListener(new KeyAdapter() {
@@ -134,9 +167,17 @@ public class Canvas extends JFrame {
                 System.out.println("End point selected");
                 Intersection end = findClosest(x, y);
                 System.out.println(end);
-                Road r = new NormalRoad(start, end);
-                m.addRoad(r);
+                Road r = null;
+                try {
+                    r = new NormalRoad(start, end);
+                } catch (Exception e) {
+                    Logger.LogError(e);
+                }
+                if (r != null) {
+                    m.addRoad(r);
+                }
                 start = null;
+
             } else {
                 System.out.println("Start point selected");
                 start = findClosest(x, y);
@@ -177,6 +218,11 @@ public class Canvas extends JFrame {
 
         @Override
         public void mousePressed(MouseEvent e) {
+            if (e.getButton() == MouseEvent.BUTTON1) {
+                Canvas.click = true;
+            }else{
+                Canvas.click = false;
+            }
 
         }
 

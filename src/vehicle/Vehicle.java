@@ -18,6 +18,7 @@ import map.TrafficLight;
 import models.Model;
 import ui.Drawable;
 import ui.ImageMap;
+import ui.setting.GraphicsSetting;
 
 /**
  * The abstract class for all vehicles and identities present in the simulation
@@ -464,18 +465,11 @@ public abstract class Vehicle implements Task, Drawable {
         Intersection end = road.getEnd();
         int width = 1;
         int height = 1;
-
         int differentX = end.getX() - start.getX();
         int differentY = end.getY() - start.getY();
-        double angle = Math.atan2(differentY, differentX);
-
-//        BufferedImage bi = ImageMap.getInstance().getImage(getImageName(), -angle, 0.05);
-//        /*BufferedImage bi = ImageMap.getInstance().getImage(getImageName(), 0, 0.05);*/
-//        g.drawImage(bi,
-//                (int) (start.getX() + differentX * percentage - bi.getWidth() / 2),
-//                (int) (start.getY() + differentY * percentage - bi.getHeight() / 2), null);
-        g.drawOval((int) (start.getX() + differentX * percentage - width / 2),
-                (int) (start.getY() + differentY * percentage - height / 2), width, height);
+        g.drawOval((int) ((start.getX() + differentX * percentage - width / 2)*GraphicsSetting.getInstance().getZoom()),
+                (int) ((start.getY() + differentY * percentage - height / 2)*GraphicsSetting.getInstance().getZoom())
+                , width, height);
 
     }
 

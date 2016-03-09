@@ -28,7 +28,7 @@ public class VehicleHolder implements Collection<Vehicle> {
     private VehicleHolder() {
     }
 
-    private HashMap<Integer, Vehicle> vehicleMap = new HashMap<>();
+    private final HashMap<Integer, Vehicle> VEHICLE_MAP = new HashMap<>();
 
     /**
      * Adds a new vehicle with the corespondent key
@@ -37,7 +37,7 @@ public class VehicleHolder implements Collection<Vehicle> {
      * @param key The key that is associated
      */
     public void add(Vehicle v, Integer key) {
-        vehicleMap.put(key, v);
+        VEHICLE_MAP.put(key, v);
     }
 
     /**
@@ -47,50 +47,50 @@ public class VehicleHolder implements Collection<Vehicle> {
      * @return The item removed
      */
     public Vehicle remove(Integer key) {
-        return vehicleMap.remove(key);
+        return VEHICLE_MAP.remove(key);
     }
 
     @Override
     public int size() {
-        return vehicleMap.size();
+        return VEHICLE_MAP.size();
     }
 
     @Override
     public boolean isEmpty() {
-        return vehicleMap.isEmpty();
+        return VEHICLE_MAP.isEmpty();
     }
 
     @Override
     public boolean contains(Object o) {
         if (o instanceof Vehicle) {
-            return vehicleMap.containsValue((Vehicle) o);
+            return VEHICLE_MAP.containsValue((Vehicle) o);
         } else if (o instanceof Integer) {
-            return vehicleMap.containsKey((Integer) o);
+            return VEHICLE_MAP.containsKey((Integer) o);
         }
         return false;
     }
 
     @Override
     public Iterator<Vehicle> iterator() {
-        return vehicleMap.values().iterator();
+        return VEHICLE_MAP.values().iterator();
     }
 
     @Override
     public Object[] toArray() {
-        return vehicleMap.values().toArray();
+        return VEHICLE_MAP.values().toArray();
     }
 
     @Override
     public <T> T[] toArray(T[] a) {
-        return vehicleMap.values().toArray(a);
+        return VEHICLE_MAP.values().toArray(a);
     }
 
     @Override
     public boolean add(Vehicle e) {
-        if (vehicleMap.containsKey(e.getIndex())) {
+        if (VEHICLE_MAP.containsKey(e.getIndex())) {
             return false;
         } else {
-            vehicleMap.put(e.getIndex(), e);
+            VEHICLE_MAP.put(e.getIndex(), e);
             return true;
         }
     }
@@ -98,14 +98,14 @@ public class VehicleHolder implements Collection<Vehicle> {
     @Override
     public boolean remove(Object o) {
         if (o instanceof Vehicle) {
-            if (vehicleMap.containsValue((Vehicle) o)) {
-                vehicleMap.remove(((Vehicle) o).getIndex());
+            if (VEHICLE_MAP.containsValue((Vehicle) o)) {
+                VEHICLE_MAP.remove(((Vehicle) o).getIndex());
                 return true;
             }
             return false;
         } else if (o instanceof Integer) {
-            if (vehicleMap.containsKey((Integer) o)) {
-                vehicleMap.remove((Integer) o);
+            if (VEHICLE_MAP.containsKey((Integer) o)) {
+                VEHICLE_MAP.remove((Integer) o);
                 return true;
             }
         }
@@ -147,7 +147,7 @@ public class VehicleHolder implements Collection<Vehicle> {
 
     @Override
     public void clear() {
-        vehicleMap.clear();
+        VEHICLE_MAP.clear();
     }
 
 }
