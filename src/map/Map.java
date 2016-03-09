@@ -3,117 +3,127 @@ package map;
 import java.util.ArrayList;
 
 /**
- * This Class represents a road network on which we can simulate traffic
- * A map is very similar to a directed graph
+ * This Class represents a road network on which we can simulate traffic A map
+ * is very similar to a directed graph
  *
  * @author Lucas Vanparijs
  * @since 18-02-2016
  */
 public class Map {
     
-    
-
     /**
      * ArrayList storing all the roads in the map
      */
-    private ArrayList<Road> ar = new ArrayList<Road>();
+    private ArrayList<Road>	    ar = new ArrayList<Road>();
     /**
      * ArrayList storing all the Intersection in the map
      */
     private ArrayList<Intersection> ai = new ArrayList<Intersection>();
-
+				       
     /**
      * Constructor of the map, PRONE TO CHANGE
+     * 
      * @param ar The roads that make up the map
      * @param ai The intersections that make up the map
      */
-    public Map(ArrayList<Road> ar, ArrayList<Intersection> ai){
-        this.ar = ar;
-        this.ai = ai;
+    public Map(ArrayList<Road> ar, ArrayList<Intersection> ai) {
+	this.ar = ar;
+	this.ai = ai;
     }
-
+    
     /**
      * Returns true if there is a Road in between the two intersections
+     * 
      * @param i1 Intersection
      * @param i2 Intersection
-     * @return True if there is a Road in between the 2 Intersection, false if there isn't
+     * @return True if there is a Road in between the 2 Intersection, false if
+     *         there isn't
      */
-    public boolean adjacent(Intersection i1, Intersection i2){
-        for(Road r:ar)
-            if((r.getStart() == i1 && r.getEnd() == i2) || (r.getStart() == i2 && r.getEnd() == i1))
-                return true;
-        return false;
+    public boolean adjacent(Intersection i1, Intersection i2) {
+	for (Road r : ar)
+	    if ((r.getStart() == i1 && r.getEnd() == i2) || (r.getStart() == i2 && r.getEnd() == i1))
+		return true;
+	return false;
     }
-
+    
     /**
-     * Returns all the neighbouring Intersections(The ones that share a Road) with the input
+     * Returns all the neighbouring Intersections(The ones that share a Road)
+     * with the input
+     * 
      * @param i The intersection of which we want to get the neighbours
      * @return A list of all neighbouring intersections
      */
-    public ArrayList<Intersection> neighbours(Intersection i){
-        ArrayList<Intersection> neighbours = new ArrayList<Intersection>();
-        for(Road r:ar)
-            if(r.getStart() == i)
-                neighbours.add(r.getEnd());
-            else if(r.getEnd() == i)
-                neighbours.add(r.getStart());
-        return neighbours;
+    public ArrayList<Intersection> neighbours(Intersection i) {
+	ArrayList<Intersection> neighbours = new ArrayList<Intersection>();
+	for (Road r : ar)
+	    if (r.getStart() == i)
+		neighbours.add(r.getEnd());
+	    else if (r.getEnd() == i)
+		neighbours.add(r.getStart());
+	return neighbours;
     }
-
+    
     /**
      * Adds an intersection to the map
+     * 
      * @param i the Intersection to be added
      * @return the added Intersections
      */
-    public Intersection addIntersection(Intersection i){
-        ai.add(i);
-        return i;
+    public Intersection addIntersection(Intersection i) {
+	ai.add(i);
+	return i;
     }
-
+    
     /**
      * Removes a certain intersection from the map
+     * 
      * @param i the intersection to be removed
      * @return the removed intersection
      */
-    public Intersection removeIntersection(Intersection i){
-        ai.remove(i);
-        return i;
+    public Intersection removeIntersection(Intersection i) {
+	ai.remove(i);
+	return i;
     }
-
+    
     /**
      * Returns all the intersections on the map
+     * 
      * @return All intersections
      */
-    public ArrayList<Intersection> getIntersections(){
-        return ai;
+    public ArrayList<Intersection> getIntersections() {
+	return ai;
     }
-
+    
     /**
      * Adds a road to the map
+     * 
      * @param r the road to be added
      * @return the added road
      */
-    public Road addRoad(Road r){
-        ar.add(r);
-        return r;
+    public Road addRoad(Road r) {
+	ar.add(r);
+	return r;
     }
-
+    
     /**
      * Removes a certain road from the map
+     * 
      * @param r the road to be removed
      * @return the removed road
      */
-    public Road removeRoad(Road r){
-        ar.remove(r);
-        return r;
+    public Road removeRoad(Road r) {
+	ar.remove(r);
+	return r;
     }
-
+    
     /**
      * Returns all the roads on the map
+     * 
      * @return All the roads on the map
      */
-    public ArrayList<Road> getRoads(){
-        return ar;
+    public ArrayList<Road> getRoads() {
+	return ar;
     }
-
+    
+    
 }
