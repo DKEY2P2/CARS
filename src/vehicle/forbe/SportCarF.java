@@ -21,6 +21,7 @@ public class SportCarF extends Vehicle {
     public SportCarF(Road start, double percentage, Algorithm a, Intersection destination) {
         super(start, percentage, new IntelligentDriver(), a);
         Random r = new Random();
+        setDesiredBraking(1.67);
         setDesiredSpeed(27.777777778 + r.nextInt(10));//100kmh
         setMaxAcceleration(4.5 + r.nextInt(3));// Jaguar XK Coupe 2007 - http://hypertextbook.com/facts/2001/MeredithBarricella.shtml
         setMaxDecceleration(2.98704 + r.nextInt(1));//Traffic Engineering Handbook, 5th ed. (J. L. Prine, ed.). ITE, Washington, D.C., 1999.
