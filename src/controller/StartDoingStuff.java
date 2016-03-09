@@ -1,6 +1,7 @@
 package controller;
 
 import algorithms.AStar;
+import algorithms.TestAl;
 import controller.threads.ThreadController;
 import helper.Logger;
 import map.Intersection;
@@ -8,10 +9,13 @@ import map.Road;
 import map.intersection.DefaultIntersection;
 import map.road.NormalRoad;
 import ui.ControllerUI;
-import vehicle.forbe.SportCarF;
+import vehicle.SportCar;
 import helper.StupidHelper;
 import java.util.ArrayList;
 import java.util.Random;
+import models.Forbe;
+import models.Model;
+import vehicle.VehicleFactory;
 
 /**
  * A start class for the rest of the system
@@ -29,6 +33,15 @@ public class StartDoingStuff {
      * consider it the same as if you left it blank
      */
     public static void main(String[] args) {
+        /* Set what model to use for the rest of the application */
+        SimulationSettings.getInstance().setModel(new Forbe());
+
+        /* Set what path finding AI to use for the rest of the application */
+        SimulationSettings.getInstance().setPathFindingAI(new TestAl());
+
+        /* Set the number of ticks the simulation waits until it spawns new vehicles */
+        SimulationSettings.getInstance().setTimeUntilSpawn(150);
+
         /* Creates the controller */
         Controller control = Controller.getInstance();
 
@@ -39,7 +52,7 @@ public class StartDoingStuff {
         /* A random gen for location of a vehicle */
         Random r = new Random();
         /* Creates a ticker with the value of 100 ms between each tick which represent 1 second */
-        Ticker t = new Ticker(1, 10);
+        Ticker t = new Ticker(1, 100);
 
         /* New intersection */
         DefaultIntersection a1 = new DefaultIntersection(100, 100, t);
@@ -65,11 +78,6 @@ public class StartDoingStuff {
         b.add(r4);
         b.add(r5);
 
-        //Creates n number of cars
-        for (int i = 0; i < 10; i++) {
-            new SportCarF((NormalRoad) StupidHelper.getRandom(b), r.nextDouble(), new AStar(), (Intersection) StupidHelper.getRandom(a));
-        }
-
         //Add the item to the controller
         b.stream().forEach((b1) -> {
             control.getMap().addRoad(b1);
@@ -78,6 +86,10 @@ public class StartDoingStuff {
             control.getMap().addIntersection(as);
         });
 
+        //Creates n number of cars
+        for (int i = 0; i < 100; i++) {
+            VehicleFactory.getFactory().createVehicle(VehicleFactory.SPORT_CAR);
+        }
         //Add the ticker to the controller
         control.setTicker(t);//so we can get the ticker later on
 
@@ -108,16 +120,16 @@ public class StartDoingStuff {
         //Starts the UI
         control.setUI(new ControllerUI());
         control.getUI().update();
-
+        
     }
     private static boolean start = false;
-
+    
     public static void start() {
         if (!start) {
             Controller.getInstance().getTicker().start("tick");
             start = true;
         }
-
+        
     }
-
+    
 }

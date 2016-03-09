@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package algorithms;
 
 import helper.Logger;
@@ -12,8 +7,10 @@ import map.Intersection;
 import map.Road;
 
 /**
+ * A test path finding AI that just picks a random road
  *
- * @author Imray
+ * @author Kareem Horstink
+ * @since 07-03-16
  */
 public class TestAl implements Algorithm {
 
@@ -21,22 +18,17 @@ public class TestAl implements Algorithm {
     public ArrayList<Intersection> findShortestPath(Intersection start, Intersection end) {
         map.Map m = controller.Controller.getInstance().getMap();
         ArrayList<Intersection> tmp = new ArrayList<>();
-        loop:
-        for (Road road : m.getRoads()) {
-            if (road.getStart() == start) {
-                ArrayList<Road> a = road.getEnd().getRoads();
-                for (Road a1 : a) {
-                    if (a1 == road || a1.getStart() == start) {
-                        continue;
-                    }
-                    tmp.add(a1.getStart());
-                }
+
+        ArrayList<Road> r = start.getRoads();
+        for (Road r1 : r) {
+            if (r1.getStart() == start) {
+                tmp.add(r1.getEnd());
             }
         }
         if (tmp.isEmpty()) {
             Logger.LogError("Next is empty", this);
         }
-        
+
         Intersection a = (Intersection) StupidHelper.getRandom(tmp);
         tmp = new ArrayList<>();
         tmp.add(a);
