@@ -35,11 +35,11 @@ public class GEOjson {
 	
 	//For each Feature object...
 	for (int i = 0; i < features.length(); i++) {
-	    System.out.println("Feature " + i);
+//	    System.out.println("Feature " + i);
 	    JSONObject geom = features.getJSONObject(i).getJSONObject("geometry");
 	    
 	    if (geom.getString("type").equals("LineString")) {
-		System.out.println("LineString object");
+//		System.out.println("LineString object");
 		ArrayList<Intersection> ints = new ArrayList<Intersection>();
 		
 		JSONArray coordinates = geom.getJSONArray("coordinates");
@@ -49,16 +49,16 @@ public class GEOjson {
 		    
 		    JSONArray point = coordinates.getJSONArray(j);
 		    
-		    int xcoord = (int) point.getDouble(0);
-		    int ycoord = (int) point.getDouble(1);
+		    int xcoord = (int) (point.getDouble(0)*100000);
+		    int ycoord = (int) (point.getDouble(1)*100000);
 		    
 		    ints.add(includeIntersectionAtPoint(xcoord, ycoord, map));
 		    
 		}
 		//now that we have intersections, let's string shit up
 		for (int j = 0; j < ints.size() - 1; j++) {
-		    map.addRoad(new NormalRoad(ints.get(i), ints.get(i + 1)));
-		    map.addRoad(new NormalRoad(ints.get(i + 1), ints.get(i)));
+		    map.addRoad(new NormalRoad(ints.get(j), ints.get(j + 1)));
+		    map.addRoad(new NormalRoad(ints.get(j + 1), ints.get(j)));
 		}
 		
 	    }

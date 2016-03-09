@@ -17,7 +17,7 @@ public class JSON_reader {
 	
 	
 	// TODO Auto-generated method stub
-	String filepath = "resources/geojson/test.json";
+	String filepath = "resources/geojson/gz_2010_us_outline_20m.json";
 	
 	boolean debug = true;
 	if (debug) {
