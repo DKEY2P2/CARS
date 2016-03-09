@@ -1,4 +1,4 @@
-package vehicle.forbe;
+package vehicle;
 
 import algorithms.Algorithm;
 import java.util.Random;
@@ -6,19 +6,17 @@ import java.util.Random;
 import map.Intersection;
 import map.Road;
 import models.Forbe;
-import vehicle.Vehicle;
+import models.Model;
 
 /**
  * A sport modelled after Jaguar XK coupe 2007
- * <p>
- * Using Forbe's model
  *
  * @author Kareem Horstink
  */
-public class SportCarF extends Vehicle {
+public class SportCar extends Vehicle {
 
-    public SportCarF(Road start, double percentage, Algorithm a, Intersection destination) {
-        super(start, percentage, new Forbe(), a);
+    protected SportCar(Road start, double percentage, Model m, Algorithm a, Intersection destination) {
+        super(start, percentage, m, a);
         Random r = new Random();
         setDesiredSpeed(27.777777778 + r.nextInt(10));//100kmh
         setMaxAcceleration(4.5 + r.nextInt(3));// Jaguar XK Coupe 2007 - http://hypertextbook.com/facts/2001/MeredithBarricella.shtml
@@ -42,19 +40,8 @@ public class SportCarF extends Vehicle {
                 setAcceleration(0);
             }
         } else {
-//            ArrayList<TrafficLight> atl = getPosition().getKey().getEnd().getTrafficLights();
-//            for (TrafficLight tl : atl) {
-//                if (tl.getIn() == getPosition().getKey()) {
             setTimeOnRoad(getTimeOnRoad() + 1);//add one tick
-//                }
-//            }
             getModel().calculate(this);
-            /*if(!tl.isGreen() && getPosition().getValue()>0.95) {
-             setSpeed(0);
-             setAcceleration(0);
-             }else{
-
-             }*/
         }
 
         return true;
