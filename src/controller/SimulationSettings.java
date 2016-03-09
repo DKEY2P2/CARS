@@ -16,6 +16,26 @@ public class SimulationSettings {
 
     }
 
+    private int timeUntilSpawn = 150;
+
+    /**
+     * Get the value of timeUntilSpawn
+     *
+     * @return the value of timeUntilSpawn
+     */
+    public int getTimeUntilSpawn() {
+        return timeUntilSpawn;
+    }
+
+    /**
+     * Set the number of ticks wanted until you want to spawn new vehicles
+     *
+     * @param timeUntilSpawn new value of timeUntilSpawn in ticks (int)
+     */
+    public void setTimeUntilSpawn(int timeUntilSpawn) {
+        this.timeUntilSpawn = timeUntilSpawn;
+    }
+
     private Model model;
 
     /**

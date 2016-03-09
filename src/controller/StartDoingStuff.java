@@ -39,6 +39,9 @@ public class StartDoingStuff {
         /* Set what path finding AI to use for the rest of the application */
         SimulationSettings.getInstance().setPathFindingAI(new TestAl());
 
+        /* Set the number of ticks the simulation waits until it spawns new vehicles */
+        SimulationSettings.getInstance().setTimeUntilSpawn(150);
+
         /* Creates the controller */
         Controller control = Controller.getInstance();
 
@@ -117,16 +120,16 @@ public class StartDoingStuff {
         //Starts the UI
         control.setUI(new ControllerUI());
         control.getUI().update();
-
+        
     }
     private static boolean start = false;
-
+    
     public static void start() {
         if (!start) {
             Controller.getInstance().getTicker().start("tick");
             start = true;
         }
-
+        
     }
-
+    
 }
