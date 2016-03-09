@@ -215,7 +215,7 @@ public abstract class Vehicle implements Task, Drawable {
      * @param m The model to use
      * @param a The algorithm that the car should use for path finding
      */
-    public Vehicle(Road start, double percentage, Model m, Algorithm a) {
+    protected Vehicle(Road start, double percentage, Model m, Algorithm a) {
         if (m == null || start == null || a == null || percentage > 1 || percentage < 0) {
             throw new IllegalArgumentException("Parameters are not correct");
         }

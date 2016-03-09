@@ -1,5 +1,6 @@
 package ui.frames;
 
+import controller.StartDoingStuff;
 import ui.setting.GraphicsSetting;
 import helper.Logger;
 import java.awt.Color;
@@ -12,15 +13,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.Popup;
-import javax.swing.PopupFactory;
 import map.Intersection;
 import map.Road;
 import map.intersection.DefaultIntersection;
@@ -61,6 +54,8 @@ public class Canvas extends JFrame {
                     Logger.printOther();
                     //Exit the application
                     System.exit(0);
+                } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    StartDoingStuff.start();
                 } else {
                     keyCode = e.getKeyCode();
                     if (e.isControlDown()) {
@@ -173,7 +168,7 @@ public class Canvas extends JFrame {
                 addIntersection(e.getX(), e.getY());
             } else if (keyCode == -2) {
                 connect(e.getX(), e.getY());
-            }else{
+            } else {
                 System.out.println("Reset");
                 start = null;
             }
