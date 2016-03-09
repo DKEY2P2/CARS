@@ -29,7 +29,8 @@ public class SportCar extends Vehicle {
 
     @Override
     public boolean update() {
-        if (getPosition().getValue() > 1) {
+    	if(VehicleHolder.getInstance().contains(this)){
+            if (getPosition().getValue() > 1) {
             if (getPosition().getKey().getEnd() == getDestination()) {
                 //Kills the car
                 boolean a = vehicle.VehicleHolder.getInstance().remove(this);
@@ -46,6 +47,8 @@ public class SportCar extends Vehicle {
         }
 
         return true;
+    }
+    	return false;
     }
 
 }

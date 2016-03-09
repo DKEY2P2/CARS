@@ -9,7 +9,7 @@ import helper.Logger;
 import map.Road;
 import map.intersection.DefaultIntersection;
 import map.road.NormalRoad;
-import models.Forbe;
+import models.IntelligentDriver;
 import ui.ControllerUI;
 import vehicle.VehicleFactory;
 
@@ -30,7 +30,7 @@ public class StartDoingStuff {
      */
     public static void main(String[] args) {
         /* Set what model to use for the rest of the application */
-        SimulationSettings.getInstance().setModel(new Forbe());
+        SimulationSettings.getInstance().setModel(new IntelligentDriver());
 
         /* Set what path finding AI to use for the rest of the application */
         SimulationSettings.getInstance().setPathFindingAI(new TestAl());
