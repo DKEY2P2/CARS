@@ -68,6 +68,16 @@ public class Canvas extends JFrame implements Drawable {
                 }
             }
 
+            @Override
+            public void keyReleased(KeyEvent e) {
+                keyCode = e.getKeyCode();
+                if (e.isControlDown()) {
+                    keyCode = 0;
+                } else if (e.isShiftDown()) {
+                    keyCode = 0;
+                }
+            }
+
         });
         addMouseListener(new MouseAdapterCustom());
         //Set the default operation to close the java application

@@ -4,6 +4,9 @@
     <list default="true" id="a0410bfc-c827-43f8-b05e-49eb50117420" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/controller/StartDoingStuff.java" afterPath="$PROJECT_DIR$/src/controller/StartDoingStuff.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/map/Road.java" afterPath="$PROJECT_DIR$/src/map/Road.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/models/Forbe.java" afterPath="$PROJECT_DIR$/src/models/Forbe.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ui/frames/Canvas.java" afterPath="$PROJECT_DIR$/src/ui/frames/Canvas.java" />
     </list>
     <ignored path="Cars.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -28,13 +31,23 @@
       <file leaf-file-name="Road.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/map/Road.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-8.724138">
-              <caret line="173" column="34" selection-start-line="173" selection-start-column="34" selection-end-line="173" selection-end-column="34" />
+            <state vertical-scroll-proportion="-20.413794">
+              <caret line="211" column="37" selection-start-line="211" selection-start-column="37" selection-end-line="211" selection-end-column="37" />
               <folding>
                 <element signature="e#1463#1472#0" expanded="true" />
                 <element signature="e#3172#3173#0" expanded="true" />
                 <element signature="e#3197#3198#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Forbe.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/models/Forbe.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.3042017">
+              <caret line="51" column="109" selection-start-line="51" selection-start-column="109" selection-end-line="51" selection-end-column="109" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -79,16 +92,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PriorityQueue.java" pinned="false" current-in-tab="false">
-        <entry file="jar://C:/Program Files/Java/jdk1.8.0_73/src.zip!/java/util/PriorityQueue.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="162" column="57" selection-start-line="162" selection-start-column="36" selection-end-line="162" selection-end-column="57" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="SportCar.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/vehicle/SportCar.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -99,11 +102,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="StartDoingStuff.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="StartDoingStuff.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/controller/StartDoingStuff.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.45714286">
-              <caret line="41" column="67" selection-start-line="41" selection-start-column="67" selection-end-line="41" selection-end-column="67" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="41" column="70" selection-start-line="41" selection-start-column="70" selection-end-line="41" selection-end-column="70" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -125,7 +128,7 @@
         <entry file="file://$PROJECT_DIR$/src/ui/frames/Canvas.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="214" column="0" selection-start-line="214" selection-start-column="0" selection-end-line="214" selection-end-column="0" />
+              <caret line="78" column="13" selection-start-line="78" selection-start-column="13" selection-end-line="78" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -152,7 +155,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/models/Forbe.java" />
         <option value="$PROJECT_DIR$/src/vehicle/forbe/SportCarF.java" />
         <option value="$PROJECT_DIR$/src/vehicle/pipe/SportCarP.java" />
         <option value="$PROJECT_DIR$/src/vehicle/SportCar.java" />
@@ -165,11 +167,12 @@
         <option value="$PROJECT_DIR$/src/models/Pipe.java" />
         <option value="$PROJECT_DIR$/src/map/road/NormalRoad.java" />
         <option value="$PROJECT_DIR$/src/vehicle/VehicleFactory.java" />
-        <option value="$PROJECT_DIR$/src/map/Road.java" />
         <option value="$PROJECT_DIR$/src/ui/ControllerUI.java" />
-        <option value="$PROJECT_DIR$/src/ui/frames/Canvas.java" />
         <option value="$PROJECT_DIR$/src/vehicle/Vehicle.java" />
         <option value="$PROJECT_DIR$/src/controller/StartDoingStuff.java" />
+        <option value="$PROJECT_DIR$/src/ui/frames/Canvas.java" />
+        <option value="$PROJECT_DIR$/src/map/Road.java" />
+        <option value="$PROJECT_DIR$/src/models/Forbe.java" />
       </list>
     </option>
   </component>
@@ -852,7 +855,13 @@
       <option name="project" value="LOCAL" />
       <updated>1457613493898</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Changed some GUI stuff&#10;&#10;When you click it now ALWAYS makes an intersection">
+      <created>1457613632826</created>
+      <option name="number" value="00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1457613632826</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -890,7 +899,8 @@
     <MESSAGE value="OVM Stuff, We should test it with a scaled down version of our progam" />
     <MESSAGE value="AStar now implemented, very good, very nice" />
     <MESSAGE value="OVM = done, Cars don't overtake and collide anymore.&#10;I made the Deque on the road into a PriorityQueue which solved the problem&#10;Still getting the road &quot;Start and End are the same&quot; errors" />
-    <option name="LAST_COMMIT_MESSAGE" value="OVM = done, Cars don't overtake and collide anymore.&#10;I made the Deque on the road into a PriorityQueue which solved the problem&#10;Still getting the road &quot;Start and End are the same&quot; errors" />
+    <MESSAGE value="Changed some GUI stuff&#10;&#10;When you click it now ALWAYS makes an intersection" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed some GUI stuff&#10;&#10;When you click it now ALWAYS makes an intersection" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1112,14 +1122,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/models/Forbe.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="55" column="42" selection-start-line="55" selection-start-column="42" selection-end-line="55" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ui/setting/GraphicsSetting.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1311,18 +1313,28 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ui/frames/Canvas.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="214" column="0" selection-start-line="214" selection-start-column="0" selection-end-line="214" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/vehicle/SportCar.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/controller/StartDoingStuff.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="41" column="70" selection-start-line="41" selection-start-column="70" selection-end-line="41" selection-end-column="70" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ui/frames/Canvas.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="78" column="13" selection-start-line="78" selection-start-column="13" selection-end-line="78" selection-end-column="13" />
           <folding />
         </state>
       </provider>
@@ -1353,8 +1365,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/map/Road.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.724138">
-          <caret line="173" column="34" selection-start-line="173" selection-start-column="34" selection-end-line="173" selection-end-column="34" />
+        <state vertical-scroll-proportion="-20.413794">
+          <caret line="211" column="37" selection-start-line="211" selection-start-column="37" selection-end-line="211" selection-end-column="37" />
           <folding>
             <element signature="e#1463#1472#0" expanded="true" />
             <element signature="e#3172#3173#0" expanded="true" />
@@ -1363,13 +1375,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/controller/StartDoingStuff.java">
+    <entry file="file://$PROJECT_DIR$/src/models/Forbe.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.45714286">
-          <caret line="41" column="67" selection-start-line="41" selection-start-column="67" selection-end-line="41" selection-end-column="67" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.3042017">
+          <caret line="51" column="109" selection-start-line="51" selection-start-column="109" selection-end-line="51" selection-end-column="109" />
+          <folding />
         </state>
       </provider>
     </entry>

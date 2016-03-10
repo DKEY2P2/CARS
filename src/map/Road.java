@@ -208,10 +208,10 @@ class VehicleComparator implements Comparator<Vehicle>{
     @Override
     public int compare(Vehicle o1, Vehicle o2) {
         if(o1.getPosition().getValue() < o2.getPosition().getValue())
-            return -1;
+            return 1;
         else if(o1.getPosition().getValue() == o2.getPosition().getValue())
             return 0;
         else
-            return 1;
+            return -1;
     }
 }

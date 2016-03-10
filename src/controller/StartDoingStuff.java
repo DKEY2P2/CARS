@@ -39,7 +39,7 @@ public class StartDoingStuff {
         SimulationSettings.getInstance().setModel(new Forbe());
 
         /* Set what path finding AI to use for the rest of the application */
-        SimulationSettings.getInstance().setPathFindingAI(new AStar());
+        SimulationSettings.getInstance().setPathFindingAI(new TestAl());
 
         /* Set the number of ticks the simulation waits until it spawns new vehicles */
         SimulationSettings.getInstance().setTimeUntilSpawn(150);
