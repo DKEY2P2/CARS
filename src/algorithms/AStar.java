@@ -105,7 +105,7 @@ public class AStar implements Algorithm {
 				}
 			}
 		}else{
-			System.err.print("There is no such thing as a "+s+" cost");
+			System.err.println("There is no such thing as a "+s+" cost");
 		}
 
 		return  mindex;

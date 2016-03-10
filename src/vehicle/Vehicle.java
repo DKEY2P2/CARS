@@ -223,7 +223,6 @@ public abstract class Vehicle implements Task, Drawable {
         setAcceleration(0);
         setDestination(null);
         setStart(start.getStart());
-        start.getVehicles().offer(this);
         setTimeOnRoad(0);
         setPosition(new SimpleImmutableEntry<>(start, percentage));
         setDesiredSpeed(0);
@@ -233,6 +232,7 @@ public abstract class Vehicle implements Task, Drawable {
         this.a = a;
         index = indexCounter++;
         VehicleHolder.getInstance().add(this);
+        start.getVehicles().offer(this);
     }
 
     /*

@@ -1,7 +1,8 @@
 package map;
 
 import helper.Logger;
-import java.awt.Graphics;
+
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import vehicle.Vehicle;
 import java.util.ArrayList;
@@ -20,6 +21,8 @@ import ui.ImageMap;
  * @since 27-02-16
  */
 public abstract class Intersection implements Drawable {
+
+    public static final int DIAMETER = 20;
 
     int timerLength = 4000;
 
@@ -223,7 +226,7 @@ public abstract class Intersection implements Drawable {
      * @param r the road to return the vehicles from
      * @return A Queue of all vehicles that are on the specified road
      */
-    public Deque<Vehicle> getQueue(Road r) {
+    public PriorityQueue<Vehicle> getQueue(Road r) {
         if (roads.contains(r)) {
             return r.getVehicles();
         } else {
@@ -361,8 +364,10 @@ public abstract class Intersection implements Drawable {
 
     @Override
     public void draw(Graphics g) {
-        BufferedImage bi = ImageMap.getInstance().getImage(imageKey);
-        g.drawImage(bi, x - bi.getWidth() / 2, y - bi.getHeight() / 2, null);
+        //BufferedImage bi = ImageMap.getInstance().getImage(imageKey);
+        //g.drawImage(bi, x - bi.getWidth() / 2, y - bi.getHeight() / 2, null);
+        g.setColor(Color.WHITE);
+        g.fillOval(x-DIAMETER/2,y-DIAMETER/2,DIAMETER,DIAMETER);
         int i = 0;
         for (TrafficLight tLight : tLights) {
             tLight.draw(g, i++);

@@ -1,12 +1,11 @@
 package ui.frames;
 
 import map.TrafficLight;
+import ui.Drawable;
 import ui.setting.GraphicsSetting;
 import helper.Logger;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Toolkit;
+
+import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
@@ -29,7 +28,7 @@ import map.road.NormalRoad;
  *
  * @author Kareems
  */
-public class Canvas extends JFrame {
+public class Canvas extends JFrame implements Drawable {
 
     private int keyCode = -Integer.MAX_VALUE;
 
@@ -70,7 +69,7 @@ public class Canvas extends JFrame {
             }
 
         });
-        addMouseListener(new MouseListenerCustom());
+        addMouseListener(new MouseAdapterCustom());
         //Set the default operation to close the java application
         setDefaultCloseOperation(3);
 
@@ -122,7 +121,12 @@ public class Canvas extends JFrame {
         Toolkit.getDefaultToolkit().sync();
     }
 
-    private class MouseListenerCustom extends MouseAdapter {
+    @Override
+    public void draw(Graphics g) {
+
+    }
+
+    private class MouseAdapterCustom extends MouseAdapter {
 
         private Intersection start;
 
@@ -166,7 +170,7 @@ public class Canvas extends JFrame {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            System.out.println("clicked");
+            /*System.out.println("clicked");
             if (keyCode == -1) {
                 addIntersection(e.getX(), e.getY());
             } else if (keyCode == -2) {
@@ -175,16 +179,27 @@ public class Canvas extends JFrame {
                 System.out.println("Reset");
                 start = null;
             }
-            controller.Controller.getInstance().getUI().update();
+            controller.Controller.getInstance().getUI().update();*/
         }
 
         @Override
         public void mousePressed(MouseEvent e) {
-
+            if(keyCode == -1){
+                addIntersection(e.getX(), e.getY());
+            }else if(keyCode == -2 && start == null){
+                connect(e.getX(), e.getY());
+            }
+            controller.Controller.getInstance().getUI().update();
         }
 
         @Override
         public void mouseReleased(MouseEvent e) {
+            if(keyCode == -2 && start != null){
+                connect(e.getX(), e.getY());
+            }else{
+                start = null;
+            }
+            controller.Controller.getInstance().getUI().update();
         }
 
         @Override
@@ -193,6 +208,11 @@ public class Canvas extends JFrame {
 
         @Override
         public void mouseExited(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseDragged(MouseEvent e){
+
         }
 
     }

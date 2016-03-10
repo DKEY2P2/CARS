@@ -6,12 +6,10 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
-import java.util.ArrayDeque;
+import java.util.*;
+
 import vehicle.Vehicle;
 
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.PriorityQueue;
 import ui.Drawable;
 
 /**
@@ -57,20 +55,24 @@ public abstract class Road implements Drawable {
      * Start and end intersection wrapped in an ArrayList
      */
     private ArrayList<Intersection> se = new ArrayList<Intersection>();
+
+    private Comparator<Vehicle> cv = new VehicleComparator();
     /**
      * A queue of all the vehicles on this road
      */
-    private Deque<Vehicle> qv = new ArrayDeque<Vehicle>();
+    private PriorityQueue<Vehicle> pq = new PriorityQueue<Vehicle>(10,cv);
 
     /**
      * The constructor of the Road class
      *
      * @param start the starting intersection
      * @param end the ending intersection
-     * @param length the length of the road/THIS WILL NEED TO BE CALCULATED
-     * AUTOMATICALLY
+     * @param length the length of the road
+     *
      */
     public Road(Intersection start, Intersection end, double length) {
+        System.out.println(start);
+
         if (start == end) {
             Logger.LogError("Start and end point are the same", this);
             throw new IllegalArgumentException("Start and end points are the same");
@@ -134,8 +136,8 @@ public abstract class Road implements Drawable {
      *
      * @return a queue of all the vehicles on the road
      */
-    public Deque<Vehicle> getVehicles() {
-        return qv;
+    public PriorityQueue<Vehicle> getVehicles() {
+        return pq;
     }
 
     /**
@@ -173,6 +175,9 @@ public abstract class Road implements Drawable {
         int startY = start.getY();
         int endY = end.getY();
         int endX = end.getX();
+        g.setColor(Color.WHITE);
+        ((Graphics2D) g).setStroke(new BasicStroke(12));
+        g.drawLine(startX, startY, endX, endY);
         g.setColor(Color.BLACK);
         ((Graphics2D) g).setStroke(new BasicStroke(10));
         g.drawLine(startX, startY, endX, endY);
@@ -194,4 +199,19 @@ public abstract class Road implements Drawable {
         this.gravityConstant = gravityConstant;
     }
 
+}
+
+class VehicleComparator implements Comparator<Vehicle>{
+
+    public VehicleComparator(){}
+
+    @Override
+    public int compare(Vehicle o1, Vehicle o2) {
+        if(o1.getPosition().getValue() < o2.getPosition().getValue())
+            return -1;
+        else if(o1.getPosition().getValue() == o2.getPosition().getValue())
+            return 0;
+        else
+            return 1;
+    }
 }

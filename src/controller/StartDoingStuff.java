@@ -39,7 +39,7 @@ public class StartDoingStuff {
         SimulationSettings.getInstance().setModel(new Forbe());
 
         /* Set what path finding AI to use for the rest of the application */
-        SimulationSettings.getInstance().setPathFindingAI(new AStar());
+        SimulationSettings.getInstance().setPathFindingAI(new TestAl());
 
         /* Set the number of ticks the simulation waits until it spawns new vehicles */
         SimulationSettings.getInstance().setTimeUntilSpawn(150);
@@ -103,7 +103,7 @@ public class StartDoingStuff {
     public static void start() {
         if (!start) {
             //Creates n number of cars
-            for (int i = 0; i < 1; i++) {
+            for (int i = 0; i < 10; i++) {
                 VehicleFactory.getFactory().createVehicle(VehicleFactory.SPORT_CAR);
             }
 
@@ -113,5 +113,5 @@ public class StartDoingStuff {
         }
         
     }
-    
+
 }
