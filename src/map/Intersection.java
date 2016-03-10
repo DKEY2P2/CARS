@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 import ui.Drawable;
 import ui.ImageMap;
+import ui.setting.GraphicsSetting;
 
 /**
  * The abstract class for all types of intersections present in the simulation
@@ -364,10 +365,8 @@ public abstract class Intersection implements Drawable {
 
     @Override
     public void draw(Graphics g) {
-        //BufferedImage bi = ImageMap.getInstance().getImage(imageKey);
-        //g.drawImage(bi, x - bi.getWidth() / 2, y - bi.getHeight() / 2, null);
-        g.setColor(Color.WHITE);
-        g.fillOval(x-DIAMETER/2,y-DIAMETER/2,DIAMETER,DIAMETER);
+        BufferedImage bi = ImageMap.getInstance().getImage(imageKey, 0, GraphicsSetting.getInstance().getZoom());
+        g.drawImage(bi, (int) ((x - bi.getWidth() / 2) * GraphicsSetting.getInstance().getZoom())+ GraphicsSetting.getInstance().getPanX(), (int) ((y - bi.getHeight() / 2) * GraphicsSetting.getInstance().getZoom())+ GraphicsSetting.getInstance().getPanY(), null);
         int i = 0;
         for (TrafficLight tLight : tLights) {
             tLight.draw(g, i++);

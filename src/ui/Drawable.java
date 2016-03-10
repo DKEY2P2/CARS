@@ -1,6 +1,7 @@
 package ui;
 
 import java.awt.Graphics;
+import ui.setting.GraphicsSetting;
 
 /**
  * Allows an object to be drawn
@@ -16,4 +17,5 @@ public interface Drawable {
      * @param g The graphics to draw stuff
      */
     public void draw(Graphics g);
+
 }

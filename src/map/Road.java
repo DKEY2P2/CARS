@@ -10,7 +10,10 @@ import java.util.*;
 
 import vehicle.Vehicle;
 
+import java.util.ArrayList;
+import java.util.PriorityQueue;
 import ui.Drawable;
+import ui.setting.GraphicsSetting;
 
 /**
  * This class represents a road A road is similar to an edge of a graph, they
@@ -71,10 +74,7 @@ public abstract class Road implements Drawable {
      *
      */
     public Road(Intersection start, Intersection end, double length) {
-        System.out.println(start);
-
         if (start == end) {
-            Logger.LogError("Start and end point are the same", this);
             throw new IllegalArgumentException("Start and end points are the same");
         }
         this.start = start;
@@ -179,7 +179,8 @@ public abstract class Road implements Drawable {
         ((Graphics2D) g).setStroke(new BasicStroke(12));
         g.drawLine(startX, startY, endX, endY);
         g.setColor(Color.BLACK);
-        ((Graphics2D) g).setStroke(new BasicStroke(10));
+        ((Graphics2D) g).setStroke(
+                new BasicStroke((float) (10 * GraphicsSetting.getInstance().getZoom() > 0 ? 10 * GraphicsSetting.getInstance().getZoom() : 1)));
         g.drawLine(startX, startY, endX, endY);
     }
 
