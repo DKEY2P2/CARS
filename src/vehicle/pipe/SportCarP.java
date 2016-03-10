@@ -1,14 +1,12 @@
 package vehicle.pipe;
 
 import algorithms.Algorithm;
-import java.util.Random;
-
 import map.Intersection;
 import map.Road;
-import models.Forbe;
 import models.OVM;
-import models.Pipe;
 import vehicle.Vehicle;
+
+import java.util.Random;
 
 /**
  * A sport modelled after Jaguar XK coupe 2007
@@ -50,7 +48,6 @@ public class SportCarP extends Vehicle {
             setTimeOnRoad(getTimeOnRoad() + 1);//add one tick
 //                }
 //            }
-            System.out.println("HERE");
             getModel().calculate(this);
             /*if(!tl.isGreen() && getPosition().getValue()>0.95) {
              setSpeed(0);

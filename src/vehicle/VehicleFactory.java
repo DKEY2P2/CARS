@@ -3,11 +3,12 @@ package vehicle;
 import algorithms.Algorithm;
 import controller.SimulationSettings;
 import helper.StupidHelper;
-import java.util.ArrayList;
-import java.util.Random;
 import map.Intersection;
 import map.Road;
 import models.Model;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * A factory for making cars

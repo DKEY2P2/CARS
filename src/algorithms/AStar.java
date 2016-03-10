@@ -6,10 +6,16 @@ import map.Intersection;
 import map.Map;
 
 import java.util.*;
+import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  * @author Lucas Vanparijs, Jonas Vacek
- *
+ *  _    _ _   _ _____  ______ _____     _____ ____  _   _  _____ _______ _____  _    _  _____ _______ _____ ____  _   _
+ * | |  | | \ | |  __ \|  ____|  __ \   / ____/ __ \| \ | |/ ____|__   __|  __ \| |  | |/ ____|__   __|_   _/ __ \| \ | |
+ * | |  | |  \| | |  | | |__  | |__) | | |   | |  | |  \| | (___    | |  | |__) | |  | | |       | |    | || |  | |  \| |
+ * | |  | | . ` | |  | |  __| |  _  /  | |   | |  | | . ` |\___ \   | |  |  _  /| |  | | |       | |    | || |  | | . ` |
+ * | |__| | |\  | |__| | |____| | \ \  | |___| |__| | |\  |____) |  | |  | | \ \| |__| | |____   | |   _| || |__| | |\  |
+ *  \____/|_| \_|_____/|______|_|  \_\  \_____\____/|_| \_|_____/   |_|  |_|  \_\\____/ \_____|  |_|  |_____\____/|_| \_|
  * @since 09/03/16
  *
  * I use the Euclidean distance as heuristic
@@ -17,64 +23,83 @@ import java.util.*;
 
 public class AStar implements Algorithm {
 
-	ArrayList<Triplet<Intersection,Double,Double>> aT = new ArrayList<Triplet<Intersection,Double,Double>>();		//All the Intersections in the Map
-	ArrayList<Triplet<Intersection,Double,Double>> cameFrom = new ArrayList<Triplet<Intersection,Double,Double>>();	//This will eventually contain the most efficient steps
+	ArrayList<Triplet<Intersection,Double,Double>> aT;		//All the Intersections in the Map
+	ArrayList<Triplet<Intersection,Double,Double>> cameFrom;	//This will eventually contain the most efficient steps
 
-	Queue<Triplet<Intersection,Double,Double>> closedSet = new ArrayDeque<Triplet<Intersection, Double, Double>>();	//Already evaluated nodes
-	Queue<Triplet<Intersection,Double,Double>> openSet = new ArrayDeque<Triplet<Intersection, Double, Double>>();	//Currently discovered nodes still to be evaluated
+	Queue<Triplet<Intersection,Double,Double>> closedSet;	//Already evaluated nodes
+	Queue<Triplet<Intersection,Double,Double>> openSet;	//Currently discovered nodes still to be evaluated
 
 	@Override
 	public ArrayList<Intersection> findShortestPath(Intersection start, Intersection end) {
 
-		Map m = Controller.getInstance().getMap();
+		if(start == end){
+			return null; //If it fails
+		}else {
 
-		for(int i = 0; i < m.getIntersections().size(); i++){
-			if(m.getIntersections().get(i) == start){
-				Triplet<Intersection,Double,Double> t = new Triplet<>(start,0d,euclideanDistance(start,end));
-				aT.add(t);
-				openSet.add(t);
-			}else if(m.getIntersections().get(i) == start){
-				aT.add(new Triplet<>(end,Double.MAX_VALUE,Double.MAX_VALUE));
-			}else{
-				aT.add(new Triplet<>(m.getIntersections().get(i),Double.MAX_VALUE,Double.MAX_VALUE));
+			Map m = Controller.getInstance().getMap();
+			aT = new ArrayList<Triplet<Intersection, Double, Double>>();
+			cameFrom = new ArrayList<Triplet<Intersection, Double, Double>>();
+			closedSet = new ArrayBlockingQueue<Triplet<Intersection, Double, Double>>(m.getIntersections().size());
+			openSet = new ArrayBlockingQueue<Triplet<Intersection, Double, Double>>(m.getIntersections().size());
+
+			for (int i = 0; i < m.getIntersections().size(); i++) {
+				if (m.getIntersections().get(i) == start) {
+					Triplet<Intersection, Double, Double> t = new Triplet<>(start, 0d, euclideanDistance(start, end));
+					aT.add(t);
+					openSet.add(t);
+				} else {
+					aT.add(new Triplet<>(m.getIntersections().get(i), Double.MAX_VALUE, Double.MAX_VALUE));
+				}
+			}
+			cameFrom = aT;
+			System.out.println(start);
+			System.out.println(end);
+			System.out.println(aT);
+
+			while (!openSet.isEmpty()) {
+				Triplet<Intersection, Double, Double> current = getLowest(openSet, "f");
+				if (current.getA() == end) {
+					return reconstructPath(cameFrom, current);
+				}
+
+				openSet.remove(current);
+				closedSet.add(current);
+
+				for (Triplet<Intersection, Double, Double> n : getNeighbours(aT, current)) {
+					if (closedSet.contains(n))
+						continue;
+
+					double tmpG = current.getB() + euclideanDistance(current.getA(), n.getA());
+
+					if (!openSet.contains(n))
+						openSet.add(n);
+					else if (tmpG >= n.getB())
+						continue;
+
+					int index = aT.indexOf(n);
+					System.out.println(n);
+					System.out.println(cameFrom);
+					System.out.println(index);
+					System.out.println(current);
+					cameFrom.set(index, current);
+					System.out.println(cameFrom);
+					n.setB(tmpG);
+					n.setC(n.getB() + euclideanDistance(n.getA(), end));
+				}
+
 			}
 		}
-		cameFrom = aT;
-
-		while(!openSet.isEmpty()){
-			Triplet<Intersection,Double,Double> current = getLowest(openSet,"f");
-			if(current.getA() == end){
-				return reconstructPath(cameFrom, current);
-			}
-
-			openSet.remove(current);
-			closedSet.add(current);
-			for(Triplet<Intersection,Double,Double> n : getNeighbours(aT,current)) {
-				if (closedSet.contains(n))
-					continue;
-
-				double tmpG = current.getB() + euclideanDistance(current.getA(), n.getA());
-				if(!openSet.contains(n))
-					openSet.add(n);
-				else if(tmpG >= n.getB())
-					continue;
-
-				cameFrom.set(aT.indexOf(n),current);
-				n.setB(tmpG);
-				n.setC(n.getB() + euclideanDistance(n.getA(), end));
-			}
-
-		}
-
 		return null; //If it fails
 	}
 
 	public ArrayList<Intersection> reconstructPath(ArrayList<Triplet<Intersection,Double,Double>> a, Triplet<Intersection,Double,Double> cur){
+		System.out.println("HERE");
 		ArrayList<Intersection> totalPath = new ArrayList<Intersection>();
 		totalPath.add(cur.getA());
 
 		while(a.contains(cur)){
-			cur = a.get(aT.indexOf(cur));
+			int index = aT.indexOf(cur);
+			cur = a.get(index);
 			totalPath.add(cur.getA());
 		}
 		return totalPath;

@@ -1,24 +1,19 @@
 package vehicle;
 
-import java.awt.*;
-import java.util.AbstractMap.SimpleImmutableEntry;
-import java.util.ArrayList;
-
 import algorithms.Algorithm;
 import controller.Task;
-
-import java.awt.image.BufferedImage;
-
-import java.util.Iterator;
-
-import java.util.Objects;
 import map.Intersection;
 import map.Road;
 import map.TrafficLight;
 import models.Model;
 import ui.Drawable;
-import ui.ImageMap;
 import ui.setting.GraphicsSetting;
+
+import java.awt.*;
+import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Objects;
 
 /**
  * The abstract class for all vehicles and identities present in the simulation
@@ -462,12 +457,11 @@ public abstract class Vehicle implements Task, Drawable {
         int height = 1;
         int differentX = end.getX() - start.getX();
         int differentY = end.getY() - start.getY();
-        g.drawOval((int) ((start.getX() + differentX * percentage - width / 2) * GraphicsSetting.getInstance().getZoom()) + GraphicsSetting.getInstance().getPanX(),
-                (int) ((start.getY() + differentY * percentage - height / 2) * GraphicsSetting.getInstance().getZoom())+ GraphicsSetting.getInstance().getPanY()
+        g.drawOval((int) ((start.getX() * GraphicsSetting.getInstance().getZoom() + differentX * percentage - width / 2) * GraphicsSetting.getInstance().getZoom()) + GraphicsSetting.getInstance().getPanX(),
+                (int) ((start.getY() * GraphicsSetting.getInstance().getZoom() + differentY * percentage - height / 2) * GraphicsSetting.getInstance().getZoom())+ GraphicsSetting.getInstance().getPanY()
                 , width, height
-    
 
-    );
+        );
 
     }
 

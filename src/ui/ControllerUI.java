@@ -1,14 +1,16 @@
 package ui;
 
-import ui.frames.Canvas;
 import controller.Controller;
 import controller.Task;
-import java.awt.Graphics;
-import javax.swing.JOptionPane;
 import map.Intersection;
 import map.Road;
+import ui.frames.Canvas;
 import ui.frames.SideBar;
+import ui.setting.GraphicsSetting;
 import vehicle.Vehicle;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * Controls the UI
@@ -39,7 +41,20 @@ public class ControllerUI implements Task {
      * Draws everything
      */
     public void draw() {
-        drawEverything(c.getGraphic());
+        Graphics g = c.getGraphic();
+        g.setColor(Color.WHITE);
+        g.drawLine(20,c.getHeight()-30,120,c.getHeight()-30);
+        g.drawString(String.valueOf((int)(GraphicsSetting.getInstance().getZoom()*100))+"m",20,c.getHeight()-15);
+        if(Canvas.dragLine){
+            g.setColor(Color.WHITE);
+            ((Graphics2D) g).setStroke(new BasicStroke((float) (12 * GraphicsSetting.getInstance().getZoom() > 0 ? 12 * GraphicsSetting.getInstance().getZoom() : 1)));
+            g.drawLine((int) (Canvas.s.getX() * GraphicsSetting.getInstance().getZoom()), (int) (Canvas.s.getY() * GraphicsSetting.getInstance().getZoom()), (int) (Canvas.liveMouseX * GraphicsSetting.getInstance().getZoom()), (int) (Canvas.liveMouseY * GraphicsSetting.getInstance().getZoom()));
+            g.setColor(Color.BLACK);
+            ((Graphics2D) g).setStroke(
+                    new BasicStroke((float) (10 * GraphicsSetting.getInstance().getZoom() > 0 ? 10 * GraphicsSetting.getInstance().getZoom() : 1)));
+            g.drawLine((int) (Canvas.s.getX() * GraphicsSetting.getInstance().getZoom()), (int) (Canvas.s.getY() * GraphicsSetting.getInstance().getZoom()), (int) (Canvas.liveMouseX * GraphicsSetting.getInstance().getZoom()), (int) (Canvas.liveMouseY * GraphicsSetting.getInstance().getZoom()));
+        }
+        drawEverything(g);
         c.getScene();
 
     }
@@ -76,7 +91,6 @@ public class ControllerUI implements Task {
      */
     public void drawRoad(Graphics g) {
         Controller controller = Controller.getInstance();
-
         for (Road road : controller.getMap().getRoads()) {
             road.draw(g);
         }

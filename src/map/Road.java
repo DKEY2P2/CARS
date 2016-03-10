@@ -1,19 +1,13 @@
 package map;
 
-import helper.Logger;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Stroke;
-import java.util.*;
-
-import vehicle.Vehicle;
-
-import java.util.ArrayList;
-import java.util.PriorityQueue;
 import ui.Drawable;
 import ui.setting.GraphicsSetting;
+import vehicle.Vehicle;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 
 /**
  * This class represents a road A road is similar to an edge of a graph, they
@@ -171,17 +165,13 @@ public abstract class Road implements Drawable {
 
     @Override
     public void draw(Graphics g) {
-        int startX = start.getX();
-        int startY = start.getY();
-        int endY = end.getY();
-        int endX = end.getX();
-        g.setColor(Color.WHITE);
-        ((Graphics2D) g).setStroke(new BasicStroke(12));
-        g.drawLine(startX, startY, endX, endY);
-        g.setColor(Color.BLACK);
-        ((Graphics2D) g).setStroke(
-                new BasicStroke((float) (10 * GraphicsSetting.getInstance().getZoom() > 0 ? 10 * GraphicsSetting.getInstance().getZoom() : 1)));
-        g.drawLine(startX, startY, endX, endY);
+            g.setColor(Color.WHITE);
+            ((Graphics2D) g).setStroke(new BasicStroke((float) (12 * GraphicsSetting.getInstance().getZoom() > 0 ? 12 * GraphicsSetting.getInstance().getZoom() : 1)));
+            g.drawLine((int) (start.getX() * GraphicsSetting.getInstance().getZoom()), (int) (start.getY() * GraphicsSetting.getInstance().getZoom()), (int) (end.getX() * GraphicsSetting.getInstance().getZoom()), (int) (end.getY() * GraphicsSetting.getInstance().getZoom()));
+            g.setColor(Color.BLACK);
+            ((Graphics2D) g).setStroke(
+                    new BasicStroke((float) (10 * GraphicsSetting.getInstance().getZoom() > 0 ? 10 * GraphicsSetting.getInstance().getZoom() : 1)));
+            g.drawLine((int) (start.getX() * GraphicsSetting.getInstance().getZoom()), (int) (start.getY() * GraphicsSetting.getInstance().getZoom()), (int) (end.getX() * GraphicsSetting.getInstance().getZoom()), (int) (end.getY() * GraphicsSetting.getInstance().getZoom()));
     }
 
     public double getFrictionCoefficient() {

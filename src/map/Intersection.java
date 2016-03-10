@@ -1,17 +1,13 @@
 package map;
 
 import helper.Logger;
+import ui.Drawable;
+import ui.setting.GraphicsSetting;
+import vehicle.Vehicle;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import vehicle.Vehicle;
 import java.util.ArrayList;
-import java.util.Deque;
-import java.util.List;
 import java.util.PriorityQueue;
-import ui.Drawable;
-import ui.ImageMap;
-import ui.setting.GraphicsSetting;
 
 /**
  * The abstract class for all types of intersections present in the simulation
@@ -365,8 +361,9 @@ public abstract class Intersection implements Drawable {
 
     @Override
     public void draw(Graphics g) {
-        BufferedImage bi = ImageMap.getInstance().getImage(imageKey, 0, GraphicsSetting.getInstance().getZoom());
-        g.drawImage(bi, (int) ((x - bi.getWidth() / 2) * GraphicsSetting.getInstance().getZoom())+ GraphicsSetting.getInstance().getPanX(), (int) ((y - bi.getHeight() / 2) * GraphicsSetting.getInstance().getZoom())+ GraphicsSetting.getInstance().getPanY(), null);
+        //BufferedImage bi = ImageMap.getInstance().getImage(imageKey, 0, GraphicsSetting.getInstance().getZoom());
+        g.setColor(Color.WHITE);
+        g.fillOval((int) ((x - DIAMETER / 2) * GraphicsSetting.getInstance().getZoom())+ GraphicsSetting.getInstance().getPanX(), (int) ((y - DIAMETER / 2) * GraphicsSetting.getInstance().getZoom())+ GraphicsSetting.getInstance().getPanY(), DIAMETER, DIAMETER);
         int i = 0;
         for (TrafficLight tLight : tLights) {
             tLight.draw(g, i++);

@@ -1,23 +1,15 @@
 package controller;
 
 import algorithms.AStar;
-import algorithms.TestAl;
 import controller.threads.ThreadController;
 import helper.Logger;
-import map.Intersection;
 import map.Road;
-import map.TrafficLight;
 import map.intersection.DefaultIntersection;
-import map.road.NormalRoad;
-import models.OVM;
+import models.Forbe;
 import ui.ControllerUI;
-import vehicle.SportCar;
-import helper.StupidHelper;
+
 import java.util.ArrayList;
 import java.util.Random;
-import models.Forbe;
-import models.Model;
-import vehicle.VehicleFactory;
 
 /**
  * A start class for the rest of the system
@@ -39,10 +31,10 @@ public class StartDoingStuff {
         SimulationSettings.getInstance().setModel(new Forbe());
 
         /* Set what path finding AI to use for the rest of the application */
-        SimulationSettings.getInstance().setPathFindingAI(new TestAl());
+        SimulationSettings.getInstance().setPathFindingAI(new AStar());
 
         /* Set the number of ticks the simulation waits until it spawns new vehicles */
-        SimulationSettings.getInstance().setTimeUntilSpawn(150);
+        SimulationSettings.getInstance().setTimeUntilSpawn(50);
 
         /* Creates the controller */
         Controller control = Controller.getInstance();
@@ -103,9 +95,9 @@ public class StartDoingStuff {
     public static void start() {
         if (!start) {
             //Creates n number of cars
-            for (int i = 0; i < 10; i++) {
-                VehicleFactory.getFactory().createVehicle(VehicleFactory.SPORT_CAR);
-            }
+            //for (int i = 0; i < 1; i++) {
+             //   VehicleFactory.getFactory().createVehicle(VehicleFactory.SPORT_CAR);
+            //}
 
 
             Controller.getInstance().getTicker().start("tick");
