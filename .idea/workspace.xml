@@ -2,22 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a0410bfc-c827-43f8-b05e-49eb50117420" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Cars.iml" afterPath="$PROJECT_DIR$/Cars.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/algorithms/AStar.java" afterPath="$PROJECT_DIR$/src/algorithms/AStar.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/controller/StartDoingStuff.java" afterPath="$PROJECT_DIR$/src/controller/StartDoingStuff.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/controller/Ticker.java" afterPath="$PROJECT_DIR$/src/controller/Ticker.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/json/GEOjson.java" afterPath="$PROJECT_DIR$/src/json/GEOjson.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/map/Intersection.java" afterPath="$PROJECT_DIR$/src/map/Intersection.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/map/Road.java" afterPath="$PROJECT_DIR$/src/map/Road.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/map/intersection/DefaultIntersection.java" afterPath="$PROJECT_DIR$/src/map/intersection/DefaultIntersection.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/map/road/NormalRoad.java" afterPath="$PROJECT_DIR$/src/map/road/NormalRoad.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ui/ControllerUI.java" afterPath="$PROJECT_DIR$/src/ui/ControllerUI.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ui/frames/Canvas.java" afterPath="$PROJECT_DIR$/src/ui/frames/Canvas.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/vehicle/Vehicle.java" afterPath="$PROJECT_DIR$/src/vehicle/Vehicle.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/vehicle/VehicleFactory.java" afterPath="$PROJECT_DIR$/src/vehicle/VehicleFactory.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/vehicle/pipe/SportCarP.java" afterPath="$PROJECT_DIR$/src/vehicle/pipe/SportCarP.java" />
     </list>
     <ignored path="Cars.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -42,8 +27,8 @@
       <file leaf-file-name="DefaultIntersection.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/map/intersection/DefaultIntersection.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3114478">
-              <caret line="39" column="116" selection-start-line="39" selection-start-column="116" selection-end-line="39" selection-end-column="116" />
+            <state vertical-scroll-proportion="0.5117845">
+              <caret line="46" column="41" selection-start-line="46" selection-start-column="41" selection-end-line="46" selection-end-column="41" />
               <folding>
                 <element signature="e#2745#2746#0" expanded="true" />
                 <element signature="e#2769#2770#0" expanded="true" />
@@ -71,7 +56,7 @@
         <entry file="file://$PROJECT_DIR$/src/ui/ControllerUI.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="50" column="105" selection-start-line="50" selection-start-column="105" selection-end-line="50" selection-end-column="105" />
+              <caret line="55" column="9" selection-start-line="55" selection-start-column="9" selection-end-line="55" selection-end-column="9" />
               <folding />
             </state>
           </provider>
@@ -121,8 +106,10 @@
         <entry file="file://$PROJECT_DIR$/src/ui/frames/Canvas.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="207" column="48" selection-start-line="207" selection-start-column="48" selection-end-line="207" selection-end-column="48" />
-              <folding />
+              <caret line="212" column="0" selection-start-line="212" selection-start-column="0" selection-end-line="212" selection-end-column="0" />
+              <folding>
+                <marker date="1457645982773" expanded="true" signature="8690:8696" placeholder="{...}" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -130,7 +117,7 @@
       <file leaf-file-name="AStar.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/algorithms/AStar.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.857143">
+            <state vertical-scroll-proportion="-6.375">
               <caret line="21" column="3" selection-start-line="21" selection-start-column="3" selection-end-line="21" selection-end-column="3" />
               <folding />
             </state>
@@ -153,7 +140,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="OVM" />
       </map>
     </option>
   </component>
@@ -326,24 +313,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="vehicle" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pipe" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Cars" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Cars" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="ui" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
             </PATH_ELEMENT>
@@ -470,24 +439,6 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="map" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Cars" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Cars" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="map" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Road.java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -996,7 +947,13 @@
       <option name="project" value="LOCAL" />
       <updated>1457635166841</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="AStar now works for real&#10;">
+      <created>1457645895063</created>
+      <option name="number" value="00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1457645895063</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1036,7 +993,8 @@
     <MESSAGE value="OVM = done, Cars don't overtake and collide anymore.&#10;I made the Deque on the road into a PriorityQueue which solved the problem&#10;Still getting the road &quot;Start and End are the same&quot; errors" />
     <MESSAGE value="Changed some GUI stuff&#10;&#10;When you click it now ALWAYS makes an intersection" />
     <MESSAGE value="Merge branch 'master' into OVM&#10;&#10;# Conflicts:&#10;#&#9;src/map/Intersection.java&#10;#&#9;src/map/Road.java&#10;#&#9;src/map/TrafficLight.java&#10;#&#9;src/ui/frames/Canvas.java&#10;#&#9;src/vehicle/pipe/SportCarP.java&#10;&#10;Made some changes in the UI&#10;Noticed that AStar throws some errors will fix this tomorrow&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Merge branch 'master' into OVM&#10;&#10;# Conflicts:&#10;#&#9;src/map/Intersection.java&#10;#&#9;src/map/Road.java&#10;#&#9;src/map/TrafficLight.java&#10;#&#9;src/ui/frames/Canvas.java&#10;#&#9;src/vehicle/pipe/SportCarP.java&#10;&#10;Made some changes in the UI&#10;Noticed that AStar throws some errors will fix this tomorrow&#10;" />
+    <MESSAGE value="AStar now works for real&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="AStar now works for real&#10;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1090,7 +1048,7 @@
           <folding>
             <element signature="e#4900#4901#0" expanded="true" />
             <element signature="e#4962#4963#0" expanded="true" />
-            <marker date="1457634731776" expanded="true" signature="5160:5162" placeholder="{...}" />
+            <marker date="1457645982709" expanded="true" signature="5160:5162" placeholder="{...}" />
           </folding>
         </state>
       </provider>
@@ -1322,14 +1280,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/vehicle/pipe/SportCarP.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="49" column="15" selection-start-line="49" selection-start-column="15" selection-end-line="49" selection-end-column="15" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/map/Intersection.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1388,7 +1338,7 @@
           <folding>
             <element signature="e#4900#4901#0" expanded="true" />
             <element signature="e#4962#4963#0" expanded="true" />
-            <marker date="1457634731776" expanded="true" signature="5160:5162" placeholder="{...}" />
+            <marker date="1457645982709" expanded="true" signature="5160:5162" placeholder="{...}" />
           </folding>
         </state>
       </provider>
@@ -1409,8 +1359,10 @@
     <entry file="file://$PROJECT_DIR$/src/ui/frames/Canvas.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="207" column="48" selection-start-line="207" selection-start-column="48" selection-end-line="207" selection-end-column="48" />
-          <folding />
+          <caret line="212" column="0" selection-start-line="212" selection-start-column="0" selection-end-line="212" selection-end-column="0" />
+          <folding>
+            <marker date="1457645982773" expanded="true" signature="8690:8696" placeholder="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1440,7 +1392,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/algorithms/AStar.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.857143">
+        <state vertical-scroll-proportion="-6.375">
           <caret line="21" column="3" selection-start-line="21" selection-start-column="3" selection-end-line="21" selection-end-column="3" />
           <folding />
         </state>
@@ -1457,7 +1409,7 @@
     <entry file="file://$PROJECT_DIR$/src/ui/ControllerUI.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="50" column="105" selection-start-line="50" selection-start-column="105" selection-end-line="50" selection-end-column="105" />
+          <caret line="55" column="9" selection-start-line="55" selection-start-column="9" selection-end-line="55" selection-end-column="9" />
           <folding />
         </state>
       </provider>
@@ -1472,8 +1424,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/map/intersection/DefaultIntersection.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3114478">
-          <caret line="39" column="116" selection-start-line="39" selection-start-column="116" selection-end-line="39" selection-end-column="116" />
+        <state vertical-scroll-proportion="0.5117845">
+          <caret line="46" column="41" selection-start-line="46" selection-start-column="41" selection-end-line="46" selection-end-column="41" />
           <folding>
             <element signature="e#2745#2746#0" expanded="true" />
             <element signature="e#2769#2770#0" expanded="true" />
