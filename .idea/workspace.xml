@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="a0410bfc-c827-43f8-b05e-49eb50117420" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/algorithms/AStar.java" afterPath="$PROJECT_DIR$/src/algorithms/AStar.java" />
     </list>
     <ignored path="Cars.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -24,11 +25,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
-      <file leaf-file-name="DefaultIntersection.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="DefaultIntersection.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/map/intersection/DefaultIntersection.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5117845">
-              <caret line="46" column="41" selection-start-line="46" selection-start-column="41" selection-end-line="46" selection-end-column="41" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="42" column="69" selection-start-line="42" selection-start-column="69" selection-end-line="42" selection-end-column="69" />
               <folding>
                 <element signature="e#2745#2746#0" expanded="true" />
                 <element signature="e#2769#2770#0" expanded="true" />
@@ -114,12 +115,16 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AStar.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="AStar.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/algorithms/AStar.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-6.375">
-              <caret line="21" column="3" selection-start-line="21" selection-start-column="3" selection-end-line="21" selection-end-column="3" />
-              <folding />
+            <state vertical-scroll-proportion="0.39591077">
+              <caret line="125" column="0" selection-start-line="125" selection-start-column="0" selection-end-line="125" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#3334#3348#0" expanded="true" />
+                <element signature="e#4607#4644#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -174,8 +179,8 @@
         <option value="$PROJECT_DIR$/src/ui/frames/Canvas.java" />
         <option value="$PROJECT_DIR$/src/controller/StartDoingStuff.java" />
         <option value="$PROJECT_DIR$/src/controller/Ticker.java" />
-        <option value="$PROJECT_DIR$/src/algorithms/AStar.java" />
         <option value="$PROJECT_DIR$/src/map/intersection/DefaultIntersection.java" />
+        <option value="$PROJECT_DIR$/src/algorithms/AStar.java" />
       </list>
     </option>
   </component>
@@ -953,7 +958,13 @@
       <option name="project" value="LOCAL" />
       <updated>1457645895063</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="master and OVM merge&#10;">
+      <created>1457646006344</created>
+      <option name="number" value="00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1457646006344</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -994,7 +1005,8 @@
     <MESSAGE value="Changed some GUI stuff&#10;&#10;When you click it now ALWAYS makes an intersection" />
     <MESSAGE value="Merge branch 'master' into OVM&#10;&#10;# Conflicts:&#10;#&#9;src/map/Intersection.java&#10;#&#9;src/map/Road.java&#10;#&#9;src/map/TrafficLight.java&#10;#&#9;src/ui/frames/Canvas.java&#10;#&#9;src/vehicle/pipe/SportCarP.java&#10;&#10;Made some changes in the UI&#10;Noticed that AStar throws some errors will fix this tomorrow&#10;" />
     <MESSAGE value="AStar now works for real&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="AStar now works for real&#10;" />
+    <MESSAGE value="master and OVM merge&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="master and OVM merge&#10;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1390,14 +1402,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/algorithms/AStar.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.375">
-          <caret line="21" column="3" selection-start-line="21" selection-start-column="3" selection-end-line="21" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/vehicle/VehicleHolder.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="6.6551723">
@@ -1424,11 +1428,23 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/map/intersection/DefaultIntersection.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5117845">
-          <caret line="46" column="41" selection-start-line="46" selection-start-column="41" selection-end-line="46" selection-end-column="41" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="42" column="69" selection-start-line="42" selection-start-column="69" selection-end-line="42" selection-end-column="69" />
           <folding>
             <element signature="e#2745#2746#0" expanded="true" />
             <element signature="e#2769#2770#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/algorithms/AStar.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.39591077">
+          <caret line="125" column="0" selection-start-line="125" selection-start-column="0" selection-end-line="125" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#3334#3348#0" expanded="true" />
+            <element signature="e#4607#4644#0" expanded="true" />
           </folding>
         </state>
       </provider>

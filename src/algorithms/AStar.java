@@ -52,9 +52,6 @@ public class AStar implements Algorithm {
 				}
 			}
 			cameFrom = aT;
-			System.out.println(start);
-			System.out.println(end);
-			System.out.println(aT);
 
 			while (!openSet.isEmpty()) {
 				Triplet<Intersection, Double, Double> current = getLowest(openSet, "f");
@@ -77,12 +74,7 @@ public class AStar implements Algorithm {
 						continue;
 
 					int index = aT.indexOf(n);
-					System.out.println(n);
-					System.out.println(cameFrom);
-					System.out.println(index);
-					System.out.println(current);
 					cameFrom.set(index, current);
-					System.out.println(cameFrom);
 					n.setB(tmpG);
 					n.setC(n.getB() + euclideanDistance(n.getA(), end));
 				}
@@ -93,7 +85,6 @@ public class AStar implements Algorithm {
 	}
 
 	public ArrayList<Intersection> reconstructPath(ArrayList<Triplet<Intersection,Double,Double>> a, Triplet<Intersection,Double,Double> cur){
-		System.out.println("HERE");
 		ArrayList<Intersection> totalPath = new ArrayList<Intersection>();
 		totalPath.add(cur.getA());
 
