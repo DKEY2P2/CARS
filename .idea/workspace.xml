@@ -3,15 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="a0410bfc-c827-43f8-b05e-49eb50117420" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/algorithms/AStar.java" afterPath="$PROJECT_DIR$/src/algorithms/AStar.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/controller/StartDoingStuff.java" afterPath="$PROJECT_DIR$/src/controller/StartDoingStuff.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/map/Intersection.java" afterPath="$PROJECT_DIR$/src/map/Intersection.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/map/Road.java" afterPath="$PROJECT_DIR$/src/map/Road.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/map/intersection/SimpleTrafficLight.java" afterPath="$PROJECT_DIR$/src/map/intersection/SimpleTrafficLight.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/map/road/NormalRoad.java" afterPath="$PROJECT_DIR$/src/map/road/NormalRoad.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/models/Pipe.java" afterPath="$PROJECT_DIR$/src/models/Pipe.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ui/frames/Canvas.java" afterPath="$PROJECT_DIR$/src/ui/frames/Canvas.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/vehicle/Vehicle.java" afterPath="$PROJECT_DIR$/src/vehicle/Vehicle.java" />
     </list>
     <ignored path="Cars.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -110,8 +102,8 @@
       <file leaf-file-name="StartDoingStuff.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/controller/StartDoingStuff.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.14285715">
-              <caret line="30" column="6" selection-start-line="30" selection-start-column="6" selection-end-line="30" selection-end-column="6" />
+            <state vertical-scroll-proportion="0.45714286">
+              <caret line="41" column="67" selection-start-line="41" selection-start-column="67" selection-end-line="41" selection-end-column="67" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -854,7 +846,13 @@
       <option name="project" value="LOCAL" />
       <updated>1457544350865</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="OVM = done, Cars don't overtake and collide anymore.&#10;I made the Deque on the road into a PriorityQueue which solved the problem&#10;Still getting the road &quot;Start and End are the same&quot; errors">
+      <created>1457613493898</created>
+      <option name="number" value="00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1457613493898</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -891,7 +889,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="OVM Stuff, We should test it with a scaled down version of our progam" />
     <MESSAGE value="AStar now implemented, very good, very nice" />
-    <option name="LAST_COMMIT_MESSAGE" value="AStar now implemented, very good, very nice" />
+    <MESSAGE value="OVM = done, Cars don't overtake and collide anymore.&#10;I made the Deque on the road into a PriorityQueue which solved the problem&#10;Still getting the road &quot;Start and End are the same&quot; errors" />
+    <option name="LAST_COMMIT_MESSAGE" value="OVM = done, Cars don't overtake and collide anymore.&#10;I made the Deque on the road into a PriorityQueue which solved the problem&#10;Still getting the road &quot;Start and End are the same&quot; errors" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1366,8 +1365,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/controller/StartDoingStuff.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.14285715">
-          <caret line="30" column="6" selection-start-line="30" selection-start-column="6" selection-end-line="30" selection-end-column="6" />
+        <state vertical-scroll-proportion="0.45714286">
+          <caret line="41" column="67" selection-start-line="41" selection-start-column="67" selection-end-line="41" selection-end-column="67" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
