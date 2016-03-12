@@ -38,8 +38,8 @@ public class SportCarP extends Vehicle {
             //Adds it to the queue if not already in there
             if (!getPosition().getKey().getEnd().getTrafficLight(getPosition().getKey()).getWaiting().contains(this)) {
                 getPosition().getKey().getEnd().getTrafficLight(getPosition().getKey()).getWaiting().offer(this);
-                setSpeed(0);
-                setAcceleration(0);
+                //setSpeed(0);
+                //setAcceleration(0);
             }
         } else {
 //            ArrayList<TrafficLight> atl = getPosition().getKey().getEnd().getTrafficLights();

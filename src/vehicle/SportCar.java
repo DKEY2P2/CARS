@@ -2,11 +2,11 @@ package vehicle;
 
 import algorithms.Algorithm;
 import helper.Logger;
-import java.util.Random;
-
 import map.Intersection;
 import map.Road;
 import models.Model;
+
+import java.util.Random;
 
 /**
  * A sport modelled after Jaguar XK coupe 2007
@@ -21,7 +21,7 @@ public class SportCar extends Vehicle {
         setDesiredSpeed(27.777777778 + r.nextInt(10));//100kmh
         setMaxAcceleration(4.5 + r.nextInt(3));// Jaguar XK Coupe 2007 - http://hypertextbook.com/facts/2001/MeredithBarricella.shtml
         setMaxDecceleration(2.98704 + r.nextInt(1));//Traffic Engineering Handbook, 5th ed. (J. L. Prine, ed.). ITE, Washington, D.C., 1999.
-        setReactionTime(2.3 + r.nextDouble());//average human - http://copradar.com/redlight/factors/
+        setReactionTime(2.3);//average human - http://copradar.com/redlight/factors/
         setLength(4.7904400000000002535);//Jaguar Xk Coupe 2007 - http://www.edmunds.com/jaguar/xk-series/2007/features-specs/
         setDestination(destination);
     }
@@ -39,9 +39,9 @@ public class SportCar extends Vehicle {
                 }
                 //Adds it to the queue if not already in there
                 if (!getPosition().getKey().getEnd().getTrafficLight(getPosition().getKey()).getWaiting().contains(this)) {
-                    getPosition().getKey().getEnd().getTrafficLight(getPosition().getKey()).getWaiting().offer(this);
-                    setSpeed(0);
-                    setAcceleration(0);
+                    getPosition().getKey().getEnd().getTrafficLight(getPosition().getKey()).getWaiting().add(this);
+                    //setSpeed(0);
+                    //setAcceleration(0);
                 }
             } else {
                 setTimeOnRoad(getTimeOnRoad() + 1);//add one tick

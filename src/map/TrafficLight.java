@@ -1,12 +1,11 @@
 package map;
 
+import vehicle.Vehicle;
+
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
-import vehicle.Vehicle;
 
 /**
  * A class made to represent the traffic lights on the road network
@@ -182,7 +181,8 @@ public class TrafficLight {
         } else {
             g.setColor(Color.red);
         }
-        g.drawString(Integer.toString(index), this.i.getX() + i * 10, this.i.getY());
+        g.fillOval(this.i.getX(), this.i.getY(),10,10);
+        //g.drawString(Integer.toString(index), this.i.getX() + i * 10, this.i.getY());
     }
 
     @Override

@@ -5,7 +5,7 @@ import controller.threads.ThreadController;
 import helper.Logger;
 import map.Road;
 import map.intersection.DefaultIntersection;
-import models.Forbe;
+import models.OVM;
 import ui.ControllerUI;
 
 import java.util.ArrayList;
@@ -28,13 +28,13 @@ public class StartDoingStuff {
      */
     public static void main(String[] args) {
         /* Set what model to use for the rest of the application */
-        SimulationSettings.getInstance().setModel(new Forbe());
+        SimulationSettings.getInstance().setModel(new OVM());
 
         /* Set what path finding AI to use for the rest of the application */
         SimulationSettings.getInstance().setPathFindingAI(new AStar());
 
         /* Set the number of ticks the simulation waits until it spawns new vehicles */
-        SimulationSettings.getInstance().setTimeUntilSpawn(50);
+        SimulationSettings.getInstance().setTimeUntilSpawn(20);
 
         /* Creates the controller */
         Controller control = Controller.getInstance();
@@ -46,7 +46,7 @@ public class StartDoingStuff {
         /* A random gen for location of a vehicle */
         Random r = new Random();
         /* Creates a ticker with the value of 100 ms between each tick which represent 1 second */
-        Ticker t = new Ticker(1, 100);
+        Ticker t = new Ticker(0.1, 100);
 
 
         //Add the item to the controller

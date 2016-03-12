@@ -100,7 +100,8 @@ public class VehicleFactory {
     public Vehicle createVehicle(String type, Model m, Algorithm al) {
         ArrayList<Road> b = controller.Controller.getInstance().getMap().getRoads();
         ArrayList<Intersection> a = controller.Controller.getInstance().getMap().getIntersections();
-        return createVehicle(type, m, al, (Road) StupidHelper.getRandom(b), r.nextDouble(), (Intersection) StupidHelper.getRandom(a));
+
+        return createVehicle(type, m, al, (Road) StupidHelper.getRandom(b), 0d, (Intersection) StupidHelper.getRandom(a));
     }
 
     /**

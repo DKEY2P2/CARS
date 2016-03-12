@@ -6,32 +6,33 @@ import map.TrafficLight;
 import vehicle.Vehicle;
 
 import java.util.AbstractMap;
+import java.util.Iterator;
+import java.util.PriorityQueue;
 
 /**
  * http://traffic.phys.cs.is.nagoya-u.ac.jp/~mstf/sample/ov/src.html
-  _    _ _   _ _____  ______ _____     _____ ____  _   _  _____ _______ _____  _    _  _____ _______ _____ ____  _   _
- | |  | | \ | |  __ \|  ____|  __ \   / ____/ __ \| \ | |/ ____|__   __|  __ \| |  | |/ ____|__   __|_   _/ __ \| \ | |
- | |  | |  \| | |  | | |__  | |__) | | |   | |  | |  \| | (___    | |  | |__) | |  | | |       | |    | || |  | |  \| |
- | |  | | . ` | |  | |  __| |  _  /  | |   | |  | | . ` |\___ \   | |  |  _  /| |  | | |       | |    | || |  | | . ` |
- | |__| | |\  | |__| | |____| | \ \  | |___| |__| | |\  |____) |  | |  | | \ \| |__| | |____   | |   _| || |__| | |\  |
-  \____/|_| \_|_____/|______|_|  \_\  \_____\____/|_| \_|_____/   |_|  |_|  \_\\____/ \_____|  |_|  |_____\____/|_| \_|
  * @author Lucas Vanparijs
  * @since 24-02-16
  */
 public class OVM implements Model{
 
-    private final double CONSTANT = 2;
+    private final double CONSTANT = 10;
 
     private Vehicle getInFront(Vehicle veh, Road r) {
         Vehicle inFrontVehicle = null;
-        for (Vehicle vehicle : r.getVehicles()) {
-            if (vehicle == veh) {
-                break;
-            } else {
-                inFrontVehicle = vehicle;
+
+        PriorityQueue<Vehicle> pq = r.getVehicles();
+        Iterator<Vehicle> iv = pq.iterator();
+
+        while(iv.hasNext()){
+            Vehicle c = iv.next();
+            if(c == veh){
+                return inFrontVehicle;
+            }else{
+                inFrontVehicle = c;
             }
         }
-        //Get the car ahead of you
+
         return inFrontVehicle;
     }
 
@@ -41,6 +42,7 @@ public class OVM implements Model{
 
         TrafficLight trl = v.getNextLight();
 
+        double optVel = v.getDesiredSpeed()/2;
         double t = Controller.getInstance().getTicker().getTickTimeInS();
         double speed = v.getSpeed();
         double speedLimit = r.getSpeedLimit();
@@ -48,44 +50,64 @@ public class OVM implements Model{
 
         Vehicle prev = getInFront(v,r);
 
-        if(v.getPosition().getValue()>1.0)
-            v.setPosition(new AbstractMap.SimpleImmutableEntry<Road, Double>(r,1d));
-
-        if (v.getPosition().getKey() == null) {
+        if (v.getPosition().getKey().getEnd() == v.getDestination() && v.getPosition().getValue()>1) {
+            v = null;
             return;
         }
+
         if(prev == null) {
             if (!trl.isGreen()) {
                 double dist = (1 - v.getPosition().getValue()) * r.getLength(); //distance to the traffic light
-                dv = v.getReactionTime() * (optimalVelocity(dist) - speed);
+                //dv = v.getReactionTime() * (optimalVelocity(dist) - speed);
+                dv = (optimalVelocity(dist) - speed);
             } else {
                 if (speed >= speedLimit) {
-                    dv = 0;
+                    dv = speedLimit-speed;
                 } else {
-                    dv = v.getMaxAcceleration();
+                    double dif = speedLimit-speed;
+                    if(v.getMaxAcceleration() > dif)
+                        dv = dif;
+                    else
+                        dv = v.getMaxAcceleration();
                 }
             }
         } else {
-            double dist = (prev.getPosition().getValue() - v.getPosition().getValue()) * r.getLength();
-            dv = v.getReactionTime() * (optimalVelocity(dist) - speed);
+            double dist = (prev.getPosition().getValue() - v.getPosition().getValue()) * r.getLength() - v.getLength();
+            //dv = v.getReactionTime() * (optimalVelocity(dist) - speed);
+            dv = (optimalVelocity(dist) - speed);
 
         }
         v.setAcceleration(dv);
-        if(v.getAcceleration()<0)
-            v.setSpeed(0);
-        else
+        if(v.getAcceleration()<0) {
+            double newSpeed = speed + dv;
+            if(newSpeed < 0)
+                v.setSpeed(0);
+            else
+                v.setSpeed(newSpeed);
+        }else{
             v.setSpeed(speed + v.getAcceleration());
-        if(v.getPosition().getValue()==100) {
+        }
+
+        if((1-v.getPosition().getValue())*r.getLength()<2) {
             v.setPosition(new AbstractMap.SimpleImmutableEntry<Road, Double>(v.nextPlaceToGo().hasRoad(trl.getIntersection()), 0d));
         }else {
-            v.setPosition(new AbstractMap.SimpleImmutableEntry<Road, Double>(r, v.getPosition().getValue() + ((v.getSpeed() * t / r.getLength()))));
+            double d = v.getPosition().getValue() + ((v.getSpeed() * t / r.getLength()));
+            if(d>1)
+                v.setPosition(new AbstractMap.SimpleImmutableEntry<Road, Double>(v.nextPlaceToGo().hasRoad(trl.getIntersection()), 0d));
+            else
+                v.setPosition(new AbstractMap.SimpleImmutableEntry<Road, Double>(r, v.getPosition().getValue() + ((v.getSpeed() * t / r.getLength()))));
         }
     }
 
 
 
     public double optimalVelocity(double dist){
-        return Math.tanh(dist-CONSTANT) + Math.tanh(CONSTANT);
+        double result = Math.tanh(dist-CONSTANT) + Math.tanh(CONSTANT);
+        if(result < 1){
+            return 0;
+        }else{
+            return result;
+        }
 }
 
 }

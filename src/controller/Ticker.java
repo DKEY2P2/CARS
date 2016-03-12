@@ -24,7 +24,7 @@ public class Ticker extends Observerable {
     /**
      * How long between ticks in ms
      */
-    private int timeBetweenTick = 100;
+    private int timeBetweenTick = 1000;
 
     /**
      * Default constructor.
@@ -73,7 +73,7 @@ public class Ticker extends Observerable {
                 timeElapsed += 1 * tickTimeInS;
 
                 if (tickCount % SimulationSettings.getInstance().getTimeUntilSpawn() == 0) {
-                    for (int i = 0; i < 15; i++) {
+                    for (int i = 0; i < 5; i++) {
                         VehicleFactory.getFactory().createVehicle(VehicleFactory.SPORT_CAR);
                     }
                 }
