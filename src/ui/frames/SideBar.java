@@ -88,7 +88,7 @@ public class SideBar extends JFrame {
 
         //The speed of the simulation changer is added
         JPanel speedP = new JPanel();
-        SpinnerModel spinnerModel = new SpinnerNumberModel(1000, 1, 10000, 1);
+        SpinnerModel spinnerModel = new SpinnerNumberModel(controller.Controller.getInstance().getTicker().getTickTimeInMS(), 1, 10000, 1);
         JSpinner speedSpinner = new JSpinner(spinnerModel);
         speedSpinner.addChangeListener(new ChangeListenerCustom());
         speedP.add(new JLabel("Speed of animation (ms)"));
