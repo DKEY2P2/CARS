@@ -4,7 +4,6 @@ import controller.StartDoingStuff;
 import helper.Logger;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
@@ -14,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
+import javax.swing.JTabbedPane;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
@@ -31,6 +31,8 @@ public class SideBar extends JFrame {
     private JLabel timeL;
 
     public SideBar(JFrame parent) {
+        setTitle("Options");
+        JTabbedPane jTabbedPane = new JTabbedPane(JTabbedPane.NORTH);
         //Exits if escape key has been pressed
         addKeyListener(new KeyAdapter() {
             @Override
@@ -46,9 +48,9 @@ public class SideBar extends JFrame {
             }
 
         });
-
+        JPanel general = new JPanel();
         //Set the layout
-        setLayout(new GridLayout(0, 1));
+        general.setLayout(new GridLayout(0, 1));
         //Set it to hid when you close it
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         //Gets the size of the screen
@@ -68,7 +70,7 @@ public class SideBar extends JFrame {
         button.addActionListener((ActionEvent e) -> {
             StartDoingStuff.start();
         });
-        add(button);
+        general.add(button);
 
         //The ticker counter is added
         JPanel tickCounterP = new JPanel();
@@ -81,8 +83,8 @@ public class SideBar extends JFrame {
         timeP.add(new JLabel("Time elapsed (s):"));
         timeL = new JLabel("0");
         timeP.add(timeL);
-        add(tickCounterP);
-        add(timeP);
+        general.add(tickCounterP);
+        general.add(timeP);
 
         //The speed of the simulation changer is added
         JPanel speedP = new JPanel();
@@ -91,8 +93,23 @@ public class SideBar extends JFrame {
         speedSpinner.addChangeListener(new ChangeListenerCustom());
         speedP.add(new JLabel("Speed of animation (ms)"));
         speedP.add(speedSpinner);
-        add(speedP);
-
+        general.add(speedP);
+        jTabbedPane.add("General",general );
+        
+        JPanel stats = new JPanel();
+        
+        jTabbedPane.add("Statistics" , stats);
+        
+        JPanel mapControl = new JPanel();
+        
+        jTabbedPane.add("Map Controls", mapControl);
+        
+        JPanel vehicle = new JPanel();
+        
+        jTabbedPane.add("Vehicle Settings", vehicle);
+        
+        
+        add(jTabbedPane);
         //Set it to visiable
         setVisible(true);
 
