@@ -42,10 +42,28 @@ public class ControllerUI implements Task {
      */
     public void draw() {
         Graphics g = c.getGraphic();
+        drawEverything(g);
+        c.getScene();
+    }
+
+    /**
+     * Draws the scale
+     *
+     * @param g The graphics needed to draw
+     */
+    public void drawScale(Graphics g) {
         g.setColor(Color.WHITE);
-        g.drawLine(20,c.getHeight()-30,120,c.getHeight()-30);
-        g.drawString(String.valueOf((int)(GraphicsSetting.getInstance().getZoom()*100))+"m",20,c.getHeight()-15);
-        if(Canvas.dragLine){
+        g.drawLine(20, c.getHeight() - 30, 120, c.getHeight() - 30);
+        g.drawString(String.valueOf((int) (GraphicsSetting.getInstance().getZoom() * 100)) + "m", 20, c.getHeight() - 15);
+    }
+
+    /**
+     * Draws the road that is currently being made
+     *
+     * @param g The graphics needed to draw
+     */
+    public void drawLineDragging(Graphics g) {
+        if (Canvas.dragLine) {
             g.setColor(Color.WHITE);
             ((Graphics2D) g).setStroke(new BasicStroke((float) (12 * GraphicsSetting.getInstance().getZoom() > 0 ? 12 * GraphicsSetting.getInstance().getZoom() : 1)));
             g.drawLine((int) (Canvas.s.getX() * GraphicsSetting.getInstance().getZoom()), (int) (Canvas.s.getY() * GraphicsSetting.getInstance().getZoom()), (int) (Canvas.liveMouseX * GraphicsSetting.getInstance().getZoom()), (int) (Canvas.liveMouseY * GraphicsSetting.getInstance().getZoom()));
@@ -54,9 +72,6 @@ public class ControllerUI implements Task {
                     new BasicStroke((float) (10 * GraphicsSetting.getInstance().getZoom() > 0 ? 10 * GraphicsSetting.getInstance().getZoom() : 1)));
             g.drawLine((int) (Canvas.s.getX() * GraphicsSetting.getInstance().getZoom()), (int) (Canvas.s.getY() * GraphicsSetting.getInstance().getZoom()), (int) (Canvas.liveMouseX * GraphicsSetting.getInstance().getZoom()), (int) (Canvas.liveMouseY * GraphicsSetting.getInstance().getZoom()));
         }
-        drawEverything(g);
-        c.getScene();
-
     }
 
     /**
@@ -65,9 +80,11 @@ public class ControllerUI implements Task {
      * @param g The graphics needed to draw
      */
     public void drawEverything(Graphics g) {
+        drawLineDragging(g);
         drawRoad(g);
         drawIntersection(g);
         drawCars(g);
+        drawScale(g);
         g.dispose();
     }
 
