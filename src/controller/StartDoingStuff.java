@@ -55,7 +55,7 @@ public class StartDoingStuff {
 
         /* A random gen for location of a vehicle */
         Random r = new Random();
-        /* Creates a ticker with the value of 100 ms between each tick which represent 1 second */
+        /* Creates a ticker with the value of 100 ms between each tick which represent 0.1 second */
         Ticker t = new Ticker(0.1, 100);
 
 
