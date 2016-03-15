@@ -10,6 +10,8 @@ import ui.ControllerUI;
 
 import java.util.ArrayList;
 import java.util.Random;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  * A start class for the rest of the system
@@ -27,6 +29,14 @@ public class StartDoingStuff {
      * consider it the same as if you left it blank
      */
     public static void main(String[] args) {
+        try {
+            UIManager.setLookAndFeel(
+                    UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            Logger.LogError(ex);
+        }
+        
+        
         /* Set what model to use for the rest of the application */
         SimulationSettings.getInstance().setModel(new OVM());
 
