@@ -86,6 +86,7 @@ public class Canvas extends JFrame {
         addMouseListener(a);
         addMouseMotionListener(a);
         addMouseWheelListener(new MouseWheelCustom());
+
         //Set the default operation to close the java application
         setDefaultCloseOperation(3);
 
@@ -137,21 +138,36 @@ public class Canvas extends JFrame {
         Toolkit.getDefaultToolkit().sync();
     }
 
+    /**
+     * The custom mouse listener for this object
+     */
     private class MouseListenerCustom implements MouseInputListener {
 
-        boolean click;
+        private boolean click;
 
         private Intersection start;
 
-        int x = 0;
-        int y = 0;
+        private int x = 0;
+        private int y = 0;
 
+        /**
+         * Adds a new intersection
+         *
+         * @param x
+         * @param y
+         */
         private void addIntersection(int x, int y) {
             Intersection i = new DefaultIntersection(x, y, controller.Controller.getInstance().getTicker());
             s = i;
             controller.Controller.getInstance().getMap().addIntersection(i);
         }
 
+        /**
+         * Connects two intersections
+         *
+         * @param x
+         * @param y
+         */
         private void connect(int x, int y) {
             map.Map m = controller.Controller.getInstance().getMap();
             if (start != null) {
@@ -173,44 +189,31 @@ public class Canvas extends JFrame {
             }
         }
 
+        /**
+         * Gets the nearest intersection
+         *
+         * @deprecated
+         * @param x
+         * @param y
+         * @return
+         */
         private Intersection findClosest(int x, int y) {
             map.Map m = controller.Controller.getInstance().getMap();
-            ArrayList<Intersection> r = m.getIntersections();
-            double min = +Double.MAX_VALUE;
-            int index = 0;
-            int i = 0;
-            for (Intersection r1 : r) {
-                double tmp = Math.sqrt(Math.pow(r1.getX() - x, 2) + Math.pow(y - r1.getY(), 2));
-                if (tmp < min) {
-                    min = tmp;
-                    index = i;
-                }
-                i++;
-            }
-            return r.get(index);
+            return m.findClosestIntersection(x, y);
         }
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            /*System.out.println("clicked");
-            if (keyCode == -1) {
-                addIntersection(e.getX(), e.getY());
-            } else if (keyCode == -2) {
-                connect(e.getX(), e.getY());
-            }else{
-                System.out.println("Reset");
-                start = null;
-            }
-            controller.Controller.getInstance().getUI().update();*/
+            
         }
 
         @Override
         public void mousePressed(MouseEvent e) {
-            if(keyCode == -1){
+            if (keyCode == -1) {
                 addIntersection(e.getX(), e.getY());
-            }else if(keyCode == -2 && start == null){
+            } else if (keyCode == -2 && start == null) {
                 connect(e.getX(), e.getY());
-            }else{
+            } else {
                 start = null;
             }
             click = true;
@@ -219,9 +222,9 @@ public class Canvas extends JFrame {
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            if(keyCode == -2 && start != null){
+            if (keyCode == -2 && start != null) {
                 connect(e.getX(), e.getY());
-            }else{
+            } else {
                 start = null;
             }
             click = false;
@@ -234,22 +237,23 @@ public class Canvas extends JFrame {
 
         @Override
         public void mouseExited(MouseEvent e) {
-            controller.Controller.getInstance().getUI().update();
         }
 
         @Override
         public void mouseDragged(MouseEvent e) {
-            if(keyCode == 0) {
+            if (keyCode == 0) {
                 GraphicsSetting.getInstance().setPanX(GraphicsSetting.getInstance().getPanX() + (e.getX() - x));
                 GraphicsSetting.getInstance().setPanY(GraphicsSetting.getInstance().getPanY() + (e.getY() - y));
                 x = e.getX();
                 y = e.getY();
-            }else{
+            } else {
                 x = e.getX();
                 y = e.getY();
                 liveMouseX = x;
                 liveMouseY = y;
-                dragLine = true;
+                if (keyCode == -2) {
+                    dragLine = true;
+                }
             }
             controller.Controller.getInstance().getUI().update();
 
@@ -265,16 +269,30 @@ public class Canvas extends JFrame {
 
     }
 
-    private class MouseWheelCustom implements MouseWheelListener{
+    private class MouseWheelCustom implements MouseWheelListener {
 
         @Override
         public void mouseWheelMoved(MouseWheelEvent e) {
-            if(e.getPreciseWheelRotation()<0){
-                GraphicsSetting.getInstance().setZoom(GraphicsSetting.getInstance().getZoom() - 0.1);
-            }else{
-                GraphicsSetting.getInstance().setZoom(GraphicsSetting.getInstance().getZoom() + 0.1);
+            double zoom = getZoom();
+            if (e.getPreciseWheelRotation() > 0) {
+                zoom *= e.getPreciseWheelRotation() * 1.05;
+            } else {
+                zoom /= -e.getPreciseWheelRotation() * 1.05;
             }
+            if (zoom < 0) {
+                zoom = 0;
+            }
+            setZoom(zoom);
+
             controller.Controller.getInstance().getUI().update();
+        }
+
+        double getZoom() {
+            return GraphicsSetting.getInstance().getZoom();
+        }
+
+        void setZoom(double zoom) {
+            GraphicsSetting.getInstance().setZoom(zoom);
         }
     }
 
