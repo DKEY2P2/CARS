@@ -19,6 +19,29 @@ import java.util.PriorityQueue;
 public abstract class Road implements Drawable {
 
     /**
+     * The length of a road
+     */
+    private double width = 3.25;
+
+    /**
+     * Get the value of width in meters
+     *
+     * @return the value of width in meters
+     */
+    public double getWidth() {
+        return width;
+    }
+
+    /**
+     * Set the value of width in meters
+     *
+     * @param width new value of width in meters
+     */
+    public void setWidth(double width) {
+        this.width = width;
+    }
+
+    /**
      * The speed limit on the road in m/s
      */
     private double speedLimit;
@@ -57,7 +80,7 @@ public abstract class Road implements Drawable {
     /**
      * A queue of all the vehicles on this road
      */
-    private PriorityQueue<Vehicle> pq = new PriorityQueue<Vehicle>(10,cv);
+    private PriorityQueue<Vehicle> pq = new PriorityQueue<Vehicle>(10, cv);
 
     /**
      * The constructor of the Road class
@@ -165,13 +188,13 @@ public abstract class Road implements Drawable {
 
     @Override
     public void draw(Graphics g) {
-            g.setColor(Color.WHITE);
-            ((Graphics2D) g).setStroke(new BasicStroke((float) (12 * GraphicsSetting.getInstance().getZoom() > 0 ? 12 * GraphicsSetting.getInstance().getZoom() : 1)));
-            g.drawLine((int) (start.getX() * GraphicsSetting.getInstance().getZoom()), (int) (start.getY() * GraphicsSetting.getInstance().getZoom()), (int) (end.getX() * GraphicsSetting.getInstance().getZoom()), (int) (end.getY() * GraphicsSetting.getInstance().getZoom()));
-            g.setColor(Color.BLACK);
-            ((Graphics2D) g).setStroke(
-                    new BasicStroke((float) (10 * GraphicsSetting.getInstance().getZoom() > 0 ? 10 * GraphicsSetting.getInstance().getZoom() : 1)));
-            g.drawLine((int) (start.getX() * GraphicsSetting.getInstance().getZoom()), (int) (start.getY() * GraphicsSetting.getInstance().getZoom()), (int) (end.getX() * GraphicsSetting.getInstance().getZoom()), (int) (end.getY() * GraphicsSetting.getInstance().getZoom()));
+        g.setColor(Color.WHITE);
+        ((Graphics2D) g).setStroke(new BasicStroke((float) (12 * GraphicsSetting.getInstance().getZoom() > 0 ? 12 * GraphicsSetting.getInstance().getZoom() : 1)));
+        g.drawLine((int) (start.getX() * GraphicsSetting.getInstance().getZoom()), (int) (start.getY() * GraphicsSetting.getInstance().getZoom()), (int) (end.getX() * GraphicsSetting.getInstance().getZoom()), (int) (end.getY() * GraphicsSetting.getInstance().getZoom()));
+        g.setColor(Color.BLACK);
+        ((Graphics2D) g).setStroke(
+                new BasicStroke((float) (10 * GraphicsSetting.getInstance().getZoom() > 0 ? 10 * GraphicsSetting.getInstance().getZoom() : 1)));
+        g.drawLine((int) (start.getX() * GraphicsSetting.getInstance().getZoom()), (int) (start.getY() * GraphicsSetting.getInstance().getZoom()), (int) (end.getX() * GraphicsSetting.getInstance().getZoom()), (int) (end.getY() * GraphicsSetting.getInstance().getZoom()));
     }
 
     public double getFrictionCoefficient() {
@@ -192,17 +215,19 @@ public abstract class Road implements Drawable {
 
 }
 
-class VehicleComparator implements Comparator<Vehicle>{
+class VehicleComparator implements Comparator<Vehicle> {
 
-    public VehicleComparator(){}
+    public VehicleComparator() {
+    }
 
     @Override
     public int compare(Vehicle o1, Vehicle o2) {
-        if(o1.getPosition().getValue() < o2.getPosition().getValue())
+        if (o1.getPosition().getValue() < o2.getPosition().getValue()) {
             return 1;
-        else if(o1.getPosition().getValue() == o2.getPosition().getValue())
+        } else if (o1.getPosition().getValue() == o2.getPosition().getValue()) {
             return 0;
-        else
+        } else {
             return -1;
+        }
     }
 }
