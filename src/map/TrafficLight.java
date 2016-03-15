@@ -65,7 +65,9 @@ public class TrafficLight {
     /**
      * Constructor for a traffic light
      *
+     * @param i
      * @param in The initial Intersection
+     * @param out
      */
     public TrafficLight(Intersection i, Road in, ArrayList<Road> out) {
         index = indexGlobal++;
@@ -140,7 +142,7 @@ public class TrafficLight {
         }
     }
 
-    public Intersection getIntersection(){
+    public Intersection getIntersection() {
         return i;
     }
 
@@ -181,7 +183,7 @@ public class TrafficLight {
         } else {
             g.setColor(Color.red);
         }
-        g.fillOval(this.i.getX(), this.i.getY(),10,10);
+        g.fillOval(this.i.getX() + i * 10, this.i.getY(), 10, 10);
         //g.drawString(Integer.toString(index), this.i.getX() + i * 10, this.i.getY());
     }
 
@@ -189,8 +191,8 @@ public class TrafficLight {
     public String toString() {
         return "Traffic Light " + index + " is " + (isGreen() ? "green" : "red");
     }
-    
-    public void addOut(Road r){
+
+    public void addOut(Road r) {
         out.add(r);
     }
 }
