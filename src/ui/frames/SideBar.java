@@ -132,8 +132,12 @@ public class SideBar extends JFrame {
                     try {
                         Map m = GEOjson.GEOJsonConverter(file.getAbsolutePath());
                         controller.Controller.getInstance().setMap(m);
-//                        controller.Controller.getInstance().getMap().getIntersections().forEach(a -> System.out.println(a));
-                        controller.Controller.getInstance().getUI().draw();
+                        //Setting the midpoint to the average location
+                        int[] midpoint = m.midpoint();
+                        System.out.println("Sidebar.java\tMidpoint @ "+midpoint[0]+";"+midpoint[1]);
+                        ui.setting.GraphicsSetting.getInstance().setPanX(midpoint[0]);
+                        ui.setting.GraphicsSetting.getInstance().setPanY(midpoint[1]);
+                        
                     } catch (FileNotFoundException ex) {
                         Logger.LogError(ex);
                     }
