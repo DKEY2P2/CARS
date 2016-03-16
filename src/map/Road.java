@@ -1,18 +1,13 @@
 package map;
 
-import helper.Logger;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Stroke;
-import java.util.ArrayDeque;
+import ui.Drawable;
+import ui.setting.GraphicsSetting;
 import vehicle.Vehicle;
 
+import java.awt.*;
 import java.util.ArrayList;
-import java.util.Deque;
+import java.util.Comparator;
 import java.util.PriorityQueue;
-import ui.Drawable;
 
 /**
  * This class represents a road A road is similar to an edge of a graph, they
@@ -22,6 +17,29 @@ import ui.Drawable;
  * @since 18-02-16
  */
 public abstract class Road implements Drawable {
+
+    /**
+     * The length of a road
+     */
+    private double width = 3.25;
+
+    /**
+     * Get the value of width in meters
+     *
+     * @return the value of width in meters
+     */
+    public double getWidth() {
+        return width;
+    }
+
+    /**
+     * Set the value of width in meters
+     *
+     * @param width new value of width in meters
+     */
+    public void setWidth(double width) {
+        this.width = width;
+    }
 
     /**
      * The speed limit on the road in m/s
@@ -57,22 +75,23 @@ public abstract class Road implements Drawable {
      * Start and end intersection wrapped in an ArrayList
      */
     private ArrayList<Intersection> se = new ArrayList<Intersection>();
+
+    private Comparator<Vehicle> cv = new VehicleComparator();
     /**
      * A queue of all the vehicles on this road
      */
-    private Deque<Vehicle> qv = new ArrayDeque<Vehicle>();
+    private PriorityQueue<Vehicle> pq = new PriorityQueue<Vehicle>(10, cv);
 
     /**
      * The constructor of the Road class
      *
      * @param start the starting intersection
      * @param end the ending intersection
-     * @param length the length of the road/THIS WILL NEED TO BE CALCULATED
-     * AUTOMATICALLY
+     * @param length the length of the road
+     *
      */
     public Road(Intersection start, Intersection end, double length) {
         if (start == end) {
-            Logger.LogError("Start and end point are the same", this);
             throw new IllegalArgumentException("Start and end points are the same");
         }
         this.start = start;
@@ -134,8 +153,8 @@ public abstract class Road implements Drawable {
      *
      * @return a queue of all the vehicles on the road
      */
-    public Deque<Vehicle> getVehicles() {
-        return qv;
+    public PriorityQueue<Vehicle> getVehicles() {
+        return pq;
     }
 
     /**
@@ -169,13 +188,13 @@ public abstract class Road implements Drawable {
 
     @Override
     public void draw(Graphics g) {
-        int startX = start.getX();
-        int startY = start.getY();
-        int endY = end.getY();
-        int endX = end.getX();
+        g.setColor(Color.WHITE);
+        ((Graphics2D) g).setStroke(new BasicStroke((float) (12 * GraphicsSetting.getInstance().getZoom() > 0 ? 12 * GraphicsSetting.getInstance().getZoom() : 1)));
+        g.drawLine((int) (start.getX() * GraphicsSetting.getInstance().getZoom()), (int) (start.getY() * GraphicsSetting.getInstance().getZoom()), (int) (end.getX() * GraphicsSetting.getInstance().getZoom()), (int) (end.getY() * GraphicsSetting.getInstance().getZoom()));
         g.setColor(Color.BLACK);
-        ((Graphics2D) g).setStroke(new BasicStroke(10));
-        g.drawLine(startX, startY, endX, endY);
+        ((Graphics2D) g).setStroke(
+                new BasicStroke((float) (10 * GraphicsSetting.getInstance().getZoom() > 0 ? 10 * GraphicsSetting.getInstance().getZoom() : 1)));
+        g.drawLine((int) (start.getX() * GraphicsSetting.getInstance().getZoom()), (int) (start.getY() * GraphicsSetting.getInstance().getZoom()), (int) (end.getX() * GraphicsSetting.getInstance().getZoom()), (int) (end.getY() * GraphicsSetting.getInstance().getZoom()));
     }
 
     public double getFrictionCoefficient() {
@@ -194,4 +213,21 @@ public abstract class Road implements Drawable {
         this.gravityConstant = gravityConstant;
     }
 
+}
+
+class VehicleComparator implements Comparator<Vehicle> {
+
+    public VehicleComparator() {
+    }
+
+    @Override
+    public int compare(Vehicle o1, Vehicle o2) {
+        if (o1.getPosition().getValue() < o2.getPosition().getValue()) {
+            return 1;
+        } else if (o1.getPosition().getValue() == o2.getPosition().getValue()) {
+            return 0;
+        } else {
+            return -1;
+        }
+    }
 }

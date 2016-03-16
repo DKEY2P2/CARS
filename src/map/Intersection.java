@@ -1,15 +1,13 @@
 package map;
 
 import helper.Logger;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import vehicle.Vehicle;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.List;
-import java.util.PriorityQueue;
 import ui.Drawable;
-import ui.ImageMap;
+import ui.setting.GraphicsSetting;
+import vehicle.Vehicle;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.PriorityQueue;
 
 /**
  * The abstract class for all types of intersections present in the simulation
@@ -20,6 +18,8 @@ import ui.ImageMap;
  * @since 27-02-16
  */
 public abstract class Intersection implements Drawable {
+
+    public static final int DIAMETER = 20;
 
     int timerLength = 4000;
 
@@ -223,12 +223,29 @@ public abstract class Intersection implements Drawable {
      * @param r the road to return the vehicles from
      * @return A Queue of all vehicles that are on the specified road
      */
-    public Deque<Vehicle> getQueue(Road r) {
+    public PriorityQueue<Vehicle> getQueue(Road r) {
         if (roads.contains(r)) {
             return r.getVehicles();
         } else {
             return null;
         }
+    }
+    public ArrayList<Road> getIns(){
+        ArrayList<Road> ins = new ArrayList<Road>();
+        for(Road r: getRoads()){
+            if(r.getEnd()==this)
+                ins.add(r);
+        }
+        return ins;
+    }
+
+    public ArrayList<Road> getOuts(){
+        ArrayList<Road> outs = new ArrayList<Road>();
+        for(Road r: getRoads()){
+            if(r.getStart()==this)
+                outs.add(r);
+        }
+        return outs;
     }
 
     /**
@@ -344,8 +361,9 @@ public abstract class Intersection implements Drawable {
 
     @Override
     public void draw(Graphics g) {
-        BufferedImage bi = ImageMap.getInstance().getImage(imageKey);
-        g.drawImage(bi, x - bi.getWidth() / 2, y - bi.getHeight() / 2, null);
+        //BufferedImage bi = ImageMap.getInstance().getImage(imageKey, 0, GraphicsSetting.getInstance().getZoom());
+        g.setColor(Color.WHITE);
+        g.fillOval((int) ((x - DIAMETER / 2) * GraphicsSetting.getInstance().getZoom())+ GraphicsSetting.getInstance().getPanX(), (int) ((y - DIAMETER / 2) * GraphicsSetting.getInstance().getZoom())+ GraphicsSetting.getInstance().getPanY(), DIAMETER, DIAMETER);
         int i = 0;
         for (TrafficLight tLight : tLights) {
             tLight.draw(g, i++);

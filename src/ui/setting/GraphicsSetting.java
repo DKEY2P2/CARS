@@ -6,7 +6,7 @@ package ui.setting;
  * @author Kareem
  */
 public class GraphicsSetting {
-    
+
     private boolean decorated = true;
 
     /**
@@ -26,7 +26,6 @@ public class GraphicsSetting {
     public void setDecorated(boolean decorated) {
         this.decorated = decorated;
     }
-
 
     /**
      * How much you want to scale the UI by
@@ -70,4 +69,65 @@ public class GraphicsSetting {
         }
         return instance;
     }
+
+    private double zoom = 1d;
+
+    /**
+     * Get the value of zoom
+     *
+     * @return the value of zoom
+     */
+    public double getZoom() {
+        return zoom;
+    }
+
+    /**
+     * Set the value of zoom
+     *
+     * @param zoom new value of zoom
+     */
+    public void setZoom(double zoom) {
+        this.zoom = zoom;
+    }
+
+    private int panX = 0;
+
+    /**
+     * Get the value of panX
+     *
+     * @return the value of panX
+     */
+    public int getPanX() {
+        return panX;
+    }
+
+    /**
+     * Set the value of panX
+     *
+     * @param panX new value of panX
+     */
+    public void setPanX(int panX) {
+        this.panX = panX;
+    }
+
+    private int panY = 0;
+
+    /**
+     * Get the value of panY
+     *
+     * @return the value of panY
+     */
+    public int getPanY() {
+        return panY;
+    }
+
+    /**
+     * Set the value of panY
+     *
+     * @param panY new value of panY
+     */
+    public void setPanY(int panY) {
+        this.panY = panY;
+    }
+
 }

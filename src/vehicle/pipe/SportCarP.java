@@ -1,13 +1,12 @@
 package vehicle.pipe;
 
 import algorithms.Algorithm;
-import java.util.Random;
-
 import map.Intersection;
 import map.Road;
-import models.Forbe;
-import models.Pipe;
+import models.OVM;
 import vehicle.Vehicle;
+
+import java.util.Random;
 
 /**
  * A sport modelled after Jaguar XK coupe 2007
@@ -19,7 +18,7 @@ import vehicle.Vehicle;
 public class SportCarP extends Vehicle {
 
     public SportCarP(Road start, double percentage, Algorithm a, Intersection destination) {
-        super(start, percentage, new Pipe(), a);
+        super(start, percentage, new OVM(), a);
         Random r = new Random();
         setDesiredSpeed(27.777777778 + r.nextInt(10));//100kmh
         setMaxAcceleration(4.5 + r.nextInt(3));// Jaguar XK Coupe 2007 - http://hypertextbook.com/facts/2001/MeredithBarricella.shtml
@@ -39,8 +38,8 @@ public class SportCarP extends Vehicle {
             //Adds it to the queue if not already in there
             if (!getPosition().getKey().getEnd().getTrafficLight(getPosition().getKey()).getWaiting().contains(this)) {
                 getPosition().getKey().getEnd().getTrafficLight(getPosition().getKey()).getWaiting().offer(this);
-                setSpeed(0);
-                setAcceleration(0);
+                //setSpeed(0);
+                //setAcceleration(0);
             }
         } else {
 //            ArrayList<TrafficLight> atl = getPosition().getKey().getEnd().getTrafficLights();

@@ -1,19 +1,18 @@
 package json;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Scanner;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import controller.Ticker;
 import map.Intersection;
 import map.Map;
 import map.Road;
 import map.intersection.DefaultIntersection;
 import map.road.NormalRoad;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class GEOjson {
     /**
