@@ -3,13 +3,11 @@ package controller;
 import algorithms.AStar;
 import controller.threads.ThreadController;
 import helper.Logger;
-import json.GEOjson;
 import map.Road;
 import map.intersection.DefaultIntersection;
 import models.OVM;
 import ui.ControllerUI;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.UIManager;
@@ -21,7 +19,7 @@ import javax.swing.UnsupportedLookAndFeelException;
  * @author Kareem
  */
 public class StartDoingStuff {
-    public static final String FILEPATH = "src/resources/GEOjson/NDL_roads.json";
+
     /**
      * Start of everything. Of our mini-world muwahahahaha
      *
@@ -72,15 +70,6 @@ public class StartDoingStuff {
 
         //Add the ticker to the controller
         control.setTicker(t);//so we can get the ticker later on
-        
-        /*Imports a GEOJson map*/
-//        try {
-//	    control.setMap(GEOjson.GEOJsonConverter(FILEPATH));
-//	} catch (FileNotFoundException e) {
-//	    // TODO Auto-generated catch block
-//	    e.printStackTrace();
-//	}
-        
 
         //Need to move the if statements around but im too lazy now
         if (args.length != 0) {
