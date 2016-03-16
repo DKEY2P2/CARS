@@ -13,7 +13,10 @@ import javax.swing.event.MouseInputListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
-import java.util.ArrayList;
+import java.io.File;
+import java.io.FileNotFoundException;
+import json.GEOjson;
+import map.Map;
 
 /**
  * The canvas to draw everything on. May be turn into a JPanel at a later date
@@ -66,6 +69,27 @@ public class Canvas extends JFrame {
                     StartDoingStuff.start();
                 } else if (e.getKeyCode() == KeyEvent.VK_L) {
                     Logger.print();
+                } else if (e.getKeyCode() == KeyEvent.VK_T) {
+                    GraphicsSetting.getInstance().setShowTraffficLight(!GraphicsSetting.getInstance().isShowTraffficLight());
+                    controller.Controller.getInstance().getUI().draw();
+                } else if (e.getKeyCode() == KeyEvent.VK_I) {
+                    GraphicsSetting.getInstance().setShowIntersection(!GraphicsSetting.getInstance().isShowIntersection());
+                    controller.Controller.getInstance().getUI().draw();
+                } else if (e.getKeyCode() == KeyEvent.VK_M) {
+                    JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir"));
+                    int returnVal = fileChooser.showOpenDialog(controller.Controller.getInstance().getUI().getC());
+                    if (returnVal == JFileChooser.APPROVE_OPTION) {
+                        File file = fileChooser.getSelectedFile();
+                        try {
+                            Map m = GEOjson.GEOJsonConverter(file.getAbsolutePath());
+                            controller.Controller.getInstance().setMap(m);
+                            controller.Controller.getInstance().getUI().draw();
+                        } catch (FileNotFoundException ex) {
+                            Logger.LogError(ex);
+                        }
+                    } else {
+                        Logger.LogError("JFileChooser has failed to get a file", fileChooser);
+                    }
                 } else {
                     keyCode = e.getKeyCode();
                     if (e.isControlDown()) {
