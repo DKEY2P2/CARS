@@ -68,7 +68,9 @@ public class SideBar extends JFrame {
         //Start button is added
         JButton button = new JButton("Start");
         button.addActionListener((ActionEvent e) -> {
-            StartDoingStuff.start();
+            if (!controller.Controller.getInstance().getMap().getRoads().isEmpty()) {
+                StartDoingStuff.start();
+            }
         });
         general.add(button);
 
@@ -94,21 +96,20 @@ public class SideBar extends JFrame {
         speedP.add(new JLabel("Speed of animation (ms)"));
         speedP.add(speedSpinner);
         general.add(speedP);
-        jTabbedPane.add("General",general );
-        
+        jTabbedPane.add("General", general);
+
         JPanel stats = new JPanel();
-        
-        jTabbedPane.add("Statistics" , stats);
-        
+
+        jTabbedPane.add("Statistics", stats);
+
         JPanel mapControl = new JPanel();
-        
+
         jTabbedPane.add("Map Controls", mapControl);
-        
+
         JPanel vehicle = new JPanel();
-        
+
         jTabbedPane.add("Vehicle Settings", vehicle);
-        
-        
+
         add(jTabbedPane);
         //Set it to visiable
         setVisible(true);
