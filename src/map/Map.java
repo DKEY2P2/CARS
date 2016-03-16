@@ -152,7 +152,10 @@ public class Map {
 	}
 	return r.get(index);
     }
-    
+    /**
+     * Generates a coordinate which returns the average x and y coordinate of all the intersections present on the map
+     * @return Array with two numbers, being the x and y coordinate
+     */
     public int[] midpoint() {
 	int sumX = 0;
 	int sumY = 0;
