@@ -3,14 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="a0410bfc-c827-43f8-b05e-49eb50117420" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/algorithms/AStar.java" afterPath="$PROJECT_DIR$/src/algorithms/AStar.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/controller/StartDoingStuff.java" afterPath="$PROJECT_DIR$/src/controller/StartDoingStuff.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/map/Intersection.java" afterPath="$PROJECT_DIR$/src/map/Intersection.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/map/TrafficLight.java" afterPath="$PROJECT_DIR$/src/map/TrafficLight.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/map/intersection/DefaultIntersection.java" afterPath="$PROJECT_DIR$/src/map/intersection/DefaultIntersection.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/map/intersection/SimpleTrafficLight.java" afterPath="$PROJECT_DIR$/src/map/intersection/SimpleTrafficLight.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/models/OVM.java" afterPath="$PROJECT_DIR$/src/models/OVM.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/vehicle/Vehicle.java" afterPath="$PROJECT_DIR$/src/vehicle/Vehicle.java" />
     </list>
     <ignored path="Cars.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -45,7 +38,7 @@
       <file leaf-file-name="StartDoingStuff.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/controller/StartDoingStuff.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-10.568182">
+            <state vertical-scroll-proportion="-5.4545455">
               <caret line="44" column="72" selection-start-line="44" selection-start-column="72" selection-end-line="44" selection-end-column="72" />
               <folding />
             </state>
@@ -62,14 +55,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DefaultIntersection.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="DefaultIntersection.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/map/intersection/DefaultIntersection.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="36" column="61" selection-start-line="36" selection-start-column="61" selection-end-line="36" selection-end-column="61" />
+            <state vertical-scroll-proportion="0.41956884">
+              <caret line="43" column="68" selection-start-line="43" selection-start-column="68" selection-end-line="43" selection-end-column="68" />
               <folding>
-                <element signature="e#2906#2907#0" expanded="true" />
-                <element signature="e#2930#2931#0" expanded="true" />
+                <element signature="e#2965#2966#0" expanded="true" />
+                <element signature="e#2989#2990#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -115,10 +108,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="OVM.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="OVM.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/models/OVM.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.9585406">
+            <state vertical-scroll-proportion="0.0">
               <caret line="95" column="19" selection-start-line="95" selection-start-column="19" selection-end-line="95" selection-end-column="19" />
               <folding />
             </state>
@@ -177,8 +170,8 @@
         <option value="$PROJECT_DIR$/src/algorithms/AStar.java" />
         <option value="$PROJECT_DIR$/src/vehicle/Vehicle.java" />
         <option value="$PROJECT_DIR$/src/controller/StartDoingStuff.java" />
-        <option value="$PROJECT_DIR$/src/map/intersection/DefaultIntersection.java" />
         <option value="$PROJECT_DIR$/src/models/OVM.java" />
+        <option value="$PROJECT_DIR$/src/map/intersection/DefaultIntersection.java" />
       </list>
     </option>
   </component>
@@ -1012,7 +1005,13 @@
       <option name="project" value="LOCAL" />
       <updated>1457646006344</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="TrafficLights Work&#10;">
+      <created>1458141094520</created>
+      <option name="number" value="00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1458141094520</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1062,7 +1061,8 @@
     <MESSAGE value="Merge branch 'master' into OVM&#10;&#10;# Conflicts:&#10;#&#9;src/map/Intersection.java&#10;#&#9;src/map/Road.java&#10;#&#9;src/map/TrafficLight.java&#10;#&#9;src/ui/frames/Canvas.java&#10;#&#9;src/vehicle/pipe/SportCarP.java&#10;&#10;Made some changes in the UI&#10;Noticed that AStar throws some errors will fix this tomorrow&#10;" />
     <MESSAGE value="AStar now works for real&#10;" />
     <MESSAGE value="master and OVM merge&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="master and OVM merge&#10;" />
+    <MESSAGE value="TrafficLights Work&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="TrafficLights Work&#10;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1437,14 +1437,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/controller/StartDoingStuff.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.568182">
-          <caret line="44" column="72" selection-start-line="44" selection-start-column="72" selection-end-line="44" selection-end-column="72" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/vehicle/Vehicle.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-21.363636">
@@ -1461,22 +1453,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/map/intersection/DefaultIntersection.java">
+    <entry file="file://$PROJECT_DIR$/src/models/OVM.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="36" column="61" selection-start-line="36" selection-start-column="61" selection-end-line="36" selection-end-column="61" />
-          <folding>
-            <element signature="e#2906#2907#0" expanded="true" />
-            <element signature="e#2930#2931#0" expanded="true" />
-          </folding>
+          <caret line="95" column="19" selection-start-line="95" selection-start-column="19" selection-end-line="95" selection-end-column="19" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/models/OVM.java">
+    <entry file="file://$PROJECT_DIR$/src/controller/StartDoingStuff.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.9585406">
-          <caret line="95" column="19" selection-start-line="95" selection-start-column="19" selection-end-line="95" selection-end-column="19" />
+        <state vertical-scroll-proportion="-5.4545455">
+          <caret line="44" column="72" selection-start-line="44" selection-start-column="72" selection-end-line="44" selection-end-column="72" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/map/intersection/DefaultIntersection.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.41956884">
+          <caret line="43" column="68" selection-start-line="43" selection-start-column="68" selection-end-line="43" selection-end-column="68" />
+          <folding>
+            <element signature="e#2965#2966#0" expanded="true" />
+            <element signature="e#2989#2990#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

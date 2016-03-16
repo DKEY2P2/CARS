@@ -9,6 +9,7 @@ import map.Road;
 import map.TrafficLight;
 import models.OVM;
 import vehicle.Vehicle;
+import vehicle.VehicleHolder;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public class DefaultIntersection extends Intersection implements Observer {
                         }
                         veh.addToTraceLog(this);
                         if (veh.getPosition().getKey().getEnd() == veh.getDestination()) {
-                            veh = null;
+                            VehicleHolder.getInstance().remove(veh);
                         } else {
                             Intersection placeToGo = veh.nextPlaceToGo();
                             Road r = null;
