@@ -132,6 +132,11 @@ public class SideBar extends JFrame {
                     try {
                         Map m = GEOjson.GEOJsonConverter(file.getAbsolutePath());
                         controller.Controller.getInstance().setMap(m);
+                        
+//                        ui.setting.GraphicsSetting.getInstance().setPanX(m.getIntersections().get(0).getX());
+//                        ui.setting.GraphicsSetting.getInstance().setPanY(m.getIntersections().get(0).getY());
+                        
+                        
                         controller.Controller.getInstance().getUI().draw();
                     } catch (FileNotFoundException ex) {
                         Logger.LogError(ex);
