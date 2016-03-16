@@ -53,26 +53,16 @@ public class StartDoingStuff {
         /* New intersection */
         DefaultIntersection a1 = new DefaultIntersection(100, 100, t);
         DefaultIntersection a2 = new DefaultIntersection(100, 500, t);
-        DefaultIntersection a3 = new DefaultIntersection(500, 500, t);
-        DefaultIntersection a4 = new DefaultIntersection(500, 100, t);
 
         /* New roads */
         NormalRoad r1 = new NormalRoad(a1, a2);
-        NormalRoad r2 = new NormalRoad(a2, a3);
-        NormalRoad r3 = new NormalRoad(a3, a4);
-        NormalRoad r4 = new NormalRoad(a4, a1);
-        NormalRoad r5 = new NormalRoad(a1, a3);
+        NormalRoad r2 = new NormalRoad(a2, a1);
 
         /* Adds it to the controller */
-        a.add(a4);
-        a.add(a3);
         a.add(a2);
         a.add(a1);
         b.add(r1);
         b.add(r2);
-        b.add(r3);
-        b.add(r4);
-        b.add(r5);
 
         //Add the item to the controller
         b.stream().forEach((b1) -> {
@@ -83,7 +73,7 @@ public class StartDoingStuff {
         });
 
         //Creates n number of cars
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 5; i++) {
             VehicleFactory.getFactory().createVehicle(VehicleFactory.SPORT_CAR);
         }
         //Add the ticker to the controller

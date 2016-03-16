@@ -565,5 +565,8 @@ public abstract class Vehicle implements Task, Drawable {
         Road r = getPosition().getKey();
         return Math.pow(speed, 2) / (2 * r.getFrictionCoefficient() * r.getGravityConstant());
     }
-
+@Override
+public String toString() {
+	return "Index : " + index +" Speed: " + speed + "\n  Acceleration : "+ acceleration + " Road : " + getPosition().getKey()+ " Percentage " + position.getValue()+ " Deceleration : " + getDesiredDeceleration();
+}
 }

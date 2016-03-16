@@ -113,34 +113,39 @@ public class IntelligentDriver implements Model {
 			System.out.println("PositionsRoad: " + positionsRoad[0] +"    "+ positionsRoad[1]);
 			approachingRate = Math.abs(velCars[1] - velCars[0]);
 			System.out.println("ApproachingRate: " + approachingRate);
-		//	System.out.println(velCars[1] + "Speed Follower: " + velCars[0]);
-			System.out.println("Distance between the Cars: " + distanceCars);
 			distanceCars = Math.abs(positionsRoad[1] - positionsRoad[0]); // Distance between the two cars
-			System.out.println("Time Headway: " + timeHeadway);
+			System.out.println("Distance between the Cars: " + distanceCars);
 			timeHeadway = distanceCars / velCars[0]; // TODO : Is this correct ?
 			// Headway between two cars in time. (seconds)
 			// Time Headway (distance/speed)
-
-			double s = jamDistance + jamDistanceB * Math.sqrt((velCars[0] / desiredVelocity))
-					+ (velCars[0] * timeHeadway)
-					+ +((velCars[0] * approachingRate) / (2 * Math.sqrt(maxAcceleration * desiredDeceleration)));
+			System.out.println("Time Headway: " + timeHeadway);
+			
+			System.out.println();
+			System.out.println(follower);
+			System.out.println();
+			
+//			double s = jamDistance + jamDistanceB * Math.sqrt((velCars[0] / desiredVelocity))
+//					+ (velCars[0] * timeHeadway)
+//					+ ((velCars[0] * approachingRate) / (2 * Math.sqrt(maxAcceleration * desiredDeceleration)));
+			double s = jamDistance + timeHeadway + ((velCars[0] * approachingRate)/ (2*Math.sqrt(maxAcceleration*desiredDeceleration)));
 			s = Math.abs(s);
 
-			acceleration[0] = maxAcceleration
+			velCars[0] = maxAcceleration
 					* Math.abs((1 - Math.pow((velCars[0] / desiredVelocity), delta) - Math.pow((s / distanceCars), 2)));
-			//			if(distanceCars < s){
-			//				brakingCars[0] = -follower.getMaxDecceleration() * Math.pow((s / distanceCars), 2);
-			//				System.out.println("I'm braking!!");
-			//				// Braking should only happen when actual distance between two cars is smaller than s
-			//			}
-			velCars[0] = velCars[0] + (acceleration[0] * Controller.getInstance().getTicker().getTickTimeInS());
+			//velCars[0] = velCars[0] + (acceleration[0] * Controller.getInstance().getTicker().getTickTimeInS());
 			System.out.println("VELOCITY CAR 0 : " + velCars[0]+ "    "
 					+ "   VELOCITY CAR 1: " + velCars[1]);
-			System.out.println( );
-			double newPosition = (positionsRoad[0] + velCars[0] * Controller.getInstance().getTicker().getTickTimeInS())
-					/ r.getLength();
+			velCars[0] = Math.min(velCars[0], r.getSpeedLimit());
+			System.out.println("SPEED LIMIT               " + r.getSpeedLimit());
+			System.out.println("             position Road: " + (positionsRoad[0] + velCars[0] * Controller.getInstance().getTicker().getTickTimeInS())/ r.getLength());
+			double newPosition = (positionsRoad[0] + velCars[0] * Controller.getInstance().getTicker().getTickTimeInS())/ r.getLength();
+			if(newPosition>1){
+				System.err.println("faskjfsaljfka");
+				System.out.println(follower);
+				System.out.println();
+			}
 			
-			follower.setAcceleration(acceleration[0]);
+			//follower.setAcceleration(acceleration[0]);
 			follower.setSpeed(velCars[0]);
 			follower.setPosition(new SimpleImmutableEntry<>(r, newPosition));
 
@@ -160,6 +165,8 @@ public class IntelligentDriver implements Model {
 
 			double s = jamDistance + jamDistanceB * Math.sqrt((velCar / desiredVelocity)) + (velCar * timeHeadway)
 					+ +((velCar * approachingRate) / (2 * Math.sqrt(maxAcceleration * desiredDeceleration)));
+			s = Math.abs(s);
+			
 
 			//			if(trafficLightDistance < s){
 			//				brakingCars[0] = -maxAcceleration * Math.pow((s / trafficLightDistance), 2);
@@ -168,9 +175,9 @@ public class IntelligentDriver implements Model {
 
 			acceleration = maxAcceleration * Math.abs((1 - Math.pow((velCar / desiredVelocity), delta) - Math.pow((s / trafficLightDistance), 2)));
 
-			velCar = velCar + (acceleration * Controller.getInstance().getTicker().getTickTimeInS());
+			velCar = (velCar + (acceleration * Controller.getInstance().getTicker().getTickTimeInS()))*2;
 			double newPosition = (positionRoad
-					+ velCar * Controller.getInstance().getTicker().getTickTimeInS() / r.getLength());
+					+ velCar * Controller.getInstance().getTicker().getTickTimeInS()) / r.getLength();
 			if(velCars[0]== Double.NaN||positionsRoad[0]==Double.NaN){
 				System.exit(0);
 			}

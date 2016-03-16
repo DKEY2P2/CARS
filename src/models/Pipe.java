@@ -60,6 +60,7 @@ public class Pipe implements Model {
 						speed + v.getMaxAcceleration() * Controller.getInstance().getTicker().getTickTimeInS());
 			}
 			double newPosition = (positionsRoad[0] + speed*Controller.getInstance().getTicker().getTickTimeInS())/ r.getLength();
+			
 			v.setSpeed(speed);
 			v.setPosition(new SimpleImmutableEntry<>(r, newPosition));
 		} else {
