@@ -136,4 +136,8 @@ public class Ticker extends Observerable {
     public int getTickCount() {
         return this.tickCount;
     }
+    
+    public void setTickTimeInMS(double x){
+        this.tickTimeInS = x/1000d;
+    }
 }
