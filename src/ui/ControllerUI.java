@@ -52,9 +52,10 @@ public class ControllerUI implements Task {
      * @param g The graphics needed to draw
      */
     public void drawScale(Graphics g) {
-//        g.setColor(Color.WHITE);
-//        g.drawLine(20, c.getHeight() - 30, 120, c.getHeight() - 30);
-//        g.drawString(String.valueOf((int) (GraphicsSetting.getInstance().getZoom() * 100)) + "m", 20, c.getHeight() - 15);
+        g.setColor(Color.WHITE);
+        ((Graphics2D)(g)).setStroke(new BasicStroke(2));
+        g.drawLine(20, c.getHeight() - 30, 120, c.getHeight() - 30);
+        g.drawString(String.valueOf((int) (GraphicsSetting.getInstance().getZoom() * 100)) + "m", 20, c.getHeight() - 15);
     }
 
     /**
