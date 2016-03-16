@@ -126,7 +126,7 @@ public class SideBar extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFileChooser fileChooser = new JFileChooser();
+                JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir"));
                 int returnVal = fileChooser.showOpenDialog(controller.Controller.getInstance().getUI().getC());
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = fileChooser.getSelectedFile();
