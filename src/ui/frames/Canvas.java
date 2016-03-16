@@ -64,6 +64,8 @@ public class Canvas extends JFrame {
                     System.exit(0);
                 } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     StartDoingStuff.start();
+                } else if (e.getKeyCode() == KeyEvent.VK_L) {
+                    Logger.print();
                 } else {
                     keyCode = e.getKeyCode();
                     if (e.isControlDown()) {
@@ -204,7 +206,7 @@ public class Canvas extends JFrame {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            
+
         }
 
         @Override

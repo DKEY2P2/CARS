@@ -33,7 +33,8 @@ public class ControllerUI implements Task {
         update();
         JOptionPane.showMessageDialog(null, "Hold control and click to make a new intersection "
                 + "\nHold shift and click to make a new road (click on the start intersection then the end intersection"
-                + "\nPress start (on the side bar) to start the timer)");
+                + "\nPress start (on the side bar) to start the)"
+                + "\nPress \"l\" to print out the logger");
 
     }
 
@@ -53,9 +54,9 @@ public class ControllerUI implements Task {
      */
     public void drawScale(Graphics g) {
         g.setColor(Color.WHITE);
-        ((Graphics2D)(g)).setStroke(new BasicStroke(2));
+        ((Graphics2D) (g)).setStroke(new BasicStroke(2));
         g.drawLine(20, c.getHeight() - 30, 120, c.getHeight() - 30);
-        g.drawString(String.valueOf((int) (GraphicsSetting.getInstance().getZoom() * 100)) + "m", 20, c.getHeight() - 15);
+        g.drawString(String.valueOf((int) (GraphicsSetting.getInstance().getZoom() / 100)) + "m", 20, c.getHeight() - 15);
     }
 
     /**
@@ -136,11 +137,11 @@ public class ControllerUI implements Task {
 
     /**
      * Get the canvas
+     *
      * @return The canvas
      */
     public Canvas getC() {
         return c;
     }
-    
-    
+
 }
