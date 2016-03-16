@@ -12,8 +12,9 @@ import controller.threads.ThreadController;
 import helper.Logger;
 import map.Road;
 import map.intersection.DefaultIntersection;
-import models.OVM;
+import models.IntelligentDriver;
 import ui.ControllerUI;
+import vehicle.VehicleFactory;
 
 /**
  * A start class for the rest of the system
@@ -40,13 +41,13 @@ public class StartDoingStuff {
         
         
         /* Set what model to use for the rest of the application */
-        SimulationSettings.getInstance().setModel(new OVM());
+        SimulationSettings.getInstance().setModel(new IntelligentDriver());
 
         /* Set what path finding AI to use for the rest of the application */
         SimulationSettings.getInstance().setPathFindingAI(new AStar());
 
         /* Set the number of ticks the simulation waits until it spawns new vehicles */
-        SimulationSettings.getInstance().setTimeUntilSpawn(20);
+        SimulationSettings.getInstance().setTimeUntilSpawn(50);
 
         /* Creates the controller */
         Controller control = Controller.getInstance();
@@ -59,7 +60,7 @@ public class StartDoingStuff {
         Random r = new Random();
         /* Creates a ticker with the value of 100 ms between each tick which represent 0.1 second */
         Ticker t = new Ticker(0.1, 100);
-
+        
         //Add the item to the controller
         b.stream().forEach((b1) -> {
             control.getMap().addRoad(b1);
@@ -108,7 +109,7 @@ public class StartDoingStuff {
             //for (int i = 0; i < 1; i++) {
              //   VehicleFactory.getFactory().createVehicle(VehicleFactory.SPORT_CAR);
             //}
-
+        	VehicleFactory.getFactory().createVehicle(VehicleFactory.SPORT_CAR);
 
             Controller.getInstance().getTicker().start("tick");
             start = true;

@@ -131,7 +131,7 @@ public class SideBar extends JFrame {
         public void stateChanged(ChangeEvent e) {
             if (e.getSource() instanceof JSpinner) {
                 JSpinner s = (JSpinner) e.getSource();
-                controller.Controller.getInstance().getTicker().setTickTimeInS(((Integer) s.getModel().getValue()) / 1000d);
+                controller.Controller.getInstance().getTicker().setTickTimeInS(((Double) s.getModel().getValue()) / 1000d);
             }
         }
 
