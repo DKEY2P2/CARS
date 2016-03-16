@@ -59,11 +59,10 @@ public class ControllerUI implements Task {
         g.setColor(Color.WHITE);
         ((Graphics2D) (g)).setStroke(new BasicStroke(2));
         g.drawLine(20, c.getHeight() - 30, 120, c.getHeight() - 30);
-        System.out.println("zoom " + GraphicsSetting.getInstance().getZoom());
-        System.out.println((1 / GraphicsSetting.getInstance().getZoom() * 100) + "m");
         String tmp = 1 / GraphicsSetting.getInstance().getZoom() * 100 < 1000
                 ? String.valueOf((int) (1 / GraphicsSetting.getInstance().getZoom() * 100)) + "m"
-                : String.valueOf((double) (Math.round(0.001*(1 / GraphicsSetting.getInstance().getZoom() * 100)*10))/10) + "km";
+                : String.valueOf((double) (Math.round(0.001 * (1 / GraphicsSetting.getInstance().getZoom() * 100) * 10)) / 10) + "km";
+        tmp = GraphicsSetting.getInstance().getZoom() == 0 ? "infinity" : tmp;
         g.drawString(tmp, 20, c.getHeight() - 15);
     }
 
