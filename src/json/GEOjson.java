@@ -15,6 +15,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class GEOjson {
+    
+    public static int intersectioncnt = 0;
+    public static int roadcnt = 0;
+    
     /**
      * Converts a GEOjson object into our map
      * 
@@ -22,6 +26,9 @@ public class GEOjson {
      * @throws FileNotFoundException Exception thrown if file not found
      */
     public static Map GEOJsonConverter(String filepath) throws FileNotFoundException {
+	//Clear ints.
+	intersectioncnt =0;
+	roadcnt=0;
 	//Map we're going to return
 	Map map = new Map(new ArrayList<Road>(), new ArrayList<Intersection>());
 	//chuk chuk
@@ -33,6 +40,8 @@ public class GEOjson {
 	JSONArray features = obj.getJSONArray("features");
 	
 	//For each Feature object...
+	System.out.println("Importing "+features.length()+" features");
+	
 	for (int i = 0; i < features.length(); i++) {
 //	    System.out.println("Feature " + i);
 	    JSONObject geom = features.getJSONObject(i).getJSONObject("geometry");
@@ -58,11 +67,14 @@ public class GEOjson {
 		for (int j = 0; j < ints.size() - 1; j++) {
 		    map.addRoad(new NormalRoad(ints.get(j), ints.get(j + 1)));
 		    map.addRoad(new NormalRoad(ints.get(j + 1), ints.get(j)));
+		    roadcnt++;
 		}
+		
 		
 	    }
 	    
 	}
+	System.out.println("Processed "+intersectioncnt+" intersection & "+roadcnt+" roads");
 	return map;
     }
     
@@ -97,9 +109,10 @@ public class GEOjson {
 	    }
 	}
 	Ticker t = controller.Controller.getInstance().getTicker();
-//	System.out.println(t);
+	System.out.println(t);
 	DefaultIntersection i = new DefaultIntersection(x, y, t);
 	map.addIntersection(i);
+	intersectioncnt++;
 	return i;
 	
     }
