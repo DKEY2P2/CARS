@@ -6,9 +6,14 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.logging.Level;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,6 +23,8 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import json.GEOjson;
+import map.Map;
 import ui.setting.GraphicsSetting;
 
 /**
@@ -106,15 +113,37 @@ public class SideBar extends JFrame {
 
         jTabbedPane.add("Map Controls", mapControl);
         JPanel zoomControlPanel = new JPanel();
-        SpinnerModel spinnerModelZoom = 
-                new SpinnerNumberModel(GraphicsSetting.getInstance().getZoom(), 0.00000000001, 10000, 0.01);
+        SpinnerModel spinnerModelZoom
+                = new SpinnerNumberModel(GraphicsSetting.getInstance().getZoom(), 0.00000000001, 10000, 0.01);
 
         JSpinner zoomSpinner = new JSpinner(spinnerModelZoom);
         zoomSpinner.addChangeListener(new ChangeListenerZoom());
         zoomControlPanel.add(new JLabel("Set the zoom level"));
         zoomControlPanel.add(zoomSpinner);
         mapControl.add(zoomControlPanel);
+        JButton importButton = new JButton("Click to import map");
+        importButton.addActionListener(new ActionListener() {
 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                int returnVal = fileChooser.showOpenDialog(controller.Controller.getInstance().getUI().getC());
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File file = fileChooser.getSelectedFile();
+                    try {
+                        Map m = GEOjson.GEOJsonConverter(file.getAbsolutePath());
+                        controller.Controller.getInstance().setMap(m);
+                    } catch (FileNotFoundException ex) {
+                        Logger.LogError(ex);
+                    }
+                } else {
+                    Logger.LogError("JFileChooser has failed to get a file", fileChooser);
+                }
+            }
+        });
+        mapControl.add(importButton);
+
+//        mapControl.add(fileChooser);
         JPanel vehicle = new JPanel();
 
         jTabbedPane.add("Vehicle Settings", vehicle);
