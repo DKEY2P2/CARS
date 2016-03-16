@@ -183,6 +183,7 @@ public class SideBar extends JFrame {
             if (e.getSource() instanceof JSpinner) {
                 JSpinner s = (JSpinner) e.getSource();
                 GraphicsSetting.getInstance().setZoom((double) s.getModel().getValue());
+                controller.Controller.getInstance().getUI().draw();
             }
         }
 
