@@ -6,6 +6,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
+import ui.setting.GraphicsSetting;
 
 /**
  * A class made to represent the traffic lights on the road network
@@ -178,12 +179,15 @@ public class TrafficLight {
     }
 
     public void draw(Graphics g, int i) {
+        double zoom = GraphicsSetting.getInstance().getZoom();
         if (isGreen()) {
             g.setColor(Color.green);
         } else {
             g.setColor(Color.red);
         }
-        g.fillOval(this.i.getX() + i * 10, this.i.getY(), 10, 10);
+        int size = (int) (3 * zoom > 1 ? 3 * zoom : 1);
+        g.fillOval(this.i.getX() + i * 10 + GraphicsSetting.getInstance().getPanX(),
+                this.i.getY() + GraphicsSetting.getInstance().getPanY(), size, size);
         //g.drawString(Integer.toString(index), this.i.getX() + i * 10, this.i.getY());
     }
 

@@ -19,7 +19,7 @@ import java.util.PriorityQueue;
  */
 public abstract class Intersection implements Drawable {
 
-    public static final int DIAMETER = 20;
+    public static final int DIAMETER = 5;
 
     int timerLength = 4000;
 
@@ -99,7 +99,7 @@ public abstract class Intersection implements Drawable {
     }
 
     public void updateLight(double elapsed) {
-        if(tLights.isEmpty()){
+        if (tLights.isEmpty()) {
             return;
         }
         //Check which use case to use
@@ -230,20 +230,23 @@ public abstract class Intersection implements Drawable {
             return null;
         }
     }
-    public ArrayList<Road> getIns(){
+
+    public ArrayList<Road> getIns() {
         ArrayList<Road> ins = new ArrayList<Road>();
-        for(Road r: getRoads()){
-            if(r.getEnd()==this)
+        for (Road r : getRoads()) {
+            if (r.getEnd() == this) {
                 ins.add(r);
+            }
         }
         return ins;
     }
 
-    public ArrayList<Road> getOuts(){
+    public ArrayList<Road> getOuts() {
         ArrayList<Road> outs = new ArrayList<Road>();
-        for(Road r: getRoads()){
-            if(r.getStart()==this)
+        for (Road r : getRoads()) {
+            if (r.getStart() == this) {
                 outs.add(r);
+            }
         }
         return outs;
     }
@@ -363,10 +366,13 @@ public abstract class Intersection implements Drawable {
     public void draw(Graphics g) {
         //BufferedImage bi = ImageMap.getInstance().getImage(imageKey, 0, GraphicsSetting.getInstance().getZoom());
         g.setColor(Color.WHITE);
-        g.fillOval((int) ((x - DIAMETER / 2) * GraphicsSetting.getInstance().getZoom())+ GraphicsSetting.getInstance().getPanX(), (int) ((y - DIAMETER / 2) * GraphicsSetting.getInstance().getZoom())+ GraphicsSetting.getInstance().getPanY(), DIAMETER, DIAMETER);
+        double zoom = GraphicsSetting.getInstance().getZoom();
+        g.fillOval((int) ((x - DIAMETER / 2) * zoom) + GraphicsSetting.getInstance().getPanX(), (int) ((y - DIAMETER / 2) * zoom) + GraphicsSetting.getInstance().getPanY(), (int) (DIAMETER * zoom), (int) (DIAMETER * zoom));
         int i = 0;
-        for (TrafficLight tLight : tLights) {
-            tLight.draw(g, i++);
+        if (GraphicsSetting.getInstance().isShowTraffficLight()) {
+            for (TrafficLight tLight : tLights) {
+                tLight.draw(g, i++);
+            }
         }
     }
 
