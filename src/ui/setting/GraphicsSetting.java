@@ -7,6 +7,46 @@ package ui.setting;
  */
 public class GraphicsSetting {
 
+    private boolean showTraffficLight = true;
+
+    /**
+     * Get the value of showTraffficLight
+     *
+     * @return the value of showTraffficLight
+     */
+    public boolean isShowTraffficLight() {
+        return showTraffficLight;
+    }
+
+    /**
+     * Set the value of showTraffficLight
+     *
+     * @param showTraffficLight new value of showTraffficLight
+     */
+    public void setShowTraffficLight(boolean showTraffficLight) {
+        this.showTraffficLight = showTraffficLight;
+    }
+
+    private boolean showIntersection = true;
+
+    /**
+     * Get the value of showIntersection
+     *
+     * @return the value of showIntersection
+     */
+    public boolean isShowIntersection() {
+        return showIntersection;
+    }
+
+    /**
+     * Set the value of showIntersection
+     *
+     * @param showIntersection new value of showIntersection
+     */
+    public void setShowIntersection(boolean showIntersection) {
+        this.showIntersection = showIntersection;
+    }
+
     private boolean decorated = true;
 
     /**
