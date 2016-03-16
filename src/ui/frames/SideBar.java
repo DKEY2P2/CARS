@@ -11,7 +11,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.logging.Level;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -133,6 +132,8 @@ public class SideBar extends JFrame {
                     try {
                         Map m = GEOjson.GEOJsonConverter(file.getAbsolutePath());
                         controller.Controller.getInstance().setMap(m);
+//                        controller.Controller.getInstance().getMap().getIntersections().forEach(a -> System.out.println(a));
+                        controller.Controller.getInstance().getUI().draw();
                     } catch (FileNotFoundException ex) {
                         Logger.LogError(ex);
                     }
