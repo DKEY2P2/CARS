@@ -90,9 +90,9 @@ public class SideBar extends JFrame {
 
         //The speed of the simulation changer is added
         JPanel speedP = new JPanel();
-        SpinnerModel spinnerModel = new SpinnerNumberModel(controller.Controller.getInstance().getTicker().getTickTimeInMS(), 1, 10000, 1);
-        JSpinner speedSpinner = new JSpinner(spinnerModel);
-        speedSpinner.addChangeListener(new ChangeListenerCustom());
+        SpinnerModel spinnerModelSpeed = new SpinnerNumberModel(controller.Controller.getInstance().getTicker().getTickTimeInMS(), 1, 10000, 1);
+        JSpinner speedSpinner = new JSpinner(spinnerModelSpeed);
+        speedSpinner.addChangeListener(new ChangeListenerSpeed());
         speedP.add(new JLabel("Speed of animation (ms)"));
         speedP.add(speedSpinner);
         general.add(speedP);
@@ -105,6 +105,15 @@ public class SideBar extends JFrame {
         JPanel mapControl = new JPanel();
 
         jTabbedPane.add("Map Controls", mapControl);
+        JPanel zoomControlPanel = new JPanel();
+        SpinnerModel spinnerModelZoom = 
+                new SpinnerNumberModel(GraphicsSetting.getInstance().getZoom(), 0.00000000001, 10000, 0.01);
+
+        JSpinner zoomSpinner = new JSpinner(spinnerModelZoom);
+        zoomSpinner.addChangeListener(new ChangeListenerZoom());
+        zoomControlPanel.add(new JLabel("Set the zoom level"));
+        zoomControlPanel.add(zoomSpinner);
+        mapControl.add(zoomControlPanel);
 
         JPanel vehicle = new JPanel();
 
@@ -126,13 +135,25 @@ public class SideBar extends JFrame {
     }
 
     //The change listener for the spinner
-    private class ChangeListenerCustom implements ChangeListener {
+    private class ChangeListenerSpeed implements ChangeListener {
 
         @Override
         public void stateChanged(ChangeEvent e) {
             if (e.getSource() instanceof JSpinner) {
                 JSpinner s = (JSpinner) e.getSource();
                 controller.Controller.getInstance().getTicker().setTickTimeInS(((double) s.getModel().getValue()) / 1000d);
+            }
+        }
+
+    }
+
+    private class ChangeListenerZoom implements ChangeListener {
+
+        @Override
+        public void stateChanged(ChangeEvent e) {
+            if (e.getSource() instanceof JSpinner) {
+                JSpinner s = (JSpinner) e.getSource();
+                GraphicsSetting.getInstance().setZoom((double) s.getModel().getValue());
             }
         }
 
