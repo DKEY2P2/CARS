@@ -1,11 +1,13 @@
 package map.intersection;
 
 import controller.Observer;
+import controller.SimulationSettings;
 import controller.Ticker;
 import helper.Logger;
 import map.Intersection;
 import map.Road;
 import map.TrafficLight;
+import models.OVM;
 import vehicle.Vehicle;
 
 import java.util.AbstractMap;
@@ -28,39 +30,39 @@ public class DefaultIntersection extends Intersection implements Observer {
     }
 
     public void update() {
-        updateLight(ticker.getTickTimeInS());
-        for (TrafficLight tl : getTrafficLights()) {
-            if (tl.isGreen()) {
-                for (int i = 0; i < tl.getMaxFlow(); i++) {
-                    Vehicle veh = tl.getWaiting().poll();
-                    if (veh == null) {
-                        return;
-                    }
-                    veh.addToTraceLog(this);
-                    if(veh.getPosition().getKey().getEnd() == veh.getDestination()){ //TODO CHECK IF THIS IS ALLOWED
-                        veh = null;
-                    }else{
-                        Intersection placeToGo = veh.nextPlaceToGo();
-                        Road r = null;
-                        for (Road road : getRoads()) {
-                            if (road.getEnd() == placeToGo) {
-                                r = road;
-                            }
+        updateLight(ticker.getTimeBetweenTick());
+            for (TrafficLight tl : getTrafficLights()) {
+                if (tl.isGreen()) {
+                    for (int i = 0; i < tl.getMaxFlow(); i++) {
+                        Vehicle veh = tl.getWaiting().poll();
+                        if (veh == null) {
+                            return;
                         }
-                        if (r == null) {
-                            Logger.LogError("Can't find a place to go to reach destination", veh);
+                        veh.addToTraceLog(this);
+                        if (veh.getPosition().getKey().getEnd() == veh.getDestination()) {
+                            veh = null;
+                        } else {
+                            Intersection placeToGo = veh.nextPlaceToGo();
+                            Road r = null;
                             for (Road road : getRoads()) {
-                                if (road.getEnd() != this) {
+                                if (road.getEnd() == placeToGo) {
                                     r = road;
-                                    break;
                                 }
                             }
+                            if (r == null) {
+                                Logger.LogError("Can't find a place to go to reach destination", veh);
+                                for (Road road : getRoads()) {
+                                    if (road.getEnd() != this) {
+                                        r = road;
+                                        break;
+                                    }
+                                }
+                            }
+                            veh.setPosition(new AbstractMap.SimpleImmutableEntry<>(r, 0d));
                         }
-                        veh.setPosition(new AbstractMap.SimpleImmutableEntry<>(r, 0d));
                     }
                 }
             }
-        }
     }
 
     @Override
