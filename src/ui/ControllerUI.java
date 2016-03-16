@@ -132,4 +132,14 @@ public class ControllerUI implements Task {
         s.repaint();
         return true;
     }
+
+    /**
+     * Get the canvas
+     * @return The canvas
+     */
+    public Canvas getC() {
+        return c;
+    }
+    
+    
 }
