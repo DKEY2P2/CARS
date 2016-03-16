@@ -37,23 +37,27 @@ public class DefaultIntersection extends Intersection implements Observer {
                         return;
                     }
                     veh.addToTraceLog(this);
-                    Intersection placeToGo = veh.nextPlaceToGo();
-                    Road r = null;
-                    for (Road road : getRoads()) {
-                        if (road.getEnd() == placeToGo) {
-                            r = road;
-                        }
-                    }
-                    if (r == null) {
-                        Logger.LogError("Can't find a place to go to reach destination", veh);
+                    if(veh.getPosition().getKey().getEnd() == veh.getDestination()){ //TODO CHECK IF THIS IS ALLOWED
+                        veh = null;
+                    }else{
+                        Intersection placeToGo = veh.nextPlaceToGo();
+                        Road r = null;
                         for (Road road : getRoads()) {
-                            if (road.getEnd() != this) {
+                            if (road.getEnd() == placeToGo) {
                                 r = road;
-                                break;
                             }
                         }
+                        if (r == null) {
+                            Logger.LogError("Can't find a place to go to reach destination", veh);
+                            for (Road road : getRoads()) {
+                                if (road.getEnd() != this) {
+                                    r = road;
+                                    break;
+                                }
+                            }
+                        }
+                        veh.setPosition(new AbstractMap.SimpleImmutableEntry<>(r, 0d));
                     }
-                    veh.setPosition(new AbstractMap.SimpleImmutableEntry<>(r, 0d));
                 }
             }
         }
@@ -75,7 +79,7 @@ public class DefaultIntersection extends Intersection implements Observer {
                 trafficLight.addOut(r);
             });
         } else {
-            getTrafficLights().add(new TrafficLight(this, r, out.toArray(new Road[out.size()])));
+            getTrafficLights().add(new TrafficLight(this, r, out));
         }
 
         return r;

@@ -1,21 +1,17 @@
 package controller;
 
 import algorithms.AStar;
-import algorithms.TestAl;
 import controller.threads.ThreadController;
 import helper.Logger;
-import map.Intersection;
 import map.Road;
 import map.intersection.DefaultIntersection;
-import map.road.NormalRoad;
+import models.OVM;
 import ui.ControllerUI;
-import vehicle.SportCar;
-import helper.StupidHelper;
+
 import java.util.ArrayList;
 import java.util.Random;
-import models.Forbe;
-import models.Model;
-import vehicle.VehicleFactory;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  * A start class for the rest of the system
@@ -33,14 +29,22 @@ public class StartDoingStuff {
      * consider it the same as if you left it blank
      */
     public static void main(String[] args) {
+        try {
+            UIManager.setLookAndFeel(
+                    UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            Logger.LogError(ex);
+        }
+        
+        
         /* Set what model to use for the rest of the application */
-        SimulationSettings.getInstance().setModel(new Forbe());
+        SimulationSettings.getInstance().setModel(new OVM());
 
         /* Set what path finding AI to use for the rest of the application */
-        SimulationSettings.getInstance().setPathFindingAI(new TestAl());
+        SimulationSettings.getInstance().setPathFindingAI(new AStar());
 
         /* Set the number of ticks the simulation waits until it spawns new vehicles */
-        SimulationSettings.getInstance().setTimeUntilSpawn(150);
+        SimulationSettings.getInstance().setTimeUntilSpawn(20);
 
         /* Creates the controller */
         Controller control = Controller.getInstance();
@@ -51,32 +55,9 @@ public class StartDoingStuff {
 
         /* A random gen for location of a vehicle */
         Random r = new Random();
-        /* Creates a ticker with the value of 100 ms between each tick which represent 1 second */
-        Ticker t = new Ticker(1, 100);
+        /* Creates a ticker with the value of 100 ms between each tick which represent 0.1 second */
+        Ticker t = new Ticker(0.1, 100);
 
-        /* New intersection */
-        DefaultIntersection a1 = new DefaultIntersection(100, 100, t);
-        DefaultIntersection a2 = new DefaultIntersection(100, 500, t);
-        DefaultIntersection a3 = new DefaultIntersection(500, 500, t);
-        DefaultIntersection a4 = new DefaultIntersection(500, 100, t);
-
-        /* New roads */
-        NormalRoad r1 = new NormalRoad(a1, a2);
-        NormalRoad r2 = new NormalRoad(a2, a3);
-        NormalRoad r3 = new NormalRoad(a3, a4);
-        NormalRoad r4 = new NormalRoad(a4, a1);
-        NormalRoad r5 = new NormalRoad(a1, a3);
-
-        /* Adds it to the controller */
-        a.add(a4);
-        a.add(a3);
-        a.add(a2);
-        a.add(a1);
-        b.add(r1);
-        b.add(r2);
-        b.add(r3);
-        b.add(r4);
-        b.add(r5);
 
         //Add the item to the controller
         b.stream().forEach((b1) -> {
@@ -86,10 +67,7 @@ public class StartDoingStuff {
             control.getMap().addIntersection(as);
         });
 
-        //Creates n number of cars
-        for (int i = 0; i < 100; i++) {
-            VehicleFactory.getFactory().createVehicle(VehicleFactory.SPORT_CAR);
-        }
+
         //Add the ticker to the controller
         control.setTicker(t);//so we can get the ticker later on
 
@@ -126,10 +104,16 @@ public class StartDoingStuff {
     
     public static void start() {
         if (!start) {
+            //Creates n number of cars
+            //for (int i = 0; i < 1; i++) {
+             //   VehicleFactory.getFactory().createVehicle(VehicleFactory.SPORT_CAR);
+            //}
+
+
             Controller.getInstance().getTicker().start("tick");
             start = true;
         }
         
     }
-    
+
 }

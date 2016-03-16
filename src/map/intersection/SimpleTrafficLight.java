@@ -30,11 +30,11 @@ public class SimpleTrafficLight extends Intersection implements Observer {
         updateLights(ticker.getTimeBetweenTick() * 1000);
         TrafficLight tl = getCurrentlyGreen();
         int i = 0;
-        /*while (i++ < tl.getMaxFlow()) {
-         if (tl.getQueue().isEmpty()) {
+        while (i++ < tl.getMaxFlow()) {
+         if (tl.getWaiting().isEmpty()) {
          return;
          }
-         Vehicle v = tl.getQueue().poll();
+         Vehicle v = tl.getWaiting().poll();
          if(v ==null){
          return;
          }
@@ -60,7 +60,7 @@ public class SimpleTrafficLight extends Intersection implements Observer {
          }
 
          v.setPosition(new SimpleImmutableEntry<>(r, 0d));
-         }*/
+         }
 
     }
 

@@ -1,199 +1,235 @@
 package algorithms;
 
-import helper.Logger;
-import java.util.ArrayList;
 
+import controller.Controller;
 import map.Intersection;
-import map.Road;
+import map.Map;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 /**
- * Uses the A* Algorithm to find the shortest path in the graph.
- * 
- * @author jvacek
- * @see <a href="http://web.mit.edu/eranki/www/tutorials/search/">web.mit.edu
- *      </a>
+ * @author Lucas Vanparijs, Jonas Vacek
+ *  _    _ _   _ _____  ______ _____     _____ ____  _   _  _____ _______ _____  _    _  _____ _______ _____ ____  _   _
+ * | |  | | \ | |  __ \|  ____|  __ \   / ____/ __ \| \ | |/ ____|__   __|  __ \| |  | |/ ____|__   __|_   _/ __ \| \ | |
+ * | |  | |  \| | |  | | |__  | |__) | | |   | |  | |  \| | (___    | |  | |__) | |  | | |       | |    | || |  | |  \| |
+ * | |  | | . ` | |  | |  __| |  _  /  | |   | |  | | . ` |\___ \   | |  |  _  /| |  | | |       | |    | || |  | | . ` |
+ * | |__| | |\  | |__| | |____| | \ \  | |___| |__| | |\  |____) |  | |  | | \ \| |__| | |____   | |   _| || |__| | |\  |
+ *  \____/|_| \_|_____/|______|_|  \_\  \_____\____/|_| \_|_____/   |_|  |_|  \_\\____/ \_____|  |_|  |_____\____/|_| \_|
+ * @since 09/03/16
+ *
+ * I use the Euclidean distance as heuristic
  */
-public class AStar implements Algorithm {
-    
-    /**
-     * The heuristic that will be used to determine the shortest distance, see
-     * heuristicXY for more
-     */
-    private AStarHeuristicCriteria heuristic = new heuristicXY();
-    
-    /**
-     * This object holds the costs, parent and children of an intersection. It
-     * is used for calculating the shortest path
-     * 
-     * @author jvacek
-     */
-    public class Twinkle {
 
-        @Override
-        public String toString() {
-            return element.toString();
-        }
-        
-	private double		   gCost = 0;
-	private double		   hCost = 0;
-	private double		   fCost = 0;
-	private Intersection	   element;
-	private Twinkle		   parent;
-	private ArrayList<Twinkle> children;
-				   
-	public Twinkle(Intersection e) {
-	    setElement(e);
-	}
-	
-	public double getgCost() {
-	    return gCost;
-	}
-	
-	public void setgCost(double gCost) {
-	    this.gCost = gCost;
-	}
-	
-	public double gethCost() {
-	    return hCost;
-	}
-	
-	public void sethCost(double hCost) {
-	    this.hCost = hCost;
-	}
-	
-	public double getfCost() {
-	    return fCost;
-	}
-	
-	public void setfCost(double fCost) {
-	    this.fCost = fCost;
-	}
-	
-	public Intersection getElement() {
-	    return element;
-	}
-	
-	public void setElement(Intersection element) {
-	    this.element = element;
-	}
-	
-	public Twinkle getParent() {
-	    return parent;
-	}
-	
-	public void setParent(Twinkle parent) {
-	    this.parent = parent;
-	}
-	
-	public void addChild(Twinkle t) {
-	    this.children.add(t);
-	}
-	
-	public void removeChild(Twinkle t) {
-	    try {
-		this.children.remove(t);
-	    } catch (NullPointerException e) {
-                Logger.LogError(e);
-            }
-	}
-	
-	public ArrayList<Twinkle> getChildren() {
-	    return this.children;
-	}
-	
-    }
-    
-    @Override
-    public ArrayList<Intersection> findShortestPath(Intersection start, Intersection end) {
-	
-	/**
-	 * A list of intersection that sequentially describes how the vehicle
-	 * needs to go
-	 */
-	ArrayList<Intersection> result = new ArrayList<Intersection>();
-	
-	/**
-	 * The map of the road retrieved from the singleton controller
-	 */
-//	Map map = Controller.getInstance().getMap();
-	
-	/**
-	 * The open list, this contains all the currently discovered nodes still
-	 * to be evaluated. It contains the node where the car starts initially
-	 */
-	ArrayList<Twinkle> open = new ArrayList<Twinkle>();
-	open.add(new Twinkle(start));
-	
-	/**
-	 * The set of nodes that are already evaluated
-	 */
-	ArrayList<Twinkle> closed = new ArrayList<Twinkle>();
-	
-	while (open.isEmpty() == false) {
-	    double min = Double.MAX_VALUE; //find the node with the least f on the open list, call it "q"
-	    Twinkle q = null; //TODO check if this null is "OK". THis shouldn't be empty as I just checked for that, and all fCosts must be lower than Double.Max but who the fuck knows what goes on inside these things
-	    for (Twinkle t : open) {
-		if (t.getfCost() < min) {
-		    min = t.getfCost();
-		    q = t;
-		}
-	    }
-	    
-	    open.remove(q); //pop q off the open list
-	    
-	    ArrayList<Twinkle> successor = new ArrayList<Twinkle>(); //generate q's 8 successors and set their parents to q
-	    for (Intersection i : q.getElement().getNeighbours()) {
-		Twinkle t_successor = new Twinkle(i);
-		t_successor.setParent(q);
-		successor.add(t_successor);
-	    }
-    	    for (Twinkle t_successor : successor) { //for each successor
-		
-		if (t_successor.getElement() == end) { //if successor is the goal, stop the search
-		    Twinkle next = t_successor;
-		    while (next.getParent() !=null){
-			result.add(0, next.getElement());
-			next = next.getParent();
-		    }
-		    //SUCCESS!
-		    return result;
-		}
-		
-		double qtD = 0;//successor.g = q.g + distance between successor and q
-		for (Road r1 : t_successor.getElement().getRoads()) {
-		    for (Road r2 : q.getElement().getRoads()) {
-			if (r1 == r2) {
-			    qtD = r1.getLength();
-			    //TODO check this break only breaks these two forloops and not the whole thing
-			    break;
+public class AStar implements Algorithm {
+
+	ArrayList<Quadruplet<Intersection, Double, Double, Intersection>> aT = new ArrayList<Quadruplet<Intersection, Double, Double, Intersection>>();		//All the Intersections in the Map
+	Queue<Quadruplet<Intersection,Double,Double,Intersection>> closedSet;	//Already evaluated nodes
+	Queue<Quadruplet<Intersection,Double,Double,Intersection>> openSet;	//Currently discovered nodes still to be evaluated
+
+	@Override
+	public ArrayList<Intersection> findShortestPath(Intersection start, Intersection end) {
+
+		Map m = Controller.getInstance().getMap();
+		closedSet = new PriorityQueue<>(m.getIntersections().size(),new QuadrupletComparator());
+		openSet = new PriorityQueue<>(m.getIntersections().size(),new QuadrupletComparator());
+
+		for (int i = 0; i < m.getIntersections().size(); i++) {
+			if (m.getIntersections().get(i) == start) {
+				Quadruplet<Intersection, Double, Double, Intersection> t = new Quadruplet<>(start, 0d, euclideanDistance(start, end),start);
+				aT.add(t);
+				openSet.add(t);
+			} else {
+				aT.add(new Quadruplet<>(m.getIntersections().get(i), Double.MAX_VALUE, Double.MAX_VALUE,null));
 			}
-		    }
 		}
-		
-		t_successor.setgCost(q.getgCost() + qtD); //successor.h = distance from goal to successor
-		
-		t_successor.sethCost(heuristicXY.calculateHCost(t_successor.getElement(), end)); 
-		
-		t_successor.setfCost(t_successor.getgCost() + t_successor.gethCost()); //successor.f = successor.g + successor.h
-		
-		boolean skip = false;
-		for (Twinkle u : open) {//if a node with the same position as successor is in the OPEN list which has a lower f than successor, skip this successor
-		    if ((u.getElement() == t_successor.getElement()) && (u.getfCost() < t_successor.getfCost())) { //TODO is this what they mean by skip?
-			skip = true;
-		    }
+
+		while(!openSet.isEmpty()){
+			Quadruplet<Intersection, Double, Double, Intersection> current = openSet.poll();
+			closedSet.add(current);
+
+			if(current.getA() == end){
+				return reconstructPath(current);
+			}
+
+			for(Quadruplet<Intersection, Double, Double, Intersection> neighbour : getNeighbours(aT,current)){
+				double tmpG = current.getB() + euclideanDistance(current.getA(),neighbour.getA());
+				if(closedSet.contains(neighbour))
+					if(tmpG >= neighbour.getB())
+						continue;
+
+				if(!openSet.contains(neighbour) || tmpG < neighbour.getB()){
+					neighbour.setD(current.getA());
+					neighbour.setB(tmpG);
+					neighbour.setC(neighbour.getB() + euclideanDistance(neighbour.getA(),end));
+					if(!openSet.contains(neighbour)){
+						openSet.add(neighbour);
+					}
+				}
+			}
 		}
-		
-		for (Twinkle u : closed) {//if a node with the same position as successor is in the CLOSED list which has a lower f than successor, skip this successor
-		    if (u.getElement() == t_successor.getElement()) { //TODO is this what they mean by skip?
-			skip = true;
-		    }
-		}
-		if (skip == false) { //otherwise, add the node to the open list
-		    open.add(t_successor);
-		}
-	    }
-	    closed.add(q);
+		return null;
+
 	}
-	return result;
-    }
+
+	/*@Override
+	public ArrayList<Intersection> findShortestPath(Intersection start, Intersection end) {
+
+		s = start;
+
+		if(start == end){
+			return null; //If it fails
+		}else {
+
+			Map m = Controller.getInstance().getMap();
+			aT = new ArrayList<Quadruplet<Intersection, Double, Double, Intersection>>();
+			closedSet = new PriorityQueue<>(m.getIntersections().size());
+			openSet = new PriorityQueue<>(m.getIntersections().size());
+
+			for (int i = 0; i < m.getIntersections().size(); i++) {
+				if (m.getIntersections().get(i) == start) {
+					Quadruplet<Intersection, Double, Double, Intersection> t = new Quadruplet<>(start, 0d, euclideanDistance(start, end),null);
+					aT.add(t);
+					openSet.add(t);
+				} else {
+					aT.add(new Quadruplet<>(m.getIntersections().get(i), Double.MAX_VALUE, Double.MAX_VALUE,null));
+				}
+			}
+
+			while (!openSet.isEmpty()) {
+				Quadruplet<Intersection, Double, Double, Intersection> current = getLowest(openSet, "f");
+				if (current.getA() == end) {
+					return reconstructPath(current);
+				}
+
+				openSet.remove(current);
+				closedSet.add(current);
+
+				for (Quadruplet<Intersection, Double, Double, Intersection> n : getNeighbours(aT, current)) {
+					if (closedSet.contains(n))
+						continue;
+
+					double tmpG = current.getB() + euclideanDistance(current.getA(), n.getA());
+
+					if (!openSet.contains(n))
+						openSet.add(n);
+					else if (tmpG >= n.getB())
+						continue;
+
+					n.setD(current.getA());
+					n.setB(tmpG);
+					n.setC(n.getB() + euclideanDistance(n.getA(), end));
+				}
+
+			}
+		}
+		return null; //If it fails
+	}*/
+
+	public ArrayList<Intersection> reconstructPath(Quadruplet<Intersection,Double,Double,Intersection> cur){
+		ArrayList<Intersection> totalPath = new ArrayList<>();
+		Quadruplet<Intersection,Double,Double,Intersection> parent = cur;
+
+		for (Quadruplet<Intersection, Double, Double, Intersection> q : aT) {
+			if (q.getA() == cur.getD()) {
+				parent = q;
+			}
+		}
+
+		if(aT.contains(parent) && parent != cur){
+			totalPath = reconstructPath(parent);
+			totalPath.add(cur.getA());
+			return totalPath;
+		}else{
+			totalPath.add(cur.getA());
+			return totalPath;
+		}
+	}
+
+	public double euclideanDistance(Intersection i1, Intersection i2){
+		return Math.sqrt(Math.pow(i1.getX()-i2.getX(),2)+Math.pow(i1.getY()-i2.getY(),2));
+	}
+
+	public Quadruplet<Intersection,Double,Double,Intersection> getLowest(Queue<Quadruplet<Intersection,Double,Double,Intersection>> pq, String s){
+		Double min = Double.MAX_VALUE;
+		Quadruplet<Intersection,Double,Double,Intersection> mindex = null;
+
+		if(s == "g"){
+			for(Quadruplet<Intersection,Double,Double,Intersection> t : pq) {
+				double d = t.getB();
+				if (d < min) {
+					min = d;
+					mindex = t;
+				}
+			}
+		}else if(s == "f"){
+			for(Quadruplet<Intersection,Double,Double,Intersection> t : pq) {
+				double d = t.getC();
+				if (d < min) {
+					min = d;
+					mindex = t;
+				}
+			}
+		}else{
+			System.err.println("There is no such thing as a "+s+" cost");
+		}
+
+		return  mindex;
+	}
+
+	public ArrayList<Quadruplet<Intersection,Double,Double,Intersection>> getNeighbours(ArrayList<Quadruplet<Intersection,Double,Double,Intersection>> a, Quadruplet<Intersection,Double,Double,Intersection> t){
+		ArrayList<Intersection> ai = Controller.getInstance().getMap().neighbours(t.getA());
+		ArrayList<Quadruplet<Intersection,Double,Double,Intersection>> aL = new ArrayList<Quadruplet<Intersection,Double,Double,Intersection>>();
+
+		for(Quadruplet<Intersection,Double,Double,Intersection> ti : a)
+			for(Intersection i : ai)
+				if(i == ti.getA())
+					aL.add(ti);
+
+		return aL;
+	}
+}
+
+class Quadruplet<T, U, V, W>
+{
+	T a;
+	U b;
+	V c;
+	W d;
+
+	Quadruplet(T a, U b, V c, W d)
+	{
+		this.a = a;
+		this.b = b;
+		this.c = c;
+		this.d = d;
+	}
+
+	T getA(){ return a;}
+	U getB(){ return b;}
+	V getC(){ return c;}
+	W getD(){ return d;}
+
+	void setA(T t){ a = t;}
+	void setB(U u){ b = u;}
+	void setC(V v){ c = v;}
+	void setD(W w){ d = w;}
+
+}
+
+class  QuadrupletComparator implements Comparator< Quadruplet<Intersection,Double,Double,Intersection>> {
+
+	public  QuadrupletComparator(){}
+
+	@Override
+	public int compare( Quadruplet<Intersection,Double,Double,Intersection> o1, Quadruplet<Intersection,Double,Double,Intersection> o2) {
+		if(o1.getC() < o2.getC())
+			return -1;
+		else if(o1.getC() == o2.getC())
+			return 0;
+		else
+			return 1;
+	}
 }

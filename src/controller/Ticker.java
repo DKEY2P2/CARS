@@ -1,10 +1,9 @@
 package controller;
 
-import algorithms.TestAl;
+import vehicle.VehicleFactory;
+
 import java.util.Timer;
 import java.util.TimerTask;
-import models.Forbe;
-import vehicle.VehicleFactory;
 
 /**
  * A ticker that meant to update the program
@@ -25,7 +24,7 @@ public class Ticker extends Observerable {
     /**
      * How long between ticks in ms
      */
-    private int timeBetweenTick = 100;
+    private int timeBetweenTick = 1000;
 
     /**
      * Default constructor.
@@ -74,7 +73,7 @@ public class Ticker extends Observerable {
                 timeElapsed += 1 * tickTimeInS;
 
                 if (tickCount % SimulationSettings.getInstance().getTimeUntilSpawn() == 0) {
-                    for (int i = 0; i < 40; i++) {
+                    for (int i = 0; i < 5; i++) {
                         VehicleFactory.getFactory().createVehicle(VehicleFactory.SPORT_CAR);
                     }
                 }

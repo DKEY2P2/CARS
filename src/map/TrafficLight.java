@@ -1,13 +1,11 @@
 package map;
 
+import vehicle.Vehicle;
+
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
-import ui.setting.GraphicsSetting;
-import vehicle.Vehicle;
 
 /**
  * A class made to represent the traffic lights on the road network
@@ -47,7 +45,7 @@ public class TrafficLight {
 
     private Road in;
 
-    private Road[] out;
+    private ArrayList<Road> out;
 
     private Deque<Vehicle> waiting = new LinkedList<>();
 
@@ -67,9 +65,11 @@ public class TrafficLight {
     /**
      * Constructor for a traffic light
      *
+     * @param i
      * @param in The initial Intersection
+     * @param out
      */
-    public TrafficLight(Intersection i, Road in, Road... out) {
+    public TrafficLight(Intersection i, Road in, ArrayList<Road> out) {
         index = indexGlobal++;
         timeLeft = timerLength;
         this.i = i;
@@ -142,6 +142,10 @@ public class TrafficLight {
         }
     }
 
+    public Intersection getIntersection() {
+        return i;
+    }
+
     /**
      * Sets the maximum amount of cars to pass in 1 green light to whatever the
      * user desires
@@ -169,7 +173,7 @@ public class TrafficLight {
         return in;
     }
 
-    public Road[] getOut() {
+    public ArrayList<Road> getOut() {
         return out;
     }
 
@@ -179,7 +183,8 @@ public class TrafficLight {
         } else {
             g.setColor(Color.red);
         }
-        g.drawString(Integer.toString(index), (int) ((this.i.getX() + i * 10 * GraphicsSetting.getInstance().getZoom()) * GraphicsSetting.getInstance().getZoom())+ GraphicsSetting.getInstance().getPanX(), (int) ((this.i.getY()) * GraphicsSetting.getInstance().getZoom())+ GraphicsSetting.getInstance().getPanY());
+        g.fillOval(this.i.getX() + i * 10, this.i.getY(), 10, 10);
+        //g.drawString(Integer.toString(index), this.i.getX() + i * 10, this.i.getY());
     }
 
     @Override
@@ -187,9 +192,7 @@ public class TrafficLight {
         return "Traffic Light " + index + " is " + (isGreen() ? "green" : "red");
     }
 
-    public void addOut(Road out) {
-        Road[] r = new Road[this.out.length + 1];
-        System.arraycopy(this.out, 0, r, 0, this.out.length);
-        r[this.out.length] = out;
+    public void addOut(Road r) {
+        out.add(r);
     }
 }

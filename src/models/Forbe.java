@@ -53,7 +53,7 @@ public class Forbe implements Model {
             //Get various of data
             double[] x = new double[]{roadLength * percentage[0], roadLength * percentage[1]};
             //Distance between the two cars
-            double distance = x[1] - x[0];
+            double distance = x[1] - x[0] - veh.getLength();
             double s = Math.abs(distance);
             //Time it takes you to react
 

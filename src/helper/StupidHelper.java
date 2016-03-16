@@ -17,6 +17,9 @@ public class StupidHelper {
      * @return A random object from that collection
      */
     public static Object getRandom(Collection c) {
+        if(c.isEmpty()){
+            return null;
+        }
         Random r = new Random();
         return c.toArray()[r.nextInt(c.size())];
     }

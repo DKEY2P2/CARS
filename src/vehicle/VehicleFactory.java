@@ -3,11 +3,12 @@ package vehicle;
 import algorithms.Algorithm;
 import controller.SimulationSettings;
 import helper.StupidHelper;
-import java.util.ArrayList;
-import java.util.Random;
 import map.Intersection;
 import map.Road;
 import models.Model;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * A factory for making cars
@@ -99,7 +100,8 @@ public class VehicleFactory {
     public Vehicle createVehicle(String type, Model m, Algorithm al) {
         ArrayList<Road> b = controller.Controller.getInstance().getMap().getRoads();
         ArrayList<Intersection> a = controller.Controller.getInstance().getMap().getIntersections();
-        return createVehicle(type, m, al, (Road) StupidHelper.getRandom(b), r.nextDouble(), (Intersection) StupidHelper.getRandom(a));
+
+        return createVehicle(type, m, al, (Road) StupidHelper.getRandom(b), 0d, (Intersection) StupidHelper.getRandom(a));
     }
 
     /**
