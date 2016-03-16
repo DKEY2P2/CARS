@@ -47,12 +47,22 @@ public class GEOjson {
 	    JSONObject geom = features.getJSONObject(i).getJSONObject("geometry");
 	    
 	    if (geom.getString("type").equals("LineString")) {
-		//		System.out.println("LineString object");
+				System.out.println("LineString object");
 		
 		JSONArray coordinates = geom.getJSONArray("coordinates");
 		LineStringChugger(coordinates, map);
 		
 	    } else if (geom.getString("type").equals("MultiLineString")) {
+		System.out.println("MutliLineString object");
+		JSONArray coordinates = geom.getJSONArray("coordinates");
+		
+		//Extracting intersections from points and adding them to the list
+		for (int j = 0; j < coordinates.length(); j++) {
+		   LineStringChugger(coordinates.getJSONArray(j), map);
+		}
+	    
+	} else if (geom.getString("type").equals("Polygon")) {
+		System.out.println("Polygon object");
 		JSONArray coordinates = geom.getJSONArray("coordinates");
 		
 		//Extracting intersections from points and adding them to the list
