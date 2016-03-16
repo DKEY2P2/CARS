@@ -34,7 +34,10 @@ public class ControllerUI implements Task {
         JOptionPane.showMessageDialog(null, "Hold control and click to make a new intersection "
                 + "\nHold shift and click to make a new road (click on the start intersection then the end intersection"
                 + "\nPress start (on the side bar) to start the)"
-                + "\nPress \"l\" to print out the logger");
+                + "\nPress \"L\" to print out the logger"
+                + "\nPress \"I\" to toggle the intersections"
+                + "\nPress \"T\" to toggle the traffic lights"
+                + "\nPress \"m\" to import a map");
 
     }
 
@@ -56,7 +59,12 @@ public class ControllerUI implements Task {
         g.setColor(Color.WHITE);
         ((Graphics2D) (g)).setStroke(new BasicStroke(2));
         g.drawLine(20, c.getHeight() - 30, 120, c.getHeight() - 30);
-        g.drawString(String.valueOf((int) (GraphicsSetting.getInstance().getZoom() / 100)) + "m", 20, c.getHeight() - 15);
+        System.out.println("zoom " + GraphicsSetting.getInstance().getZoom());
+        System.out.println((1 / GraphicsSetting.getInstance().getZoom() * 100) + "m");
+        String tmp = 1 / GraphicsSetting.getInstance().getZoom() * 100 < 1000
+                ? String.valueOf((int) (1 / GraphicsSetting.getInstance().getZoom() * 100)) + "m"
+                : String.valueOf((double) (Math.round(0.001*(1 / GraphicsSetting.getInstance().getZoom() * 100)*10))/10) + "km";
+        g.drawString(tmp, 20, c.getHeight() - 15);
     }
 
     /**
@@ -84,7 +92,9 @@ public class ControllerUI implements Task {
     public void drawEverything(Graphics g) {
         drawLineDragging(g);
         drawRoad(g);
-        drawIntersection(g);
+        if (GraphicsSetting.getInstance().isShowIntersection()) {
+            drawIntersection(g);
+        }
         drawCars(g);
         drawScale(g);
         g.dispose();
