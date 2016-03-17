@@ -11,9 +11,9 @@ import ui.setting.GraphicsSetting;
 public class TwoDTransformation {
 
     public static int transformX(int x) {
-        double zoom = GraphicsSetting.getInstance().getZoom();
-        int panX = GraphicsSetting.getInstance().getPanX();
-        int average = GraphicsSetting.getInstance().getMouseX() + panX;
+        double zoom = getZoom();
+        int panX = getPanX();
+        int average = getAverageX(panX);
 
         if (zoom != 1) {
             x = translate(x, -average);
@@ -24,10 +24,26 @@ public class TwoDTransformation {
         return x;
     }
 
+    private static int getPanX() {
+        return (int) (GraphicsSetting.getInstance().getPanX());
+    }
+
+    private static int getAverageX(int panX) {
+        return panX + GraphicsSetting.getInstance().getMouseX();
+    }
+
+    private static int getAverageY(int panY) {
+        return panY + GraphicsSetting.getInstance().getMouseY();
+    }
+
+    private static int getPanY() {
+        return (int) (GraphicsSetting.getInstance().getPanY());
+    }
+
     public static int transformY(int y) {
-        double zoom = GraphicsSetting.getInstance().getZoom();
-        int panY = GraphicsSetting.getInstance().getPanY();
-        int average = GraphicsSetting.getInstance().getMouseY() + panY;
+        double zoom = getZoom();
+        int panY = getPanY();
+        int average = getAverageY(panY);
 
         if (zoom != 1) {
             y = translate(y, -average);
@@ -38,10 +54,14 @@ public class TwoDTransformation {
         return y;
     }
 
+    private static double getZoom() {
+        return GraphicsSetting.getInstance().getZoom();
+    }
+
     public static SimpleImmutableEntry<Integer, Integer> transformX(int x1, int x2) {
-        double zoom = GraphicsSetting.getInstance().getZoom();
-        int panX = GraphicsSetting.getInstance().getPanX();
-        int average = GraphicsSetting.getInstance().getMouseX() + panX;
+        double zoom = getZoom();
+        int panX = getPanX();
+        int average = getAverageX(panX);
         if (zoom != 1) {
             int tmp1 = translate(x1, -average);
             int tmp2 = translate(x2, -average);
@@ -56,9 +76,9 @@ public class TwoDTransformation {
     }
 
     public static SimpleImmutableEntry<Integer, Integer> transformY(int y1, int y2) {
-        double zoom = GraphicsSetting.getInstance().getZoom();
-        int panY = GraphicsSetting.getInstance().getPanY();
-        int average = GraphicsSetting.getInstance().getMouseY() + panY;
+        double zoom = getZoom();
+        int panY = getPanY();
+        int average = getAverageY(panY);
 
         if (zoom != 1) {
             int tmp1 = translate(y1, -average);

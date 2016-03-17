@@ -182,12 +182,14 @@ public class Canvas extends JFrame {
 
         @Override
         public void mousePressed(MouseEvent e) {
-            int panX =GraphicsSetting.getInstance().getPanX();
-            int panY =GraphicsSetting.getInstance().getPanY();
+            x = e.getX();
+            y = e.getY();
+            int panX = GraphicsSetting.getInstance().getPanX();
+            int panY = GraphicsSetting.getInstance().getPanY();
             if (keyCode == -1) {
-                addIntersection(e.getX()-panX, e.getY()-panY);
+                addIntersection(e.getX() - panX, e.getY() - panY);
             } else if (keyCode == -2 && start == null) {
-                connect(e.getX()-panX, e.getY()-panY);
+                connect(e.getX() - panX, e.getY() - panY);
             } else {
                 start = null;
             }
@@ -197,10 +199,10 @@ public class Canvas extends JFrame {
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            int panX =GraphicsSetting.getInstance().getPanX();
-            int panY =GraphicsSetting.getInstance().getPanY();
+            int panX = GraphicsSetting.getInstance().getPanX();
+            int panY = GraphicsSetting.getInstance().getPanY();
             if (keyCode == -2 && start != null) {
-                connect(e.getX()-panX, e.getY()-panY);
+                connect(e.getX() - panX, e.getY() - panY);
             } else {
                 start = null;
             }
@@ -218,11 +220,22 @@ public class Canvas extends JFrame {
 
         @Override
         public void mouseDragged(MouseEvent e) {
+
+            if (keyCode == Integer.MIN_VALUE) {
+                keyCode = 0;
+            }
             if (keyCode == 0) {
-                GraphicsSetting.getInstance().setPanX(GraphicsSetting.getInstance().getPanX() + (e.getX() - x));
-                GraphicsSetting.getInstance().setPanY(GraphicsSetting.getInstance().getPanY() + (e.getY() - y));
+                double zoom = GraphicsSetting.getInstance().getZoom();
+                System.out.println("pan " + e.getWhen());
+                int panX = GraphicsSetting.getInstance().getPanX();
+                int panY = GraphicsSetting.getInstance().getPanY();
+                panY += e.getY() - y;
+                panX += e.getX() - x;
+                GraphicsSetting.getInstance().setPanX(panX);
+                GraphicsSetting.getInstance().setPanY(panY);
                 x = e.getX();
                 y = e.getY();
+                keyCode = Integer.MIN_VALUE;
             } else {
                 x = e.getX();
                 y = e.getY();
@@ -238,12 +251,14 @@ public class Canvas extends JFrame {
 
         @Override
         public void mouseMoved(MouseEvent e) {
+            x = e.getX();
+            y = e.getY();
             GraphicsSetting.getInstance().setMouseX(e.getX());
             GraphicsSetting.getInstance().setMouseY(e.getY());
-            if (!click) {
-                x = e.getX();
-                y = e.getY();
-            }
+//            if (!click) {
+//                x = e.getX();
+//                y = e.getY();
+//            }
         }
 
     }
@@ -330,9 +345,7 @@ public class Canvas extends JFrame {
 
         @Override
         public void keyReleased(KeyEvent e) {
-            if (e.getKeyCode() == KeyEvent.VK_CONTROL || e.getKeyCode() == KeyEvent.VK_SHIFT) {
-                keyCode = 0;
-            }
+            keyCode = Integer.MIN_VALUE;
         }
     }
 
