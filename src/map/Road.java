@@ -5,10 +5,12 @@ import ui.setting.GraphicsSetting;
 import vehicle.Vehicle;
 
 import java.awt.*;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Objects;
 import java.util.PriorityQueue;
+import ui.helper.TwoDTransformation;
 
 /**
  * This class represents a road A road is similar to an edge of a graph, they
@@ -195,23 +197,18 @@ public abstract class Road implements Drawable {
 
         ((Graphics2D) g).setStroke(
                 new BasicStroke((float) (getWidth() * zoom > 0 ? getWidth() * zoom : 1)));
-        int panX = GraphicsSetting.getInstance().getPanX();
-        int panY = GraphicsSetting.getInstance().getPanY();
 
-        g.drawLine((int) (start.getX() * zoom) + panX,
-                (int) (start.getY() * zoom) + panY,
-                (int) (end.getX() * zoom) + panX,
-                (int) (end.getY() * zoom) + panY);
+        AbstractMap.SimpleImmutableEntry<Integer, Integer> tmpX = TwoDTransformation.transformX(start.getX(), end.getX());
+        AbstractMap.SimpleImmutableEntry<Integer, Integer> tmpY = TwoDTransformation.transformY(start.getY(), end.getY());
+        g.drawLine(tmpX.getKey(), tmpY.getKey(), tmpX.getValue(), tmpY.getValue());
 
         g.setColor(Color.BLACK);
 
         ((Graphics2D) g).setStroke(
                 new BasicStroke((float) (getWidth() * 0.7 * zoom > 0 ? getWidth() * 0.7 * zoom : 1)));
 
-        g.drawLine((int) (start.getX() * zoom) + panX,
-                (int) (start.getY() * zoom) + panY,
-                (int) (end.getX() * zoom) + panX,
-                (int) (end.getY() * zoom) + panY);
+        g.drawLine(tmpX.getKey(), tmpY.getKey(), tmpX.getValue(), tmpY.getValue());
+
     }
 
     public double getFrictionCoefficient() {

@@ -6,8 +6,10 @@ import ui.setting.GraphicsSetting;
 import vehicle.Vehicle;
 
 import java.awt.*;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
+import ui.helper.TwoDTransformation;
 
 /**
  * The abstract class for all types of intersections present in the simulation
@@ -367,7 +369,13 @@ public abstract class Intersection implements Drawable {
         //BufferedImage bi = ImageMap.getInstance().getImage(imageKey, 0, GraphicsSetting.getInstance().getZoom());
         g.setColor(Color.WHITE);
         double zoom = GraphicsSetting.getInstance().getZoom();
-        g.fillOval((int) ((x - DIAMETER / 2) * zoom) + GraphicsSetting.getInstance().getPanX(), (int) ((y - DIAMETER / 2) * zoom) + GraphicsSetting.getInstance().getPanY(), (int) (DIAMETER * zoom), (int) (DIAMETER * zoom));
+        int tmpX = TwoDTransformation.transformX((int) (x - (DIAMETER*zoom) / 2));
+        int tmpY = TwoDTransformation.transformY((int) (y - (DIAMETER*zoom) / 2));
+
+        g.fillOval(tmpX,
+                tmpY,
+                (int) (DIAMETER * zoom),
+                (int) (DIAMETER * zoom));
         int i = 0;
         if (GraphicsSetting.getInstance().isShowTraffficLight()) {
             for (TrafficLight tLight : tLights) {

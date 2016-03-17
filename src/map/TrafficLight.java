@@ -6,6 +6,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
+import ui.helper.TwoDTransformation;
 import ui.setting.GraphicsSetting;
 
 /**
@@ -186,8 +187,9 @@ public class TrafficLight {
             g.setColor(Color.red);
         }
         int size = (int) (3 * zoom > 1 ? 3 * zoom : 1);
-        g.fillOval(this.i.getX() + i * 10 + GraphicsSetting.getInstance().getPanX(),
-                this.i.getY() + GraphicsSetting.getInstance().getPanY(), size, size);
+        int x = TwoDTransformation.transformX(this.i.getX() + i * 10 - size / 2);
+        int y = TwoDTransformation.transformY(this.i.getY() - size / 2);
+        g.fillOval(x, y, size, size);
         //g.drawString(Integer.toString(index), this.i.getX() + i * 10, this.i.getY());
     }
 

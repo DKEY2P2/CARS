@@ -287,6 +287,8 @@ public class Canvas extends JFrame {
 
         @Override
         public void mouseMoved(MouseEvent e) {
+            GraphicsSetting.getInstance().setMouseX(e.getX());
+            GraphicsSetting.getInstance().setMouseY(e.getY());
             if (!click) {
                 x = e.getX();
                 y = e.getY();
