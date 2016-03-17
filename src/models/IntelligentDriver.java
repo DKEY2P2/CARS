@@ -27,7 +27,7 @@ public class IntelligentDriver implements Model {
 	private double desiredDeceleration;
 	private double approachingRate;
 	private double delta;
-	private double[] acceleration;
+	private double acceleration;
 	private double jamDistance;
 	private Vehicle[] sortArray;
 
@@ -52,39 +52,24 @@ public class IntelligentDriver implements Model {
 	 */
 	private Vehicle getInFront(Vehicle follower, Road r) {// TODO: Find a better way to do this
 
-		Vehicle inFrontVehicle = null;
-		sortArray = r.getVehicles().toArray(new Vehicle[r.getVehicles().size()]);
-		Arrays.sort(sortArray);
-		r.getVehicles().clear();
-		r.getVehicles().addAll(Arrays.asList(sortArray));
-		for (Vehicle vehicle : r.getVehicles()) {
-			if (vehicle == follower) {
-				break;
-			} else {
-				inFrontVehicle = vehicle;
-			}
-		}
-		// Get the car ahead of you
-		return inFrontVehicle;
+		 Vehicle inFrontVehicle = null;
+	        double currentCarPos = follower.getPosition().getValue();
+	        double compare = Double.MAX_VALUE;
+	        for (Vehicle vehicle : r.getVehicles()) {
+	        	double tmp = vehicle.getPosition().getValue();
+	        	if(tmp<currentCarPos){
+	        		if(compare>tmp){
+	        			inFrontVehicle = vehicle;
+	        		}
+	        	}
+	        }
+	        return inFrontVehicle;
 	}
 
 	@SuppressWarnings("unused")
 	@Override
 	public void calculate(Vehicle follower) {
-		if (follower.getAcceleration() == Double.NaN) {
-			System.err.println("Acceleration!!!!");
-			return;
-		}
-
-		if (!VehicleHolder.getInstance().contains(follower)) {
-			System.err.println("NO FOLLOWER");
-			return;
-		}
-
-		if (follower.getSpeed() == Double.NaN) {
-			System.err.println("SPEED!!!!!!!!!");
-			return;
-		}
+		
 		Road r = follower.getPosition().getKey();
 		Vehicle inFrontVehicle = getInFront(follower, r);
 		jamDistance = 10;
@@ -93,9 +78,9 @@ public class IntelligentDriver implements Model {
 		maxAcceleration = follower.getMaxAcceleration();
 		desiredDeceleration = follower.getDesiredDeceleration();
 		delta = 4; // set Delta (acceleration exponent) to 4 : http://home2.fvcc.edu/~dhicketh/DiffEqns/Spring11projects/Scott_Miller/Project.pdf
-
+		
 		if (inFrontVehicle != null) {
-			acceleration = new double[] { follower.getAcceleration(), inFrontVehicle.getAcceleration() };
+			acceleration = follower.getAcceleration();
 			velCars = new double[] { follower.getSpeed(), inFrontVehicle.getSpeed() }; // Velocity of the two cars
 			if (velCars[0] <= 0) {
 				velCars[0] = 0.1;
@@ -107,13 +92,16 @@ public class IntelligentDriver implements Model {
 			}
 			positionsRoad = new double[] { follower.getPosition().getValue() * r.getLength(),
 					inFrontVehicle.getPosition().getValue() * r.getLength() };
-			approachingRate = velCars[0] - velCars[1];//Absolute??
+			approachingRate = velCars[0] - velCars[1];
 			distanceCars = positionsRoad[1] - positionsRoad[0] - inFrontVehicle.getLength(); // Distance between the two cars
 			timeHeadway = distanceCars / velCars[0];
 			// Headway between two cars in time. (seconds)
 			// Time Headway (distance/speed)
+			System.out.println( "Distance between the cars : " + distanceCars);
 			if (distanceCars <= 0.1) {
-				velCars[0] = velCars[0] - desiredDeceleration;
+				velCars[0] = (Math.max(0, velCars[0] - (follower.getMaxDecceleration()
+						* Controller.getInstance().getTicker().getTickTimeInS())));
+				//velCars[0] = velCars[0] - desiredDeceleration;
 				if (velCars[0] <= 0) {
 					velCars[0] = 0.1;
 					follower.setSpeed(velCars[0]);
@@ -127,11 +115,11 @@ public class IntelligentDriver implements Model {
 
 				double s = jamDistance + timeHeadway*velCars[0]
 						+ ((velCars[0] * approachingRate) / (2 * Math.sqrt(maxAcceleration * desiredDeceleration)));
-				acceleration[0] = maxAcceleration
+				acceleration= maxAcceleration
 						* (1 - Math.pow((velCars[0] / desiredVelocity), delta) - Math.pow((s / distanceCars), 2));
 
 				
-				velCars[0] = velCars[0] + acceleration[0];
+				velCars[0] = velCars[0] + acceleration;
 				if (velCars[0] < 0) {
 					velCars[0] = 0;
 				}
@@ -139,13 +127,12 @@ public class IntelligentDriver implements Model {
 					velCars[1] = 0;
 				}
 			}
-
+			System.out.println("Speed of the car : " + velCars[0]);
 			velCars[0] = Math.min(velCars[0], r.getSpeedLimit());
 			double newPosition = (positionsRoad[0] + velCars[0] * Controller.getInstance().getTicker().getTickTimeInS())
 					/ r.getLength();
 
-
-			follower.setAcceleration(acceleration[0]);
+			follower.setAcceleration(acceleration);
 			follower.setSpeed(velCars[0]);
 			follower.setPosition(new SimpleImmutableEntry<>(r, newPosition));
 
@@ -155,7 +142,8 @@ public class IntelligentDriver implements Model {
 			double positionRoad = follower.getPosition().getValue() * r.getLength(); // Position (in meters from the start of the road) of the car relative to road																											// Position
 			double velCar = follower.getSpeed(); // Velocity of the car
 			if (velCar <= 0) {
-				velCar = 1;
+				velCar = (Math.max(0, velCar - (follower.getMaxDecceleration()
+						* Controller.getInstance().getTicker().getTickTimeInS())));
 				follower.setSpeed(velCar);
 			}
 			approachingRate = velCar;
@@ -189,6 +177,7 @@ public class IntelligentDriver implements Model {
 			}
 			
 			velCar = Math.min(velCar, r.getSpeedLimit());
+			System.out.println("VELOCITY: "+ velCar + "   acceleration :  " + acceleration);
 			double newPosition = (positionRoad + velCar * Controller.getInstance().getTicker().getTickTimeInS())
 					/ r.getLength();
 			

@@ -46,7 +46,7 @@ public class DefaultIntersection extends Intersection implements Observer {
                             Intersection placeToGo = veh.nextPlaceToGo();
                             Road r = null;
                             for (Road road : getRoads()) {
-                                if (road.getEnd() == placeToGo) {
+                                if (road.getEnd() == placeToGo&& road.getStart()==this) {
                                     r = road;
                                 }
                             }
