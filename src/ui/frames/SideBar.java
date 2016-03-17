@@ -301,7 +301,7 @@ public class SideBar extends JFrame {
             if (e.getSource() instanceof JSpinner) {
                 JSpinner s = (JSpinner) e.getSource();
                 int value = (int) s.getModel().getValue();
-                if (value == SimulationSettings.getInstance().getNumberOfCarsToSpawn()) {
+                if (value != SimulationSettings.getInstance().getNumberOfCarsToSpawn()) {
                     SimulationSettings.getInstance().setNumberOfCarsToSpawn(value);
                     controller.Controller.getInstance().getUI().draw();
                 }
