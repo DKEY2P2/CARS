@@ -14,7 +14,9 @@ import java.util.Random;
  * @author Kareem Horstink
  */
 public class SportCar extends Vehicle {
-    
+
+    public static boolean used = false;
+
     protected SportCar(Road start, double percentage, Model m, Algorithm a, Intersection destination) {
         super(start, percentage, m, a);
         Random r = new Random();
@@ -29,7 +31,7 @@ public class SportCar extends Vehicle {
     @Override
     public boolean update() {
         if (VehicleHolder.getInstance().contains(this)) {
-            if (getPosition().getValue() > 1) {
+            if (getPosition().getValue() >= 0.99) {
                 if (getPosition().getKey().getEnd() == getDestination()) {
                     //Kills the car
                     boolean a = VehicleHolder.getInstance().remove(this);

@@ -39,6 +39,8 @@ public class DefaultIntersection extends Intersection implements Observer {
                         if (veh == null) {
                             return;
                         }
+                        Road prev = veh.getPosition().getKey();
+                        prev.getVehicles().remove(veh);
                         veh.addToTraceLog(this);
                         if (veh.getPosition().getKey().getEnd() == veh.getDestination()) {
                             VehicleHolder.getInstance().remove(veh);
@@ -52,14 +54,17 @@ public class DefaultIntersection extends Intersection implements Observer {
                             }
                             if (r == null) {
                                 Logger.LogError("Can't find a place to go to reach destination", veh);
-                                for (Road road : getRoads()) {
+                                /*for (Road road : getRoads()) {
                                     if (road.getEnd() != this) {
                                         r = road;
                                         break;
                                     }
-                                }
+                                }*/
+                                VehicleHolder.getInstance().remove(veh);
+                            }else{
+                                veh.setPosition(new AbstractMap.SimpleImmutableEntry<>(r, 0d));
+                                r.addCar(veh);
                             }
-                            veh.setPosition(new AbstractMap.SimpleImmutableEntry<>(r, 0d));
                         }
                     }
                 }

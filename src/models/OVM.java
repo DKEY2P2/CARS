@@ -1,9 +1,11 @@
 package models;
 
 import controller.Controller;
+import map.Intersection;
 import map.Road;
 import map.TrafficLight;
 import vehicle.Vehicle;
+import vehicle.VehicleHolder;
 
 import java.util.AbstractMap;
 import java.util.Iterator;
@@ -16,13 +18,15 @@ import java.util.PriorityQueue;
  */
 public class OVM implements Model{
 
-    private final double CONSTANT = 5;
+    private double maxSpeed = 0;
+    private double safety = 5;
 
     private Vehicle getInFront(Vehicle veh, Road r) {
         Vehicle inFrontVehicle = null;
 
         PriorityQueue<Vehicle> pq = r.getVehicles();
         Iterator<Vehicle> iv = pq.iterator();
+
 
         while(iv.hasNext()){
             Vehicle c = iv.next();
@@ -47,14 +51,15 @@ public class OVM implements Model{
         double t = Controller.getInstance().getTicker().getTickTimeInS();
         double speed = v.getSpeed();
         double speedLimit = r.getSpeedLimit();
+        maxSpeed = speedLimit/2;
         double dv;
-
+        double safetyPercent = 1-(safety/r.getLength());
+        
         Vehicle prev = getInFront(v,r);
-
-        if (v.getPosition().getKey().getEnd() == v.getDestination() && v.getPosition().getValue()>1) {
-            v = null;
+        /*if (v.getPosition().getKey().getEnd() == v.getDestination() && v.getPosition().getValue()>=1) {
+            VehicleHolder.getInstance().remove(v);
             return;
-        }
+        }*/
 
         if(prev == null) {
             if (!trl.isGreen()) {
@@ -89,6 +94,20 @@ public class OVM implements Model{
             v.setSpeed(speed + v.getAcceleration());
         }
 
+        double p = v.getPosition().getValue() + ((v.getSpeed() * t / r.getLength()));
+        if(p>=safetyPercent){
+            if(!trl.isGreen()){
+                v.setSpeed(0);
+                v.setAcceleration(0);
+            }
+            v.setPosition(new AbstractMap.SimpleImmutableEntry<Road, Double>(r, 1d));
+            r.getVehicles().remove(v);
+            //VehicleHolder.getInstance().remove(v);
+        }else{
+            v.setPosition(new AbstractMap.SimpleImmutableEntry<Road, Double>(r, v.getPosition().getValue() + ((v.getSpeed() * t / r.getLength()))));
+        }
+
+        /*
         if((1-v.getPosition().getValue())*r.getLength()<CONSTANT) {
             v.setPosition(new AbstractMap.SimpleImmutableEntry<Road, Double>(v.nextPlaceToGo().hasRoad(trl.getIntersection()), 0d));
         }else {
@@ -97,18 +116,14 @@ public class OVM implements Model{
                 v.setPosition(new AbstractMap.SimpleImmutableEntry<Road, Double>(v.nextPlaceToGo().hasRoad(trl.getIntersection()), 0d));
             else
                 v.setPosition(new AbstractMap.SimpleImmutableEntry<Road, Double>(r, v.getPosition().getValue() + ((v.getSpeed() * t / r.getLength()))));
-        }
+        }*/
     }
 
 
 
     public double optimalVelocity(double dist){
-        double result = Math.tanh(dist-CONSTANT) + Math.tanh(CONSTANT);
-        if(result < 1){
-            return 0;
-        }else{
-            return result;
-        }
+        double result = Math.tanh(dist-safety-2) + Math.tanh(2);
+        return result * maxSpeed;
 }
 
 }

@@ -209,7 +209,7 @@ public abstract class Vehicle implements Task, Drawable {
     public abstract boolean update();
 
     public final Intersection nextPlaceToGo() {
-        Intersection i = a.findShortestPath(getPosition().getKey().getEnd(), destination).get(0);
+        Intersection i = a.findShortestPath(getPosition().getKey().getEnd(), destination).get(1);
         if(i == destination){
             return destination;
         }else{

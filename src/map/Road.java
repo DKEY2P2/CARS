@@ -106,6 +106,11 @@ public abstract class Road implements Drawable {
         LENGTH = length;
     }
 
+    public Vehicle addCar(Vehicle v){
+        pq.add(v);
+        return v;
+    }
+
     /**
      * Returns the 2 Intersection of the road
      *

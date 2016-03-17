@@ -83,7 +83,7 @@ public class SimulationSettings {
         return instance;
     }
 
-    private int numberOfCarsToSpawn = 5;
+    private int numberOfCarsToSpawn = 10;
 
     /**
      * Get the value of numberOfCarsToSpawn
