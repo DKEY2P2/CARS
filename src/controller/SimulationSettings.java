@@ -103,4 +103,24 @@ public class SimulationSettings {
         this.numberOfCarsToSpawn = numberOfCarsToSpawn;
     }
 
+    private double speedLimit = 27.666666666;
+
+    /**
+     * Get the value of speedLimit
+     *
+     * @return the value of speedLimit
+     */
+    public double getSpeedLimit() {
+        return speedLimit;
+    }
+
+    /**
+     * Set the value of speedLimit
+     *
+     * @param speedLimit new value of speedLimit
+     */
+    public void setSpeedLimit(double speedLimit) {
+        this.speedLimit = speedLimit;
+    }
+
 }

@@ -1,6 +1,5 @@
 package ui.frames;
 
-import com.sun.scenario.Settings;
 import controller.SimulationSettings;
 import controller.StartDoingStuff;
 import helper.Logger;
@@ -24,7 +23,6 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.plaf.basic.BasicArrowButton;
 import json.GEOjson;
 import map.Map;
 import ui.setting.GraphicsSetting;
@@ -57,7 +55,7 @@ public class SideBar extends JFrame {
             }
 
         });
-        //--------------------------------------------------------------------//
+        //------------------------------general-------------------------------//
         JPanel general = new JPanel();
         //Set the layout
         general.setLayout(new GridLayout(0, 1));
@@ -107,25 +105,17 @@ public class SideBar extends JFrame {
         speedP.add(speedSpinner);
         general.add(speedP);
         jTabbedPane.add("General", general);
-        //--------------------------------------------------------------------//
+        //------------------------------stats---------------------------------//
         JPanel stats = new JPanel();
 
         jTabbedPane.add("Statistics", stats);
 
-        //--------------------------------------------------------------------//
+        //---------------------------------map--------------------------------//
         JPanel mapControl = new JPanel();
         mapControl.setLayout(new GridLayout(0, 1));
 
         jTabbedPane.add("Map Controls", mapControl);
-        JPanel zoomControlPanel = new JPanel();
-        SpinnerModel spinnerModelZoom
-                = new SpinnerNumberModel(GraphicsSetting.getInstance().getZoom(), 0.00000000001, 10000, 0.01);
 
-        JSpinner zoomSpinner = new JSpinner(spinnerModelZoom);
-        zoomSpinner.addChangeListener(new ChangeListenerZoom());
-        zoomControlPanel.add(new JLabel("Set the zoom level"));
-        zoomControlPanel.add(zoomSpinner);
-        mapControl.add(zoomControlPanel);
         JButton importButton = new JButton("Click to import map");
         importButton.addActionListener(new ActionListener() {
 
@@ -150,21 +140,23 @@ public class SideBar extends JFrame {
         });
         mapControl.add(importButton);
 
-        //--------------------------------------------------------------------//
+        JPanel speedLimitPanel = new JPanel();
+
+        //-----------------------------vehicle--------------------------------//
         JPanel vehiclePanel = new JPanel();
         JPanel SpawnPanel = new JPanel();
         SpinnerModel spinnerModelSpawn
-                = new SpinnerNumberModel(GraphicsSetting.getInstance().getZoom(), 0, 100000, 1);
+                = new SpinnerNumberModel(SimulationSettings.getInstance().getNumberOfCarsToSpawn(), 0, 100000, 1);
 
-        JSpinner spawnSpinner = new JSpinner(spinnerModelSpawn);
-        zoomSpinner.addChangeListener(new ChangeListenerSpawn());
+        spawnSpinner = new JSpinner(spinnerModelSpawn);
+        spawnSpinner.addChangeListener(new ChangeListenerSpawn());
         SpawnPanel.add(new JLabel("Set the number of cars to spawn"));
         SpawnPanel.add(spawnSpinner);
         vehiclePanel.add(SpawnPanel);
-        
+
         jTabbedPane.add("Vehicle Settings", vehiclePanel);
 
-        //--------------------------------------------------------------------//
+        //----------------------------view------------------------------------//
         JPanel viewPanel = new JPanel();
         viewPanel.setLayout(new GridLayout(0, 1));
         JPanel zoomPanel = new JPanel();
@@ -222,19 +214,24 @@ public class SideBar extends JFrame {
         zoomPanel.add(zoomLabel);
         zoomPanel.add(plusZoom);
         viewPanel.add(zoomPanel);
+        JPanel zoomControlPanel = new JPanel();
+        SpinnerModel spinnerModelZoom
+                = new SpinnerNumberModel(GraphicsSetting.getInstance().getZoom(), 0.00000000001, 10000, 0.01);
+
+        JSpinner zoomSpinner = new JSpinner(spinnerModelZoom);
+        zoomSpinner.addChangeListener(new ChangeListenerZoom());
+        zoomControlPanel.add(new JLabel("Set the zoom level"));
+        zoomControlPanel.add(zoomSpinner);
+        viewPanel.add(zoomControlPanel);
+
         JButton resetButton = new JButton("Resets the view");
         resetButton.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                GraphicsSetting setting = GraphicsSetting.getInstance();
-                setting.setPanX(0);
-                setting.setPanY(0);
-                setting.setZoom(1);
-                setting.setShowIntersection(true);
-                setting.setShowTraffficLight(true);
-                controller.Controller.getInstance().getUI().update();
+                resetView();
             }
+
         });
         viewPanel.add(resetButton);
 
@@ -247,6 +244,7 @@ public class SideBar extends JFrame {
     }
 
     private JLabel zoomLabel;
+    private JSpinner spawnSpinner;
 
     @Override
     public void repaint() {
@@ -258,6 +256,16 @@ public class SideBar extends JFrame {
         double zoom = GraphicsSetting.getInstance().getZoom();
         zoom = Math.round(zoom * 100) / 100d;
         zoomLabel.setText(Double.toString(zoom) + "x");
+    }
+
+    public void resetView() {
+        GraphicsSetting setting = GraphicsSetting.getInstance();
+        setting.setPanX(0);
+        setting.setPanY(0);
+        setting.setZoom(1);
+        setting.setShowIntersection(true);
+        setting.setShowTraffficLight(true);
+        controller.Controller.getInstance().getUI().update();
     }
 
     //The change listener for the spinner
@@ -285,15 +293,18 @@ public class SideBar extends JFrame {
         }
 
     }
-    
-     private class ChangeListenerSpawn implements ChangeListener {
+
+    private class ChangeListenerSpawn implements ChangeListener {
 
         @Override
         public void stateChanged(ChangeEvent e) {
             if (e.getSource() instanceof JSpinner) {
                 JSpinner s = (JSpinner) e.getSource();
-                SimulationSettings.getInstance().setNumberOfCarsToSpawn((int) s.getModel().getValue());
-                controller.Controller.getInstance().getUI().draw();
+                int value = (int) s.getModel().getValue();
+                if (value == SimulationSettings.getInstance().getNumberOfCarsToSpawn()) {
+                    SimulationSettings.getInstance().setNumberOfCarsToSpawn(value);
+                    controller.Controller.getInstance().getUI().draw();
+                }
             }
         }
 

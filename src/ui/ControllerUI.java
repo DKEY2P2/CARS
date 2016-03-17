@@ -12,6 +12,8 @@ import vehicle.Vehicle;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.AbstractMap;
+import ui.helper.TwoDTransformation;
 
 /**
  * Controls the UI
@@ -38,7 +40,8 @@ public class ControllerUI implements Task {
                 + "\nPress \"L\" to print out the logger"
                 + "\nPress \"I\" to toggle the intersections"
                 + "\nPress \"T\" to toggle the traffic lights"
-                + "\nPress \"m\" to import a map");
+                + "\nPress \"M\" to import a map"
+                + "\nPress \"R\" to reset things");
 
     }
 
@@ -75,13 +78,25 @@ public class ControllerUI implements Task {
      */
     public void drawLineDragging(Graphics g) {
         if (Canvas.dragLine) {
+            int panX = GraphicsSetting.getInstance().getPanX();
+            int panY = GraphicsSetting.getInstance().getPanY();
+            AbstractMap.SimpleImmutableEntry<Integer, Integer> x = TwoDTransformation.transformX(Canvas.s.getX(), Canvas.liveMouseX-panX);
+            AbstractMap.SimpleImmutableEntry<Integer, Integer> y = TwoDTransformation.transformY(Canvas.s.getY(), Canvas.liveMouseY-panY);
             g.setColor(Color.WHITE);
             ((Graphics2D) g).setStroke(new BasicStroke((float) (12 * GraphicsSetting.getInstance().getZoom() > 0 ? 12 * GraphicsSetting.getInstance().getZoom() : 1)));
-            g.drawLine((int) (Canvas.s.getX() * GraphicsSetting.getInstance().getZoom()), (int) (Canvas.s.getY() * GraphicsSetting.getInstance().getZoom()), (int) (Canvas.liveMouseX * GraphicsSetting.getInstance().getZoom()), (int) (Canvas.liveMouseY * GraphicsSetting.getInstance().getZoom()));
+            g.drawLine(
+                    x.getKey(),
+                    y.getKey(),
+                    x.getValue(),
+                    y.getValue());
             g.setColor(Color.BLACK);
             ((Graphics2D) g).setStroke(
                     new BasicStroke((float) (10 * GraphicsSetting.getInstance().getZoom() > 0 ? 10 * GraphicsSetting.getInstance().getZoom() : 1)));
-            g.drawLine((int) (Canvas.s.getX() * GraphicsSetting.getInstance().getZoom()), (int) (Canvas.s.getY() * GraphicsSetting.getInstance().getZoom()), (int) (Canvas.liveMouseX * GraphicsSetting.getInstance().getZoom()), (int) (Canvas.liveMouseY * GraphicsSetting.getInstance().getZoom()));
+            g.drawLine(
+                    x.getKey(),
+                    y.getKey(),
+                    x.getValue(),
+                    y.getValue());
         }
     }
 
@@ -98,7 +113,7 @@ public class ControllerUI implements Task {
                 drawIntersection(g);
             }
             drawCars(g);
-        }else{
+        } else {
             Logger.LogAny("Drawing", "No map loaded");
         }
 
@@ -160,6 +175,10 @@ public class ControllerUI implements Task {
      */
     public Canvas getC() {
         return c;
+    }
+
+    public SideBar getS() {
+        return s;
     }
 
 }
