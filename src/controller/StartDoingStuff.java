@@ -5,7 +5,9 @@ import controller.threads.ThreadController;
 import helper.Logger;
 import map.Road;
 import map.intersection.DefaultIntersection;
+import models.Forbe;
 import models.OVM;
+import models.Pipe;
 import ui.ControllerUI;
 
 import java.util.ArrayList;
@@ -44,7 +46,7 @@ public class StartDoingStuff {
         SimulationSettings.getInstance().setPathFindingAI(new AStar());
 
         /* Set the number of ticks the simulation waits until it spawns new vehicles */
-        SimulationSettings.getInstance().setTimeUntilSpawn(20);
+        SimulationSettings.getInstance().setTimeUntilSpawn(200);
 
         /* Creates the controller */
         Controller control = Controller.getInstance();
