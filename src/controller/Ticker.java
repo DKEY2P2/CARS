@@ -75,7 +75,7 @@ public class Ticker extends Observerable {
                 //System.out.println("=====================================================");
                 //System.out.println(VehicleHolder.getInstance().size());
                 if (tickCount % SimulationSettings.getInstance().getTimeUntilSpawn() == 0) {
-                    for (int i = 0; i < 10; i++) {
+                    for (int i = 0; i < SimulationSettings.getInstance().getNumberOfCarsToSpawn(); i++) {
                         VehicleFactory.getFactory().createVehicle(VehicleFactory.SPORT_CAR);
                     }
                 }
@@ -137,5 +137,9 @@ public class Ticker extends Observerable {
      */
     public int getTickCount() {
         return this.tickCount;
+    }
+    
+    public void setTickTimeInMS(double x){
+        this.tickTimeInS = x/1000d;
     }
 }

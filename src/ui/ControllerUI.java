@@ -2,6 +2,7 @@ package ui;
 
 import controller.Controller;
 import controller.Task;
+import helper.Logger;
 import map.Intersection;
 import map.Road;
 import ui.frames.Canvas;
@@ -11,6 +12,8 @@ import vehicle.Vehicle;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.AbstractMap;
+import ui.helper.TwoDTransformation;
 
 /**
  * Controls the UI
@@ -33,7 +36,12 @@ public class ControllerUI implements Task {
         update();
         JOptionPane.showMessageDialog(null, "Hold control and click to make a new intersection "
                 + "\nHold shift and click to make a new road (click on the start intersection then the end intersection"
-                + "\nPress start (on the side bar) to start the timer)");
+                + "\nPress start (on the side bar) to start the)"
+                + "\nPress \"L\" to print out the logger"
+                + "\nPress \"I\" to toggle the intersections"
+                + "\nPress \"T\" to toggle the traffic lights"
+                + "\nPress \"M\" to import a map"
+                + "\nPress \"R\" to reset things");
 
     }
 
@@ -44,6 +52,7 @@ public class ControllerUI implements Task {
         Graphics g = c.getGraphic();
         drawEverything(g);
         c.getScene();
+        s.repaint();
     }
 
     /**
@@ -53,8 +62,13 @@ public class ControllerUI implements Task {
      */
     public void drawScale(Graphics g) {
         g.setColor(Color.WHITE);
+        ((Graphics2D) (g)).setStroke(new BasicStroke(2));
         g.drawLine(20, c.getHeight() - 30, 120, c.getHeight() - 30);
-        g.drawString(String.valueOf((int) (GraphicsSetting.getInstance().getZoom() * 100)) + "m", 20, c.getHeight() - 15);
+        String tmp = 1 / GraphicsSetting.getInstance().getZoom() * 100 < 1000
+                ? String.valueOf((int) (1 / GraphicsSetting.getInstance().getZoom() * 100)) + "m"
+                : String.valueOf((double) (Math.round(0.001 * (1 / GraphicsSetting.getInstance().getZoom() * 100) * 10)) / 10) + "km";
+        tmp = GraphicsSetting.getInstance().getZoom() == 0 ? "infinity" : tmp;
+        g.drawString(tmp, 20, c.getHeight() - 15);
     }
 
     /**
@@ -64,13 +78,25 @@ public class ControllerUI implements Task {
      */
     public void drawLineDragging(Graphics g) {
         if (Canvas.dragLine) {
+            int panX = GraphicsSetting.getInstance().getPanX();
+            int panY = GraphicsSetting.getInstance().getPanY();
+            AbstractMap.SimpleImmutableEntry<Integer, Integer> x = TwoDTransformation.transformX(Canvas.s.getX(), Canvas.liveMouseX-panX);
+            AbstractMap.SimpleImmutableEntry<Integer, Integer> y = TwoDTransformation.transformY(Canvas.s.getY(), Canvas.liveMouseY-panY);
             g.setColor(Color.WHITE);
             ((Graphics2D) g).setStroke(new BasicStroke((float) (12 * GraphicsSetting.getInstance().getZoom() > 0 ? 12 * GraphicsSetting.getInstance().getZoom() : 1)));
-            g.drawLine((int) (Canvas.s.getX() * GraphicsSetting.getInstance().getZoom()), (int) (Canvas.s.getY() * GraphicsSetting.getInstance().getZoom()), (int) (Canvas.liveMouseX * GraphicsSetting.getInstance().getZoom()), (int) (Canvas.liveMouseY * GraphicsSetting.getInstance().getZoom()));
+            g.drawLine(
+                    x.getKey(),
+                    y.getKey(),
+                    x.getValue(),
+                    y.getValue());
             g.setColor(Color.BLACK);
             ((Graphics2D) g).setStroke(
                     new BasicStroke((float) (10 * GraphicsSetting.getInstance().getZoom() > 0 ? 10 * GraphicsSetting.getInstance().getZoom() : 1)));
-            g.drawLine((int) (Canvas.s.getX() * GraphicsSetting.getInstance().getZoom()), (int) (Canvas.s.getY() * GraphicsSetting.getInstance().getZoom()), (int) (Canvas.liveMouseX * GraphicsSetting.getInstance().getZoom()), (int) (Canvas.liveMouseY * GraphicsSetting.getInstance().getZoom()));
+            g.drawLine(
+                    x.getKey(),
+                    y.getKey(),
+                    x.getValue(),
+                    y.getValue());
         }
     }
 
@@ -81,9 +107,16 @@ public class ControllerUI implements Task {
      */
     public void drawEverything(Graphics g) {
         drawLineDragging(g);
-        drawRoad(g);
-        drawIntersection(g);
-        drawCars(g);
+        if (Controller.getInstance().getMap() != null) {
+            drawRoad(g);
+            if (GraphicsSetting.getInstance().isShowIntersection()) {
+                drawIntersection(g);
+            }
+            drawCars(g);
+        } else {
+            Logger.LogAny("Drawing", "No map loaded");
+        }
+
         drawScale(g);
         g.dispose();
     }
@@ -108,8 +141,10 @@ public class ControllerUI implements Task {
      */
     public void drawRoad(Graphics g) {
         Controller controller = Controller.getInstance();
-        for (Road road : controller.getMap().getRoads()) {
-            road.draw(g);
+        if (controller.getMap() != null) {
+            for (Road road : controller.getMap().getRoads()) {
+                road.draw(g);
+            }
         }
     }
 
@@ -132,4 +167,18 @@ public class ControllerUI implements Task {
         s.repaint();
         return true;
     }
+
+    /**
+     * Get the canvas
+     *
+     * @return The canvas
+     */
+    public Canvas getC() {
+        return c;
+    }
+
+    public SideBar getS() {
+        return s;
+    }
+
 }

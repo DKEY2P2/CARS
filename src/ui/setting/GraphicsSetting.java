@@ -7,6 +7,46 @@ package ui.setting;
  */
 public class GraphicsSetting {
 
+    private boolean showTraffficLight = true;
+
+    /**
+     * Get the value of showTraffficLight
+     *
+     * @return the value of showTraffficLight
+     */
+    public boolean isShowTraffficLight() {
+        return showTraffficLight;
+    }
+
+    /**
+     * Set the value of showTraffficLight
+     *
+     * @param showTraffficLight new value of showTraffficLight
+     */
+    public void setShowTraffficLight(boolean showTraffficLight) {
+        this.showTraffficLight = showTraffficLight;
+    }
+
+    private boolean showIntersection = true;
+
+    /**
+     * Get the value of showIntersection
+     *
+     * @return the value of showIntersection
+     */
+    public boolean isShowIntersection() {
+        return showIntersection;
+    }
+
+    /**
+     * Set the value of showIntersection
+     *
+     * @param showIntersection new value of showIntersection
+     */
+    public void setShowIntersection(boolean showIntersection) {
+        this.showIntersection = showIntersection;
+    }
+
     private boolean decorated = true;
 
     /**
@@ -128,6 +168,46 @@ public class GraphicsSetting {
      */
     public void setPanY(int panY) {
         this.panY = panY;
+    }
+
+    private int mouseY = 0;
+
+    /**
+     * Get the value of mouseY
+     *
+     * @return the value of mouseY
+     */
+    public int getMouseY() {
+        return mouseY;
+    }
+
+    /**
+     * Set the value of mouseY
+     *
+     * @param mouseY new value of mouseY
+     */
+    public void setMouseY(int mouseY) {
+        this.mouseY = mouseY;
+    }
+
+    private int mouseX = 0;
+
+    /**
+     * Get the value of mouseX
+     *
+     * @return the value of mouseX
+     */
+    public int getMouseX() {
+        return mouseX;
+    }
+
+    /**
+     * Set the value of mouseX
+     *
+     * @param mouseX new value of mouseX
+     */
+    public void setMouseX(int mouseX) {
+        this.mouseX = mouseX;
     }
 
 }

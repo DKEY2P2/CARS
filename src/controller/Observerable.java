@@ -47,7 +47,6 @@ public abstract class Observerable {
     public synchronized void addObserver(Observer o) {
         if (!inUse) {
             inUse = true;
-            Logger.LogLow(o.getClass().getName() + " added to observer List: " + this.getClass().getName());
             OBSERVER.add(o);
             inUse = false;
         } else {
