@@ -83,4 +83,24 @@ public class SimulationSettings {
         return instance;
     }
 
+    private int numberOfCarsToSpawn = 5;
+
+    /**
+     * Get the value of numberOfCarsToSpawn
+     *
+     * @return the value of numberOfCarsToSpawn
+     */
+    public int getNumberOfCarsToSpawn() {
+        return numberOfCarsToSpawn;
+    }
+
+    /**
+     * Set the value of numberOfCarsToSpawn
+     *
+     * @param numberOfCarsToSpawn new value of numberOfCarsToSpawn
+     */
+    public void setNumberOfCarsToSpawn(int numberOfCarsToSpawn) {
+        this.numberOfCarsToSpawn = numberOfCarsToSpawn;
+    }
+
 }

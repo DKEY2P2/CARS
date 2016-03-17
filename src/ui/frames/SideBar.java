@@ -1,6 +1,7 @@
 package ui.frames;
 
 import com.sun.scenario.Settings;
+import controller.SimulationSettings;
 import controller.StartDoingStuff;
 import helper.Logger;
 import java.awt.Dimension;
@@ -151,7 +152,16 @@ public class SideBar extends JFrame {
 
         //--------------------------------------------------------------------//
         JPanel vehiclePanel = new JPanel();
+        JPanel SpawnPanel = new JPanel();
+        SpinnerModel spinnerModelSpawn
+                = new SpinnerNumberModel(GraphicsSetting.getInstance().getZoom(), 0, 100000, 1);
 
+        JSpinner spawnSpinner = new JSpinner(spinnerModelSpawn);
+        zoomSpinner.addChangeListener(new ChangeListenerSpawn());
+        SpawnPanel.add(new JLabel("Set the number of cars to spawn"));
+        SpawnPanel.add(spawnSpinner);
+        vehiclePanel.add(SpawnPanel);
+        
         jTabbedPane.add("Vehicle Settings", vehiclePanel);
 
         //--------------------------------------------------------------------//
@@ -246,8 +256,8 @@ public class SideBar extends JFrame {
         timeL.setText(Double.toString(Math.round(controller.Controller.getInstance().getTicker().getTimeElapsed() * 100) / 100d));
         super.repaint();
         double zoom = GraphicsSetting.getInstance().getZoom();
-        zoom = Math.round(zoom*100)/100d;
-        zoomLabel.setText(Double.toString(zoom)+"x");
+        zoom = Math.round(zoom * 100) / 100d;
+        zoomLabel.setText(Double.toString(zoom) + "x");
     }
 
     //The change listener for the spinner
@@ -270,6 +280,19 @@ public class SideBar extends JFrame {
             if (e.getSource() instanceof JSpinner) {
                 JSpinner s = (JSpinner) e.getSource();
                 GraphicsSetting.getInstance().setZoom((double) s.getModel().getValue());
+                controller.Controller.getInstance().getUI().draw();
+            }
+        }
+
+    }
+    
+     private class ChangeListenerSpawn implements ChangeListener {
+
+        @Override
+        public void stateChanged(ChangeEvent e) {
+            if (e.getSource() instanceof JSpinner) {
+                JSpinner s = (JSpinner) e.getSource();
+                SimulationSettings.getInstance().setNumberOfCarsToSpawn((int) s.getModel().getValue());
                 controller.Controller.getInstance().getUI().draw();
             }
         }
