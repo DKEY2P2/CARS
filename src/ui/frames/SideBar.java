@@ -1,5 +1,6 @@
 package ui.frames;
 
+import com.sun.scenario.Settings;
 import controller.StartDoingStuff;
 import helper.Logger;
 import java.awt.Dimension;
@@ -22,6 +23,7 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.plaf.basic.BasicArrowButton;
 import json.GEOjson;
 import map.Map;
 import ui.setting.GraphicsSetting;
@@ -54,6 +56,7 @@ public class SideBar extends JFrame {
             }
 
         });
+        //--------------------------------------------------------------------//
         JPanel general = new JPanel();
         //Set the layout
         general.setLayout(new GridLayout(0, 1));
@@ -103,12 +106,14 @@ public class SideBar extends JFrame {
         speedP.add(speedSpinner);
         general.add(speedP);
         jTabbedPane.add("General", general);
-
+        //--------------------------------------------------------------------//
         JPanel stats = new JPanel();
 
         jTabbedPane.add("Statistics", stats);
 
+        //--------------------------------------------------------------------//
         JPanel mapControl = new JPanel();
+        mapControl.setLayout(new GridLayout(0, 1));
 
         jTabbedPane.add("Map Controls", mapControl);
         JPanel zoomControlPanel = new JPanel();
@@ -132,11 +137,7 @@ public class SideBar extends JFrame {
                     try {
                         Map m = GEOjson.GEOJsonConverter(file.getAbsolutePath());
                         controller.Controller.getInstance().setMap(m);
-                        
-//                        ui.setting.GraphicsSetting.getInstance().setPanX(m.getIntersections().get(0).getX());
-//                        ui.setting.GraphicsSetting.getInstance().setPanY(m.getIntersections().get(0).getY());
-                        
-                        
+
                         controller.Controller.getInstance().getUI().draw();
                     } catch (FileNotFoundException ex) {
                         Logger.LogError(ex);
@@ -148,16 +149,94 @@ public class SideBar extends JFrame {
         });
         mapControl.add(importButton);
 
-//        mapControl.add(fileChooser);
-        JPanel vehicle = new JPanel();
+        //--------------------------------------------------------------------//
+        JPanel vehiclePanel = new JPanel();
 
-        jTabbedPane.add("Vehicle Settings", vehicle);
+        jTabbedPane.add("Vehicle Settings", vehiclePanel);
 
+        //--------------------------------------------------------------------//
+        JPanel viewPanel = new JPanel();
+        viewPanel.setLayout(new GridLayout(0, 1));
+        JPanel zoomPanel = new JPanel();
+        JButton plusZoom = new JButton("+");
+        plusZoom.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                double zoom = getZoom();
+                zoom *= 1.05;
+
+                if (zoom < 0) {
+                    zoom = 0;
+                }
+                setZoom(zoom);
+
+                controller.Controller.getInstance().getUI().update();
+            }
+
+            double getZoom() {
+                return GraphicsSetting.getInstance().getZoom();
+            }
+
+            void setZoom(double zoom) {
+                GraphicsSetting.getInstance().setZoom(zoom);
+            }
+        });
+        zoomLabel = new JLabel("Text");
+        JButton minusZoom = new JButton("-");
+        minusZoom.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                double zoom = getZoom();
+                zoom /= 1.05;
+
+                if (zoom < 0) {
+                    zoom = 0;
+                }
+                setZoom(zoom);
+
+                controller.Controller.getInstance().getUI().update();
+            }
+
+            double getZoom() {
+                return GraphicsSetting.getInstance().getZoom();
+            }
+
+            void setZoom(double zoom) {
+                GraphicsSetting.getInstance().setZoom(zoom);
+            }
+        }
+        );
+        zoomPanel.add(minusZoom);
+        zoomPanel.add(zoomLabel);
+        zoomPanel.add(plusZoom);
+        viewPanel.add(zoomPanel);
+        JButton resetButton = new JButton("Resets the view");
+        resetButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GraphicsSetting setting = GraphicsSetting.getInstance();
+                setting.setPanX(0);
+                setting.setPanY(0);
+                setting.setZoom(1);
+                setting.setShowIntersection(true);
+                setting.setShowTraffficLight(true);
+                controller.Controller.getInstance().getUI().update();
+            }
+        });
+        viewPanel.add(resetButton);
+
+        jTabbedPane.add("View Control", viewPanel);
         add(jTabbedPane);
+
         //Set it to visiable
         setVisible(true);
 
     }
+
+    private JLabel zoomLabel;
 
     @Override
     public void repaint() {
@@ -166,6 +245,9 @@ public class SideBar extends JFrame {
         tickCounterL.setText(Integer.toString(n));
         timeL.setText(Double.toString(Math.round(controller.Controller.getInstance().getTicker().getTimeElapsed() * 100) / 100d));
         super.repaint();
+        double zoom = GraphicsSetting.getInstance().getZoom();
+        zoom = Math.round(zoom*100)/100d;
+        zoomLabel.setText(Double.toString(zoom)+"x");
     }
 
     //The change listener for the spinner

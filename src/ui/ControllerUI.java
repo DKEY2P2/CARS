@@ -48,6 +48,7 @@ public class ControllerUI implements Task {
         Graphics g = c.getGraphic();
         drawEverything(g);
         c.getScene();
+        s.repaint();
     }
 
     /**
