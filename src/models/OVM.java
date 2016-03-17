@@ -16,7 +16,7 @@ import java.util.PriorityQueue;
  */
 public class OVM implements Model{
 
-    private final double CONSTANT = 10;
+    private final double CONSTANT = 5;
 
     private Vehicle getInFront(Vehicle veh, Road r) {
         Vehicle inFrontVehicle = null;
@@ -38,9 +38,10 @@ public class OVM implements Model{
 
     @Override
     public void calculate(Vehicle v) {
+
         Road r = v.getPosition().getKey();
 
-        TrafficLight trl = v.getNextLight();
+        TrafficLight trl = r.getEnd().getTrafficLight(r);
 
         double optVel = v.getDesiredSpeed()/2;
         double t = Controller.getInstance().getTicker().getTickTimeInS();
@@ -88,7 +89,7 @@ public class OVM implements Model{
             v.setSpeed(speed + v.getAcceleration());
         }
 
-        if((1-v.getPosition().getValue())*r.getLength()<2) {
+        if((1-v.getPosition().getValue())*r.getLength()<CONSTANT) {
             v.setPosition(new AbstractMap.SimpleImmutableEntry<Road, Double>(v.nextPlaceToGo().hasRoad(trl.getIntersection()), 0d));
         }else {
             double d = v.getPosition().getValue() + ((v.getSpeed() * t / r.getLength()));

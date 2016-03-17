@@ -24,7 +24,7 @@ public class TrafficLight {
     /**
      * The time in milliseconds it takes for a green light to turn red
      */
-    private int timerLength = 40;
+    private int timerLength = 2000;
     /**
      * The time in milliseconds left before the light turns red
      */

@@ -47,12 +47,12 @@ public class StartDoingStuff {
         SimulationSettings.getInstance().setPathFindingAI(new AStar());
 
         /* Set the number of ticks the simulation waits until it spawns new vehicles */
-        SimulationSettings.getInstance().setTimeUntilSpawn(50);
+        SimulationSettings.getInstance().setTimeUntilSpawn(200);
 
         /* Creates the controller */
         Controller control = Controller.getInstance();
 
-        /* A tempory of holder of for the intersection */
+        /* A temporary of holder of for the intersection */
         ArrayList<DefaultIntersection> a = new ArrayList<>();
         ArrayList<Road> b = new ArrayList<>();
 
