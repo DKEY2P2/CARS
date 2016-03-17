@@ -2,6 +2,7 @@ package ui;
 
 import controller.Controller;
 import controller.Task;
+import helper.Logger;
 import map.Intersection;
 import map.Road;
 import ui.frames.Canvas;
@@ -91,11 +92,16 @@ public class ControllerUI implements Task {
      */
     public void drawEverything(Graphics g) {
         drawLineDragging(g);
-        drawRoad(g);
-        if (GraphicsSetting.getInstance().isShowIntersection()) {
-            drawIntersection(g);
+        if (Controller.getInstance().getMap() != null) {
+            drawRoad(g);
+            if (GraphicsSetting.getInstance().isShowIntersection()) {
+                drawIntersection(g);
+            }
+            drawCars(g);
+        }else{
+            Logger.LogAny("Drawing", "No map loaded");
         }
-        drawCars(g);
+
         drawScale(g);
         g.dispose();
     }
@@ -120,8 +126,10 @@ public class ControllerUI implements Task {
      */
     public void drawRoad(Graphics g) {
         Controller controller = Controller.getInstance();
-        for (Road road : controller.getMap().getRoads()) {
-            road.draw(g);
+        if (controller.getMap() != null) {
+            for (Road road : controller.getMap().getRoads()) {
+                road.draw(g);
+            }
         }
     }
 
