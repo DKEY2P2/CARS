@@ -209,7 +209,13 @@ public abstract class Vehicle implements Task, Drawable {
     public abstract boolean update();
 
     public final Intersection nextPlaceToGo() {
-        return a.findShortestPath(getPosition().getKey().getEnd(), destination).get(0);
+        Intersection i = a.findShortestPath(getPosition().getKey().getEnd(), destination).get(0);
+        if(i == destination){
+            return destination;
+        }else{
+            return i;
+        }
+
     }
 
     public final ArrayList<Intersection> getRoute() {
@@ -220,17 +226,12 @@ public abstract class Vehicle implements Task, Drawable {
         Road r = getPosition().getKey();
         Intersection next = nextPlaceToGo();
         Road rNext = next.hasRoad(r.getEnd());
-        for (TrafficLight tl : r.getEnd().getTrafficLights()) {
-            if (tl.getIn() == r && equalArray(tl.getOut(), rNext)) {
-                return tl;
-            }
-        }
-        return null;
+        return rNext.getStart().getTrafficLight(r);
     }
 
-    private boolean equalArray(ArrayList<Road> array, Object o) {
-        for (Object array1 : array) {
-            if (o == array1) {
+    private boolean equalArray(ArrayList<Road> array, Road r) {
+        for (Road r1 : array) {
+            if (r1 == r) {
                 return true;
             }
         }
