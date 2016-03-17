@@ -2,6 +2,8 @@ package vehicle;
 
 import algorithms.Algorithm;
 import controller.Task;
+import helper.Logger;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.AbstractMap.SimpleImmutableEntry;
@@ -57,6 +59,10 @@ public abstract class Vehicle implements Task, Drawable,Comparable<Vehicle> {
         SimpleImmutableEntry<Road, Double> position = this.position;
         Road road = position.getKey();
         double percentage = position.getValue();
+        if(road == null){
+        	Logger.LogError("Null pointer Exception",this);
+        	return;
+        }
         Intersection start = road.getStart();
         Intersection end = road.getEnd();
         int width = (int) getLength();

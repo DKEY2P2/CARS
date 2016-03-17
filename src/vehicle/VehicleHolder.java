@@ -62,6 +62,9 @@ public class VehicleHolder implements Collection<Vehicle> {
 
     @Override
     public boolean contains(Object o) {
+    	if(o == null){
+    		return false;
+    	}
         if (o instanceof Vehicle) {
             return VEHICLE_MAP.containsValue((Vehicle) o);
         } else if (o instanceof Integer) {
