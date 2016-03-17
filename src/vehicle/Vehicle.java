@@ -13,6 +13,7 @@ import map.Road;
 import map.TrafficLight;
 import models.Model;
 import ui.Drawable;
+import ui.helper.TwoDTransformation;
 import ui.setting.GraphicsSetting;
 
 /**
@@ -58,12 +59,17 @@ public abstract class Vehicle implements Task, Drawable {
         double percentage = position.getValue();
         Intersection start = road.getStart();
         Intersection end = road.getEnd();
-        int width = 1;
-        int height = 1;
+        int width = (int) getLength();
+        int height = (int) getLength();
+        double zoom = GraphicsSetting.getInstance().getZoom();
         int differentX = end.getX() - start.getX();
         int differentY = end.getY() - start.getY();
-        g.drawOval((int) ((start.getX() * GraphicsSetting.getInstance().getZoom() + differentX * percentage - width / 2) * GraphicsSetting.getInstance().getZoom()) + GraphicsSetting.getInstance().getPanX(),
-                (int) ((start.getY() * GraphicsSetting.getInstance().getZoom() + differentY * percentage - height / 2) * GraphicsSetting.getInstance().getZoom()) + GraphicsSetting.getInstance().getPanY(), width, height
+        int x = TwoDTransformation.transformX((int) (start.getX() + differentX * percentage - width*zoom / 2));
+        int y = TwoDTransformation.transformY((int) (start.getY() + differentY * percentage - height*zoom / 2));
+        g.drawOval(
+                x,
+                y,
+                (int)(width*zoom), (int)(height*zoom)
         );
     }
 

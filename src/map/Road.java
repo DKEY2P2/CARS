@@ -5,9 +5,12 @@ import ui.setting.GraphicsSetting;
 import vehicle.Vehicle;
 
 import java.awt.*;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Objects;
 import java.util.PriorityQueue;
+import ui.helper.TwoDTransformation;
 
 /**
  * This class represents a road A road is similar to an edge of a graph, they
@@ -188,13 +191,24 @@ public abstract class Road implements Drawable {
 
     @Override
     public void draw(Graphics g) {
+        double zoom = GraphicsSetting.getInstance().getZoom();
+
         g.setColor(Color.WHITE);
-        ((Graphics2D) g).setStroke(new BasicStroke((float) (12 * GraphicsSetting.getInstance().getZoom() > 0 ? 12 * GraphicsSetting.getInstance().getZoom() : 1)));
-        g.drawLine((int) (start.getX() * GraphicsSetting.getInstance().getZoom()), (int) (start.getY() * GraphicsSetting.getInstance().getZoom()), (int) (end.getX() * GraphicsSetting.getInstance().getZoom()), (int) (end.getY() * GraphicsSetting.getInstance().getZoom()));
-        g.setColor(Color.BLACK);
+
         ((Graphics2D) g).setStroke(
-                new BasicStroke((float) (10 * GraphicsSetting.getInstance().getZoom() > 0 ? 10 * GraphicsSetting.getInstance().getZoom() : 1)));
-        g.drawLine((int) (start.getX() * GraphicsSetting.getInstance().getZoom()), (int) (start.getY() * GraphicsSetting.getInstance().getZoom()), (int) (end.getX() * GraphicsSetting.getInstance().getZoom()), (int) (end.getY() * GraphicsSetting.getInstance().getZoom()));
+                new BasicStroke((float) (getWidth() * zoom > 0 ? getWidth() * zoom : 1)));
+
+        AbstractMap.SimpleImmutableEntry<Integer, Integer> tmpX = TwoDTransformation.transformX(start.getX(), end.getX());
+        AbstractMap.SimpleImmutableEntry<Integer, Integer> tmpY = TwoDTransformation.transformY(start.getY(), end.getY());
+        g.drawLine(tmpX.getKey(), tmpY.getKey(), tmpX.getValue(), tmpY.getValue());
+
+        g.setColor(Color.BLACK);
+
+        ((Graphics2D) g).setStroke(
+                new BasicStroke((float) (getWidth() * 0.7 * zoom > 0 ? getWidth() * 0.7 * zoom : 1)));
+
+        g.drawLine(tmpX.getKey(), tmpY.getKey(), tmpX.getValue(), tmpY.getValue());
+
     }
 
     public double getFrictionCoefficient() {
@@ -224,7 +238,7 @@ class VehicleComparator implements Comparator<Vehicle> {
     public int compare(Vehicle o1, Vehicle o2) {
         if (o1.getPosition().getValue() < o2.getPosition().getValue()) {
             return 1;
-        } else if (o1.getPosition().getValue() == o2.getPosition().getValue()) {
+        } else if (Objects.equals(o1.getPosition().getValue(), o2.getPosition().getValue())) {
             return 0;
         } else {
             return -1;

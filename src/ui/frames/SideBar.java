@@ -1,14 +1,19 @@
 package ui.frames;
 
+import controller.SimulationSettings;
 import controller.StartDoingStuff;
 import helper.Logger;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,6 +23,8 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import json.GEOjson;
+import map.Map;
 import ui.setting.GraphicsSetting;
 
 /**
@@ -48,6 +55,7 @@ public class SideBar extends JFrame {
             }
 
         });
+        //------------------------------general-------------------------------//
         JPanel general = new JPanel();
         //Set the layout
         general.setLayout(new GridLayout(0, 1));
@@ -68,7 +76,9 @@ public class SideBar extends JFrame {
         //Start button is added
         JButton button = new JButton("Start");
         button.addActionListener((ActionEvent e) -> {
-            StartDoingStuff.start();
+            if (!controller.Controller.getInstance().getMap().getRoads().isEmpty()) {
+                StartDoingStuff.start();
+            }
         });
         general.add(button);
 
@@ -88,32 +98,153 @@ public class SideBar extends JFrame {
 
         //The speed of the simulation changer is added
         JPanel speedP = new JPanel();
-        SpinnerModel spinnerModel = new SpinnerNumberModel(controller.Controller.getInstance().getTicker().getTickTimeInMS(), 1, 10000, 1);
-        JSpinner speedSpinner = new JSpinner(spinnerModel);
-        speedSpinner.addChangeListener(new ChangeListenerCustom());
+        SpinnerModel spinnerModelSpeed = new SpinnerNumberModel(controller.Controller.getInstance().getTicker().getTickTimeInMS(), 1, 10000, 1);
+        JSpinner speedSpinner = new JSpinner(spinnerModelSpeed);
+        speedSpinner.addChangeListener(new ChangeListenerSpeed());
         speedP.add(new JLabel("Speed of animation (ms)"));
         speedP.add(speedSpinner);
         general.add(speedP);
-        jTabbedPane.add("General",general );
-        
+        jTabbedPane.add("General", general);
+        //------------------------------stats---------------------------------//
         JPanel stats = new JPanel();
-        
-        jTabbedPane.add("Statistics" , stats);
-        
+
+        jTabbedPane.add("Statistics", stats);
+
+        //---------------------------------map--------------------------------//
         JPanel mapControl = new JPanel();
-        
+        mapControl.setLayout(new GridLayout(0, 1));
+
         jTabbedPane.add("Map Controls", mapControl);
-        
-        JPanel vehicle = new JPanel();
-        
-        jTabbedPane.add("Vehicle Settings", vehicle);
-        
-        
+
+        JButton importButton = new JButton("Click to import map");
+        importButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir"));
+                int returnVal = fileChooser.showOpenDialog(controller.Controller.getInstance().getUI().getC());
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File file = fileChooser.getSelectedFile();
+                    try {
+                        Map m = GEOjson.GEOJsonConverter(file.getAbsolutePath());
+                        controller.Controller.getInstance().setMap(m);
+
+                        controller.Controller.getInstance().getUI().draw();
+                    } catch (FileNotFoundException ex) {
+                        Logger.LogError(ex);
+                    }
+                } else {
+                    Logger.LogError("JFileChooser has failed to get a file", fileChooser);
+                }
+            }
+        });
+        mapControl.add(importButton);
+
+        JPanel speedLimitPanel = new JPanel();
+
+        //-----------------------------vehicle--------------------------------//
+        JPanel vehiclePanel = new JPanel();
+        JPanel SpawnPanel = new JPanel();
+        SpinnerModel spinnerModelSpawn
+                = new SpinnerNumberModel(SimulationSettings.getInstance().getNumberOfCarsToSpawn(), 0, 100000, 1);
+
+        spawnSpinner = new JSpinner(spinnerModelSpawn);
+        spawnSpinner.addChangeListener(new ChangeListenerSpawn());
+        SpawnPanel.add(new JLabel("Set the number of cars to spawn"));
+        SpawnPanel.add(spawnSpinner);
+        vehiclePanel.add(SpawnPanel);
+
+        jTabbedPane.add("Vehicle Settings", vehiclePanel);
+
+        //----------------------------view------------------------------------//
+        JPanel viewPanel = new JPanel();
+        viewPanel.setLayout(new GridLayout(0, 1));
+        JPanel zoomPanel = new JPanel();
+        JButton plusZoom = new JButton("+");
+        plusZoom.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                double zoom = getZoom();
+                zoom *= 1.05;
+
+                if (zoom < 0) {
+                    zoom = 0;
+                }
+                setZoom(zoom);
+
+                controller.Controller.getInstance().getUI().update();
+            }
+
+            double getZoom() {
+                return GraphicsSetting.getInstance().getZoom();
+            }
+
+            void setZoom(double zoom) {
+                GraphicsSetting.getInstance().setZoom(zoom);
+            }
+        });
+        zoomLabel = new JLabel("Text");
+        JButton minusZoom = new JButton("-");
+        minusZoom.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                double zoom = getZoom();
+                zoom /= 1.05;
+
+                if (zoom < 0) {
+                    zoom = 0;
+                }
+                setZoom(zoom);
+
+                controller.Controller.getInstance().getUI().update();
+            }
+
+            double getZoom() {
+                return GraphicsSetting.getInstance().getZoom();
+            }
+
+            void setZoom(double zoom) {
+                GraphicsSetting.getInstance().setZoom(zoom);
+            }
+        }
+        );
+        zoomPanel.add(minusZoom);
+        zoomPanel.add(zoomLabel);
+        zoomPanel.add(plusZoom);
+        viewPanel.add(zoomPanel);
+        JPanel zoomControlPanel = new JPanel();
+        SpinnerModel spinnerModelZoom
+                = new SpinnerNumberModel(GraphicsSetting.getInstance().getZoom(), 0.00000000001, 10000, 0.01);
+
+        JSpinner zoomSpinner = new JSpinner(spinnerModelZoom);
+        zoomSpinner.addChangeListener(new ChangeListenerZoom());
+        zoomControlPanel.add(new JLabel("Set the zoom level"));
+        zoomControlPanel.add(zoomSpinner);
+        viewPanel.add(zoomControlPanel);
+
+        JButton resetButton = new JButton("Resets the view");
+        resetButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resetView();
+            }
+
+        });
+        viewPanel.add(resetButton);
+
+        jTabbedPane.add("View Control", viewPanel);
         add(jTabbedPane);
+
         //Set it to visiable
         setVisible(true);
 
     }
+
+    private JLabel zoomLabel;
+    private JSpinner spawnSpinner;
 
     @Override
     public void repaint() {
@@ -122,16 +253,58 @@ public class SideBar extends JFrame {
         tickCounterL.setText(Integer.toString(n));
         timeL.setText(Double.toString(Math.round(controller.Controller.getInstance().getTicker().getTimeElapsed() * 100) / 100d));
         super.repaint();
+        double zoom = GraphicsSetting.getInstance().getZoom();
+        zoom = Math.round(zoom * 100) / 100d;
+        zoomLabel.setText(Double.toString(zoom) + "x");
+    }
+
+    public void resetView() {
+        GraphicsSetting setting = GraphicsSetting.getInstance();
+        setting.setPanX(0);
+        setting.setPanY(0);
+        setting.setZoom(1);
+        setting.setShowIntersection(true);
+        setting.setShowTraffficLight(true);
+        controller.Controller.getInstance().getUI().update();
     }
 
     //The change listener for the spinner
-    private class ChangeListenerCustom implements ChangeListener {
+    private class ChangeListenerSpeed implements ChangeListener {
 
         @Override
         public void stateChanged(ChangeEvent e) {
             if (e.getSource() instanceof JSpinner) {
                 JSpinner s = (JSpinner) e.getSource();
-                controller.Controller.getInstance().getTicker().setTickTimeInS(((Integer) s.getModel().getValue()) / 1000d);
+                controller.Controller.getInstance().getTicker().setTickTimeInS(((double) s.getModel().getValue()) / 1000d);
+            }
+        }
+
+    }
+
+    private class ChangeListenerZoom implements ChangeListener {
+
+        @Override
+        public void stateChanged(ChangeEvent e) {
+            if (e.getSource() instanceof JSpinner) {
+                JSpinner s = (JSpinner) e.getSource();
+                GraphicsSetting.getInstance().setZoom((double) s.getModel().getValue());
+                controller.Controller.getInstance().getUI().draw();
+            }
+        }
+
+    }
+
+    private class ChangeListenerSpawn implements ChangeListener {
+
+        @Override
+        public void stateChanged(ChangeEvent e) {
+            if (e.getSource() instanceof JSpinner) {
+                JSpinner s = (JSpinner) e.getSource();
+                int value = (int) s.getModel().getValue();
+                if (value == SimulationSettings.getInstance().getNumberOfCarsToSpawn()) {
+                    SimulationSettings.getInstance().setNumberOfCarsToSpawn(value);
+                    controller.Controller.getInstance().getUI().draw();
+                }
             }
         }
 

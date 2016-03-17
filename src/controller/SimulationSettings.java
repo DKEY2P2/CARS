@@ -83,4 +83,44 @@ public class SimulationSettings {
         return instance;
     }
 
+    private int numberOfCarsToSpawn = 5;
+
+    /**
+     * Get the value of numberOfCarsToSpawn
+     *
+     * @return the value of numberOfCarsToSpawn
+     */
+    public int getNumberOfCarsToSpawn() {
+        return numberOfCarsToSpawn;
+    }
+
+    /**
+     * Set the value of numberOfCarsToSpawn
+     *
+     * @param numberOfCarsToSpawn new value of numberOfCarsToSpawn
+     */
+    public void setNumberOfCarsToSpawn(int numberOfCarsToSpawn) {
+        this.numberOfCarsToSpawn = numberOfCarsToSpawn;
+    }
+
+    private double speedLimit = 27.666666666;
+
+    /**
+     * Get the value of speedLimit
+     *
+     * @return the value of speedLimit
+     */
+    public double getSpeedLimit() {
+        return speedLimit;
+    }
+
+    /**
+     * Set the value of speedLimit
+     *
+     * @param speedLimit new value of speedLimit
+     */
+    public void setSpeedLimit(double speedLimit) {
+        this.speedLimit = speedLimit;
+    }
+
 }

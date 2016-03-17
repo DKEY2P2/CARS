@@ -13,7 +13,10 @@ import javax.swing.event.MouseInputListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
-import java.util.ArrayList;
+import java.io.File;
+import java.io.FileNotFoundException;
+import json.GEOjson;
+import map.Map;
 
 /**
  * The canvas to draw everything on. May be turn into a JPanel at a later date
@@ -53,35 +56,7 @@ public class Canvas extends JFrame {
         });
 
         //Allows the user to exit the program
-        addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                    //Prints what in the logs
-                    Logger.print();
-                    Logger.printOther();
-                    //Exit the application
-                    System.exit(0);
-                } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    StartDoingStuff.start();
-                } else {
-                    keyCode = e.getKeyCode();
-                    if (e.isControlDown()) {
-                        keyCode = -1;
-                    } else if (e.isShiftDown()) {
-                        keyCode = -2;
-                    }
-                }
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_CONTROL || e.getKeyCode() == KeyEvent.VK_SHIFT) {
-                    keyCode = 0;
-                }
-            }
-
-        });
+        addKeyListener(new KeyAdapterImpl());
         MouseListenerCustom a = new MouseListenerCustom();
         addMouseListener(a);
         addMouseMotionListener(a);
@@ -137,15 +112,13 @@ public class Canvas extends JFrame {
         //Tells the JFrame/JPanel to draw the image
         Toolkit.getDefaultToolkit().sync();
     }
+    private boolean click;
+    private Intersection start;
 
     /**
      * The custom mouse listener for this object
      */
     private class MouseListenerCustom implements MouseInputListener {
-
-        private boolean click;
-
-        private Intersection start;
 
         private int x = 0;
         private int y = 0;
@@ -204,15 +177,17 @@ public class Canvas extends JFrame {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            
+
         }
 
         @Override
         public void mousePressed(MouseEvent e) {
+            int panX =GraphicsSetting.getInstance().getPanX();
+            int panY =GraphicsSetting.getInstance().getPanY();
             if (keyCode == -1) {
-                addIntersection(e.getX(), e.getY());
+                addIntersection(e.getX()-panX, e.getY()-panY);
             } else if (keyCode == -2 && start == null) {
-                connect(e.getX(), e.getY());
+                connect(e.getX()-panX, e.getY()-panY);
             } else {
                 start = null;
             }
@@ -222,8 +197,10 @@ public class Canvas extends JFrame {
 
         @Override
         public void mouseReleased(MouseEvent e) {
+            int panX =GraphicsSetting.getInstance().getPanX();
+            int panY =GraphicsSetting.getInstance().getPanY();
             if (keyCode == -2 && start != null) {
-                connect(e.getX(), e.getY());
+                connect(e.getX()-panX, e.getY()-panY);
             } else {
                 start = null;
             }
@@ -261,6 +238,8 @@ public class Canvas extends JFrame {
 
         @Override
         public void mouseMoved(MouseEvent e) {
+            GraphicsSetting.getInstance().setMouseX(e.getX());
+            GraphicsSetting.getInstance().setMouseY(e.getY());
             if (!click) {
                 x = e.getX();
                 y = e.getY();
@@ -293,6 +272,67 @@ public class Canvas extends JFrame {
 
         void setZoom(double zoom) {
             GraphicsSetting.getInstance().setZoom(zoom);
+        }
+    }
+
+    private class KeyAdapterImpl extends KeyAdapter {
+
+        public KeyAdapterImpl() {
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                //Prints what in the logs
+                Logger.print();
+                Logger.printOther();
+                //Exit the application
+                System.exit(0);
+            } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                StartDoingStuff.start();
+            } else if (e.getKeyCode() == KeyEvent.VK_L) {
+                Logger.print();
+            } else if (e.getKeyCode() == KeyEvent.VK_T) {
+                GraphicsSetting.getInstance().setShowTraffficLight(!GraphicsSetting.getInstance().isShowTraffficLight());
+                controller.Controller.getInstance().getUI().draw();
+            } else if (e.getKeyCode() == KeyEvent.VK_I) {
+                GraphicsSetting.getInstance().setShowIntersection(!GraphicsSetting.getInstance().isShowIntersection());
+                controller.Controller.getInstance().getUI().draw();
+            } else if (e.getKeyCode() == KeyEvent.VK_M) {
+                JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir"));
+                int returnVal = fileChooser.showOpenDialog(controller.Controller.getInstance().getUI().getC());
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File file = fileChooser.getSelectedFile();
+                    try {
+                        Map m = GEOjson.GEOJsonConverter(file.getAbsolutePath());
+                        controller.Controller.getInstance().setMap(m);
+                        controller.Controller.getInstance().getUI().draw();
+                    } catch (FileNotFoundException ex) {
+                        Logger.LogError(ex);
+                    }
+                } else {
+                    Logger.LogError("JFileChooser has failed to get a file", fileChooser);
+                }
+            } else if (e.getKeyCode() == KeyEvent.VK_R) {
+                controller.Controller.getInstance().getUI().getS().resetView();
+                dragLine = false;
+                click = false;
+                start = null;
+            } else {
+                keyCode = e.getKeyCode();
+                if (e.isControlDown()) {
+                    keyCode = -1;
+                } else if (e.isShiftDown()) {
+                    keyCode = -2;
+                }
+            }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            if (e.getKeyCode() == KeyEvent.VK_CONTROL || e.getKeyCode() == KeyEvent.VK_SHIFT) {
+                keyCode = 0;
+            }
         }
     }
 
