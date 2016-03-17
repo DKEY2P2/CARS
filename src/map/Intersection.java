@@ -118,6 +118,7 @@ public abstract class Intersection implements Drawable {
                     tLights.get(i).flip();
                     tLights.get(i).setTimeLeft(tLights.get(i).getTimerLength());
                 }
+
             }
         } else {
             tLights.get(0).setTimeLeft(tLights.get(0).getTimeLeft() - elapsed); //This is just because we will make the lights cycle so they will all change together. THIS WILL CHANGE -Lucas
