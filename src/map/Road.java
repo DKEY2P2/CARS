@@ -43,6 +43,10 @@ public abstract class Road implements Drawable {
     public void setWidth(double width) {
         this.width = width;
     }
+    
+    public TrafficLight getTrafficlight(){
+    	return end.getTrafficLight(this);
+    }
 
     /**
      * The speed limit on the road in m/s

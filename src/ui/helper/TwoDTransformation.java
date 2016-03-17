@@ -1,6 +1,7 @@
 package ui.helper;
 
 import java.util.AbstractMap.SimpleImmutableEntry;
+
 import ui.setting.GraphicsSetting;
 
 /**
