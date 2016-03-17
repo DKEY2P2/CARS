@@ -80,8 +80,8 @@ public class ControllerUI implements Task {
         if (Canvas.dragLine) {
             int panX = GraphicsSetting.getInstance().getPanX();
             int panY = GraphicsSetting.getInstance().getPanY();
-            AbstractMap.SimpleImmutableEntry<Integer, Integer> x = TwoDTransformation.transformX(Canvas.s.getX(), Canvas.liveMouseX-panX);
-            AbstractMap.SimpleImmutableEntry<Integer, Integer> y = TwoDTransformation.transformY(Canvas.s.getY(), Canvas.liveMouseY-panY);
+            AbstractMap.SimpleImmutableEntry<Integer, Integer> x = TwoDTransformation.transformX(Canvas.s.getX(), Canvas.liveMouseX - panX);
+            AbstractMap.SimpleImmutableEntry<Integer, Integer> y = TwoDTransformation.transformY(Canvas.s.getY(), Canvas.liveMouseY - panY);
             g.setColor(Color.WHITE);
             ((Graphics2D) g).setStroke(new BasicStroke((float) (12 * GraphicsSetting.getInstance().getZoom() > 0 ? 12 * GraphicsSetting.getInstance().getZoom() : 1)));
             g.drawLine(
@@ -106,6 +106,7 @@ public class ControllerUI implements Task {
      * @param g The graphics needed to draw
      */
     public void drawEverything(Graphics g) {
+        try{
         drawLineDragging(g);
         if (Controller.getInstance().getMap() != null) {
             drawRoad(g);
@@ -118,6 +119,9 @@ public class ControllerUI implements Task {
         }
 
         drawScale(g);
+        }catch(Exception e){
+            Logger.LogError(e);
+        }
         g.dispose();
     }
 
