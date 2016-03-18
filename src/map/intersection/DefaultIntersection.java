@@ -59,6 +59,8 @@ public class DefaultIntersection extends Intersection implements Observer {
                                     }
                                 }
                             }
+                            veh.getPosition().getKey().getVehicles().remove(veh);
+                            r.getVehicles().offer(veh);// TODO : Is this correct ???
                             veh.setPosition(new AbstractMap.SimpleImmutableEntry<>(r, 0d));
                         }
                     }
