@@ -64,12 +64,12 @@ public abstract class Vehicle implements Task, Drawable {
         double zoom = GraphicsSetting.getInstance().getZoom();
         int differentX = end.getX() - start.getX();
         int differentY = end.getY() - start.getY();
-        int x = TwoDTransformation.transformX((int) (start.getX() + differentX * percentage - width*zoom / 2));
-        int y = TwoDTransformation.transformY((int) (start.getY() + differentY * percentage - height*zoom / 2));
+        int x = (int) (TwoDTransformation.transformX((int) (start.getX() + differentX * percentage)) - width * zoom / 2);
+        int y = (int) (TwoDTransformation.transformY((int) (start.getY() + differentY * percentage)) - height * zoom / 2);
         g.drawOval(
                 x,
                 y,
-                (int)(width*zoom), (int)(height*zoom)
+                (int) (width * zoom), (int) (height * zoom)
         );
     }
 
@@ -210,9 +210,9 @@ public abstract class Vehicle implements Task, Drawable {
 
     public final Intersection nextPlaceToGo() {
         Intersection i = a.findShortestPath(getPosition().getKey().getEnd(), destination).get(0);
-        if(i == destination){
+        if (i == destination) {
             return destination;
-        }else{
+        } else {
             return i;
         }
 
@@ -274,9 +274,9 @@ public abstract class Vehicle implements Task, Drawable {
     public double getAcceleration() {
         return this.acceleration;
     }
-    
-    public double getDesiredDeceleration(){
-    	return this.desiredDeceleration;
+
+    public double getDesiredDeceleration() {
+        return this.desiredDeceleration;
     }
 
     public Intersection getDestination() {
@@ -318,9 +318,9 @@ public abstract class Vehicle implements Task, Drawable {
     public void setAcceleration(double acceleration) {
         this.acceleration = acceleration;
     }
-    
-    public void setDesiredDeceleration(double desiredDeceleration){
-    	this.desiredDeceleration = desiredDeceleration;
+
+    public void setDesiredDeceleration(double desiredDeceleration) {
+        this.desiredDeceleration = desiredDeceleration;
     }
 
     public void setDestination(Intersection destination) {
@@ -374,9 +374,9 @@ public abstract class Vehicle implements Task, Drawable {
      * The current value of the vehicle's acceleration in m/s^2
      */
     private double acceleration;
-    
+
     /**
-     * The Vehicle's desired Deceleration/desired Braking speed in m/s^2 
+     * The Vehicle's desired Deceleration/desired Braking speed in m/s^2
      */
     private double desiredDeceleration;
     /**

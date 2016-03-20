@@ -11,6 +11,26 @@ import ui.setting.GraphicsSetting;
  */
 public class TwoDTransformation {
 
+    private static int getPanX() {
+        return (int) (GraphicsSetting.getInstance().getPanX());
+    }
+
+    private static int getAverageX(int panX) {
+        return (int) (panX + (GraphicsSetting.getInstance().getMouseX() - 2 * panX));
+    }
+
+    private static int getAverageY(int panY) {
+        return (int) (panY + (GraphicsSetting.getInstance().getMouseY() - 2 * panY));
+    }
+
+    private static int getPanY() {
+        return (int) (GraphicsSetting.getInstance().getPanY());
+    }
+
+    private static double getZoom() {
+        return GraphicsSetting.getInstance().getZoom();
+    }
+
     public static int transformX(int x) {
         double zoom = getZoom();
         int panX = getPanX();
@@ -25,22 +45,6 @@ public class TwoDTransformation {
         return x;
     }
 
-    private static int getPanX() {
-        return (int) (GraphicsSetting.getInstance().getPanX());
-    }
-
-    private static int getAverageX(int panX) {
-        return panX + GraphicsSetting.getInstance().getMouseX();
-    }
-
-    private static int getAverageY(int panY) {
-        return panY + GraphicsSetting.getInstance().getMouseY();
-    }
-
-    private static int getPanY() {
-        return (int) (GraphicsSetting.getInstance().getPanY());
-    }
-
     public static int transformY(int y) {
         double zoom = getZoom();
         int panY = getPanY();
@@ -53,10 +57,6 @@ public class TwoDTransformation {
         }
         y = translate(y, panY);
         return y;
-    }
-
-    private static double getZoom() {
-        return GraphicsSetting.getInstance().getZoom();
     }
 
     public static SimpleImmutableEntry<Integer, Integer> transformX(int x1, int x2) {
