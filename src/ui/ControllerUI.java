@@ -106,20 +106,25 @@ public class ControllerUI implements Task {
      * @param g The graphics needed to draw
      */
     public void drawEverything(Graphics g) {
-        try{
-        drawLineDragging(g);
-        if (Controller.getInstance().getMap() != null) {
-            drawRoad(g);
-            if (GraphicsSetting.getInstance().isShowIntersection()) {
-                drawIntersection(g);
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        try {
+            drawLineDragging(g);
+            if (Controller.getInstance().getMap() != null) {
+                drawRoad(g);
+                if (GraphicsSetting.getInstance().isShowIntersection()) {
+                    drawIntersection(g);
+                }
+                drawCars(g);
+            } else {
+                Logger.LogAny("Drawing", "No map loaded");
             }
-            drawCars(g);
-        } else {
-            Logger.LogAny("Drawing", "No map loaded");
-        }
 
-        drawScale(g);
-        }catch(Exception e){
+            drawScale(g);
+        } catch (Exception e) {
             Logger.LogError(e);
         }
         g.dispose();

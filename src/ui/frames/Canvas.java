@@ -36,8 +36,17 @@ public class Canvas extends JFrame {
      * Creates the canvas
      */
     public Canvas() {
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                Logger.exit();
+            }
+        }
+        );
+
         //Sets the title of window. Ironically not shown xD
-        setTitle("Traffic simulator");
+        setTitle(
+                "Traffic simulator");
 
         //To get the size of the screen
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -48,39 +57,53 @@ public class Canvas extends JFrame {
 
         setSize(width, height);
 
-        addMouseWheelListener(new MouseAdapter() {
-            @Override
-            public void mouseWheelMoved(MouseWheelEvent e) {
-                GraphicsSetting.getInstance().setZoom(GraphicsSetting.getInstance().getZoom() + e.getPreciseWheelRotation() * 0.05);
-            }
-        });
+        addMouseWheelListener(
+                new MouseAdapter() {
+                    @Override
+                    public void mouseWheelMoved(MouseWheelEvent e
+                    ) {
+                        GraphicsSetting.getInstance().setZoom(GraphicsSetting.getInstance().getZoom() + e.getPreciseWheelRotation() * 0.05);
+                    }
+                }
+        );
 
         //Allows the user to exit the program
-        addKeyListener(new KeyAdapterImpl());
+        addKeyListener(
+                new KeyAdapterImpl());
         MouseListenerCustom a = new MouseListenerCustom();
+
         addMouseListener(a);
+
         addMouseMotionListener(a);
-        addMouseWheelListener(new MouseWheelCustom());
+
+        addMouseWheelListener(
+                new MouseWheelCustom());
 
         //Set the default operation to close the java application
-        setDefaultCloseOperation(3);
+        setDefaultCloseOperation(
+                3);
 
         //Hides the System specfic (eg Windows, Apple) elments. Only to allow 
         //the double bufferStrategy to work
-        if (!GraphicsSetting.getInstance().isDecorated()) {
+        if (!GraphicsSetting.getInstance()
+                .isDecorated()) {
             setUndecorated(true);
         }
 
-        setIgnoreRepaint(true);
+        setIgnoreRepaint(
+                true);
 
         //Makes the UI visable
-        setVisible(true);
+        setVisible(
+                true);
 
         //Creates a buffer strategy. To remove any flickering.
-        createBufferStrategy(2);
+        createBufferStrategy(
+                2);
 
         //Set the UI to be in the center of the screen
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(
+                null);
     }
 
     private BufferStrategy bi = this.getBufferStrategy();
@@ -226,7 +249,6 @@ public class Canvas extends JFrame {
             }
             if (keyCode == 0) {
                 double zoom = GraphicsSetting.getInstance().getZoom();
-                System.out.println("pan " + e.getWhen());
                 int panX = GraphicsSetting.getInstance().getPanX();
                 int panY = GraphicsSetting.getInstance().getPanY();
                 panY += e.getY() - y;
