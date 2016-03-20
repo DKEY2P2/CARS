@@ -7,7 +7,6 @@ import map.Road;
 import map.intersection.DefaultIntersection;
 import map.road.NormalRoad;
 import ui.setting.GraphicsSetting;
-
 import javax.swing.*;
 import javax.swing.event.MouseInputListener;
 import java.awt.*;
@@ -25,12 +24,14 @@ import map.Map;
  */
 public class Canvas extends JFrame {
 
-    private int keyCode = -Integer.MAX_VALUE;
-
     public static int liveMouseX = 0;
     public static int liveMouseY = 0;
     public static boolean dragLine = false;
     public static Intersection s = null;
+    private int keyCode = -Integer.MAX_VALUE;
+    private BufferStrategy bi = this.getBufferStrategy();
+    private boolean click;
+    private Intersection start;
 
     /**
      * Creates the canvas
@@ -106,8 +107,6 @@ public class Canvas extends JFrame {
                 null);
     }
 
-    private BufferStrategy bi = this.getBufferStrategy();
-
     /**
      * Get the item to draw everything
      *
@@ -135,8 +134,6 @@ public class Canvas extends JFrame {
         //Tells the JFrame/JPanel to draw the image
         Toolkit.getDefaultToolkit().sync();
     }
-    private boolean click;
-    private Intersection start;
 
     /**
      * The custom mouse listener for this object
@@ -244,10 +241,10 @@ public class Canvas extends JFrame {
         @Override
         public void mouseDragged(MouseEvent e) {
 
-            if (keyCode == Integer.MIN_VALUE) {
-                keyCode = 0;
-            }
-            if (keyCode == 0) {
+//            if (keyCode == Integer.MIN_VALUE) {
+//                keyCode = 0;
+//            }
+            if (click) {
                 double zoom = GraphicsSetting.getInstance().getZoom();
                 int panX = GraphicsSetting.getInstance().getPanX();
                 int panY = GraphicsSetting.getInstance().getPanY();
@@ -275,8 +272,10 @@ public class Canvas extends JFrame {
         public void mouseMoved(MouseEvent e) {
             x = e.getX();
             y = e.getY();
-            GraphicsSetting.getInstance().setMouseX(e.getX());
-            GraphicsSetting.getInstance().setMouseY(e.getY());
+//            if (keyCode == 3) {
+                GraphicsSetting.getInstance().setMouseX((int) (e.getX()));
+                GraphicsSetting.getInstance().setMouseY((int) (e.getY()));
+//            }
 //            if (!click) {
 //                x = e.getX();
 //                y = e.getY();
@@ -285,10 +284,15 @@ public class Canvas extends JFrame {
 
     }
 
+    private double getZoom() {
+        return GraphicsSetting.getInstance().getZoom();
+    }
+
     private class MouseWheelCustom implements MouseWheelListener {
 
         @Override
         public void mouseWheelMoved(MouseWheelEvent e) {
+            keyCode = 3;
             double zoom = getZoom();
             if (e.getPreciseWheelRotation() > 0) {
                 zoom *= e.getPreciseWheelRotation() * 1.05;
@@ -301,10 +305,6 @@ public class Canvas extends JFrame {
             setZoom(zoom);
 
             controller.Controller.getInstance().getUI().update();
-        }
-
-        double getZoom() {
-            return GraphicsSetting.getInstance().getZoom();
         }
 
         void setZoom(double zoom) {
