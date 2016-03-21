@@ -78,10 +78,10 @@ public class ThreadController implements Observer {
     private void run() {
         try {
             executorService.invokeAll(tasks);
+            tasks.clear();
             Task c = Controller.getInstance().getUI();
             if (c != null) {
                 UIService.submit(c);
-
             }
         } catch (InterruptedException ex) {
             Logger.LogError(ex);
