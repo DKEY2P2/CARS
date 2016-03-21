@@ -2,6 +2,8 @@ package vehicle;
 
 import algorithms.Algorithm;
 import controller.Task;
+import helper.Logger;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.AbstractMap.SimpleImmutableEntry;
@@ -21,7 +23,7 @@ import ui.setting.GraphicsSetting;
  *
  * @author jvacek, Kareem
  */
-public abstract class Vehicle implements Task, Drawable {
+public abstract class Vehicle implements Task, Drawable, Comparable<Vehicle> {
 
     /**
      * The default constructor for the Vehicle abstract class
@@ -53,10 +55,15 @@ public abstract class Vehicle implements Task, Drawable {
 
     @Override
     public void draw(Graphics g) {
-        g.setColor(Color.orange);
+
+        g.setColor(color);
         SimpleImmutableEntry<Road, Double> position = this.position;
         Road road = position.getKey();
         double percentage = position.getValue();
+        if (road == null) {
+            Logger.LogError("Null pointer Exception", this);
+            return;
+        }
         Intersection start = road.getStart();
         Intersection end = road.getEnd();
         int width = (int) getLength();
@@ -64,12 +71,12 @@ public abstract class Vehicle implements Task, Drawable {
         double zoom = GraphicsSetting.getInstance().getZoom();
         int differentX = end.getX() - start.getX();
         int differentY = end.getY() - start.getY();
-        int x = TwoDTransformation.transformX((int) (start.getX() + differentX * percentage - width*zoom / 2));
-        int y = TwoDTransformation.transformY((int) (start.getY() + differentY * percentage - height*zoom / 2));
+        int x = (int) (TwoDTransformation.transformX((int) (start.getX() + differentX * percentage)) - width * zoom / 2);
+        int y = (int) (TwoDTransformation.transformY((int) (start.getY() + differentY * percentage)) - height * zoom / 2);
         g.drawOval(
                 x,
                 y,
-                (int)(width*zoom), (int)(height*zoom)
+                (int) (width * zoom), (int) (height * zoom)
         );
     }
 
@@ -209,10 +216,10 @@ public abstract class Vehicle implements Task, Drawable {
     public abstract boolean update();
 
     public final Intersection nextPlaceToGo() {
-        Intersection i = a.findShortestPath(getPosition().getKey().getEnd(), destination).get(1);
-        if(i == destination){
+        Intersection i = a.findShortestPath(getPosition().getKey().getEnd(), destination).get(0);
+        if (i == destination) {
             return destination;
-        }else{
+        } else {
             return i;
         }
 
@@ -275,6 +282,10 @@ public abstract class Vehicle implements Task, Drawable {
         return this.acceleration;
     }
 
+    public double getDesiredDeceleration() {
+        return this.desiredDeceleration;
+    }
+
     public Intersection getDestination() {
         return this.destination;
     }
@@ -311,8 +322,16 @@ public abstract class Vehicle implements Task, Drawable {
         this.speed = speed;
     }
 
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
     public void setAcceleration(double acceleration) {
         this.acceleration = acceleration;
+    }
+
+    public void setDesiredDeceleration(double desiredDeceleration) {
+        this.desiredDeceleration = desiredDeceleration;
     }
 
     public void setDestination(Intersection destination) {
@@ -366,6 +385,11 @@ public abstract class Vehicle implements Task, Drawable {
      * The current value of the vehicle's acceleration in m/s^2
      */
     private double acceleration;
+
+    /**
+     * The Vehicle's desired Deceleration/desired Braking speed in m/s^2
+     */
+    private double desiredDeceleration;
     /**
      * The place the vehicle wants to get to
      */
@@ -418,6 +442,8 @@ public abstract class Vehicle implements Task, Drawable {
     private Model model;
 
     private Algorithm a;
+
+    private Color color = Color.orange;
 
     @Override
     public int hashCode() {
@@ -472,6 +498,35 @@ public abstract class Vehicle implements Task, Drawable {
             return false;
         }
         return Objects.equals(this.imageName, other.imageName);
+    }
+
+    @Override
+    public int compareTo(Vehicle o) {
+        Vehicle v;
+        if (o instanceof Vehicle) {
+            v = (Vehicle) o;
+        } else {
+            return 1;
+        }
+        if (getPosition().getKey() == v.getPosition().getKey()) {
+            if (getPosition().getValue() > v.getPosition().getValue()) {
+                return -1;
+            } else if (getPosition().getValue() == v.getPosition().getValue()) {
+                return 0;
+            } else {
+                return 1;
+            }
+        } else {
+            return 1;
+        }
+
+    }
+
+    @Override
+    public String toString() {
+        return "Index : " + index + " Speed: " + speed + "\n  Acceleration : " + acceleration + " Road : "
+                + getPosition().getKey() + " Percentage " + position.getValue() + " Deceleration : "
+                + getDesiredDeceleration();
     }
 
 }

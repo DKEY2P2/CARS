@@ -6,7 +6,6 @@ import ui.setting.GraphicsSetting;
 import vehicle.Vehicle;
 
 import java.awt.*;
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 import ui.helper.TwoDTransformation;
@@ -114,7 +113,7 @@ public abstract class Intersection implements Drawable {
                 //if the current light is green
                 //set the tmp value to index of the the green light
                 tLights.get(i).setTimeLeft(tLights.get(i).getTimeLeft() - elapsed);
-                if(tLights.get(i).getTimeLeft() <= 0) {
+                if (tLights.get(i).getTimeLeft() <= 0) {
                     tLights.get(i).flip();
                     tLights.get(i).setTimeLeft(tLights.get(i).getTimerLength());
                 }
@@ -123,8 +122,8 @@ public abstract class Intersection implements Drawable {
         } else {
             tLights.get(0).setTimeLeft(tLights.get(0).getTimeLeft() - elapsed); //This is just because we will make the lights cycle so they will all change together. THIS WILL CHANGE -Lucas
             if (tLights.get(0).getTimeLeft() <= 0) {
-                    tLights.get(0).flip();
-                    tLights.get(0).setTimeLeft(tLights.get(0).getTimerLength());
+                tLights.get(0).flip();
+                tLights.get(0).setTimeLeft(tLights.get(0).getTimerLength());
             }
         }
     }
@@ -344,8 +343,8 @@ public abstract class Intersection implements Drawable {
         //BufferedImage bi = ImageMap.getInstance().getImage(imageKey, 0, GraphicsSetting.getInstance().getZoom());
         g.setColor(Color.WHITE);
         double zoom = GraphicsSetting.getInstance().getZoom();
-        int tmpX = TwoDTransformation.transformX((int) (x - (DIAMETER*zoom) / 2));
-        int tmpY = TwoDTransformation.transformY((int) (y - (DIAMETER*zoom) / 2));
+        int tmpX = (int) (TwoDTransformation.transformX((int) (x)) - (DIAMETER * zoom) / 2);
+        int tmpY = (int) (TwoDTransformation.transformY((int) (y)) - (DIAMETER * zoom) / 2);
 
         g.fillOval(tmpX,
                 tmpY,

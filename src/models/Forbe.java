@@ -13,12 +13,15 @@ public class Forbe implements Model {
 
     private Vehicle getInFront(Vehicle veh, Road r) {
         Vehicle inFrontVehicle = null;
+        double currentCarPos = veh.getPosition().getValue();
+        double compare = Double.MAX_VALUE;
         for (Vehicle vehicle : r.getVehicles()) {
-            if (vehicle == veh) {
-                break;
-            } else {
-                inFrontVehicle = vehicle;
-            }
+        	double tmp = vehicle.getPosition().getValue();
+        	if(tmp<currentCarPos){
+        		if(compare>tmp){
+        			inFrontVehicle = vehicle;
+        		}
+        	}
         }
         return inFrontVehicle;
     }
@@ -59,7 +62,7 @@ public class Forbe implements Model {
 
             //If you can react fast enough
             if (s < sMin) {
-                v = Math.max(0,
+                v = Math.max(2,
                         v - veh.getMaxDecceleration() * Controller.getInstance().getTicker().getTickTimeInS());
             } else {
                 v = Math.min(
@@ -83,7 +86,7 @@ public class Forbe implements Model {
             //Time it takes you to react
             //If you can react fast enough
             if (s < sMin) {
-                v = Math.max(0,
+                v = Math.max(2,
                         v - veh.getMaxDecceleration() * Controller.getInstance().getTicker().getTickTimeInS());
             } else {
                 v = Math.min(
