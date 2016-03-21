@@ -210,6 +210,7 @@ public class Canvas extends JFrame {
                 addIntersection(e.getX() - panX, e.getY() - panY);
             } else if (keyCode == -2 && start == null) {
                 connect(e.getX() - panX, e.getY() - panY);
+                System.out.println(start);
             } else {
                 start = null;
             }
@@ -244,7 +245,7 @@ public class Canvas extends JFrame {
 //            if (keyCode == Integer.MIN_VALUE) {
 //                keyCode = 0;
 //            }
-            if (click) {
+            if (click && keyCode != -2) {
                 double zoom = GraphicsSetting.getInstance().getZoom();
                 int panX = GraphicsSetting.getInstance().getPanX();
                 int panY = GraphicsSetting.getInstance().getPanY();
@@ -254,7 +255,7 @@ public class Canvas extends JFrame {
                 GraphicsSetting.getInstance().setPanY(panY);
                 x = e.getX();
                 y = e.getY();
-                keyCode = Integer.MIN_VALUE;
+//                keyCode = Integer.MIN_VALUE;
             } else {
                 x = e.getX();
                 y = e.getY();
@@ -273,8 +274,8 @@ public class Canvas extends JFrame {
             x = e.getX();
             y = e.getY();
 //            if (keyCode == 3) {
-                GraphicsSetting.getInstance().setMouseX((int) (e.getX()));
-                GraphicsSetting.getInstance().setMouseY((int) (e.getY()));
+            GraphicsSetting.getInstance().setMouseX((int) (e.getX()));
+            GraphicsSetting.getInstance().setMouseY((int) (e.getY()));
 //            }
 //            if (!click) {
 //                x = e.getX();
@@ -356,12 +357,13 @@ public class Canvas extends JFrame {
                 click = false;
                 start = null;
             } else {
-                keyCode = e.getKeyCode();
-                if (e.isControlDown()) {
-                    keyCode = -1;
-                } else if (e.isShiftDown()) {
-                    keyCode = -2;
-                }
+
+            }
+            keyCode = e.getKeyCode();
+            if (e.isControlDown()) {
+                keyCode = -1;
+            } else if (e.isShiftDown() || e.getKeyCode() == KeyEvent.VK_SHIFT) {
+                keyCode = -2;
             }
         }
 
