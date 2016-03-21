@@ -8,6 +8,7 @@ import map.Road;
 import models.Model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -21,6 +22,8 @@ public class VehicleFactory {
      * A string to say it should spawn a sport car
      */
     public static final String SPORT_CAR = "Sport";
+    public static final String SEDAN = "Sedan";
+    public static final String MINIBUS = "Minibus";
 
     /**
      * The private instance of the factory
@@ -31,6 +34,16 @@ public class VehicleFactory {
      * Made to be private so no one could just randomly make it
      */
     private VehicleFactory() {
+        cars.put(SEDAN, 0);
+        cars.put(SPORT_CAR, 1);
+        cars.put(MINIBUS, 2);
+        reverse.put(0, SEDAN);
+        reverse.put(1, SPORT_CAR);
+        reverse.put(2, MINIBUS);
+
+        probablity.add(0.3333);
+        probablity.add(0.3333*2);
+        probablity.add(0.3333*3);
 
     }
     /**
@@ -67,6 +80,10 @@ public class VehicleFactory {
         switch (type) {
             case "Sport":
                 return new SportCar(r, percentage, m, al, goal);
+            case "Sedan":
+                return new Sedan(r, percentage, m, al, goal);
+            case MINIBUS:
+                return new Minibus(r, percentage, m, al, goal);
         }
         return null;
     }
@@ -148,6 +165,40 @@ public class VehicleFactory {
      * @return The new car
      */
     public Vehicle createVehicle() {
-        return createVehicle(SPORT_CAR);
+        return createVehicle(getType());
     }
+
+    private String getType() {
+        Random r = new Random();
+        double next = r.nextDouble();
+        for (int i = 0; i < probablity.size(); i++) {
+            double current;
+            double higher = probablity.get(i);
+            if (i == 0) {
+                current = 0;
+            } else {
+                current = probablity.get(i - 1);
+            }
+            if (next > current && next < higher) {
+                return reverse.get(i);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Set the probability that car will spawn
+     *
+     * @param p The probability
+     * @param car The which to make more probable
+     */
+    public void setProbablity(double p, String car) {
+        if (cars.containsKey(car)) {
+            probablity.set(cars.get(car), p);
+        }
+    }
+
+    private HashMap<String, Integer> cars = new HashMap<>();
+    private HashMap<Integer, String> reverse = new HashMap<>();
+    private ArrayList<Double> probablity = new ArrayList<>();
 }

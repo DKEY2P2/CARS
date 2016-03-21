@@ -4,7 +4,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import vehicle.VehicleFactory;
-import vehicle.VehicleHolder;
 
 /**
  * A ticker that meant to update the program
@@ -76,7 +75,7 @@ public class Ticker extends Observerable {
                 //System.out.println(VehicleHolder.getInstance().size());
                 if (tickCount % SimulationSettings.getInstance().getTimeUntilSpawn() == 0) {
                     for (int i = 0; i < SimulationSettings.getInstance().getNumberOfCarsToSpawn(); i++) {
-                        VehicleFactory.getFactory().createVehicle(VehicleFactory.SPORT_CAR);
+                        VehicleFactory.getFactory().createVehicle();
                     }
                 }
             }

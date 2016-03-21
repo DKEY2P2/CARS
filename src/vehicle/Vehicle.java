@@ -23,7 +23,7 @@ import ui.setting.GraphicsSetting;
  *
  * @author jvacek, Kareem
  */
-public abstract class Vehicle implements Task, Drawable,Comparable<Vehicle> {
+public abstract class Vehicle implements Task, Drawable, Comparable<Vehicle> {
 
     /**
      * The default constructor for the Vehicle abstract class
@@ -55,13 +55,14 @@ public abstract class Vehicle implements Task, Drawable,Comparable<Vehicle> {
 
     @Override
     public void draw(Graphics g) {
-        g.setColor(Color.orange);
+
+        g.setColor(color);
         SimpleImmutableEntry<Road, Double> position = this.position;
         Road road = position.getKey();
         double percentage = position.getValue();
-        if(road == null){
-        	Logger.LogError("Null pointer Exception",this);
-        	return;
+        if (road == null) {
+            Logger.LogError("Null pointer Exception", this);
+            return;
         }
         Intersection start = road.getStart();
         Intersection end = road.getEnd();
@@ -321,6 +322,10 @@ public abstract class Vehicle implements Task, Drawable,Comparable<Vehicle> {
         this.speed = speed;
     }
 
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
     public void setAcceleration(double acceleration) {
         this.acceleration = acceleration;
     }
@@ -438,6 +443,8 @@ public abstract class Vehicle implements Task, Drawable,Comparable<Vehicle> {
 
     private Algorithm a;
 
+    private Color color = Color.orange;
+
     @Override
     public int hashCode() {
         int hash = 3;
@@ -492,30 +499,34 @@ public abstract class Vehicle implements Task, Drawable,Comparable<Vehicle> {
         }
         return Objects.equals(this.imageName, other.imageName);
     }
+
     @Override
     public int compareTo(Vehicle o) {
-		Vehicle v;
-    	if(o instanceof Vehicle){
-    		v =(Vehicle) o;
-	} else {
-		return 1;
-	}
-    	if( getPosition().getKey() == v.getPosition().getKey()){
-    		if(getPosition().getValue() > v.getPosition().getValue()){
-    			return -1;
-    		} else if( getPosition().getValue() == v.getPosition().getValue()){
-    			return 0;
-    		}else return 1;
-    	} else return 1;
-    		
+        Vehicle v;
+        if (o instanceof Vehicle) {
+            v = (Vehicle) o;
+        } else {
+            return 1;
+        }
+        if (getPosition().getKey() == v.getPosition().getKey()) {
+            if (getPosition().getValue() > v.getPosition().getValue()) {
+                return -1;
+            } else if (getPosition().getValue() == v.getPosition().getValue()) {
+                return 0;
+            } else {
+                return 1;
+            }
+        } else {
+            return 1;
+        }
+
     }
 
-	@Override
-	public String toString() {
-		return "Index : " + index + " Speed: " + speed + "\n  Acceleration : " + acceleration + " Road : "
-				+ getPosition().getKey() + " Percentage " + position.getValue() + " Deceleration : "
-				+ getDesiredDeceleration();
-	}
-    
+    @Override
+    public String toString() {
+        return "Index : " + index + " Speed: " + speed + "\n  Acceleration : " + acceleration + " Road : "
+                + getPosition().getKey() + " Percentage " + position.getValue() + " Deceleration : "
+                + getDesiredDeceleration();
+    }
 
 }
