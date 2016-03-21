@@ -44,8 +44,8 @@ public class SportCar extends Vehicle {
 						.contains(this)) {
 					getPosition().getKey().getEnd().getTrafficLight(getPosition().getKey()).getWaiting().add(this);
 					setPosition(new SimpleImmutableEntry<Road, Double>(getPosition().getKey(), 1d));
-					//setSpeed(0);
-					//setAcceleration(0);
+					setSpeed(0);
+					setAcceleration(0);
 				}
 			} else {
 				setTimeOnRoad(getTimeOnRoad() + 1);//add one tick
