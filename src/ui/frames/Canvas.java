@@ -210,7 +210,6 @@ public class Canvas extends JFrame {
                 addIntersection(e.getX() - panX, e.getY() - panY);
             } else if (keyCode == -2 && start == null) {
                 connect(e.getX() - panX, e.getY() - panY);
-                System.out.println(start);
             } else {
                 start = null;
             }
