@@ -295,9 +295,9 @@ public class Canvas extends JFrame {
             keyCode = 3;
             double zoom = getZoom();
             if (e.getPreciseWheelRotation() > 0) {
-                zoom *= e.getPreciseWheelRotation() * 1.05;
+                zoom /= e.getPreciseWheelRotation() * 1.05;
             } else {
-                zoom /= -e.getPreciseWheelRotation() * 1.05;
+                zoom *= -e.getPreciseWheelRotation() * 1.05;
             }
             if (zoom < 0) {
                 zoom = 0;
