@@ -1,8 +1,5 @@
 package ui.frames;
 
-import controller.SimulationSettings;
-import controller.StartDoingStuff;
-import helper.Logger;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
@@ -12,6 +9,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
+
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -23,6 +21,10 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import controller.SimulationSettings;
+import controller.StartDoingStuff;
+import helper.Logger;
 import json.GEOjson;
 import map.Map;
 import ui.setting.GraphicsSetting;
@@ -146,7 +148,7 @@ public class SideBar extends JFrame {
         JPanel vehiclePanel = new JPanel();
         JPanel SpawnPanel = new JPanel();
         SpinnerModel spinnerModelSpawn
-                = new SpinnerNumberModel(SimulationSettings.getInstance().getNumberOfCarsToSpawn(), 0, 100000, 1);
+                = new SpinnerNumberModel(SimulationSettings.getInstance().getNumberOfCarsToSpawn(), -1, 100000, 1);
 
         spawnSpinner = new JSpinner(spinnerModelSpawn);
         spawnSpinner.addChangeListener(new ChangeListenerSpawn());
@@ -301,7 +303,7 @@ public class SideBar extends JFrame {
             if (e.getSource() instanceof JSpinner) {
                 JSpinner s = (JSpinner) e.getSource();
                 int value = (int) s.getModel().getValue();
-                if (value == SimulationSettings.getInstance().getNumberOfCarsToSpawn()) {
+                if (value != SimulationSettings.getInstance().getNumberOfCarsToSpawn()) {
                     SimulationSettings.getInstance().setNumberOfCarsToSpawn(value);
                     controller.Controller.getInstance().getUI().draw();
                 }

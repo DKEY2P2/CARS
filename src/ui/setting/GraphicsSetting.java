@@ -7,7 +7,46 @@ package ui.setting;
  */
 public class GraphicsSetting {
 
+    private static GraphicsSetting instance;
+
+    /**
+     * Get the instance of this class
+     *
+     * @return The instance of this class
+     */
+    public static GraphicsSetting getInstance() {
+        if (instance == null) {
+            instance = new GraphicsSetting();
+        }
+        return instance;
+    }
+
     private boolean showTraffficLight = true;
+
+    private boolean showIntersection = true;
+
+    private boolean decorated = true;
+
+    /**
+     * How much you want to scale the UI by
+     */
+    private double scale = 0.5;
+
+    private double zoom = 1d;
+
+    private int panX = 0;
+
+    private int panY = 0;
+
+    private int mouseY = 0;
+
+    private int mouseX = 0;
+
+    /**
+     * Ensure that a public construction is not avaliable
+     */
+    private GraphicsSetting() {
+    }
 
     /**
      * Get the value of showTraffficLight
@@ -27,8 +66,6 @@ public class GraphicsSetting {
         this.showTraffficLight = showTraffficLight;
     }
 
-    private boolean showIntersection = true;
-
     /**
      * Get the value of showIntersection
      *
@@ -46,8 +83,6 @@ public class GraphicsSetting {
     public void setShowIntersection(boolean showIntersection) {
         this.showIntersection = showIntersection;
     }
-
-    private boolean decorated = true;
 
     /**
      * Get the value of decorated
@@ -68,11 +103,6 @@ public class GraphicsSetting {
     }
 
     /**
-     * How much you want to scale the UI by
-     */
-    private double scale = 0.5;
-
-    /**
      * Get the value of scale
      *
      * @return the value of scale
@@ -89,28 +119,6 @@ public class GraphicsSetting {
     public void setScale(double scale) {
         this.scale = scale;
     }
-
-    private static GraphicsSetting instance;
-
-    /**
-     * Ensure that a public construction is not avaliable
-     */
-    private GraphicsSetting() {
-    }
-
-    /**
-     * Get the instance of this class
-     *
-     * @return The instance of this class
-     */
-    public static GraphicsSetting getInstance() {
-        if (instance == null) {
-            instance = new GraphicsSetting();
-        }
-        return instance;
-    }
-
-    private double zoom = 1d;
 
     /**
      * Get the value of zoom
@@ -130,8 +138,6 @@ public class GraphicsSetting {
         this.zoom = zoom;
     }
 
-    private int panX = 0;
-
     /**
      * Get the value of panX
      *
@@ -149,8 +155,6 @@ public class GraphicsSetting {
     public void setPanX(int panX) {
         this.panX = panX;
     }
-
-    private int panY = 0;
 
     /**
      * Get the value of panY
@@ -170,8 +174,6 @@ public class GraphicsSetting {
         this.panY = panY;
     }
 
-    private int mouseY = 0;
-
     /**
      * Get the value of mouseY
      *
@@ -189,8 +191,6 @@ public class GraphicsSetting {
     public void setMouseY(int mouseY) {
         this.mouseY = mouseY;
     }
-
-    private int mouseX = 0;
 
     /**
      * Get the value of mouseX

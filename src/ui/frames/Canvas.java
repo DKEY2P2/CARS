@@ -7,7 +7,6 @@ import map.Road;
 import map.intersection.DefaultIntersection;
 import map.road.NormalRoad;
 import ui.setting.GraphicsSetting;
-
 import javax.swing.*;
 import javax.swing.event.MouseInputListener;
 import java.awt.*;
@@ -25,19 +24,30 @@ import map.Map;
  */
 public class Canvas extends JFrame {
 
-    private int keyCode = -Integer.MAX_VALUE;
-
     public static int liveMouseX = 0;
     public static int liveMouseY = 0;
     public static boolean dragLine = false;
     public static Intersection s = null;
+    private int keyCode = -Integer.MAX_VALUE;
+    private BufferStrategy bi = this.getBufferStrategy();
+    private boolean click;
+    private Intersection start;
 
     /**
      * Creates the canvas
      */
     public Canvas() {
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                Logger.exit();
+            }
+        }
+        );
+
         //Sets the title of window. Ironically not shown xD
-        setTitle("Traffic simulator");
+        setTitle(
+                "Traffic simulator");
 
         //To get the size of the screen
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -48,42 +58,54 @@ public class Canvas extends JFrame {
 
         setSize(width, height);
 
-        addMouseWheelListener(new MouseAdapter() {
-            @Override
-            public void mouseWheelMoved(MouseWheelEvent e) {
-                GraphicsSetting.getInstance().setZoom(GraphicsSetting.getInstance().getZoom() + e.getPreciseWheelRotation() * 0.05);
-            }
-        });
+        addMouseWheelListener(
+                new MouseAdapter() {
+                    @Override
+                    public void mouseWheelMoved(MouseWheelEvent e
+                    ) {
+                        GraphicsSetting.getInstance().setZoom(GraphicsSetting.getInstance().getZoom() + e.getPreciseWheelRotation() * 0.05);
+                    }
+                }
+        );
 
         //Allows the user to exit the program
-        addKeyListener(new KeyAdapterImpl());
+        addKeyListener(
+                new KeyAdapterImpl());
         MouseListenerCustom a = new MouseListenerCustom();
+
         addMouseListener(a);
+
         addMouseMotionListener(a);
-        addMouseWheelListener(new MouseWheelCustom());
+
+        addMouseWheelListener(
+                new MouseWheelCustom());
 
         //Set the default operation to close the java application
-        setDefaultCloseOperation(3);
+        setDefaultCloseOperation(
+                3);
 
         //Hides the System specfic (eg Windows, Apple) elments. Only to allow 
         //the double bufferStrategy to work
-        if (!GraphicsSetting.getInstance().isDecorated()) {
+        if (!GraphicsSetting.getInstance()
+                .isDecorated()) {
             setUndecorated(true);
         }
 
-        setIgnoreRepaint(true);
+        setIgnoreRepaint(
+                true);
 
         //Makes the UI visable
-        setVisible(true);
+        setVisible(
+                true);
 
         //Creates a buffer strategy. To remove any flickering.
-        createBufferStrategy(2);
+        createBufferStrategy(
+                2);
 
         //Set the UI to be in the center of the screen
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(
+                null);
     }
-
-    private BufferStrategy bi = this.getBufferStrategy();
 
     /**
      * Get the item to draw everything
@@ -112,8 +134,6 @@ public class Canvas extends JFrame {
         //Tells the JFrame/JPanel to draw the image
         Toolkit.getDefaultToolkit().sync();
     }
-    private boolean click;
-    private Intersection start;
 
     /**
      * The custom mouse listener for this object
@@ -182,12 +202,14 @@ public class Canvas extends JFrame {
 
         @Override
         public void mousePressed(MouseEvent e) {
-            int panX =GraphicsSetting.getInstance().getPanX();
-            int panY =GraphicsSetting.getInstance().getPanY();
+            x = e.getX();
+            y = e.getY();
+            int panX = GraphicsSetting.getInstance().getPanX();
+            int panY = GraphicsSetting.getInstance().getPanY();
             if (keyCode == -1) {
-                addIntersection(e.getX()-panX, e.getY()-panY);
+                addIntersection(e.getX() - panX, e.getY() - panY);
             } else if (keyCode == -2 && start == null) {
-                connect(e.getX()-panX, e.getY()-panY);
+                connect(e.getX() - panX, e.getY() - panY);
             } else {
                 start = null;
             }
@@ -197,10 +219,10 @@ public class Canvas extends JFrame {
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            int panX =GraphicsSetting.getInstance().getPanX();
-            int panY =GraphicsSetting.getInstance().getPanY();
+            int panX = GraphicsSetting.getInstance().getPanX();
+            int panY = GraphicsSetting.getInstance().getPanY();
             if (keyCode == -2 && start != null) {
-                connect(e.getX()-panX, e.getY()-panY);
+                connect(e.getX() - panX, e.getY() - panY);
             } else {
                 start = null;
             }
@@ -218,11 +240,21 @@ public class Canvas extends JFrame {
 
         @Override
         public void mouseDragged(MouseEvent e) {
-            if (keyCode == 0) {
-                GraphicsSetting.getInstance().setPanX(GraphicsSetting.getInstance().getPanX() + (e.getX() - x));
-                GraphicsSetting.getInstance().setPanY(GraphicsSetting.getInstance().getPanY() + (e.getY() - y));
+
+//            if (keyCode == Integer.MIN_VALUE) {
+//                keyCode = 0;
+//            }
+            if (click && keyCode != -2) {
+                double zoom = GraphicsSetting.getInstance().getZoom();
+                int panX = GraphicsSetting.getInstance().getPanX();
+                int panY = GraphicsSetting.getInstance().getPanY();
+                panY += e.getY() - y;
+                panX += e.getX() - x;
+                GraphicsSetting.getInstance().setPanX(panX);
+                GraphicsSetting.getInstance().setPanY(panY);
                 x = e.getX();
                 y = e.getY();
+//                keyCode = Integer.MIN_VALUE;
             } else {
                 x = e.getX();
                 y = e.getY();
@@ -238,25 +270,34 @@ public class Canvas extends JFrame {
 
         @Override
         public void mouseMoved(MouseEvent e) {
-            GraphicsSetting.getInstance().setMouseX(e.getX());
-            GraphicsSetting.getInstance().setMouseY(e.getY());
-            if (!click) {
-                x = e.getX();
-                y = e.getY();
-            }
+            x = e.getX();
+            y = e.getY();
+//            if (keyCode == 3) {
+            GraphicsSetting.getInstance().setMouseX((int) (e.getX()));
+            GraphicsSetting.getInstance().setMouseY((int) (e.getY()));
+//            }
+//            if (!click) {
+//                x = e.getX();
+//                y = e.getY();
+//            }
         }
 
+    }
+
+    private double getZoom() {
+        return GraphicsSetting.getInstance().getZoom();
     }
 
     private class MouseWheelCustom implements MouseWheelListener {
 
         @Override
         public void mouseWheelMoved(MouseWheelEvent e) {
+            keyCode = 3;
             double zoom = getZoom();
             if (e.getPreciseWheelRotation() > 0) {
-                zoom *= e.getPreciseWheelRotation() * 1.05;
+                zoom /= e.getPreciseWheelRotation() * 1.05;
             } else {
-                zoom /= -e.getPreciseWheelRotation() * 1.05;
+                zoom *= -e.getPreciseWheelRotation() * 1.05;
             }
             if (zoom < 0) {
                 zoom = 0;
@@ -264,10 +305,6 @@ public class Canvas extends JFrame {
             setZoom(zoom);
 
             controller.Controller.getInstance().getUI().update();
-        }
-
-        double getZoom() {
-            return GraphicsSetting.getInstance().getZoom();
         }
 
         void setZoom(double zoom) {
@@ -319,20 +356,19 @@ public class Canvas extends JFrame {
                 click = false;
                 start = null;
             } else {
-                keyCode = e.getKeyCode();
-                if (e.isControlDown()) {
-                    keyCode = -1;
-                } else if (e.isShiftDown()) {
-                    keyCode = -2;
-                }
+
+            }
+            keyCode = e.getKeyCode();
+            if (e.isControlDown()) {
+                keyCode = -1;
+            } else if (e.isShiftDown() || e.getKeyCode() == KeyEvent.VK_SHIFT) {
+                keyCode = -2;
             }
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
-            if (e.getKeyCode() == KeyEvent.VK_CONTROL || e.getKeyCode() == KeyEvent.VK_SHIFT) {
-                keyCode = 0;
-            }
+            keyCode = Integer.MIN_VALUE;
         }
     }
 

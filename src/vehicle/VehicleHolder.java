@@ -31,7 +31,7 @@ public class VehicleHolder implements Collection<Vehicle> {
     private final HashMap<Integer, Vehicle> VEHICLE_MAP = new HashMap<>();
 
     /**
-     * Adds a new vehicle with the corespondent key
+     * Adds a new vehicle with the corresponding key
      *
      * @param v The vehicle to add
      * @param key The key that is associated
@@ -62,6 +62,9 @@ public class VehicleHolder implements Collection<Vehicle> {
 
     @Override
     public boolean contains(Object o) {
+    	if(o == null){
+    		return false;
+    	}
         if (o instanceof Vehicle) {
             return VEHICLE_MAP.containsValue((Vehicle) o);
         } else if (o instanceof Integer) {

@@ -1,19 +1,22 @@
 package controller;
 
+
+import java.util.ArrayList;
+import java.util.Random;
+
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 import algorithms.AStar;
 import controller.threads.ThreadController;
 import helper.Logger;
 import map.Road;
 import map.intersection.DefaultIntersection;
 import models.Forbe;
-import models.OVM;
-import models.Pipe;
+import models.IntelligentDriver;
+import models.Pipes;
 import ui.ControllerUI;
-
-import java.util.ArrayList;
-import java.util.Random;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+import vehicle.VehicleFactory;
 
 /**
  * A start class for the rest of the system
@@ -58,7 +61,7 @@ public class StartDoingStuff {
         /* A random gen for location of a vehicle */
         Random r = new Random();
         /* Creates a ticker with the value of 100 ms between each tick which represent 0.1 second */
-        Ticker t = new Ticker(0.01, 100);
+        Ticker t = new Ticker(0.01, 50);
 
 
         //Add the item to the controller
@@ -107,10 +110,10 @@ public class StartDoingStuff {
     public static void start() {
         if (!start) {
             //Creates n number of cars
-            //for (int i = 0; i < 1; i++) {
-             //   VehicleFactory.getFactory().createVehicle(VehicleFactory.SPORT_CAR);
-            //}
-
+            for (int i = 0; i < 2; i++) {
+                VehicleFactory.getFactory().createVehicle(VehicleFactory.SPORT_CAR);
+            }
+        	VehicleFactory.getFactory().createVehicle(VehicleFactory.SPORT_CAR);
 
             Controller.getInstance().getTicker().start("tick");
             start = true;
