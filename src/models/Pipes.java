@@ -24,16 +24,26 @@ public class Pipes implements Model {
 
 	@Override
 	public void calculate(Vehicle follower) {
-		Road r = follower.getPosition().getKey();
-		Vehicle inFrontVehicle = follower.getPredecessor(); //I made a method that does this, it's called getPredecessor and it's in Vehicle. - Lucas
-		int i = 0;
-		for (Vehicle vehicle : r.getVehicles()) {
-			if (vehicle == follower) {
-				break;
-			} else {
-				inFrontVehicle = vehicle;
-			}
+		if(follower.getPosition().getKey().getTrafficlight().getWaiting().contains(this)){
+			follower.setSpeed(0);
+			follower.setAcceleration(0);
+			return;
 		}
+		Road r = follower.getPosition().getKey();
+//		Vehicle inFrontVehicle = follower.getPredecessor(); //I made a method that does this, it's called getPredecessor and it's in Vehicle. - Lucas
+		int i = 0;
+		 Vehicle inFrontVehicle = null;
+	        double currentCarPos = follower.getPosition().getValue();
+	        double compare = Double.MAX_VALUE;
+	        for (Vehicle vehicle : r.getVehicles()) {
+	        	double tmp = vehicle.getPosition().getValue();
+	        	if(tmp<currentCarPos){
+	        		if(compare>tmp){
+	        			inFrontVehicle = vehicle;
+	        		}
+	        	}
+	        }
+	         
 		/* 
 		 * @param pcntI percentage of location of first car (the hind car)
 		 * @param pcntII same for second car (the front car)
@@ -50,7 +60,7 @@ public class Pipes implements Model {
 
 				safeDistanceMIN = length * (speed / (0.447 * 10) + 1);
 				if (distanceCars < safeDistanceMIN) { // This might be wrong/ right in the text??
-					speed = (Math.max(0, speed - (follower.getMaxDecceleration()
+					speed = (Math.max(2, speed - (follower.getMaxDecceleration()
 							* Controller.getInstance().getTicker().getTickTimeInS())));
 				} else {
 					speed = Math.min(
@@ -80,7 +90,7 @@ public class Pipes implements Model {
 		safeDistanceMIN = length * ((speed / (0.447 * 10)) + 1);
 
 		if (trafficLightDistance < safeDistanceMIN) { // This might be wrong/ right in the text??
-			speed = (Math.max(0, speed
+			speed = (Math.max(2, speed
 					- (follower.getMaxDecceleration() * Controller.getInstance().getTicker().getTickTimeInS())));
 		} else {
 			speed = Math.min((Math.min(follower.getDesiredSpeed(), speed

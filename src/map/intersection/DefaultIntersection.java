@@ -46,7 +46,7 @@ public class DefaultIntersection extends Intersection implements Observer {
                             Intersection placeToGo = veh.nextPlaceToGo();
                             Road r = null;
                             for (Road road : getRoads()) {
-                                if (road.getEnd() == placeToGo) {
+                                if (road.getEnd() == placeToGo&& road.getStart()==this) {
                                     r = road;
                                 }
                             }
@@ -59,6 +59,8 @@ public class DefaultIntersection extends Intersection implements Observer {
                                     }
                                 }
                             }
+                            veh.getPosition().getKey().getVehicles().remove(veh);
+                            r.getVehicles().offer(veh);// TODO : Is this correct ???
                             veh.setPosition(new AbstractMap.SimpleImmutableEntry<>(r, 0d));
                         }
                     }

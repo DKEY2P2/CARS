@@ -2,6 +2,8 @@ package vehicle;
 
 import algorithms.Algorithm;
 import controller.Task;
+import helper.Logger;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.AbstractMap.SimpleImmutableEntry;
@@ -21,7 +23,7 @@ import ui.setting.GraphicsSetting;
  *
  * @author jvacek, Kareem
  */
-public abstract class Vehicle implements Task, Drawable {
+public abstract class Vehicle implements Task, Drawable,Comparable<Vehicle> {
 
     /**
      * The default constructor for the Vehicle abstract class
@@ -57,6 +59,10 @@ public abstract class Vehicle implements Task, Drawable {
         SimpleImmutableEntry<Road, Double> position = this.position;
         Road road = position.getKey();
         double percentage = position.getValue();
+        if(road == null){
+        	Logger.LogError("Null pointer Exception",this);
+        	return;
+        }
         Intersection start = road.getStart();
         Intersection end = road.getEnd();
         int width = (int) getLength();
@@ -486,5 +492,30 @@ public abstract class Vehicle implements Task, Drawable {
         }
         return Objects.equals(this.imageName, other.imageName);
     }
+    @Override
+    public int compareTo(Vehicle o) {
+		Vehicle v;
+    	if(o instanceof Vehicle){
+    		v =(Vehicle) o;
+	} else {
+		return 1;
+	}
+    	if( getPosition().getKey() == v.getPosition().getKey()){
+    		if(getPosition().getValue() > v.getPosition().getValue()){
+    			return -1;
+    		} else if( getPosition().getValue() == v.getPosition().getValue()){
+    			return 0;
+    		}else return 1;
+    	} else return 1;
+    		
+    }
+
+	@Override
+	public String toString() {
+		return "Index : " + index + " Speed: " + speed + "\n  Acceleration : " + acceleration + " Road : "
+				+ getPosition().getKey() + " Percentage " + position.getValue() + " Deceleration : "
+				+ getDesiredDeceleration();
+	}
+    
 
 }

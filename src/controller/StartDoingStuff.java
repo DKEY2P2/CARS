@@ -12,6 +12,8 @@ import controller.threads.ThreadController;
 import helper.Logger;
 import map.Road;
 import map.intersection.DefaultIntersection;
+import models.Forbe;
+import models.IntelligentDriver;
 import models.Pipes;
 import ui.ControllerUI;
 import vehicle.VehicleFactory;
@@ -41,7 +43,7 @@ public class StartDoingStuff {
         
         
         /* Set what model to use for the rest of the application */
-        SimulationSettings.getInstance().setModel(new Pipes());
+        SimulationSettings.getInstance().setModel(new IntelligentDriver());
 
         /* Set what path finding AI to use for the rest of the application */
         SimulationSettings.getInstance().setPathFindingAI(new AStar());
@@ -106,7 +108,7 @@ public class StartDoingStuff {
     public static void start() {
         if (!start) {
             //Creates n number of cars
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < 2; i++) {
                 VehicleFactory.getFactory().createVehicle(VehicleFactory.SPORT_CAR);
             }
         	VehicleFactory.getFactory().createVehicle(VehicleFactory.SPORT_CAR);

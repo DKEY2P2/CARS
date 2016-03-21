@@ -148,7 +148,7 @@ public class SideBar extends JFrame {
         JPanel vehiclePanel = new JPanel();
         JPanel SpawnPanel = new JPanel();
         SpinnerModel spinnerModelSpawn
-                = new SpinnerNumberModel(SimulationSettings.getInstance().getNumberOfCarsToSpawn(), 0, 100000, 1);
+                = new SpinnerNumberModel(SimulationSettings.getInstance().getNumberOfCarsToSpawn(), -1, 100000, 1);
 
         spawnSpinner = new JSpinner(spinnerModelSpawn);
         spawnSpinner.addChangeListener(new ChangeListenerSpawn());
