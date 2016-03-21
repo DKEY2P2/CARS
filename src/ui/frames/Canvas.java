@@ -2,11 +2,14 @@ package ui.frames;
 
 import controller.StartDoingStuff;
 import helper.Logger;
+import json.GEOjson;
 import map.Intersection;
+import map.Map;
 import map.Road;
 import map.intersection.DefaultIntersection;
 import map.road.NormalRoad;
 import ui.setting.GraphicsSetting;
+
 import javax.swing.*;
 import javax.swing.event.MouseInputListener;
 import java.awt.*;
@@ -14,8 +17,6 @@ import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.io.File;
 import java.io.FileNotFoundException;
-import json.GEOjson;
-import map.Map;
 
 /**
  * The canvas to draw everything on. May be turn into a JPanel at a later date
@@ -129,7 +130,9 @@ public class Canvas extends JFrame {
      */
     public void getScene() {
         //Show what we wanted to show
+        System.out.println(2);
         bi.show();
+
 
         //Tells the JFrame/JPanel to draw the image
         Toolkit.getDefaultToolkit().sync();

@@ -6,6 +6,7 @@ import map.Intersection;
 import map.Road;
 import models.Model;
 
+import java.util.AbstractMap;
 import java.util.Random;
 
 /**
@@ -42,7 +43,7 @@ public class SportCar extends Vehicle {
 				if (!getPosition().getKey().getEnd().getTrafficLight(getPosition().getKey()).getWaiting()
 						.contains(this)) {
 					getPosition().getKey().getEnd().getTrafficLight(getPosition().getKey()).getWaiting().add(this);
-					setPosition(new SimpleImmutableEntry<Road, Double>(getPosition().getKey(), 1d));
+					setPosition(new AbstractMap.SimpleImmutableEntry<Road, Double>(getPosition().getKey(), 1d));
 					setSpeed(0);
 					setAcceleration(0);
 				}

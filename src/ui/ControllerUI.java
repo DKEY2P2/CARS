@@ -7,13 +7,13 @@ import map.Intersection;
 import map.Road;
 import ui.frames.Canvas;
 import ui.frames.SideBar;
+import ui.helper.TwoDTransformation;
 import ui.setting.GraphicsSetting;
 import vehicle.Vehicle;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.AbstractMap;
-import ui.helper.TwoDTransformation;
 
 /**
  * Controls the UI
@@ -49,10 +49,12 @@ public class ControllerUI implements Task {
      * Draws everything
      */
     public void draw() {
+        System.out.println("DRAW");
         Graphics g = c.getGraphic();
         drawEverything(g);
-        c.getScene();
         s.repaint();
+        c.getScene();
+
     }
 
     /**
@@ -172,8 +174,10 @@ public class ControllerUI implements Task {
 
     @Override
     public boolean update() {
+        System.out.println("ÜPDATE");
         draw();
-        s.repaint();
+        System.out.println("DONE DRAWING");
+        //s.repaint();
         return true;
     }
 

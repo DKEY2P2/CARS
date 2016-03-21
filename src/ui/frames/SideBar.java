@@ -1,33 +1,22 @@
 package ui.frames;
 
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.io.File;
-import java.io.FileNotFoundException;
-
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JSpinner;
-import javax.swing.JTabbedPane;
-import javax.swing.SpinnerModel;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
 import controller.SimulationSettings;
 import controller.StartDoingStuff;
 import helper.Logger;
 import json.GEOjson;
 import map.Map;
 import ui.setting.GraphicsSetting;
+
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
 
 /**
  * A sidebar to hold all the items that control the simulation
@@ -250,6 +239,7 @@ public class SideBar extends JFrame {
 
     @Override
     public void repaint() {
+        System.out.println(1);
         //Updates some elements
         int n = controller.Controller.getInstance().getTicker().getTickCount();
         tickCounterL.setText(Integer.toString(n));

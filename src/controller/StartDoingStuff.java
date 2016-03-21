@@ -1,22 +1,18 @@
 package controller;
 
 
-import java.util.ArrayList;
-import java.util.Random;
-
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-
 import algorithms.AStar;
 import controller.threads.ThreadController;
 import helper.Logger;
 import map.Road;
 import map.intersection.DefaultIntersection;
-import models.Forbe;
 import models.IntelligentDriver;
-import models.Pipes;
 import ui.ControllerUI;
 import vehicle.VehicleFactory;
+
+import javax.swing.*;
+import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * A start class for the rest of the system
@@ -43,7 +39,7 @@ public class StartDoingStuff {
         
         
         /* Set what model to use for the rest of the application */
-        SimulationSettings.getInstance().setModel(new OVM());
+        SimulationSettings.getInstance().setModel(new IntelligentDriver());
 
         /* Set what path finding AI to use for the rest of the application */
         SimulationSettings.getInstance().setPathFindingAI(new AStar());
@@ -61,7 +57,7 @@ public class StartDoingStuff {
         /* A random gen for location of a vehicle */
         Random r = new Random();
         /* Creates a ticker with the value of 100 ms between each tick which represent 0.1 second */
-        Ticker t = new Ticker(0.01, 50);
+        Ticker t = new Ticker(0.01, 10);
 
 
         //Add the item to the controller
