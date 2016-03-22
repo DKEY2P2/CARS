@@ -1,13 +1,11 @@
 package map.intersection;
 
 import controller.Observer;
-import controller.SimulationSettings;
 import controller.Ticker;
 import helper.Logger;
 import map.Intersection;
 import map.Road;
 import map.TrafficLight;
-import models.OVM;
 import vehicle.Vehicle;
 import vehicle.VehicleHolder;
 

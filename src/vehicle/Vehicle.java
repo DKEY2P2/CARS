@@ -3,13 +3,6 @@ package vehicle;
 import algorithms.Algorithm;
 import controller.Task;
 import helper.Logger;
-
-import java.awt.Color;
-import java.awt.Graphics;
-import java.util.AbstractMap.SimpleImmutableEntry;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Objects;
 import map.Intersection;
 import map.Road;
 import map.TrafficLight;
@@ -17,6 +10,12 @@ import models.Model;
 import ui.Drawable;
 import ui.helper.TwoDTransformation;
 import ui.setting.GraphicsSetting;
+
+import java.awt.*;
+import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Objects;
 
 /**
  * The abstract class for all vehicles and identities present in the simulation
@@ -522,11 +521,16 @@ public abstract class Vehicle implements Task, Drawable, Comparable<Vehicle> {
 
     }
 
-    @Override
+    /*@Override
     public String toString() {
         return "Index : " + index + " Speed: " + speed + "\n  Acceleration : " + acceleration + " Road : "
                 + getPosition().getKey() + " Percentage " + position.getValue() + " Deceleration : "
                 + getDesiredDeceleration();
+    }*/
+
+    @Override
+    public String toString() {
+        return "%" + position.getValue();
     }
 
 }

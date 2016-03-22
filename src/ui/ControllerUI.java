@@ -49,7 +49,6 @@ public class ControllerUI implements Task {
      * Draws everything
      */
     public void draw() {
-        System.out.println("DRAW");
         Graphics g = c.getGraphic();
         drawEverything(g);
         s.repaint();
@@ -174,9 +173,7 @@ public class ControllerUI implements Task {
 
     @Override
     public boolean update() {
-        System.out.println("ÜPDATE");
         draw();
-        System.out.println("DONE DRAWING");
         //s.repaint();
         return true;
     }

@@ -130,7 +130,6 @@ public class Canvas extends JFrame {
      */
     public void getScene() {
         //Show what we wanted to show
-        System.out.println(2);
         bi.show();
 
 

@@ -239,7 +239,6 @@ public class SideBar extends JFrame {
 
     @Override
     public void repaint() {
-        System.out.println(1);
         //Updates some elements
         int n = controller.Controller.getInstance().getTicker().getTickCount();
         tickCounterL.setText(Integer.toString(n));

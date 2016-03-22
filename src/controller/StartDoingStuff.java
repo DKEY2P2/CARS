@@ -6,7 +6,7 @@ import controller.threads.ThreadController;
 import helper.Logger;
 import map.Road;
 import map.intersection.DefaultIntersection;
-import models.IntelligentDriver;
+import models.OVM;
 import ui.ControllerUI;
 import vehicle.VehicleFactory;
 
@@ -39,13 +39,13 @@ public class StartDoingStuff {
         
         
         /* Set what model to use for the rest of the application */
-        SimulationSettings.getInstance().setModel(new IntelligentDriver());
+        SimulationSettings.getInstance().setModel(new OVM());
 
         /* Set what path finding AI to use for the rest of the application */
         SimulationSettings.getInstance().setPathFindingAI(new AStar());
 
         /* Set the number of ticks the simulation waits until it spawns new vehicles */
-        SimulationSettings.getInstance().setTimeUntilSpawn(200);
+        SimulationSettings.getInstance().setTimeUntilSpawn(500);
 
         /* Creates the controller */
         Controller control = Controller.getInstance();
@@ -106,12 +106,10 @@ public class StartDoingStuff {
     public static void start() {
         if (!start) {
             //Creates n number of cars
-            for (int i = 0; i < 2; i++) {
-                VehicleFactory.getFactory().createVehicle(VehicleFactory.SPORT_CAR);
-            }
-        	VehicleFactory.getFactory().createVehicle(VehicleFactory.SPORT_CAR);
 
+        	//VehicleFactory.getFactory().createVehicle(VehicleFactory.SPORT_CAR);
             Controller.getInstance().getTicker().start("tick");
+            VehicleFactory.getFactory().createVehicle(VehicleFactory.SPORT_CAR);
             start = true;
         }
         

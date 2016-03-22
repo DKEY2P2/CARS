@@ -1,9 +1,10 @@
 package models;
 
 import controller.Controller;
-import java.util.AbstractMap.SimpleImmutableEntry;
 import map.Road;
 import vehicle.Vehicle;
+
+import java.util.AbstractMap.SimpleImmutableEntry;
 
 /**
  *
