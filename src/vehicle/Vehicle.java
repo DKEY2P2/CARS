@@ -54,13 +54,16 @@ public abstract class Vehicle implements Task, Drawable, Comparable<Vehicle> {
 
     @Override
     public void draw(Graphics g) {
+        if (!VehicleHolder.getInstance().contains(this)) {
+            return;
+        }
 
         g.setColor(color);
         SimpleImmutableEntry<Road, Double> position = this.position;
         Road road = position.getKey();
         double percentage = position.getValue();
         if (road == null) {
-            Logger.LogError("Null pointer Exception", this);
+            Logger.LogError("No road given", this);
             return;
         }
         Intersection start = road.getStart();
@@ -216,9 +219,9 @@ public abstract class Vehicle implements Task, Drawable, Comparable<Vehicle> {
 
     public final Intersection nextPlaceToGo() {
         Intersection i = a.findShortestPath(getPosition().getKey().getEnd(), destination).get(1);
-        if(i == destination){
+        if (i == destination) {
             return destination;
-        }else{
+        } else {
             return i;
         }
 
@@ -522,12 +525,11 @@ public abstract class Vehicle implements Task, Drawable, Comparable<Vehicle> {
     }
 
     /*@Override
-    public String toString() {
-        return "Index : " + index + " Speed: " + speed + "\n  Acceleration : " + acceleration + " Road : "
-                + getPosition().getKey() + " Percentage " + position.getValue() + " Deceleration : "
-                + getDesiredDeceleration();
-    }*/
-
+     public String toString() {
+     return "Index : " + index + " Speed: " + speed + "\n  Acceleration : " + acceleration + " Road : "
+     + getPosition().getKey() + " Percentage " + position.getValue() + " Deceleration : "
+     + getDesiredDeceleration();
+     }*/
     @Override
     public String toString() {
         return "%" + position.getValue();
