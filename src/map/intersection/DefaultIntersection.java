@@ -21,53 +21,58 @@ import java.util.ArrayList;
  * @since 07.03.16
  */
 public class DefaultIntersection extends Intersection implements Observer {
-
+    
     private Ticker ticker;
-
+    
     public DefaultIntersection(int x, int y, Ticker t) {
         super(x, y);
         t.addObserver(this);
         ticker = t;
     }
-
+    
     public void update() {
         updateLight(ticker.getTimeBetweenTick());
-            for (TrafficLight tl : getTrafficLights()) {
-                if (tl.isGreen()) {
-                    for (int i = 0; i < tl.getMaxFlow(); i++) {
-                        Vehicle veh = tl.getWaiting().poll();
-                        if (veh == null) {
-                            return;
+        for (TrafficLight tl : getTrafficLights()) {
+            if (tl.isGreen()) {
+                for (int i = 0; i < tl.getMaxFlow(); i++) {
+                    Vehicle veh = tl.getWaiting().poll();
+                    if (veh == null) {
+                        return;
+                    }
+                    veh.addToTraceLog(this);
+                    if (veh.getPosition().getKey().getEnd() == veh.getDestination()) {
+                        VehicleHolder.getInstance().remove(veh);
+                    } else {
+                        Intersection placeToGo = veh.nextPlaceToGo();
+                        Road r = null;
+                        for (Road road : getRoads()) {
+                            if (road.getEnd() == placeToGo && road.getStart() == this) {
+                                r = road;
+                            }
                         }
-                        veh.addToTraceLog(this);
-                        if (veh.getPosition().getKey().getEnd() == veh.getDestination()) {
-                            VehicleHolder.getInstance().remove(veh);
-                        } else {
-                            Intersection placeToGo = veh.nextPlaceToGo();
-                            Road r = null;
+                        if (r == null) {
+                            Logger.LogError("Can't find a place to go to reach destination", veh);
                             for (Road road : getRoads()) {
-                                if (road.getEnd() == placeToGo&& road.getStart()==this) {
+                                if (road.getEnd() != this) {
                                     r = road;
+                                    break;
                                 }
                             }
+                            //still a null
                             if (r == null) {
-                                Logger.LogError("Can't find a place to go to reach destination", veh);
-                                for (Road road : getRoads()) {
-                                    if (road.getEnd() != this) {
-                                        r = road;
-                                        break;
-                                    }
-                                }
+                                Logger.LogError("No out going road", this);
+                                return;
                             }
-                            veh.getPosition().getKey().getVehicles().remove(veh);
-                            r.getVehicles().offer(veh);// TODO : Is this correct ???
-                            veh.setPosition(new AbstractMap.SimpleImmutableEntry<>(r, 0d));
                         }
+                        veh.getPosition().getKey().getVehicles().remove(veh);
+                        r.getVehicles().offer(veh);// TODO : Is this correct ???
+                        veh.setPosition(new AbstractMap.SimpleImmutableEntry<>(r, 0d));
                     }
                 }
             }
+        }
     }
-
+    
     @Override
     public Road addRoad(Road r) {
         getRoads().add(r);
@@ -78,7 +83,7 @@ public class DefaultIntersection extends Intersection implements Observer {
         } else {
             in.add(r);
         }
-
+        
         if (flag) {
             getTrafficLights().stream().forEach((trafficLight) -> {
                 trafficLight.addOut(r);
@@ -86,16 +91,16 @@ public class DefaultIntersection extends Intersection implements Observer {
         } else {
             getTrafficLights().add(new TrafficLight(this, r, out));
         }
-
+        
         return r;
     }
-
+    
     ArrayList<Road> in = new ArrayList<>();
     ArrayList<Road> out = new ArrayList<>();
-
+    
     @Override
     public void update(String args) {
         update();
     }
-
+    
 }

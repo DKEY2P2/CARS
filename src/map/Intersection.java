@@ -20,6 +20,14 @@ import ui.helper.TwoDTransformation;
  */
 public abstract class Intersection implements Drawable {
 
+    private static int indexs = 0;
+
+    private int index;
+
+    public int getIndex() {
+        return index;
+    }
+
     public static final int DIAMETER = 5;
 
     int timerLength = 4000;
@@ -70,6 +78,7 @@ public abstract class Intersection implements Drawable {
     public Intersection(int x, int y) {
         this.x = x;
         this.y = y;
+        index = indexs++;
     }
 
     /**
@@ -360,7 +369,7 @@ public abstract class Intersection implements Drawable {
 
     @Override
     public String toString() {
-        return ("Intersection: x= " + getX() + ", y= " + getY());
+        return ("Intersection: x= " + getX() + ", y= " + getY() + " ID: " + getIndex());
     }
 
 }
