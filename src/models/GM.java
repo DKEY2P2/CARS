@@ -1,7 +1,11 @@
 package models;
 
+import java.util.AbstractMap;
+import java.util.AbstractMap.SimpleImmutableEntry;
+
 import controller.Controller;
 import map.Road;
+import map.TrafficLight;
 import vehicle.Vehicle;
 
 public class GM implements Model {
@@ -25,76 +29,80 @@ public class GM implements Model {
 		maxFollow = 20;
 		
 	}
-	public GM(double calibrationA,double calibrationM,double calibrationL, double maxFollow) {
-		this.calibrationA= calibrationA;
-		this.calibrationM= calibrationM;
-		this.calibrationL= calibrationL;
-		this.maxFollow= maxFollow;
-	}
+
 	
-	
-	private Vehicle getInFront(Vehicle veh, Road r) {
-		
-		Vehicle inFrontVehicle = null;
+    private Vehicle getInFront(Vehicle v, Road r) {
+        Vehicle inFrontVehicle = null;
         for (Vehicle vehicle : r.getVehicles()) {
-            if (vehicle == veh) {
+            if (vehicle == v) {
                 break;
             } else {
                 inFrontVehicle = vehicle;
             }
         }
-        //Get the car ahead of you
         return inFrontVehicle;
     }
 
 	
 	public void calculate(Vehicle v) {
 		
-		
+		TrafficLight tL = v.getNextLight();
 		Road r = v.getPosition().getKey();
 		double roadLength = r.getLength();
 		double t= Controller.getInstance().getTicker().getTickTimeInS();
+		double speed = v.getSpeed();
 		
 		//at traffic light
 		if(v.getPosition().getKey()==null) {
 			return;
-			
 		}
 		
+		if(v.getPosition().getKey().getEnd() ==v.getDestination()&& v.getPosition().getValue()>1) {
+			r.getVehicles().remove(v);
+			v=null;
+		}
+		
+		if(v.getPosition().getValue()>1) {
+			return;
+		}
 		
 		Vehicle inFrontVehicle = getInFront(v,r);
+		//double s = Math.abs(followDistance(v,inFrontVehicle));
 		
-		if(followDistance(v,inFrontVehicle) < maxFollow) {
-			
-			v.setAcceleration(calibrationA*(Math.pow(v.getSpeed(),calibrationM)/
-					(Math.pow(followDistance(v,inFrontVehicle),calibrationL)))
-						*(inFrontVehicle.getSpeed()-v.getSpeed()));
-		
-		
-			//Vehicle will only accelerate if it is not at the speed limit, and will only accelerate to the speed limit.
-			if(v.getAcceleration() > 0 && v.getSpeed() != r.getSpeedLimit()){
-				accelerate(v,v.getAcceleration());
+		if(inFrontVehicle != null) {
+				
+			if(distance(v.getPosition().getValue(),inFrontVehicle.getPosition().getValue()) < v.getBreakingDistance()*2) {
+						
+				v.setAcceleration(calibrationA*(Math.pow(speed,calibrationM)/
+					(Math.pow(distance(v.getPosition().getValue(),inFrontVehicle.getPosition().getValue()),calibrationL)))
+							*(inFrontVehicle.getSpeed()-speed));
+					
+					
+					//Vehicle will only accelerate if it is not at the speed limit, and will only accelerate to the speed limit.
+					speed= Math.min(r.getSpeedLimit(), speed + v.getAcceleration()*t);
 				
 			
-				//Vehicle will only decelerate if it is not stopped.
-			} else if(v.getAcceleration() < 0 && v.getSpeed() != 0) {
-				accelerate(v,v.getAcceleration());
+			} 
+			double newPercentage = (v.getPosition().getValue()*roadLength+ speed*t/roadLength);
+			v.setPosition(new SimpleImmutableEntry<>(r, newPercentage));
+		} else {
+			
+			double s =v.getPosition().getValue()*roadLength;
+			if(!tL.isGreen() && distance(v.getPosition().getValue(),roadLength) == v.getBreakingDistance()) {
+				speed = Math.max(0,speed-v.getMaxDecceleration()*t);
+			} else {
+				 speed = Math.min(
+	                        Math.min(v.getDesiredSpeed(), r.getSpeedLimit()),
+	                        speed + v.getMaxAcceleration() * t);
 			}
+            v.setDistance(v.getDistance() + speed * t);
+            double newPercentage = (s + speed * t);
+            v.setSpeed(speed);
+            v.setPosition(new SimpleImmutableEntry<>(r, newPercentage));
+			
 		}
 	}
 
-/*
- * basic acceleration method. Definitely could be improved to be more realistic
- */
-private void accelerate(Vehicle v, double accelerate) {
-	if((v.getSpeed()+ accelerate) < v.getPosition().getKey().getSpeedLimit() ) {
-		v.setSpeed(v.getSpeed()+accelerate);
-	
-		v.setAcceleration(0);
-	} else {
-		v.setSpeed(v.getPosition().getKey().getSpeedLimit());
-	}
-}
 	
 	
 	
@@ -104,9 +112,9 @@ private void accelerate(Vehicle v, double accelerate) {
 		this.calibrationL=l;
 	}
 	
-	private double followDistance(Vehicle follow, Vehicle lead) {
+	private double distance(double follow, double lead) {
 		
-		return lead.getPosition().getValue() - follow.getPosition().getValue();
+		return lead - follow;
 	}
 
 	public double getCalibrationA() {
