@@ -6,7 +6,7 @@ import controller.threads.ThreadController;
 import helper.Logger;
 import map.Road;
 import map.intersection.DefaultIntersection;
-import models.OVM;
+import models.Forbe;
 import ui.ControllerUI;
 import vehicle.VehicleFactory;
 
@@ -39,7 +39,7 @@ public class StartDoingStuff {
         
         
         /* Set what model to use for the rest of the application */
-        SimulationSettings.getInstance().setModel(new OVM());
+        SimulationSettings.getInstance().setModel(new Forbe());
 
         /* Set what path finding AI to use for the rest of the application */
         SimulationSettings.getInstance().setPathFindingAI(new AStar());
@@ -47,15 +47,18 @@ public class StartDoingStuff {
         /* Set the number of ticks the simulation waits until it spawns new vehicles */
         SimulationSettings.getInstance().setTimeUntilSpawn(500);
 
+        SimulationSettings.getInstance().setNumberOfCarsToSpawn(10);
+
         /* Creates the controller */
         Controller control = Controller.getInstance();
 
-        /* A tempory of holder of for the intersection */
+        /* A temporary holder for the intersections */
         ArrayList<DefaultIntersection> a = new ArrayList<>();
         ArrayList<Road> b = new ArrayList<>();
 
-        /* A random gen for location of a vehicle */
+        /* A random generator for location of a vehicle */ //TODO: We must make this ZONE based, not random
         Random r = new Random();
+
         /* Creates a ticker with the value of 100 ms between each tick which represent 0.1 second */
         Ticker t = new Ticker(0.01, 10);
 
@@ -105,11 +108,8 @@ public class StartDoingStuff {
     
     public static void start() {
         if (!start) {
-            //Creates n number of cars
-
-        	//VehicleFactory.getFactory().createVehicle(VehicleFactory.SPORT_CAR);
             Controller.getInstance().getTicker().start("tick");
-            VehicleFactory.getFactory().createVehicle(VehicleFactory.SPORT_CAR);
+            VehicleFactory.getFactory().createVehicle();
             start = true;
         }
         

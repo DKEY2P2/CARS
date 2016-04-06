@@ -1,16 +1,12 @@
 package map;
 
 import ui.Drawable;
+import ui.helper.TwoDTransformation;
 import ui.setting.GraphicsSetting;
 import vehicle.Vehicle;
 
 import java.awt.*;
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Objects;
-import java.util.PriorityQueue;
-import ui.helper.TwoDTransformation;
+import java.util.*;
 
 /**
  * This class represents a road A road is similar to an edge of a graph, they
@@ -20,6 +16,8 @@ import ui.helper.TwoDTransformation;
  * @since 18-02-16
  */
 public abstract class Road implements Drawable {
+
+    public static PriorityQueue<Vehicle> pq2;
 
     /**
      * The length of a road

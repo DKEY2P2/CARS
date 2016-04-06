@@ -2,9 +2,8 @@ package models;
 
 import controller.Controller;
 import map.Road;
+import map.TrafficLight;
 import vehicle.Vehicle;
-
-import java.util.AbstractMap.SimpleImmutableEntry;
 
 /**
  *
@@ -12,24 +11,66 @@ import java.util.AbstractMap.SimpleImmutableEntry;
  */
 public class Forbe implements Model {
 
-    private Vehicle getInFront(Vehicle veh, Road r) {
-        Vehicle inFrontVehicle = null;
-        double currentCarPos = veh.getPosition().getValue();
-        double compare = Double.MAX_VALUE;
-        for (Vehicle vehicle : r.getVehicles()) {
-        	double tmp = vehicle.getPosition().getValue();
-        	if(tmp<currentCarPos){
-        		if(compare>tmp){
-        			inFrontVehicle = vehicle;
-        		}
-        	}
-        }
-        return inFrontVehicle;
-    }
-
     @Override
     public void calculate(Vehicle veh) {
 
+        Road r = veh.getPosition().getKey();
+        Vehicle inFrontVehicle = veh.getPredecessor();
+        TrafficLight trl = r.getEnd().getTrafficLight(r);
+        double acc = veh.getAcceleration();
+        double dist;
+        double curSpeed = veh.getSpeed();
+        double newSpeed;
+        double sMin = 15;
+        double sMin2 = 10;
+        //veh.getReactionTime() * curSpeed + 1;// + veh.getDesiredSpeed() / (veh.getMaxDecceleration()); // REACTIONTIME
+
+        if(inFrontVehicle == null){//if no one in front
+            if(trl.isGreen()){
+                acc = veh.getMaxAcceleration();
+                newSpeed = Math.min(Math.min(veh.getDesiredSpeed(), r.getSpeedLimit()), curSpeed + acc * Controller.getInstance().getTicker().getTickTimeInS());
+            }else{
+                dist = (1 - veh.getPosition().getValue()) * r.getLength();
+
+                if (dist < sMin) {
+                    acc = -veh.getMaxDecceleration();
+                    newSpeed = Math.min(10, curSpeed + acc * Controller.getInstance().getTicker().getTickTimeInS());
+                    if(dist < sMin2){
+                        newSpeed = 0;
+                    }
+                } else {
+                    if(acc >= veh.getMaxAcceleration()){
+                        acc = veh.getMaxAcceleration();
+                    }else if(acc <= veh.getMaxDecceleration()){
+                        acc = veh.getMaxAcceleration();
+                    }
+                    newSpeed = Math.min(Math.min(veh.getDesiredSpeed(), r.getSpeedLimit()), curSpeed + acc * Controller.getInstance().getTicker().getTickTimeInS());
+                }
+            }
+
+        }else{
+            dist = (inFrontVehicle.getPosition().getValue() - veh.getPosition().getValue()) * r.getLength();
+            newSpeed = (dist - inFrontVehicle.getLength())/1.34d;
+            acc = (newSpeed - curSpeed)/Controller.getInstance().getTicker().getTickTimeInS();
+
+            if (dist < sMin) {
+                acc = -veh.getMaxDecceleration();
+                newSpeed = Math.min(inFrontVehicle.getSpeed(), newSpeed);
+                if(dist < sMin2){
+                    newSpeed = inFrontVehicle.getSpeed() + acc;
+                }
+            } else {
+                if(acc >= veh.getMaxAcceleration()){
+                    acc = veh.getMaxAcceleration();
+                }else if(acc <= veh.getMaxDecceleration()){
+                    acc = veh.getMaxAcceleration();
+                }
+                newSpeed = Math.min(Math.min(veh.getDesiredSpeed(), r.getSpeedLimit()), newSpeed);
+            }
+
+        }
+        veh.updateAll(newSpeed,acc,r);
+/*
         //Waiting at the traffic light
         if (veh.getPosition().getKey() == null) {
             return;
@@ -46,7 +87,7 @@ public class Forbe implements Model {
         double reactionTime = veh.getReactionTime();
         double sMin = reactionTime * v + l;
 
-        Vehicle inFrontVehicle = getInFront(veh, r);
+        Vehicle inFrontVehicle = veh.getPredecessor();
 
         //Get the road your on
         //Get the percentage dunno why I split it when I split later on
@@ -101,7 +142,8 @@ public class Forbe implements Model {
             //Update the position
             veh.setPosition(new SimpleImmutableEntry<>(r, newPercentage));
 
-        }
+            //veh.updateAll();
+        }*/
     }
 
 }

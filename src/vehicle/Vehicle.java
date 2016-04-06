@@ -1,6 +1,7 @@
 package vehicle;
 
 import algorithms.Algorithm;
+import controller.Controller;
 import controller.Task;
 import helper.Logger;
 import map.Intersection;
@@ -12,10 +13,8 @@ import ui.helper.TwoDTransformation;
 import ui.setting.GraphicsSetting;
 
 import java.awt.*;
+import java.util.*;
 import java.util.AbstractMap.SimpleImmutableEntry;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Objects;
 
 /**
  * The abstract class for all vehicles and identities present in the simulation
@@ -80,26 +79,6 @@ public abstract class Vehicle implements Task, Drawable, Comparable<Vehicle> {
                 y,
                 (int) (width * zoom), (int) (height * zoom)
         );
-    }
-
-    public Vehicle getPredecessor() {
-        Iterator<Vehicle> vehicles = this.getPosition().getKey().getVehicles().iterator();
-
-        while (vehicles.hasNext()) {
-            Vehicle pre = vehicles.next();
-            Vehicle cur = pre;
-            if (cur == this) {
-                return null;
-            }
-            while (vehicles.hasNext()) {
-                cur = vehicles.next();
-                if (cur == this) {
-                    return pre;
-                }
-                pre = cur;
-            }
-        }
-        return null;
     }
 
     public double getBreakingDistance() {
@@ -522,6 +501,58 @@ public abstract class Vehicle implements Task, Drawable, Comparable<Vehicle> {
             return 1;
         }
 
+    }
+
+    public Vehicle getPredecessor() {
+        Vehicle inFrontVehicle = null;
+        Road r = getPosition().getKey();
+
+        PriorityQueue<Vehicle> pq = r.getVehicles();
+        Iterator<Vehicle> iv = pq.iterator();
+
+
+        while(iv.hasNext()){
+            Vehicle c = iv.next();
+            if(c == this){
+                return inFrontVehicle;
+            }else{
+                inFrontVehicle = c;
+            }
+        }
+
+        return inFrontVehicle;
+    }
+
+    public void updateAll(double v, double acc,Road r){
+        double t = Controller.getInstance().getTicker().getTickTimeInS();
+        TrafficLight trl = r.getEnd().getTrafficLight(r);
+
+        this.setAcceleration(acc);
+        if(this.getAcceleration()<0) {
+            if(v < 0)
+                this.setSpeed(0);
+            else
+                this.setSpeed(v);
+        }else{
+            this.setSpeed(v + this.getAcceleration());
+        }
+
+        double p = this.getPosition().getValue() + ((this.getSpeed() * t / r.getLength()));
+        if(p>=1d){
+            if(!trl.isGreen()){
+                this.setSpeed(0);
+                this.setAcceleration(0);
+            }
+            r.getVehicles().remove(this);
+            if(this.getDestination() == r.getEnd()){
+                VehicleHolder.getInstance().remove(this);
+            }else{
+                this.setPosition(new AbstractMap.SimpleImmutableEntry<Road, Double>(this.nextPlaceToGo().hasRoad(r.getEnd()), 0d));
+                this.getPosition().getKey().addCar(this);
+            }
+        }else{
+            this.setPosition(new AbstractMap.SimpleImmutableEntry<Road, Double>(r, this.getPosition().getValue() + ((this.getSpeed() * t / r.getLength()))));
+        }
     }
 
     /*@Override

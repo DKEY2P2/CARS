@@ -99,7 +99,8 @@ public class ThreadController implements Observer {
 
     @Override
     public void update(String args) {
-        //Adds a task set to the list of toDo's
+
+
         for(Road r : Controller.getInstance().getMap().getRoads()){
             Object[] va = r.getVehicles().toArray();
             Arrays.sort(va);

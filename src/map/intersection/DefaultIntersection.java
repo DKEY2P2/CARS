@@ -2,14 +2,10 @@ package map.intersection;
 
 import controller.Observer;
 import controller.Ticker;
-import helper.Logger;
 import map.Intersection;
 import map.Road;
 import map.TrafficLight;
-import vehicle.Vehicle;
-import vehicle.VehicleHolder;
 
-import java.util.AbstractMap;
 import java.util.ArrayList;
 
 /**
@@ -29,8 +25,8 @@ public class DefaultIntersection extends Intersection implements Observer {
     }
 
     public void update() {
-        updateLight(ticker.getTimeBetweenTick());
-            for (TrafficLight tl : getTrafficLights()) {
+        updateLight(ticker.getTimeBetweenTick()); //this should be the only thing updated in the intersection, the intersection is only responsible for its traffic lights, the cars should be responible for their location
+        /*for (TrafficLight tl : getTrafficLights()) {
                 if (tl.isGreen()) {
                     for (int i = 0; i < tl.getMaxFlow(); i++) {
                         Vehicle veh = tl.getWaiting().poll();
@@ -57,7 +53,7 @@ public class DefaultIntersection extends Intersection implements Observer {
                                         r = road;
                                         break;
                                     }
-                                }*/
+                                }
                                 VehicleHolder.getInstance().remove(veh);
                             }else{
                                 veh.setPosition(new AbstractMap.SimpleImmutableEntry<>(r, 0d));
@@ -66,7 +62,7 @@ public class DefaultIntersection extends Intersection implements Observer {
                         }
                     }
                 }
-            }
+            }*/
     }
 
     @Override

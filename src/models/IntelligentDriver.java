@@ -1,12 +1,12 @@
 package models;
 
-import java.util.AbstractMap.SimpleImmutableEntry;
-
 import controller.Controller;
 import helper.Logger;
 import map.Road;
 import vehicle.Vehicle;
 import vehicle.VehicleHolder;
+
+import java.util.AbstractMap.SimpleImmutableEntry;
 
 /**
  * http://home2.fvcc.edu/~dhicketh/DiffEqns/Spring11projects/Scott_Miller/
@@ -44,7 +44,7 @@ public class IntelligentDriver implements Model {
 	 * 
 	 */
 	/**
-	 * @param v
+	 * @param follower
 	 * @param r
 	 * @return
 	 */

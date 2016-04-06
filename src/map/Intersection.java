@@ -2,13 +2,13 @@ package map;
 
 import helper.Logger;
 import ui.Drawable;
+import ui.helper.TwoDTransformation;
 import ui.setting.GraphicsSetting;
 import vehicle.Vehicle;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
-import ui.helper.TwoDTransformation;
 
 /**
  * The abstract class for all types of intersections present in the simulation
@@ -268,7 +268,7 @@ public abstract class Intersection implements Drawable {
      *
      * @return
      */
-    public TrafficLight getCurrentlyGreen() {
+    public TrafficLight getCurrentlyGreen() { //This assumes only 1 light per intersection can be green
         for (TrafficLight tLight : tLights) {
             if (tLight.isGreen()) {
                 return tLight;

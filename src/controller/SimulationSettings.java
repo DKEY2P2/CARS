@@ -18,6 +18,7 @@ public class SimulationSettings {
 
     private int timeUntilSpawn = 150;
 
+
     /**
      * Get the value of timeUntilSpawn
      *
