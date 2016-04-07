@@ -16,15 +16,17 @@ import java.util.Random;
  */
 public class SportCar extends Vehicle {
 
+	//Lamborghini Aventador
+
 	protected SportCar(Road start, double percentage, Model m, Algorithm a, Intersection destination) {
 		super(start, percentage, m, a);
 		Random r = new Random();
 		setDesiredSpeed(27.777777778 + r.nextInt(10));//100kmh
 		setDesiredDeceleration(1.67 + r.nextInt(2));
-		setMaxAcceleration(4.5 );// Jaguar XK Coupe 2007 - http://hypertextbook.com/facts/2001/MeredithBarricella.shtml
-		setMaxDecceleration(2.98704 );//Traffic Engineering Handbook, 5th ed. (J. L. Prine, ed.). ITE, Washington, D.C., 1999.
+		setMaxAcceleration(9.57854406130268);
+		setMaxDecceleration(21.73 + 10);//http://blog.esurance.com/stopping-distance-is-the-3-second-rule-wrong/#.VwailPkrKUk
 		setReactionTime(2.3);//average human - http://copradar.com/redlight/factors/
-		setLength(4.7904400000000002535);//Jaguar Xk Coupe 2007 - http://www.edmunds.com/jaguar/xk-series/2007/features-specs/
+		setLength(4.780);
 		setDestination(destination);
 	}
 

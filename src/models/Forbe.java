@@ -11,8 +11,6 @@ import vehicle.Vehicle;
  */
 public class Forbe implements Model {
 
-    private final double SCALINGFACTOR = 1;
-
     @Override
     public void calculate(Vehicle veh) {
 
@@ -20,18 +18,18 @@ public class Forbe implements Model {
         Road r = veh.getPosition().getKey();
         TrafficLight trl = r.getEnd().getTrafficLight(r);
 
-        double speed, acc, dist, minDist;
+        double speed, acc, dist;
+
+        double minDist = veh.getReactionTime() * veh.getSpeed() + veh.getLength();
 
         if(inFront == null){
-            minDist = (veh.getReactionTime() * veh.getSpeed())/SCALINGFACTOR;
             if(!trl.isGreen()){
                 dist = (1 - veh.getPosition().getValue()) * r.getLength();
             }else{
                 dist = minDist * 2;
             }
         }else{
-            minDist = (veh.getReactionTime() * veh.getSpeed() + inFront.getLength())/SCALINGFACTOR;
-            dist = (inFront.getPosition().getValue() - veh.getPosition().getValue()) * r.getLength();
+            dist = (inFront.getPosition().getValue() - veh.getPosition().getValue()) * r.getLength() - inFront.getLength();
         }
 
         if(dist < minDist) {

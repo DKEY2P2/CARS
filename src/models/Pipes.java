@@ -21,8 +21,6 @@ public class Pipes implements Model {
 	private double speed;
 	private double speedLimit;*/
 
-	private final double SCALINGFACTOR = 1;
-
 	@Override
 	public void calculate(Vehicle follower) {
 
@@ -33,15 +31,15 @@ public class Pipes implements Model {
 		double speed, acc, dist, minDist;
 
 		if(inFront == null){
-			minDist = (follower.getLength() * follower.getSpeed()/(0.447 * 10))/SCALINGFACTOR;
+			minDist = (follower.getLength() * follower.getSpeed()/(0.447 * 10));
 			if(!trl.isGreen()){
 				dist = (1 - follower.getPosition().getValue()) * r.getLength();
 			}else{
 				dist = minDist * 2;
 			}
 		}else{
-			minDist = (follower.getLength() * (follower.getSpeed()/(0.447 * 10))+inFront.getLength())/SCALINGFACTOR;
-			dist = (inFront.getPosition().getValue() - follower.getPosition().getValue()) * r.getLength();
+			minDist = (follower.getLength() * (follower.getSpeed()/(0.447 * 10))+inFront.getLength());
+			dist = (inFront.getPosition().getValue() - follower.getPosition().getValue()) * r.getLength() - inFront.getLength();
 		}
 
 		if(dist < minDist) {

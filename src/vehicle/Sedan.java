@@ -2,12 +2,13 @@ package vehicle;
 
 import algorithms.Algorithm;
 import helper.Logger;
-import java.awt.Color;
-import java.util.AbstractMap;
-import java.util.Random;
 import map.Intersection;
 import map.Road;
 import models.Model;
+
+import java.awt.*;
+import java.util.AbstractMap;
+import java.util.Random;
 
 /**
  * Model after 300c
@@ -16,15 +17,17 @@ import models.Model;
  */
 public class Sedan extends Vehicle {
 
+    //Volkswagen Passat
+
     protected Sedan(Road start, double percentage, Model m, Algorithm a, Intersection destination) {
         super(start, percentage, m, a);
         Random r = new Random();
-        setDesiredSpeed(27.777777778 + r.nextInt(3));//100kmh
+        setDesiredSpeed(66.66);//100kmh
         setDesiredDeceleration(1.67 + r.nextInt(2));
-        setMaxAcceleration(27.78 / 5.6);// Crystler 300c v8 edition 2015
-        setMaxDecceleration(10.175);//100kmh to 0 takes 36.63m thus 10ms^2 from bmw  
+        setMaxAcceleration(4.55373406193078);
+        setMaxDecceleration(21.73);//http://blog.esurance.com/stopping-distance-is-the-3-second-rule-wrong/#.VwailPkrKUk
         setReactionTime(2.3);//average human - http://copradar.com/redlight/factors/
-        setLength(4.004);//Crystler 300c v8 edition 2015
+        setLength(4.866);
         setDestination(destination);
         setColor(Color.cyan);
     }
