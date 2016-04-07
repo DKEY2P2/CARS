@@ -510,7 +510,6 @@ public abstract class Vehicle implements Task, Drawable, Comparable<Vehicle> {
         PriorityQueue<Vehicle> pq = r.getVehicles();
         Iterator<Vehicle> iv = pq.iterator();
 
-
         while(iv.hasNext()){
             Vehicle c = iv.next();
             if(c == this){
@@ -525,33 +524,33 @@ public abstract class Vehicle implements Task, Drawable, Comparable<Vehicle> {
 
     public void updateAll(double v, double acc,Road r){
         double t = Controller.getInstance().getTicker().getTickTimeInS();
-        TrafficLight trl = r.getEnd().getTrafficLight(r);
 
         this.setAcceleration(acc);
-        if(this.getAcceleration()<0) {
-            if(v < 0)
-                this.setSpeed(0);
-            else
-                this.setSpeed(v);
-        }else{
-            this.setSpeed(v + this.getAcceleration());
-        }
+        if(v < 0)
+            this.setSpeed(0);
+        else
+            this.setSpeed(v);
 
-        double p = this.getPosition().getValue() + ((this.getSpeed() * t / r.getLength()));
+        double p = this.getPosition().getValue() + ((this.getSpeed() * t / r.getLength())); //new position
         if(p>=1d){
-            if(!trl.isGreen()){
-                this.setSpeed(0);
-                this.setAcceleration(0);
-            }
             r.getVehicles().remove(this);
             if(this.getDestination() == r.getEnd()){
                 VehicleHolder.getInstance().remove(this);
             }else{
-                this.setPosition(new AbstractMap.SimpleImmutableEntry<Road, Double>(this.nextPlaceToGo().hasRoad(r.getEnd()), 0d));
-                this.getPosition().getKey().addCar(this);
+                Road rn = this.nextPlaceToGo().hasRoad(r.getEnd());
+                if(rn == r){
+                    VehicleHolder.getInstance().remove(this);
+                }else {
+                    this.setPosition(new AbstractMap.SimpleImmutableEntry<Road, Double>(rn, 0d));
+                    this.getPosition().getKey().addCar(this);
+                    Vehicle pre = getPredecessor();
+                    if (pre != null) {
+                        setSpeed(pre.getSpeed());
+                    }
+                }
             }
         }else{
-            this.setPosition(new AbstractMap.SimpleImmutableEntry<Road, Double>(r, this.getPosition().getValue() + ((this.getSpeed() * t / r.getLength()))));
+            this.setPosition(new AbstractMap.SimpleImmutableEntry<Road, Double>(r, p));
         }
     }
 

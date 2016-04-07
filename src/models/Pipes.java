@@ -1,9 +1,7 @@
 package models;
 
-import java.util.AbstractMap.SimpleImmutableEntry;
-
-import controller.Controller;
 import map.Road;
+import map.TrafficLight;
 import vehicle.Vehicle;
 
 public class Pipes implements Model {
@@ -15,15 +13,46 @@ public class Pipes implements Model {
 	 *
 	 */
 
-	private double distanceCars;
+	/*private double distanceCars;
 	private double safeDistanceMIN;
 	private double[] positionsRoad;
 	private double length;
 	private double speed;
-	private double speedLimit;
+	private double speedLimit;*/
+
+	private final double SCALINGFACTOR = 2;
 
 	@Override
 	public void calculate(Vehicle follower) {
+
+		Vehicle inFront = follower.getPredecessor();
+		Road r = follower.getPosition().getKey();
+		TrafficLight trl = r.getEnd().getTrafficLight(r);
+
+		double speed, acc, dist, minDist;
+
+		if(inFront == null){
+			minDist = (follower.getLength() * follower.getSpeed()/(0.447 * 10))/SCALINGFACTOR;
+			if(!trl.isGreen()){
+				dist = (1 - follower.getPosition().getValue()) * r.getLength();
+			}else{
+				dist = minDist * 2;
+			}
+		}else{
+			minDist = (follower.getLength() * (follower.getSpeed()/(0.447 * 10))+inFront.getLength())/SCALINGFACTOR;
+			dist = (inFront.getPosition().getValue() - follower.getPosition().getValue()) * r.getLength();
+		}
+
+		if(dist < minDist) {
+			acc = follower.getMaxDecceleration();
+			speed = Math.max(0, follower.getSpeed() - acc);
+		}else {
+			acc = follower.getMaxAcceleration();
+			speed = Math.min(follower.getDesiredSpeed(), follower.getSpeed() + acc);
+		}
+
+		follower.updateAll(speed,acc,r);
+	/*
 		if(follower.getPosition().getKey().getTrafficlight().getWaiting().contains(this)){
 			follower.setSpeed(0);
 			follower.setAcceleration(0);
@@ -44,10 +73,7 @@ public class Pipes implements Model {
 	        	}
 	        }
 	         
-		/* 
-		 * @param pcntI percentage of location of first car (the hind car)
-		 * @param pcntII same for second car (the front car)
-		 */
+
 
 		if (inFrontVehicle != null) {
 			if (!inFrontVehicle.getPosition().getKey().getTrafficlight().getWaiting().contains(inFrontVehicle)) {
@@ -79,10 +105,12 @@ public class Pipes implements Model {
 			singleCar(follower, r);
 
 		}
+		*/
+
 
 	}
 
-	private void singleCar(Vehicle follower, Road r) {
+	/*private void singleCar(Vehicle follower, Road r) {
 		length = follower.getLength();
 		speedLimit = r.getSpeedLimit();
 		positionsRoad = new double[] { follower.getPosition().getValue() * r.getLength(), 0 };
@@ -101,5 +129,5 @@ public class Pipes implements Model {
 				/ r.getLength();
 		follower.setSpeed(speed);
 		follower.setPosition(new SimpleImmutableEntry<>(r, newPosition));
-	}
+	}*/
 }

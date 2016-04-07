@@ -1,75 +1,47 @@
 package models;
 
-import controller.Controller;
 import map.Road;
 import map.TrafficLight;
 import vehicle.Vehicle;
 
 /**
  *
- * @author Kareem
+ * @author Kareem, Lucas
  */
 public class Forbe implements Model {
+
+    private final double SCALINGFACTOR = 3;
 
     @Override
     public void calculate(Vehicle veh) {
 
+        Vehicle inFront = veh.getPredecessor();
         Road r = veh.getPosition().getKey();
-        Vehicle inFrontVehicle = veh.getPredecessor();
         TrafficLight trl = r.getEnd().getTrafficLight(r);
-        double acc = veh.getAcceleration();
-        double dist;
-        double curSpeed = veh.getSpeed();
-        double newSpeed;
-        double sMin = 15;
-        double sMin2 = 10;
-        //veh.getReactionTime() * curSpeed + 1;// + veh.getDesiredSpeed() / (veh.getMaxDecceleration()); // REACTIONTIME
 
-        if(inFrontVehicle == null){//if no one in front
-            if(trl.isGreen()){
-                acc = veh.getMaxAcceleration();
-                newSpeed = Math.min(Math.min(veh.getDesiredSpeed(), r.getSpeedLimit()), curSpeed + acc * Controller.getInstance().getTicker().getTickTimeInS());
-            }else{
+        double speed, acc, dist, minDist;
+
+        if(inFront == null){
+            minDist = (veh.getReactionTime() * veh.getSpeed())/SCALINGFACTOR;
+            if(!trl.isGreen()){
                 dist = (1 - veh.getPosition().getValue()) * r.getLength();
-
-                if (dist < sMin) {
-                    acc = -veh.getMaxDecceleration();
-                    newSpeed = Math.min(10, curSpeed + acc * Controller.getInstance().getTicker().getTickTimeInS());
-                    if(dist < sMin2){
-                        newSpeed = 0;
-                    }
-                } else {
-                    if(acc >= veh.getMaxAcceleration()){
-                        acc = veh.getMaxAcceleration();
-                    }else if(acc <= veh.getMaxDecceleration()){
-                        acc = veh.getMaxAcceleration();
-                    }
-                    newSpeed = Math.min(Math.min(veh.getDesiredSpeed(), r.getSpeedLimit()), curSpeed + acc * Controller.getInstance().getTicker().getTickTimeInS());
-                }
+            }else{
+                dist = minDist * 2;
             }
-
         }else{
-            dist = (inFrontVehicle.getPosition().getValue() - veh.getPosition().getValue()) * r.getLength();
-            newSpeed = (dist - inFrontVehicle.getLength())/1.34d;
-            acc = (newSpeed - curSpeed)/Controller.getInstance().getTicker().getTickTimeInS();
-
-            if (dist < sMin) {
-                acc = -veh.getMaxDecceleration();
-                newSpeed = Math.min(inFrontVehicle.getSpeed(), newSpeed);
-                if(dist < sMin2){
-                    newSpeed = inFrontVehicle.getSpeed() + acc;
-                }
-            } else {
-                if(acc >= veh.getMaxAcceleration()){
-                    acc = veh.getMaxAcceleration();
-                }else if(acc <= veh.getMaxDecceleration()){
-                    acc = veh.getMaxAcceleration();
-                }
-                newSpeed = Math.min(Math.min(veh.getDesiredSpeed(), r.getSpeedLimit()), newSpeed);
-            }
-
+            minDist = (veh.getReactionTime() * veh.getSpeed() + inFront.getLength())/SCALINGFACTOR;
+            dist = (inFront.getPosition().getValue() - veh.getPosition().getValue()) * r.getLength();
         }
-        veh.updateAll(newSpeed,acc,r);
+
+        if(dist < minDist) {
+            acc = veh.getMaxDecceleration();
+            speed = Math.max(0, veh.getSpeed() - acc);
+        }else {
+            acc = veh.getMaxAcceleration();
+            speed = Math.min(veh.getDesiredSpeed(), veh.getSpeed() + acc);
+        }
+
+        veh.updateAll(speed,acc,r);
 /*
         //Waiting at the traffic light
         if (veh.getPosition().getKey() == null) {

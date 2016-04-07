@@ -1,6 +1,5 @@
 package models;
 
-import controller.Controller;
 import map.Road;
 import map.TrafficLight;
 import vehicle.Vehicle;
@@ -13,7 +12,7 @@ import vehicle.Vehicle;
 public class OVM implements Model{
 
     private double maxSpeed = 0;
-    private double safety = 3;
+    private double safety = 0; //minimum distance in meters
 
     @Override
     public void calculate(Vehicle v) {
@@ -31,7 +30,7 @@ public class OVM implements Model{
         if(prev == null) {
             if (!trl.isGreen()) {
                 double dist = (1 - v.getPosition().getValue()) * r.getLength(); //distance to the traffic light
-                dv = (1/v.getReactionTime()) * (optimalVelocity(dist) - speed);
+                dv = v.getReactionTime() * (optimalVelocity(dist) - speed);
             } else {
                 if (speed >= speedLimit) {
                     dv = speedLimit-speed;
@@ -45,45 +44,19 @@ public class OVM implements Model{
             }
         } else {
             double dist = (prev.getPosition().getValue() - v.getPosition().getValue()) * r.getLength() - v.getLength();
-            dv = (1/v.getReactionTime()) * (optimalVelocity(dist) - speed);
-
+            dv = v.getReactionTime() * (optimalVelocity(dist) - speed);
         }
 
-        v.updateAll(speed + dv * Controller.getInstance().getTicker().getTickTimeInS(), dv,r);
+        v.updateAll(speed + dv , dv,r);
 
-        /*v.setAcceleration(dv);
-        if(v.getAcceleration()<0) {
-            double newSpeed = speed + dv;
-            if(newSpeed < 0)
-                v.setSpeed(0);
-            else
-                v.setSpeed(newSpeed);
-        }else{
-            v.setSpeed(speed + v.getAcceleration());
-        }
-
-        double p = v.getPosition().getValue() + ((v.getSpeed() * t / r.getLength()));
-        if(p>=1d){
-            if(!trl.isGreen()){
-                v.setSpeed(0);
-                v.setAcceleration(0);
-            }
-            r.getVehicles().remove(v);
-            if(v.getDestination() == r.getEnd()){
-                VehicleHolder.getInstance().remove(v);
-            }else{
-                v.setPosition(new AbstractMap.SimpleImmutableEntry<Road, Double>(v.nextPlaceToGo().hasRoad(r.getEnd()), 0d));
-                v.getPosition().getKey().addCar(v);
-            }
-        }else{
-            v.setPosition(new AbstractMap.SimpleImmutableEntry<Road, Double>(r, v.getPosition().getValue() + ((v.getSpeed() * t / r.getLength()))));
-        }*/
     }
 
 
 
     public double optimalVelocity(double dist){
         double result = Math.tanh(dist-safety-2) + Math.tanh(2);
+        if(result < 0)
+            result = 0;
         return result * maxSpeed;
 }
 
