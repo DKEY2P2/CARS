@@ -1,5 +1,6 @@
 package models;
 
+import controller.Controller;
 import map.Road;
 import map.TrafficLight;
 import vehicle.Vehicle;
@@ -10,7 +11,7 @@ import vehicle.Vehicle;
  */
 public class Forbe implements Model {
 
-    private final double SCALINGFACTOR = 3;
+    private final double SCALINGFACTOR = 1;
 
     @Override
     public void calculate(Vehicle veh) {
@@ -35,10 +36,10 @@ public class Forbe implements Model {
 
         if(dist < minDist) {
             acc = veh.getMaxDecceleration();
-            speed = Math.max(0, veh.getSpeed() - acc);
+            speed = Math.max(0, veh.getSpeed() - acc * Controller.getInstance().getTicker().getTickTimeInS());
         }else {
             acc = veh.getMaxAcceleration();
-            speed = Math.min(veh.getDesiredSpeed(), veh.getSpeed() + acc);
+            speed = Math.min(veh.getDesiredSpeed(), veh.getSpeed() + acc * Controller.getInstance().getTicker().getTickTimeInS());
         }
 
         veh.updateAll(speed,acc,r);

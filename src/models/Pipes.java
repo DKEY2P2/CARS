@@ -1,5 +1,6 @@
 package models;
 
+import controller.Controller;
 import map.Road;
 import map.TrafficLight;
 import vehicle.Vehicle;
@@ -20,7 +21,7 @@ public class Pipes implements Model {
 	private double speed;
 	private double speedLimit;*/
 
-	private final double SCALINGFACTOR = 2;
+	private final double SCALINGFACTOR = 1;
 
 	@Override
 	public void calculate(Vehicle follower) {
@@ -45,10 +46,10 @@ public class Pipes implements Model {
 
 		if(dist < minDist) {
 			acc = follower.getMaxDecceleration();
-			speed = Math.max(0, follower.getSpeed() - acc);
+			speed = Math.max(0, follower.getSpeed() - acc * Controller.getInstance().getTicker().getTickTimeInS());
 		}else {
 			acc = follower.getMaxAcceleration();
-			speed = Math.min(follower.getDesiredSpeed(), follower.getSpeed() + acc);
+			speed = Math.min(follower.getDesiredSpeed(), follower.getSpeed() + acc * Controller.getInstance().getTicker().getTickTimeInS());
 		}
 
 		follower.updateAll(speed,acc,r);

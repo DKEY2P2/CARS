@@ -123,7 +123,7 @@ public class VehicleFactory {
         ArrayList<Intersection> a = controller.Controller.getInstance().getMap().getIntersections();
         Road r = (Road) StupidHelper.getRandom(b);
         Intersection i = (Intersection) StupidHelper.getRandom(a);
-        while(r.getStart() == i || r.getEnd() == i){
+        while(r.getStart() == i){
             i = (Intersection) StupidHelper.getRandom(a);
         }
         return createVehicle(type, m, al, (Road) StupidHelper.getRandom(b), 0d, i);

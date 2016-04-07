@@ -22,7 +22,7 @@ public abstract class Intersection implements Drawable {
 
     public static final int DIAMETER = 5;
 
-    int timerLength = 4000;
+    int timerLength = 2000;
 
     /**
      * The x position of an intersection

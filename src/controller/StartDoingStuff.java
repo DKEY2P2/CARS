@@ -6,7 +6,7 @@ import controller.threads.ThreadController;
 import helper.Logger;
 import map.Road;
 import map.intersection.DefaultIntersection;
-import models.Forbe;
+import models.OVM;
 import ui.ControllerUI;
 import vehicle.VehicleFactory;
 
@@ -39,7 +39,7 @@ public class StartDoingStuff {
         
         
         /* Set what model to use for the rest of the application */
-        SimulationSettings.getInstance().setModel(new Forbe());
+        SimulationSettings.getInstance().setModel(new OVM());
 
         /* Set what path finding AI to use for the rest of the application */
         SimulationSettings.getInstance().setPathFindingAI(new AStar());
@@ -60,7 +60,7 @@ public class StartDoingStuff {
         Random r = new Random();
 
         /* Creates a ticker with the value of 100 ms between each tick which represent 0.1 second */
-        Ticker t = new Ticker(0.01, 10);
+        Ticker t = new Ticker(0.01, 20);
 
 
         //Add the item to the controller

@@ -1,13 +1,13 @@
 package map;
 
+import ui.helper.TwoDTransformation;
+import ui.setting.GraphicsSetting;
 import vehicle.Vehicle;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
-import ui.helper.TwoDTransformation;
-import ui.setting.GraphicsSetting;
 
 /**
  * A class made to represent the traffic lights on the road network
@@ -26,7 +26,7 @@ public class TrafficLight {
     /**
      * The time in milliseconds it takes for a green light to turn red
      */
-    private int timerLength = 2000;
+    private int timerLength = 10000;
     /**
      * The time in milliseconds left before the light turns red
      */

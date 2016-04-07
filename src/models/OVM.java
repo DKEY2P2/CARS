@@ -1,5 +1,6 @@
 package models;
 
+import controller.Controller;
 import map.Road;
 import map.TrafficLight;
 import vehicle.Vehicle;
@@ -12,7 +13,7 @@ import vehicle.Vehicle;
 public class OVM implements Model{
 
     private double maxSpeed = 0;
-    private double safety = 0; //minimum distance in meters
+    private double safety = 10; //minimum distance in meters
 
     @Override
     public void calculate(Vehicle v) {
@@ -32,23 +33,14 @@ public class OVM implements Model{
                 double dist = (1 - v.getPosition().getValue()) * r.getLength(); //distance to the traffic light
                 dv = v.getReactionTime() * (optimalVelocity(dist) - speed);
             } else {
-                if (speed >= speedLimit) {
-                    dv = speedLimit-speed;
-                } else {
-                    double dif = speedLimit-speed;
-                    if(v.getMaxAcceleration() > dif)
-                        dv = dif;
-                    else
-                        dv = v.getMaxAcceleration();
-                }
+                dv = v.getReactionTime() * (optimalVelocity(safety+10) - speed);
             }
         } else {
             double dist = (prev.getPosition().getValue() - v.getPosition().getValue()) * r.getLength() - v.getLength();
             dv = v.getReactionTime() * (optimalVelocity(dist) - speed);
         }
 
-        v.updateAll(speed + dv , dv,r);
-
+        v.updateAll(speed + dv * Controller.getInstance().getTicker().getTickTimeInS(),dv,r);
     }
 
 

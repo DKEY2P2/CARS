@@ -3,10 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="a0410bfc-c827-43f8-b05e-49eb50117420" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/controller/StartDoingStuff.java" afterPath="$PROJECT_DIR$/src/controller/StartDoingStuff.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/map/Intersection.java" afterPath="$PROJECT_DIR$/src/map/Intersection.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/map/TrafficLight.java" afterPath="$PROJECT_DIR$/src/map/TrafficLight.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/models/Forbe.java" afterPath="$PROJECT_DIR$/src/models/Forbe.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/models/OVM.java" afterPath="$PROJECT_DIR$/src/models/OVM.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/models/Pipes.java" afterPath="$PROJECT_DIR$/src/models/Pipes.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/vehicle/Vehicle.java" afterPath="$PROJECT_DIR$/src/vehicle/Vehicle.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/vehicle/VehicleFactory.java" afterPath="$PROJECT_DIR$/src/vehicle/VehicleFactory.java" />
     </list>
     <ignored path="Cars.iws" />
@@ -29,11 +31,31 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
+      <file leaf-file-name="TrafficLight.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/map/TrafficLight.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="30" column="63" selection-start-line="30" selection-start-column="63" selection-end-line="30" selection-end-column="63" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Intersection.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/map/Intersection.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="122" column="35" selection-start-line="122" selection-start-column="35" selection-end-line="122" selection-end-column="35" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="Forbe.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/models/Forbe.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="19" column="57" selection-start-line="19" selection-start-column="57" selection-end-line="19" selection-end-column="57" />
+              <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -44,8 +66,8 @@
       <file leaf-file-name="Pipes.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/models/Pipes.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="12.296296">
-              <caret line="22" column="4" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="43" />
+            <state vertical-scroll-proportion="-17.0">
+              <caret line="48" column="57" selection-start-line="48" selection-start-column="57" selection-end-line="48" selection-end-column="112" />
               <folding />
             </state>
           </provider>
@@ -55,7 +77,17 @@
         <entry file="file://$PROJECT_DIR$/src/vehicle/VehicleFactory.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="124" column="64" selection-start-line="124" selection-start-column="64" selection-end-line="124" selection-end-column="64" />
+              <caret line="125" column="31" selection-start-line="125" selection-start-column="31" selection-end-line="125" selection-end-column="31" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Ticker.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/controller/Ticker.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="34" column="11" selection-start-line="34" selection-start-column="11" selection-end-line="34" selection-end-column="11" />
               <folding />
             </state>
           </provider>
@@ -65,70 +97,37 @@
         <entry file="file://$PROJECT_DIR$/src/controller/StartDoingStuff.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="41" column="59" selection-start-line="41" selection-start-column="54" selection-end-line="41" selection-end-column="59" />
+              <caret line="49" column="65" selection-start-line="49" selection-start-column="65" selection-end-line="49" selection-end-column="65" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="OVM.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="DefaultIntersection.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/map/intersection/DefaultIntersection.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="27" column="14" selection-start-line="27" selection-start-column="14" selection-end-line="27" selection-end-column="14" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="OVM.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/models/OVM.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="20" column="57" selection-start-line="20" selection-start-column="8" selection-end-line="20" selection-end-column="57" />
+            <state vertical-scroll-proportion="0.5989933">
+              <caret line="33" column="75" selection-start-line="33" selection-start-column="75" selection-end-line="33" selection-end-column="75" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Sedan.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/vehicle/Sedan.java">
+      <file leaf-file-name="SimpleTrafficLight.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/map/intersection/SimpleTrafficLight.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="27" column="15" selection-start-line="27" selection-start-column="15" selection-end-line="27" selection-end-column="15" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SportCar.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/vehicle/SportCar.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="27" column="8" selection-start-line="27" selection-start-column="8" selection-end-line="27" selection-end-column="8" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Vehicle.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/vehicle/Vehicle.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-16.62069">
-              <caret line="549" column="17" selection-start-line="549" selection-start-column="17" selection-end-line="549" selection-end-column="17" />
-              <folding>
-                <element signature="e#15562#15563#0" expanded="true" />
-                <element signature="e#15610#15611#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Algorithm.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/algorithms/Algorithm.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="IntelligentDriver.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/models/IntelligentDriver.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-2.7936242">
-              <caret line="16" column="3" selection-start-line="16" selection-start-column="3" selection-end-line="16" selection-end-column="3" />
+              <caret line="28" column="26" selection-start-line="28" selection-start-column="26" selection-end-line="28" selection-end-column="26" />
               <folding />
             </state>
           </provider>
@@ -161,7 +160,6 @@
         <option value="$PROJECT_DIR$/src/map/road/NormalRoad.java" />
         <option value="$PROJECT_DIR$/src/ui/setting/GraphicsSetting.java" />
         <option value="$PROJECT_DIR$/src/vehicle/pipe/SportCarP.java" />
-        <option value="$PROJECT_DIR$/src/map/TrafficLight.java" />
         <option value="$PROJECT_DIR$/src/algorithms/AStar.java" />
         <option value="$PROJECT_DIR$/src/ui/ControllerUI.java" />
         <option value="$PROJECT_DIR$/src/ui/frames/Canvas.java" />
@@ -171,16 +169,17 @@
         <option value="$PROJECT_DIR$/src/controller/Ticker.java" />
         <option value="$PROJECT_DIR$/src/map/intersection/SimpleTrafficLight.java" />
         <option value="$PROJECT_DIR$/src/map/intersection/DefaultIntersection.java" />
-        <option value="$PROJECT_DIR$/src/map/Intersection.java" />
         <option value="$PROJECT_DIR$/src/models/IntelligentDriver.java" />
         <option value="$PROJECT_DIR$/src/map/Road.java" />
         <option value="$PROJECT_DIR$/src/controller/threads/ThreadController.java" />
-        <option value="$PROJECT_DIR$/src/models/OVM.java" />
-        <option value="$PROJECT_DIR$/src/vehicle/VehicleFactory.java" />
         <option value="$PROJECT_DIR$/src/models/Pipes.java" />
-        <option value="$PROJECT_DIR$/src/controller/StartDoingStuff.java" />
-        <option value="$PROJECT_DIR$/src/models/Forbe.java" />
         <option value="$PROJECT_DIR$/src/vehicle/Vehicle.java" />
+        <option value="$PROJECT_DIR$/src/vehicle/VehicleFactory.java" />
+        <option value="$PROJECT_DIR$/src/models/Forbe.java" />
+        <option value="$PROJECT_DIR$/src/controller/StartDoingStuff.java" />
+        <option value="$PROJECT_DIR$/src/map/Intersection.java" />
+        <option value="$PROJECT_DIR$/src/map/TrafficLight.java" />
+        <option value="$PROJECT_DIR$/src/models/OVM.java" />
       </list>
     </option>
   </component>
@@ -1054,7 +1053,13 @@
       <option name="project" value="LOCAL" />
       <updated>1459965626030</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Pipes, Forbe and OVM are all fixed, no overtaking, only nice things&#10;">
+      <created>1460043908276</created>
+      <option name="number" value="00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1460043908276</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1107,7 +1112,8 @@
     <MESSAGE value="TrafficLights Work&#10;" />
     <MESSAGE value="For Bernie&#10;" />
     <MESSAGE value="Forbes is &quot;fixed&quot;&#10;no overtaking but there is unrealistic deceleration behaviour. Apparently this is normal and Forbes isnt a very realistic model to begin with. Same goes for Pipes.&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Forbes is &quot;fixed&quot;&#10;no overtaking but there is unrealistic deceleration behaviour. Apparently this is normal and Forbes isnt a very realistic model to begin with. Same goes for Pipes.&#10;" />
+    <MESSAGE value="Pipes, Forbe and OVM are all fixed, no overtaking, only nice things&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Pipes, Forbe and OVM are all fixed, no overtaking, only nice things&#10;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1355,37 +1361,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/map/intersection/SimpleTrafficLight.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="28" column="26" selection-start-line="28" selection-start-column="26" selection-end-line="28" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/map/intersection/DefaultIntersection.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="31" column="27" selection-start-line="31" selection-start-column="27" selection-end-line="31" selection-end-column="27" />
-          <folding>
-            <element signature="e#3254#3255#0" expanded="false" />
-            <element signature="e#3278#3279#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/map/Map.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="107" column="17" selection-start-line="107" selection-start-column="8" selection-end-line="107" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/map/TrafficLight.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="167" column="5" selection-start-line="167" selection-start-column="5" selection-end-line="167" selection-end-column="5" />
           <folding />
         </state>
       </provider>
@@ -1406,26 +1385,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/controller/Ticker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="71" column="28" selection-start-line="71" selection-start-column="28" selection-end-line="71" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/map/road/NormalRoad.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="13" column="59" selection-start-line="13" selection-start-column="59" selection-end-line="13" selection-end-column="59" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/map/Intersection.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="54" column="24" selection-start-line="54" selection-start-column="24" selection-end-line="54" selection-end-column="24" />
           <folding />
         </state>
       </provider>
@@ -1470,18 +1433,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/models/OVM.java">
+    <entry file="file://$PROJECT_DIR$/src/models/IntelligentDriver.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="20" column="57" selection-start-line="20" selection-start-column="8" selection-end-line="20" selection-end-column="57" />
+          <caret line="135" column="0" selection-start-line="135" selection-start-column="0" selection-end-line="135" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/vehicle/Vehicle.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-16.62069">
-          <caret line="549" column="17" selection-start-line="549" selection-start-column="17" selection-end-line="549" selection-end-column="17" />
+        <state vertical-scroll-proportion="4.034483">
+          <caret line="198" column="30" selection-start-line="198" selection-start-column="30" selection-end-line="198" selection-end-column="30" />
           <folding>
             <element signature="e#15562#15563#0" expanded="true" />
             <element signature="e#15610#15611#0" expanded="true" />
@@ -1491,8 +1454,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/models/Pipes.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="12.296296">
-          <caret line="22" column="4" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="43" />
+        <state vertical-scroll-proportion="-17.0">
+          <caret line="48" column="57" selection-start-line="48" selection-start-column="57" selection-end-line="48" selection-end-column="112" />
           <folding />
         </state>
       </provider>
@@ -1500,33 +1463,73 @@
     <entry file="file://$PROJECT_DIR$/src/models/Forbe.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="19" column="57" selection-start-line="19" selection-start-column="57" selection-end-line="19" selection-end-column="57" />
+          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/vehicle/VehicleFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="124" column="64" selection-start-line="124" selection-start-column="64" selection-end-line="124" selection-end-column="64" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/controller/StartDoingStuff.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="41" column="59" selection-start-line="41" selection-start-column="54" selection-end-line="41" selection-end-column="59" />
+          <caret line="49" column="65" selection-start-line="49" selection-start-column="65" selection-end-line="49" selection-end-column="65" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/models/IntelligentDriver.java">
+    <entry file="file://$PROJECT_DIR$/src/vehicle/VehicleFactory.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.7936242">
-          <caret line="16" column="3" selection-start-line="16" selection-start-column="3" selection-end-line="16" selection-end-column="3" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="125" column="31" selection-start-line="125" selection-start-column="31" selection-end-line="125" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/controller/Ticker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="34" column="11" selection-start-line="34" selection-start-column="11" selection-end-line="34" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/map/intersection/SimpleTrafficLight.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="28" column="26" selection-start-line="28" selection-start-column="26" selection-end-line="28" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/map/intersection/DefaultIntersection.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="27" column="14" selection-start-line="27" selection-start-column="14" selection-end-line="27" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/map/Intersection.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="122" column="35" selection-start-line="122" selection-start-column="35" selection-end-line="122" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/map/TrafficLight.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="30" column="63" selection-start-line="30" selection-start-column="63" selection-end-line="30" selection-end-column="63" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/models/OVM.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5989933">
+          <caret line="33" column="75" selection-start-line="33" selection-start-column="75" selection-end-line="33" selection-end-column="75" />
           <folding />
         </state>
       </provider>
