@@ -71,8 +71,8 @@ public abstract class Vehicle implements Task, Drawable, Comparable<Vehicle> {
         double zoom = GraphicsSetting.getInstance().getZoom();
         int differentX = end.getX() - start.getX();
         int differentY = end.getY() - start.getY();
-        int x = (int) (TwoDTransformation.transformX((int) (start.getX() + differentX * percentage)) - width * zoom / 2);
-        int y = (int) (TwoDTransformation.transformY((int) (start.getY() + differentY * percentage)) - height * zoom / 2);
+        int x = (int) (((int) (start.getX() + differentX * percentage)) - width * zoom / 2);
+        int y = (int) (((int) (start.getY() + differentY * percentage)) - height * zoom / 2);
         g.drawOval(
                 x,
                 y,

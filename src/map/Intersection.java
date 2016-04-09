@@ -352,8 +352,8 @@ public abstract class Intersection implements Drawable {
         //BufferedImage bi = ImageMap.getInstance().getImage(imageKey, 0, GraphicsSetting.getInstance().getZoom());
         g.setColor(Color.WHITE);
         double zoom = GraphicsSetting.getInstance().getZoom();
-        int tmpX = (int) (TwoDTransformation.transformX((int) (x)) - (DIAMETER * zoom) / 2);
-        int tmpY = (int) (TwoDTransformation.transformY((int) (y)) - (DIAMETER * zoom) / 2);
+        int tmpX = (int) (((int) (x)) - (DIAMETER * zoom) / 2);
+        int tmpY = (int) (((int) (y)) - (DIAMETER * zoom) / 2);
 
         g.fillOval(tmpX,
                 tmpY,
