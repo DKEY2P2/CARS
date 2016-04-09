@@ -50,6 +50,7 @@ public class ControllerUI implements Task {
      */
     public void draw() {
         Graphics g = c.getGraphic();
+
         drawEverything(g);
         c.getScene();
         s.repaint();
@@ -80,8 +81,8 @@ public class ControllerUI implements Task {
         if (Canvas.dragLine) {
             int panX = GraphicsSetting.getInstance().getPanX();
             int panY = GraphicsSetting.getInstance().getPanY();
-            AbstractMap.SimpleImmutableEntry<Integer, Integer> x = TwoDTransformation.transformX(Canvas.s.getX(), Canvas.liveMouseX - panX);
-            AbstractMap.SimpleImmutableEntry<Integer, Integer> y = TwoDTransformation.transformY(Canvas.s.getY(), Canvas.liveMouseY - panY);
+            AbstractMap.SimpleImmutableEntry<Integer, Integer> x = new AbstractMap.SimpleImmutableEntry<>(Canvas.s.getX(), Canvas.liveMouseX - panX);
+            AbstractMap.SimpleImmutableEntry<Integer, Integer> y = new AbstractMap.SimpleImmutableEntry<>(Canvas.s.getY(), Canvas.liveMouseY - panY);
             g.setColor(Color.WHITE);
             ((Graphics2D) g).setStroke(new BasicStroke((float) (12 * GraphicsSetting.getInstance().getZoom() > 0 ? 12 * GraphicsSetting.getInstance().getZoom() : 1)));
             g.drawLine(
@@ -111,6 +112,9 @@ public class ControllerUI implements Task {
                 RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
                 RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+
+        drawScale(g);
+        ((Graphics2D) g).setTransform(TwoDTransformation.getAfflineTransform());
         try {
             drawLineDragging(g);
             if (Controller.getInstance().getMap() != null) {
@@ -123,7 +127,6 @@ public class ControllerUI implements Task {
                 Logger.LogAny("Drawing", "No map loaded");
             }
 
-            drawScale(g);
         } catch (Exception e) {
             Logger.LogError(e);
         }
