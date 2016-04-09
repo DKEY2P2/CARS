@@ -38,8 +38,10 @@ public class SideBar extends JFrame {
 
     private JLabel tickCounterL;
     private JLabel timeL;
+    private JFrame parent;
 
     public SideBar(JFrame parent) {
+        this.parent = parent;
         setTitle("Options");
         JTabbedPane jTabbedPane = new JTabbedPane(JTabbedPane.NORTH);
         //Exits if escape key has been pressed
@@ -163,6 +165,7 @@ public class SideBar extends JFrame {
         viewPanel.setLayout(new GridLayout(0, 1));
         JPanel zoomPanel = new JPanel();
         JButton plusZoom = new JButton("+");
+        double zoom = GraphicsSetting.getInstance().getZoom();
         plusZoom.addActionListener(new ActionListener() {
 
             @Override
@@ -184,6 +187,7 @@ public class SideBar extends JFrame {
 
             void setZoom(double zoom) {
                 GraphicsSetting.getInstance().setZoom(zoom);
+                setMouseMidScreen();
             }
         });
         zoomLabel = new JLabel("Text");
@@ -193,6 +197,7 @@ public class SideBar extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 double zoom = getZoom();
+
                 zoom /= 1.05;
 
                 if (zoom < 0) {
@@ -209,6 +214,7 @@ public class SideBar extends JFrame {
 
             void setZoom(double zoom) {
                 GraphicsSetting.getInstance().setZoom(zoom);
+                setMouseMidScreen();
             }
         }
         );
@@ -218,7 +224,7 @@ public class SideBar extends JFrame {
         viewPanel.add(zoomPanel);
         JPanel zoomControlPanel = new JPanel();
         SpinnerModel spinnerModelZoom
-                = new SpinnerNumberModel(GraphicsSetting.getInstance().getZoom(), 0.00000000001, 10000, 0.01);
+                = new SpinnerNumberModel(zoom, 0.00000000001, 10000, 0.01);
 
         JSpinner zoomSpinner = new JSpinner(spinnerModelZoom);
         zoomSpinner.addChangeListener(new ChangeListenerZoom());
@@ -245,6 +251,14 @@ public class SideBar extends JFrame {
 
     }
 
+    /**
+     * Set the zoom location to the centre of the screen
+     */
+    private void setMouseMidScreen() {
+        GraphicsSetting.getInstance().setMouseX((int) (parent.getSize().getWidth() / 2));
+        GraphicsSetting.getInstance().setMouseY((int) (parent.getSize().getHeight() / 2));
+    }
+
     private JLabel zoomLabel;
     private JSpinner spawnSpinner;
 
@@ -265,6 +279,8 @@ public class SideBar extends JFrame {
         setting.setPanX(0);
         setting.setPanY(0);
         setting.setZoom(1);
+        setting.setMouseX(0);
+        setting.setMouseY(0);
         setting.setShowIntersection(true);
         setting.setShowTraffficLight(true);
         controller.Controller.getInstance().getUI().update();

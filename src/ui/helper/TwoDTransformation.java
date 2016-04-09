@@ -1,8 +1,6 @@
 package ui.helper;
 
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Point2D;
-import java.util.AbstractMap.SimpleImmutableEntry;
 
 import ui.setting.GraphicsSetting;
 
@@ -12,15 +10,32 @@ import ui.setting.GraphicsSetting;
  * @author Kareem Horstink
  */
 public class TwoDTransformation {
-    
-    public static AffineTransform getAfflineTransform(){
+
+    public static AffineTransform getAfflineTransform() {
         double zoom = GraphicsSetting.getInstance().getZoom();
         double panX = GraphicsSetting.getInstance().getPanX();
         double panY = GraphicsSetting.getInstance().getPanY();
+        double mouseX = GraphicsSetting.getInstance().getMouseX();
+        double mouseY = GraphicsSetting.getInstance().getMouseY();
+
+        AffineTransform finalT = new AffineTransform();
+        AffineTransform panCenterMouse = new AffineTransform();
+        AffineTransform panCenterMouseMin = new AffineTransform();
+        AffineTransform translate = new AffineTransform();
+        AffineTransform zoomT = new AffineTransform();
         
-        AffineTransform affineTransform = new AffineTransform();
-        affineTransform.setToScale(zoom, zoom);
-        affineTransform.setToTranslation(panX, panY);
-        return affineTransform;
+        
+        panCenterMouse.setToTranslation(mouseX, mouseY);
+        panCenterMouseMin.setToTranslation(-mouseX, -mouseY);
+        translate.setToTranslation(panX, panY);
+        zoomT.setToScale(zoom, zoom);
+        
+        
+        finalT.concatenate(panCenterMouse);
+        finalT.concatenate(zoomT);
+        finalT.concatenate(panCenterMouseMin);
+        finalT.concatenate(translate);
+
+        return finalT;
     }
 }

@@ -50,7 +50,7 @@ public class ControllerUI implements Task {
      */
     public void draw() {
         Graphics g = c.getGraphic();
-        ((Graphics2D)g).setTransform(TwoDTransformation.getAfflineTransform());
+
         drawEverything(g);
         c.getScene();
         s.repaint();
@@ -112,6 +112,9 @@ public class ControllerUI implements Task {
                 RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
                 RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+
+        drawScale(g);
+        ((Graphics2D) g).setTransform(TwoDTransformation.getAfflineTransform());
         try {
             drawLineDragging(g);
             if (Controller.getInstance().getMap() != null) {
@@ -124,7 +127,6 @@ public class ControllerUI implements Task {
                 Logger.LogAny("Drawing", "No map loaded");
             }
 
-            drawScale(g);
         } catch (Exception e) {
             Logger.LogError(e);
         }
