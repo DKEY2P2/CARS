@@ -276,13 +276,11 @@ public class Canvas extends JFrame {
         public void mouseWheelMoved(MouseWheelEvent e) {
             keyCode = 3;
             double zoom = getZoom();
-            System.out.println("Wheel: " + e.getPreciseWheelRotation());
+            System.out.println((Double.valueOf(zoom)));
             if (e.getPreciseWheelRotation() > 0) {
-                zoom = zoom / e.getPreciseWheelRotation() * 1.05;
-                System.out.println("minus");
+                zoom *= 1.05;
             } else {
-                zoom = zoom * -e.getPreciseWheelRotation() * 1.05;
-                System.out.println("plus");
+                zoom /= 1.05d;
             }
             if (zoom < 0) {
                 zoom = 0;
