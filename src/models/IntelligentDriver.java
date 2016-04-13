@@ -1,12 +1,9 @@
 package models;
 
 import controller.Controller;
-import helper.Logger;
 import map.Road;
+import map.TrafficLight;
 import vehicle.Vehicle;
-import vehicle.VehicleHolder;
-
-import java.util.AbstractMap.SimpleImmutableEntry;
 
 /**
  * http://home2.fvcc.edu/~dhicketh/DiffEqns/Spring11projects/Scott_Miller/
@@ -43,26 +40,47 @@ public class IntelligentDriver implements Model {
 	 * delta is acceleration exponent (usually set to 4)
 	 * 
 	 */
-	/**
-	 * @param follower
-	 * @param r
-	 * @return
-	 */
-	private Vehicle getInFront(Vehicle follower, Road r) {// TODO: Find a better way to do this
-
-		Vehicle inFrontVehicle = follower.getPredecessor();
-		if (inFrontVehicle == null
-				|| follower.getPosition().getKey().getTrafficlight().getWaiting().contains(inFrontVehicle)
-				|| !VehicleHolder.getInstance().contains(inFrontVehicle)) {
-			return null;
-		} else {
-			return inFrontVehicle;
-		}
-
-	}
 
 	@Override
-	public void calculate(Vehicle follower) {
+	public void calculate(Vehicle veh) {
+
+		Vehicle inFront = veh.getPredecessor();
+		Road r = veh.getPosition().getKey();
+		TrafficLight trl = r.getEnd().getTrafficLight(r);
+
+		double speed, acc, dist,diffSpeed,sStar,a,b,T;
+		speed = veh.getSpeed();
+		int delta = 4;
+		a = veh.getMaxAcceleration();
+		b = veh.getDesiredDeceleration();
+		T = speed / b * 0.05;
+
+		double minDist = veh.getLength()*2; //Picked randomly
+
+		if(inFront == null){
+			if(!trl.isGreen()){
+				diffSpeed = speed;
+				dist = (1 - veh.getPosition().getValue()) * r.getLength();
+			}else{
+				diffSpeed = -speed;
+				dist = minDist * 2;
+			}
+		}else{
+			diffSpeed = speed - inFront.getSpeed();
+			dist = (inFront.getPosition().getValue() - veh.getPosition().getValue()) * r.getLength() - inFront.getLength();
+		}
+
+		if(dist < minDist) {
+			acc = 0;
+			speed = 0;
+		}else {
+			sStar = minDist + speed*T+(speed*diffSpeed)/(2*Math.sqrt(a*b));
+			acc = a * (1-Math.pow(veh.getSpeed()/Math.min(r.getSpeedLimit(),veh.getDesiredSpeed()),delta)-Math.pow(sStar/dist,2));
+		}
+
+		veh.updateAll(speed + acc * Controller.getInstance().getTicker().getTickTimeInS(),acc,r);
+
+		/*
 
 		Road r = follower.getPosition().getKey();
 		Vehicle inFrontVehicle = getInFront(follower, r);
@@ -138,6 +156,6 @@ public class IntelligentDriver implements Model {
 			follower.setSpeed(velCar);
 			follower.setPosition(new SimpleImmutableEntry<>(r, newPosition));
 
-		}
+		}*/
 	}
 }
