@@ -38,7 +38,7 @@ public class StartDoingStuff {
         }
         
         
-        /* Set what model to use for the rest of the application */
+        /* Set what model to use for the rest of the applicatio */
         SimulationSettings.getInstance().setModel(new OVM());
 
         /* Set what path finding AI to use for the rest of the application */
