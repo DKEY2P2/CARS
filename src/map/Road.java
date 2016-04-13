@@ -205,8 +205,8 @@ public abstract class Road implements Drawable {
         ((Graphics2D) g).setStroke(
                 new BasicStroke((float) (getWidth() * zoom > 0 ? getWidth() * zoom : 1)));
 
-        AbstractMap.SimpleImmutableEntry<Integer, Integer> tmpX = TwoDTransformation.transformX(start.getX(), end.getX());
-        AbstractMap.SimpleImmutableEntry<Integer, Integer> tmpY = TwoDTransformation.transformY(start.getY(), end.getY());
+        AbstractMap.SimpleImmutableEntry<Integer, Integer> tmpX = new AbstractMap.SimpleImmutableEntry<>(start.getX(), end.getX());
+        AbstractMap.SimpleImmutableEntry<Integer, Integer> tmpY = new AbstractMap.SimpleImmutableEntry<>(start.getY(), end.getY());
         g.drawLine(tmpX.getKey(), tmpY.getKey(), tmpX.getValue(), tmpY.getValue());
 
         g.setColor(Color.BLACK);

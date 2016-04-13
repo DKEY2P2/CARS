@@ -187,8 +187,8 @@ public class TrafficLight {
             g.setColor(Color.red);
         }
         int size = (int) (3 * zoom > 1 ? 3 * zoom : 1);
-        int x = TwoDTransformation.transformX(this.i.getX() + i * 5) - size / 2;
-        int y = TwoDTransformation.transformY(this.i.getY()) - size / 2;
+        int x = (this.i.getX() + i * 5) - size / 2;
+        int y = (this.i.getY()) - size / 2;
         g.fillOval(x, y, size, size);
         //g.drawString(Integer.toString(index), this.i.getX() + i * 10, this.i.getY());
     }

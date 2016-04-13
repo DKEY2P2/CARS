@@ -20,6 +20,14 @@ import java.util.PriorityQueue;
  */
 public abstract class Intersection implements Drawable {
 
+    private static int indexs = 0;
+
+    private int index;
+
+    public int getIndex() {
+        return index;
+    }
+
     public static final int DIAMETER = 5;
 
     int timerLength = 2000;
@@ -70,6 +78,7 @@ public abstract class Intersection implements Drawable {
     public Intersection(int x, int y) {
         this.x = x;
         this.y = y;
+        index = indexs++;
     }
 
     /**
@@ -343,8 +352,8 @@ public abstract class Intersection implements Drawable {
         //BufferedImage bi = ImageMap.getInstance().getImage(imageKey, 0, GraphicsSetting.getInstance().getZoom());
         g.setColor(Color.WHITE);
         double zoom = GraphicsSetting.getInstance().getZoom();
-        int tmpX = (int) (TwoDTransformation.transformX((int) (x)) - (DIAMETER * zoom) / 2);
-        int tmpY = (int) (TwoDTransformation.transformY((int) (y)) - (DIAMETER * zoom) / 2);
+        int tmpX = (int) (((int) (x)) - (DIAMETER * zoom) / 2);
+        int tmpY = (int) (((int) (y)) - (DIAMETER * zoom) / 2);
 
         g.fillOval(tmpX,
                 tmpY,
@@ -360,7 +369,7 @@ public abstract class Intersection implements Drawable {
 
     @Override
     public String toString() {
-        return ("Intersection: x= " + getX() + ", y= " + getY());
+        return ("Intersection: x= " + getX() + ", y= " + getY() + " ID: " + getIndex());
     }
 
 }
