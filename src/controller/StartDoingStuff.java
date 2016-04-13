@@ -15,6 +15,7 @@ import map.intersection.DefaultIntersection;
 import models.Forbe;
 import models.IntelligentDriver;
 import models.Pipes;
+import models.GM;
 import ui.ControllerUI;
 import vehicle.VehicleFactory;
 
