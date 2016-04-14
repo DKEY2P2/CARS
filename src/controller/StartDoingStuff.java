@@ -1,18 +1,20 @@
 package controller;
 
 
+import java.util.ArrayList;
+import java.util.Random;
+
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 import algorithms.AStar;
 import controller.threads.ThreadController;
 import helper.Logger;
 import map.Road;
 import map.intersection.DefaultIntersection;
-import models.IntelligentDriver;
+import models.GM;
 import ui.ControllerUI;
 import vehicle.VehicleFactory;
-
-import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * A start class for the rest of the system
@@ -39,7 +41,7 @@ public class StartDoingStuff {
         
         
         /* Set what model to use for the rest of the applicatio */
-        SimulationSettings.getInstance().setModel(new IntelligentDriver());
+        SimulationSettings.getInstance().setModel(new GM());
 
         /* Set what path finding AI to use for the rest of the application */
         SimulationSettings.getInstance().setPathFindingAI(new AStar());
