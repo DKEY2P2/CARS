@@ -14,9 +14,12 @@ import javax.swing.*;
 import javax.swing.event.MouseInputListener;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferStrategy;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
+import ui.helper.TwoDTransformation;
 
 /**
  * The canvas to draw everything on. May be turn into a JPanel at a later date
@@ -122,7 +125,6 @@ public class Canvas extends JFrame {
         //Show what we wanted to show
         bi.show();
 
-
         //Tells the JFrame/JPanel to draw the image
         Toolkit.getDefaultToolkit().sync();
     }
@@ -142,6 +144,10 @@ public class Canvas extends JFrame {
          * @param y
          */
         private void addIntersection(int x, int y) {
+            Point2D.Double results  = new Point2D.Double();
+            TwoDTransformation.getAfflineTransform().transform(new Point2D.Double(x, y), results);
+            x = (int) results.x;
+            y = (int) results.y;
             Intersection i = new DefaultIntersection(x, y, controller.Controller.getInstance().getTicker());
             s = i;
             controller.Controller.getInstance().getMap().addIntersection(i);
@@ -184,6 +190,10 @@ public class Canvas extends JFrame {
          */
         private Intersection findClosest(int x, int y) {
             map.Map m = controller.Controller.getInstance().getMap();
+            Point2D.Double results  = new Point2D.Double();
+            TwoDTransformation.getAfflineTransform().transform(new Point2D.Double(x, y), results);
+            x = (int) results.x;
+            y = (int) results.y;
             return m.findClosestIntersection(x, y);
         }
 
