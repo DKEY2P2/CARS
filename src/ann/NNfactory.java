@@ -6,5 +6,8 @@ package ann;
  * @author Kareem Horstink
  */
 public class NNfactory {
-    
+
+    public static NeuralNetwork createMultilayerPerceptron() {
+        return null;
+    }
 }
