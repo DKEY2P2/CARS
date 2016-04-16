@@ -12,9 +12,7 @@ import controller.threads.ThreadController;
 import helper.Logger;
 import map.Road;
 import map.intersection.DefaultIntersection;
-import models.Forbe;
-import models.IntelligentDriver;
-import models.Pipes;
+import models.GM;
 import ui.ControllerUI;
 import vehicle.VehicleFactory;
 
@@ -42,27 +40,31 @@ public class StartDoingStuff {
         }
         
         
-        /* Set what model to use for the rest of the application */
-        SimulationSettings.getInstance().setModel(new IntelligentDriver());
+        /* Set what model to use for the rest of the applicatio */
+        SimulationSettings.getInstance().setModel(new GM());
 
         /* Set what path finding AI to use for the rest of the application */
         SimulationSettings.getInstance().setPathFindingAI(new AStar());
 
         /* Set the number of ticks the simulation waits until it spawns new vehicles */
-        SimulationSettings.getInstance().setTimeUntilSpawn(50);
+        SimulationSettings.getInstance().setTimeUntilSpawn(500);
+
+        SimulationSettings.getInstance().setNumberOfCarsToSpawn(10);
 
         /* Creates the controller */
         Controller control = Controller.getInstance();
 
-        /* A temporary of holder of for the intersection */
+        /* A temporary holder for the intersections */
         ArrayList<DefaultIntersection> a = new ArrayList<>();
         ArrayList<Road> b = new ArrayList<>();
 
-        /* A random gen for location of a vehicle */
+        /* A random generator for location of a vehicle */ //TODO: We must make this ZONE based, not random
         Random r = new Random();
+
         /* Creates a ticker with the value of 100 ms between each tick which represent 0.1 second */
-        Ticker t = new Ticker(0.1, 100);
-        
+        Ticker t = new Ticker(0.01, 10);
+
+
         //Add the item to the controller
         b.stream().forEach((b1) -> {
             control.getMap().addRoad(b1);
@@ -70,6 +72,7 @@ public class StartDoingStuff {
         a.stream().forEach((as) -> {
             control.getMap().addIntersection(as);
         });
+
 
         //Add the ticker to the controller
         control.setTicker(t);//so we can get the ticker later on
@@ -107,15 +110,11 @@ public class StartDoingStuff {
     
     public static void start() {
         if (!start) {
-            //Creates n number of cars
-            for (int i = 0; i < 2; i++) {
-                VehicleFactory.getFactory().createVehicle(VehicleFactory.SPORT_CAR);
-            }
-        	VehicleFactory.getFactory().createVehicle(VehicleFactory.SPORT_CAR);
-
             Controller.getInstance().getTicker().start("tick");
+            VehicleFactory.getFactory().createVehicle();
             start = true;
         }
         
     }
+
 }

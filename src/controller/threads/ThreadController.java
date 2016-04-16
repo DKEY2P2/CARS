@@ -5,12 +5,15 @@ import controller.Observer;
 import controller.Observerable;
 import controller.Task;
 import helper.Logger;
+import map.Road;
+import vehicle.Vehicle;
+import vehicle.VehicleHolder;
+
+import java.util.Arrays;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingDeque;
-import java.util.logging.Level;
-import vehicle.VehicleHolder;
 
 /**
  * Controls all the threads. No clue if this works. Would be awesome if it did
@@ -96,7 +99,16 @@ public class ThreadController implements Observer {
 
     @Override
     public void update(String args) {
-        //Adds a task set to the list of toDo's
+
+
+        for(Road r : Controller.getInstance().getMap().getRoads()){
+            Object[] va = r.getVehicles().toArray();
+            Arrays.sort(va);
+            r.getVehicles().clear();
+            for(Object o : va){
+                r.addCar((Vehicle)o);
+            }
+        }
         getTasks();
         //Runs all the task
         run();

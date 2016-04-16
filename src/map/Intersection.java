@@ -2,13 +2,13 @@ package map;
 
 import helper.Logger;
 import ui.Drawable;
+import ui.helper.TwoDTransformation;
 import ui.setting.GraphicsSetting;
 import vehicle.Vehicle;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
-import ui.helper.TwoDTransformation;
 
 /**
  * The abstract class for all types of intersections present in the simulation
@@ -30,7 +30,7 @@ public abstract class Intersection implements Drawable {
 
     public static final int DIAMETER = 5;
 
-    int timerLength = 4000;
+    int timerLength = 2000;
 
     /**
      * The x position of an intersection
@@ -277,7 +277,7 @@ public abstract class Intersection implements Drawable {
      *
      * @return
      */
-    public TrafficLight getCurrentlyGreen() {
+    public TrafficLight getCurrentlyGreen() { //This assumes only 1 light per intersection can be green
         for (TrafficLight tLight : tLights) {
             if (tLight.isGreen()) {
                 return tLight;
@@ -352,8 +352,8 @@ public abstract class Intersection implements Drawable {
         //BufferedImage bi = ImageMap.getInstance().getImage(imageKey, 0, GraphicsSetting.getInstance().getZoom());
         g.setColor(Color.WHITE);
         double zoom = GraphicsSetting.getInstance().getZoom();
-        int tmpX = (int) (TwoDTransformation.transformX((int) (x)) - (DIAMETER * zoom) / 2);
-        int tmpY = (int) (TwoDTransformation.transformY((int) (y)) - (DIAMETER * zoom) / 2);
+        int tmpX = (int) (((int) (x)) - (DIAMETER * zoom) / 2);
+        int tmpY = (int) (((int) (y)) - (DIAMETER * zoom) / 2);
 
         g.fillOval(tmpX,
                 tmpY,

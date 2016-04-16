@@ -1,15 +1,9 @@
 package vehicle;
 
 import algorithms.Algorithm;
+import controller.Controller;
 import controller.Task;
 import helper.Logger;
-
-import java.awt.Color;
-import java.awt.Graphics;
-import java.util.AbstractMap.SimpleImmutableEntry;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Objects;
 import map.Intersection;
 import map.Road;
 import map.TrafficLight;
@@ -17,6 +11,10 @@ import models.Model;
 import ui.Drawable;
 import ui.helper.TwoDTransformation;
 import ui.setting.GraphicsSetting;
+
+import java.awt.*;
+import java.util.*;
+import java.util.AbstractMap.SimpleImmutableEntry;
 
 /**
  * The abstract class for all vehicles and identities present in the simulation
@@ -55,13 +53,16 @@ public abstract class Vehicle implements Task, Drawable, Comparable<Vehicle> {
 
     @Override
     public void draw(Graphics g) {
+        if (!VehicleHolder.getInstance().contains(this)) {
+            return;
+        }
 
         g.setColor(color);
         SimpleImmutableEntry<Road, Double> position = this.position;
         Road road = position.getKey();
         double percentage = position.getValue();
         if (road == null) {
-            Logger.LogError("Null pointer Exception", this);
+            Logger.LogError("No road given", this);
             return;
         }
         Intersection start = road.getStart();
@@ -71,33 +72,13 @@ public abstract class Vehicle implements Task, Drawable, Comparable<Vehicle> {
         double zoom = GraphicsSetting.getInstance().getZoom();
         int differentX = end.getX() - start.getX();
         int differentY = end.getY() - start.getY();
-        int x = (int) (TwoDTransformation.transformX((int) (start.getX() + differentX * percentage)) - width * zoom / 2);
-        int y = (int) (TwoDTransformation.transformY((int) (start.getY() + differentY * percentage)) - height * zoom / 2);
+        int x = (int) (((int) (start.getX() + differentX * percentage)) - width * zoom / 2);
+        int y = (int) (((int) (start.getY() + differentY * percentage)) - height * zoom / 2);
         g.drawOval(
                 x,
                 y,
                 (int) (width * zoom), (int) (height * zoom)
         );
-    }
-
-    public Vehicle getPredecessor() {
-        Iterator<Vehicle> vehicles = this.getPosition().getKey().getVehicles().iterator();
-
-        while (vehicles.hasNext()) {
-            Vehicle pre = vehicles.next();
-            Vehicle cur = pre;
-            if (cur == this) {
-                return null;
-            }
-            while (vehicles.hasNext()) {
-                cur = vehicles.next();
-                if (cur == this) {
-                    return pre;
-                }
-                pre = cur;
-            }
-        }
-        return null;
     }
 
     public double getBreakingDistance() {
@@ -216,7 +197,7 @@ public abstract class Vehicle implements Task, Drawable, Comparable<Vehicle> {
     public abstract boolean update();
 
     public final Intersection nextPlaceToGo() {
-        Intersection i = a.findShortestPath(getPosition().getKey().getEnd(), destination).get(0);
+        Intersection i = a.findShortestPath(getPosition().getKey().getEnd(), destination).get(1);
         if (i == destination) {
             return destination;
         } else {
@@ -522,11 +503,66 @@ public abstract class Vehicle implements Task, Drawable, Comparable<Vehicle> {
 
     }
 
+    public Vehicle getPredecessor() {
+        Vehicle inFrontVehicle = null;
+        Road r = getPosition().getKey();
+
+        PriorityQueue<Vehicle> pq = r.getVehicles();
+        Iterator<Vehicle> iv = pq.iterator();
+
+        while(iv.hasNext()){
+            Vehicle c = iv.next();
+            if(c == this){
+                return inFrontVehicle;
+            }else{
+                inFrontVehicle = c;
+            }
+        }
+
+        return inFrontVehicle;
+    }
+
+    public void updateAll(double v, double acc,Road r){
+        double t = Controller.getInstance().getTicker().getTickTimeInS();
+
+        this.setAcceleration(acc);
+        if(v < 0)
+            this.setSpeed(0);
+        else
+            this.setSpeed(v);
+
+        double p = this.getPosition().getValue() + ((this.getSpeed() * t / r.getLength())); //new position
+        if(p>=1d){
+            r.getVehicles().remove(this);
+            if(this.getDestination() == r.getEnd()){
+                VehicleHolder.getInstance().remove(this);
+            }else{
+                Road rn = this.nextPlaceToGo().hasRoad(r.getEnd());
+                if(rn == r){
+                    VehicleHolder.getInstance().remove(this);
+                }else {
+                    this.setPosition(new AbstractMap.SimpleImmutableEntry<Road, Double>(rn, 0d));
+                    this.getPosition().getKey().addCar(this);
+                    Vehicle pre = getPredecessor();
+                    if (pre != null) {
+                        setSpeed(pre.getSpeed());
+                    }
+                }
+            }
+        }else{
+            this.setPosition(new AbstractMap.SimpleImmutableEntry<Road, Double>(r, p));
+        }
+    }
+
+    /*@Override
+     public String toString() {
+     return "Index : " + index + " Speed: " + speed + "\n  Acceleration : " + acceleration + " Road : "
+     + getPosition().getKey() + " Percentage " + position.getValue() + " Deceleration : "
+     + getDesiredDeceleration();
+     }*/
     @Override
     public String toString() {
-        return "Index : " + index + " Speed: " + speed + "\n  Acceleration : " + acceleration + " Road : "
-                + getPosition().getKey() + " Percentage " + position.getValue() + " Deceleration : "
-                + getDesiredDeceleration();
+        return "%" + position.getValue();
     }
 
 }

@@ -7,12 +7,13 @@ package vehicle;
 
 import algorithms.Algorithm;
 import helper.Logger;
-import java.awt.Color;
-import java.util.AbstractMap;
-import java.util.Random;
 import map.Intersection;
 import map.Road;
 import models.Model;
+
+import java.awt.*;
+import java.util.AbstractMap;
+import java.util.Random;
 
 /**
  *
@@ -20,15 +21,17 @@ import models.Model;
  */
 public class Minibus extends Vehicle {
 
+    //Volkswagen Sharan
+
     protected Minibus(Road start, double percentage, Model m, Algorithm a, Intersection destination) {
         super(start, percentage, m, a);
         Random r = new Random();
-        setDesiredSpeed(27.777777778 + r.nextInt(3));//100kmh
+        setDesiredSpeed(55.55);
         setDesiredDeceleration(1.67 + r.nextInt(2));
-        setMaxAcceleration(27.78 / 17);//Toyota Hiace 2017
-        setMaxDecceleration(27.78/43);//100kmh to 0 takes 43.35m thus 10ms^2 from Suzki Alto  
+        setMaxAcceleration(2.80583613916947);
+        setMaxDecceleration(21.73 - 2);http://blog.esurance.com/stopping-distance-is-the-3-second-rule-wrong/#.VwailPkrKUk - THIS IS FOR THE AVERAGE CAR so i subtracted a bit for the minibus
         setReactionTime(2.3);//average human - http://copradar.com/redlight/factors/
-        setLength(5.38);//Crystler 300c v8 edition 2015
+        setLength(4.854);
         setDestination(destination);
         setColor(Color.yellow);
     }

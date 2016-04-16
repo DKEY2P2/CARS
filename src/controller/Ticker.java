@@ -1,9 +1,9 @@
 package controller;
 
+import vehicle.VehicleFactory;
+
 import java.util.Timer;
 import java.util.TimerTask;
-
-import vehicle.VehicleFactory;
 
 /**
  * A ticker that meant to update the program

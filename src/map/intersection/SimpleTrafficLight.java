@@ -3,13 +3,12 @@ package map.intersection;
 import controller.Observer;
 import controller.Ticker;
 import helper.Logger;
-import java.util.AbstractMap;
-import java.util.AbstractMap.SimpleImmutableEntry;
-import java.util.ArrayList;
 import map.Intersection;
 import map.Road;
 import map.TrafficLight;
 import vehicle.Vehicle;
+
+import java.util.AbstractMap.SimpleImmutableEntry;
 
 /**
  *
@@ -25,8 +24,10 @@ public class SimpleTrafficLight extends Intersection implements Observer {
         ticker = t;
     }
 
+    //TODO: This class might be completely useless
     @Override
     public void update() {
+        System.out.println("HERE");
         //updateLights((int) (ticker.getTimeBetweenTick() * ticker.getTickTimeInMS()));
         TrafficLight tl = getCurrentlyGreen();
         int i = 0;

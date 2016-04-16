@@ -1,34 +1,47 @@
 package models;
 
 import controller.Controller;
-import java.util.AbstractMap.SimpleImmutableEntry;
 import map.Road;
+import map.TrafficLight;
 import vehicle.Vehicle;
 
 /**
  *
- * @author Kareem
+ * @author Kareem, Lucas
  */
 public class Forbe implements Model {
-
-    private Vehicle getInFront(Vehicle veh, Road r) {
-        Vehicle inFrontVehicle = null;
-        double currentCarPos = veh.getPosition().getValue();
-        double compare = Double.MAX_VALUE;
-        for (Vehicle vehicle : r.getVehicles()) {
-        	double tmp = vehicle.getPosition().getValue();
-        	if(tmp<currentCarPos){
-        		if(compare>tmp){
-        			inFrontVehicle = vehicle;
-        		}
-        	}
-        }
-        return inFrontVehicle;
-    }
 
     @Override
     public void calculate(Vehicle veh) {
 
+        Vehicle inFront = veh.getPredecessor();
+        Road r = veh.getPosition().getKey();
+        TrafficLight trl = r.getEnd().getTrafficLight(r);
+
+        double speed, acc, dist;
+
+        double minDist = veh.getReactionTime() * veh.getSpeed() + veh.getLength();
+
+        if(inFront == null){
+            if(!trl.isGreen()){
+                dist = (1 - veh.getPosition().getValue()) * r.getLength();
+            }else{
+                dist = minDist * 2;
+            }
+        }else{
+            dist = (inFront.getPosition().getValue() - veh.getPosition().getValue()) * r.getLength() - inFront.getLength();
+        }
+
+        if(dist < minDist) {
+            acc = veh.getMaxDecceleration();
+            speed = Math.max(0, veh.getSpeed() - acc * Controller.getInstance().getTicker().getTickTimeInS());
+        }else {
+            acc = veh.getMaxAcceleration();
+            speed = Math.min(veh.getDesiredSpeed(), veh.getSpeed() + acc * Controller.getInstance().getTicker().getTickTimeInS());
+        }
+
+        veh.updateAll(speed,acc,r);
+/*
         //Waiting at the traffic light
         if (veh.getPosition().getKey() == null) {
             return;
@@ -45,7 +58,7 @@ public class Forbe implements Model {
         double reactionTime = veh.getReactionTime();
         double sMin = reactionTime * v + l;
 
-        Vehicle inFrontVehicle = getInFront(veh, r);
+        Vehicle inFrontVehicle = veh.getPredecessor();
 
         //Get the road your on
         //Get the percentage dunno why I split it when I split later on
@@ -100,7 +113,8 @@ public class Forbe implements Model {
             //Update the position
             veh.setPosition(new SimpleImmutableEntry<>(r, newPercentage));
 
-        }
+            //veh.updateAll();
+        }*/
     }
 
 }

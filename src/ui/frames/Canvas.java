@@ -2,20 +2,24 @@ package ui.frames;
 
 import controller.StartDoingStuff;
 import helper.Logger;
+import json.GEOjson;
 import map.Intersection;
+import map.Map;
 import map.Road;
 import map.intersection.DefaultIntersection;
 import map.road.NormalRoad;
 import ui.setting.GraphicsSetting;
+
 import javax.swing.*;
 import javax.swing.event.MouseInputListener;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferStrategy;
 import java.io.File;
 import java.io.FileNotFoundException;
-import json.GEOjson;
-import map.Map;
+import java.util.Arrays;
+import ui.helper.TwoDTransformation;
 
 /**
  * The canvas to draw everything on. May be turn into a JPanel at a later date
@@ -46,8 +50,7 @@ public class Canvas extends JFrame {
         );
 
         //Sets the title of window. Ironically not shown xD
-        setTitle(
-                "Traffic simulator");
+        setTitle("Traffic simulator");
 
         //To get the size of the screen
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -61,50 +64,41 @@ public class Canvas extends JFrame {
         addMouseWheelListener(
                 new MouseAdapter() {
                     @Override
-                    public void mouseWheelMoved(MouseWheelEvent e
-                    ) {
+                    public void mouseWheelMoved(MouseWheelEvent e) {
                         GraphicsSetting.getInstance().setZoom(GraphicsSetting.getInstance().getZoom() + e.getPreciseWheelRotation() * 0.05);
                     }
                 }
         );
 
         //Allows the user to exit the program
-        addKeyListener(
-                new KeyAdapterImpl());
+        addKeyListener(new KeyAdapterImpl());
         MouseListenerCustom a = new MouseListenerCustom();
 
         addMouseListener(a);
 
         addMouseMotionListener(a);
 
-        addMouseWheelListener(
-                new MouseWheelCustom());
+        addMouseWheelListener(new MouseWheelCustom());
 
         //Set the default operation to close the java application
-        setDefaultCloseOperation(
-                3);
+        setDefaultCloseOperation(3);
 
         //Hides the System specfic (eg Windows, Apple) elments. Only to allow 
         //the double bufferStrategy to work
-        if (!GraphicsSetting.getInstance()
-                .isDecorated()) {
+        if (!GraphicsSetting.getInstance().isDecorated()) {
             setUndecorated(true);
         }
 
-        setIgnoreRepaint(
-                true);
+        setIgnoreRepaint(true);
 
         //Makes the UI visable
-        setVisible(
-                true);
+        setVisible(true);
 
         //Creates a buffer strategy. To remove any flickering.
-        createBufferStrategy(
-                2);
+        createBufferStrategy(2);
 
         //Set the UI to be in the center of the screen
-        setLocationRelativeTo(
-                null);
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -150,6 +144,10 @@ public class Canvas extends JFrame {
          * @param y
          */
         private void addIntersection(int x, int y) {
+            Point2D.Double results  = new Point2D.Double();
+            TwoDTransformation.getAfflineTransform().transform(new Point2D.Double(x, y), results);
+            x = (int) results.x;
+            y = (int) results.y;
             Intersection i = new DefaultIntersection(x, y, controller.Controller.getInstance().getTicker());
             s = i;
             controller.Controller.getInstance().getMap().addIntersection(i);
@@ -192,6 +190,10 @@ public class Canvas extends JFrame {
          */
         private Intersection findClosest(int x, int y) {
             map.Map m = controller.Controller.getInstance().getMap();
+            Point2D.Double results  = new Point2D.Double();
+            TwoDTransformation.getAfflineTransform().transform(new Point2D.Double(x, y), results);
+            x = (int) results.x;
+            y = (int) results.y;
             return m.findClosestIntersection(x, y);
         }
 
@@ -272,14 +274,6 @@ public class Canvas extends JFrame {
         public void mouseMoved(MouseEvent e) {
             x = e.getX();
             y = e.getY();
-//            if (keyCode == 3) {
-            GraphicsSetting.getInstance().setMouseX((int) (e.getX()));
-            GraphicsSetting.getInstance().setMouseY((int) (e.getY()));
-//            }
-//            if (!click) {
-//                x = e.getX();
-//                y = e.getY();
-//            }
         }
 
     }
@@ -294,16 +288,18 @@ public class Canvas extends JFrame {
         public void mouseWheelMoved(MouseWheelEvent e) {
             keyCode = 3;
             double zoom = getZoom();
+            System.out.println((Double.valueOf(zoom)));
             if (e.getPreciseWheelRotation() > 0) {
-                zoom /= e.getPreciseWheelRotation() * 1.05;
+                zoom *= 1.05;
             } else {
-                zoom *= -e.getPreciseWheelRotation() * 1.05;
+                zoom /= 1.05d;
             }
             if (zoom < 0) {
                 zoom = 0;
             }
             setZoom(zoom);
-
+            GraphicsSetting.getInstance().setMouseX((int) (e.getX()));
+            GraphicsSetting.getInstance().setMouseY((int) (e.getY()));
             controller.Controller.getInstance().getUI().update();
         }
 
@@ -313,9 +309,6 @@ public class Canvas extends JFrame {
     }
 
     private class KeyAdapterImpl extends KeyAdapter {
-
-        public KeyAdapterImpl() {
-        }
 
         @Override
         public void keyPressed(KeyEvent e) {

@@ -30,6 +30,10 @@ public class TestAl implements Algorithm {
                         continue;
                     }
                     tmp.add(a1.getStart());
+                    tmp.add(a1.getStart());
+                    tmp.add(a1.getStart());
+                    tmp.add(a1.getStart());
+                    tmp.add(a1.getStart());
                 }
             }
         }

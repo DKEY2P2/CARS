@@ -1,16 +1,12 @@
 package map;
 
 import ui.Drawable;
+import ui.helper.TwoDTransformation;
 import ui.setting.GraphicsSetting;
 import vehicle.Vehicle;
 
 import java.awt.*;
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Objects;
-import java.util.PriorityQueue;
-import ui.helper.TwoDTransformation;
+import java.util.*;
 
 /**
  * This class represents a road A road is similar to an edge of a graph, they
@@ -20,6 +16,8 @@ import ui.helper.TwoDTransformation;
  * @since 18-02-16
  */
 public abstract class Road implements Drawable {
+
+    public static PriorityQueue<Vehicle> pq2;
 
     /**
      * The length of a road
@@ -108,6 +106,11 @@ public abstract class Road implements Drawable {
         end.addRoad(this);
         start.addRoad(this);
         LENGTH = length;
+    }
+
+    public Vehicle addCar(Vehicle v){
+        pq.add(v);
+        return v;
     }
 
     /**
@@ -202,8 +205,8 @@ public abstract class Road implements Drawable {
         ((Graphics2D) g).setStroke(
                 new BasicStroke((float) (getWidth() * zoom > 0 ? getWidth() * zoom : 1)));
 
-        AbstractMap.SimpleImmutableEntry<Integer, Integer> tmpX = TwoDTransformation.transformX(start.getX(), end.getX());
-        AbstractMap.SimpleImmutableEntry<Integer, Integer> tmpY = TwoDTransformation.transformY(start.getY(), end.getY());
+        AbstractMap.SimpleImmutableEntry<Integer, Integer> tmpX = new AbstractMap.SimpleImmutableEntry<>(start.getX(), end.getX());
+        AbstractMap.SimpleImmutableEntry<Integer, Integer> tmpY = new AbstractMap.SimpleImmutableEntry<>(start.getY(), end.getY());
         g.drawLine(tmpX.getKey(), tmpY.getKey(), tmpX.getValue(), tmpY.getValue());
 
         g.setColor(Color.BLACK);

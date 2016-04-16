@@ -32,7 +32,7 @@ public class GEOjson {
      */
     public static Map GEOJsonConverter(String filepath) throws FileNotFoundException {
         try {
-
+            helper.Logger.printOther(filepath);
             //Clear ints.
             intersectioncnt = 0;
             roadcnt = 0;
@@ -54,13 +54,13 @@ public class GEOjson {
                 JSONObject geom = features.getJSONObject(i).getJSONObject("geometry");
 
                 if (geom.getString("type").equals("LineString")) {
-//				System.out.println("LineString object");
+//                    helper.Logger.printOther("LineString object");
 
                     JSONArray coordinates = geom.getJSONArray("coordinates");
                     LineStringChugger(coordinates, map);
 
                 } else if (geom.getString("type").equals("MultiLineString")) {
-//		System.out.println("MutliLineString object");
+//                    helper.Logger.printOther("MutliLineString object");
                     JSONArray coordinates = geom.getJSONArray("coordinates");
 
                     //Extracting intersections from points and adding them to the list
@@ -69,7 +69,7 @@ public class GEOjson {
                     }
 
                 } else if (geom.getString("type").equals("Polygon")) {
-//		System.out.println("Polygon object");
+//                    helper.Logger.printOther("Polygon object");
                     JSONArray coordinates = geom.getJSONArray("coordinates");
 
                     //Extracting intersections from points and adding them to the list
@@ -83,10 +83,12 @@ public class GEOjson {
             return map;
         } catch (FileNotFoundException | JSONException e) {
             System.err.println("An error has occured when importing a map");
+            System.err.println(e);
             Logger.LogError(e);
             return new Map(new ArrayList<>(), new ArrayList<>());
         } catch (Exception ex) {
             System.err.println("An error has occured when importing a map");
+            System.err.println(ex);
             Logger.LogError(ex);
             return new Map(new ArrayList<>(), new ArrayList<>());
         }
@@ -136,8 +138,8 @@ public class GEOjson {
 
         //If these are not set yet, let's do.
 	if (refX==69696 || refY == 69696){
-	    refX = (int) (coordinates.getJSONArray(0).getDouble(0)* 100000);
-	    refY = (int) (coordinates.getJSONArray(0).getDouble(1)* 100000);
+	    refX = (int) (coordinates.getJSONArray(0).getDouble(0)* 1000000);
+	    refY = (int) (coordinates.getJSONArray(0).getDouble(1)* 1000000);
         }
 
         ArrayList<Intersection> ints = new ArrayList<Intersection>();
@@ -145,8 +147,8 @@ public class GEOjson {
 
             JSONArray point = coordinates.getJSONArray(j);
 
-	    int xcoord = (int) ((point.getDouble(0) * 100000)-refX);
-	    int ycoord = (int) ((point.getDouble(1) * 100000)-refY);
+	    int xcoord = (int) ((point.getDouble(0) * 1000000)-refX);
+	    int ycoord = (int) ((-1)*((point.getDouble(1) * 1000000)-refY));
 
             ints.add(includeIntersectionAtPoint(xcoord, ycoord, map));
 

@@ -1,13 +1,13 @@
 package map;
 
+import ui.helper.TwoDTransformation;
+import ui.setting.GraphicsSetting;
 import vehicle.Vehicle;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
-import ui.helper.TwoDTransformation;
-import ui.setting.GraphicsSetting;
 
 /**
  * A class made to represent the traffic lights on the road network
@@ -26,7 +26,7 @@ public class TrafficLight {
     /**
      * The time in milliseconds it takes for a green light to turn red
      */
-    private int timerLength = 2000;
+    private int timerLength = 10000;
     /**
      * The time in milliseconds left before the light turns red
      */
@@ -187,8 +187,8 @@ public class TrafficLight {
             g.setColor(Color.red);
         }
         int size = (int) (3 * zoom > 1 ? 3 * zoom : 1);
-        int x = TwoDTransformation.transformX(this.i.getX() + i * 5) - size / 2;
-        int y = TwoDTransformation.transformY(this.i.getY()) - size / 2;
+        int x = (this.i.getX() + i * 5) - size / 2;
+        int y = (this.i.getY()) - size / 2;
         g.fillOval(x, y, size, size);
         //g.drawString(Integer.toString(index), this.i.getX() + i * 10, this.i.getY());
     }

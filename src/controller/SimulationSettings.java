@@ -18,6 +18,7 @@ public class SimulationSettings {
 
     private int timeUntilSpawn = 150;
 
+
     /**
      * Get the value of timeUntilSpawn
      *
@@ -83,7 +84,7 @@ public class SimulationSettings {
         return instance;
     }
 
-    private int numberOfCarsToSpawn = 5;
+    private int numberOfCarsToSpawn = 10;
 
     /**
      * Get the value of numberOfCarsToSpawn
