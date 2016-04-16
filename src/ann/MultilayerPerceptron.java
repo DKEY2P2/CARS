@@ -1,6 +1,5 @@
 package ann;
 
-import helper.Logger;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -77,13 +76,42 @@ public class MultilayerPerceptron implements NeuralNetwork {
     }
 
     /**
-     * The activation function. See {@link #MultilayerPerceptron()}
+     * The activation function.
      *
      * @param input The value to be evaluated
      * @return A value between -1 and 1 based on the input
      */
     private double activationFunction(double input) {
         return Math.tanh(input);
+    }
+
+    @Override
+    public double[] activate(double[] input) {
+        if (input.length != nodes[0].length) {
+            throw new IllegalArgumentException("The amount of input does not reflect the amount of input nodes");
+        }
+
+        for (int i = 0; i < input.length; i++) {
+            nodes[0][i].setCurrentValue(input[i]);
+        }
+
+        for (int layer = 1; layer < nodes.length; layer++) {
+            Node[] currentLayer = nodes[layer];
+            Node[] previousLayer = nodes[layer - 1];
+            for (int nodeNumber = 0; nodeNumber < currentLayer.length; nodeNumber++) {
+                Node node1 = currentLayer[nodeNumber];
+                double sum = 0;
+                for (int i = 0; i < previousLayer.length; i++) {
+                    sum += previousLayer[i].getCurrentValue() * weights[layer - 1][i][nodeNumber];
+                }
+                node1.setCurrentValue(activationFunction(sum));
+            }
+        }
+        double[] results = new double[nodes[nodes.length - 1].length];
+        for (int i = 0; i < nodes[nodes.length - 1].length; i++) {
+            results[i] = nodes[nodes.length - 1][i].getCurrentValue();
+        }
+        return results;
     }
 
     @Override
@@ -106,7 +134,7 @@ public class MultilayerPerceptron implements NeuralNetwork {
 
     @Override
     public int size() {
-        int i =0;
+        int i = 0;
         for (Node[] node : nodes) {
             for (Node node1 : node) {
                 i++;
