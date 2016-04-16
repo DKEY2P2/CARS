@@ -8,4 +8,9 @@ package ann;
  */
 public class TesterClass {
 
+    public static void main(String[] args) {
+        NeuralNetwork test = NNfactory.createMultilayerPerceptron(2, new int[]{6, 3}, 1);
+        test.printWeights();
+        System.out.println(test.size());
+    }
 }

@@ -2,6 +2,7 @@ package ann;
 
 import helper.Logger;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * The implementation of a multilayerPerceptron see
@@ -15,9 +16,12 @@ import java.util.ArrayList;
  * @author Kareem Horstink
  */
 public class MultilayerPerceptron implements NeuralNetwork {
+
+    private static final Random RANDOM = new Random(24031995);
+
     // [layer][nodeNumber]
     private Node[][] nodes;
-    
+
     //[layer][nodeNumber][weightNumber]
     private double[][][] weights;
 
@@ -49,17 +53,27 @@ public class MultilayerPerceptron implements NeuralNetwork {
     private void generateRandomWeights() {
         ArrayList<double[]> weightLayer = new ArrayList<>();
         ArrayList<double[][]> tmp = new ArrayList<>();
-        
-        for (int i = 0; i < nodes.length-1; i++) {
+
+        for (int i = 0; i < nodes.length - 1; i++) {
             Node[] nodeLayer = nodes[i];
             for (int j = 0; j < nodeLayer.length; j++) {
                 Node superCurrent = nodeLayer[j];
-                weightLayer.add(new double[nodes[i+1].length]);
+                weightLayer.add(new double[nodes[i + 1].length]);
             }
             tmp.add(weightLayer.toArray(new double[1][1]));
             weightLayer.clear();
         }
         weights = tmp.toArray(new double[1][1][1]);
+
+        for (double[][] weight : weights) {
+            for (double[] weight1 : weight) {
+                for (int i = 0; i < weight1.length; i++) {
+                    weight1[i] = RANDOM.nextDouble();
+
+                }
+            }
+
+        }
     }
 
     /**
@@ -74,13 +88,31 @@ public class MultilayerPerceptron implements NeuralNetwork {
 
     @Override
     public void printWeights() {
-        Logger.LogError("Not supported yet.", this);
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < weights.length; i++) {
+            builder.append(Integer.toString(i));
+            builder.append("\n");
+            for (int j = 0; j < weights[i].length; j++) {
+                builder.append(" ------").append(Integer.toString(j));
+                builder.append("\n");
+                for (int k = 0; k < weights[i][j].length; k++) {
+                    builder.append("\t------").append(Double.toString(weights[i][j][k]));
+                    builder.append("\n");
+                }
+            }
+        }
+        System.out.println(builder);
     }
 
     @Override
     public int size() {
-        Logger.LogError("Not supported yet.", this);
-        return 0;
+        int i =0;
+        for (Node[] node : nodes) {
+            for (Node node1 : node) {
+                i++;
+            }
+        }
+        return i;
     }
 
 }
