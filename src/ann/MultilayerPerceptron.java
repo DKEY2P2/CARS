@@ -79,7 +79,7 @@ public class MultilayerPerceptron implements NeuralNetwork {
             nodeWeight.clear();
         }
         weights = layer.toArray(new double[1][1][1]);
-        
+
 //                                                    / *~*~*~*~*
 //                                                  .7
 //                                       \       , //
@@ -211,7 +211,16 @@ public class MultilayerPerceptron implements NeuralNetwork {
 
     @Override
     public double[] learn(double[] input, double[] expectedOutput) {
-        Logger.LogError("Not supported yet.", this);
+        if (expectedOutput.length != nodes[nodes.length - 1].length) {
+            throw new IllegalArgumentException("The amount of expected results does not reflect the amount of output nodes");
+        }
+        double[] results = activate(input);
+
+        double[] err = new double[results.length];
+        for (int i = 0; i < err.length; i++) {
+            err[i] = expectedOutput[i] - results[i];
+        }
+
         return null;
     }
 
