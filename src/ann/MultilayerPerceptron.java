@@ -6,7 +6,7 @@ import java.util.Random;
 
 /**
  * The implementation of a multilayerPerceptron see
- * https://en.wikipedia.org/wiki/Multilayer_perceptron
+ * https://en.wikipedia.org/wiki/Multilayer_perceptron or http://rfhs8012.fh-regensburg.de/~saj39122/jfroehl/diplom/e-1.html
  * <p>
  * Using a hyperbolic tangent function as the activation function.
  * <p>
@@ -209,7 +209,7 @@ public class MultilayerPerceptron implements NeuralNetwork {
         return i;
     }
 
-    @Override
+    @Override//http://neuralnetworksanddeeplearning.com/chap2.html
     public double[] learn(double[] input, double[] expectedOutput) {
         if (expectedOutput.length != nodes[nodes.length - 1].length) {
             throw new IllegalArgumentException("The amount of expected results does not reflect the amount of output nodes");

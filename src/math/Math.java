@@ -69,7 +69,7 @@ public class Math {
          * @param matrix2
          * @return
          */
-        public static double[][] Hadamardproduct(double[][] matrix1, double[][] matrix2) {
+        public static double[][] hadamardProduct(double[][] matrix1, double[][] matrix2) {
             if (matrix1.length != matrix2.length || matrix1[0].length != matrix2[0].length) {
                 throw new IllegalArgumentException("Matrix are not the same size");
             }
