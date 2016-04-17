@@ -18,6 +18,12 @@ import java.util.Random;
  */
 public class VehicleFactory {
 
+    private int totalAmountMade = 0;
+
+    public int getTotalAmountMade() {
+        return totalAmountMade;
+    }
+    
     /**
      * A string to say it should spawn a sport car
      */
@@ -37,13 +43,14 @@ public class VehicleFactory {
         cars.put(SEDAN, 0);
         cars.put(SPORT_CAR, 1);
         cars.put(MINIBUS, 2);
+
         reverse.put(0, SEDAN);
         reverse.put(1, SPORT_CAR);
         reverse.put(2, MINIBUS);
 
         probablity.add(0.3333);
-        probablity.add(0.3333*2);
-        probablity.add(0.3333*3);
+        probablity.add(0.3333 * 2);
+        probablity.add(0.3333 * 3);
 
     }
     /**
@@ -77,6 +84,7 @@ public class VehicleFactory {
      * @return
      */
     public Vehicle createVehicle(String type, Model m, Algorithm al, Road r, double percentage, Intersection goal) {
+        totalAmountMade++;
         switch (type) {
             case "Sport":
                 return new SportCar(r, percentage, m, al, goal);
@@ -85,6 +93,7 @@ public class VehicleFactory {
             case MINIBUS:
                 return new Minibus(r, percentage, m, al, goal);
         }
+        totalAmountMade--;
         return null;
     }
 
@@ -103,7 +112,7 @@ public class VehicleFactory {
     public Vehicle createVehicle(String type, Model m, Algorithm al, Road r, double percentage) {
         ArrayList<Intersection> a = controller.Controller.getInstance().getMap().getIntersections();
         Intersection i = (Intersection) StupidHelper.getRandom(a);
-        while(r.getStart() == i){
+        while (r.getStart() == i) {
             i = (Intersection) StupidHelper.getRandom(a);
         }
         return createVehicle(type, m, al, r, percentage, i);
@@ -123,7 +132,7 @@ public class VehicleFactory {
         ArrayList<Intersection> a = controller.Controller.getInstance().getMap().getIntersections();
         Road r = (Road) StupidHelper.getRandom(b);
         Intersection i = (Intersection) StupidHelper.getRandom(a);
-        while(r.getStart() == i){
+        while (r.getStart() == i) {
             i = (Intersection) StupidHelper.getRandom(a);
         }
         return createVehicle(type, m, al, (Road) StupidHelper.getRandom(b), 0d, i);

@@ -60,7 +60,7 @@ public class Ticker extends Observerable {
     /**
      * Use this to start the timer
      *
-     * @param args The message passed to notifyObservers()
+     * @param args The message passed to notifyObservers() ~ Lol, jk doesn't do anything
      */
     public void start(String args) {
         Timer t = new Timer();
@@ -71,8 +71,6 @@ public class Ticker extends Observerable {
                 notifyObservers("tick");
                 tickCount++;
                 timeElapsed += 1 * tickTimeInS;
-                //System.out.println("=====================================================");
-                //System.out.println(VehicleHolder.getInstance().size());
                 if (tickCount % SimulationSettings.getInstance().getTimeUntilSpawn() == 0) {
                     for (int i = 0; i < SimulationSettings.getInstance().getNumberOfCarsToSpawn(); i++) {
                         VehicleFactory.getFactory().createVehicle();
