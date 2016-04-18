@@ -11,6 +11,11 @@ import vehicle.VehicleHolder;
  * This version is a immutable version of the stats, in other words, it does not
  * update when the simulation is on going
  *
+ * <p>
+ *
+ * When actually calculating the the items that need to be calculated, look at
+ * {@link StatsDynamic} and do it in there please. Thank you
+ *
  * @author Kareem Horstink
  */
 public class Stats {
@@ -41,8 +46,17 @@ public class Stats {
      *
      * @return Time in ticks
      */
-    public int getTotalWaitTime() {//@TODO
+    public int getTotalWaitTime() {//@TODO do the method? Look at javadoc
         return -1000;
+    }
+
+    /**
+     * Get the waiting time for the current tick in seconds
+     *
+     * @return Time in seconds
+     */
+    public double getWaitTimeSeconds() {//@TODO do the method? Look at javadoc
+        return -100d;
     }
 
     /**
@@ -50,7 +64,7 @@ public class Stats {
      *
      * @return Time in seconds
      */
-    public double getTotalWaitTimeSeconds() {//@TODO
+    public double getTotalWaitTimeSeconds() {//@TODO do the method? Look at javadoc
         return -100d;
     }
 
