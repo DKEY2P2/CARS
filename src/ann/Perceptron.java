@@ -64,8 +64,8 @@ public class Perceptron implements NeuralNetwork {
      * @return A value between -1 and 1 based on the input
      */
     private double activationFunction(double input) {
-//        return Math.tanh(input);
-        return input > 1 ? 1 : 0;
+        return Math.tanh(input);
+//        return input > 1 ? 1 : 0;
     }
 
     @Override
