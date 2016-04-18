@@ -11,11 +11,15 @@ import java.util.Arrays;
 public class TesterClass {
 
     public static void main(String[] args) {
-        NeuralNetwork test = NNfactory.createMultilayerPerceptron(1, new int[]{3}, 1);
+        NeuralNetwork test = NNfactory.createPerceptron(2, 1, 50);
         test.printWeights();
         System.out.println(test.size());
-        System.out.println(Arrays.toString(test.activate(new double[]{2})));
+        test.learn(new double[]{1, 1}, new double[]{1});
+        test.learn(new double[]{0, 1}, new double[]{0});
+        test.learn(new double[]{1, 0}, new double[]{0});
+        test.learn(new double[]{0, 0}, new double[]{0});
 
-        
+        System.out.println(Arrays.toString(test.activate(new double[]{1,1})));
+
     }
 }

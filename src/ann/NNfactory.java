@@ -18,4 +18,8 @@ public class NNfactory {
     public static NeuralNetwork createMultilayerPerceptron(int inputLayer, int[] hiddenLayer, int outputLayer) {
         return new MultilayerPerceptron(inputLayer, hiddenLayer, outputLayer);
     }
+    
+    public static NeuralNetwork createPerceptron(int inputNode,int outputNode, int iterationThreshold){
+        return new Perceptron(inputNode, outputNode,iterationThreshold );
+    }
 }
