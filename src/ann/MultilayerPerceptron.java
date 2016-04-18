@@ -6,7 +6,8 @@ import java.util.Random;
 
 /**
  * The implementation of a multilayerPerceptron see
- * https://en.wikipedia.org/wiki/Multilayer_perceptron or http://rfhs8012.fh-regensburg.de/~saj39122/jfroehl/diplom/e-1.html
+ * https://en.wikipedia.org/wiki/Multilayer_perceptron or
+ * http://rfhs8012.fh-regensburg.de/~saj39122/jfroehl/diplom/e-1.html
  * <p>
  * Using a hyperbolic tangent function as the activation function.
  * <p>
@@ -216,11 +217,19 @@ public class MultilayerPerceptron implements NeuralNetwork {
         }
         double[] results = activate(input);
 
-        double[] err = new double[results.length];
-        for (int i = 0; i < err.length; i++) {
-            err[i] = expectedOutput[i] - results[i];
+        double[] errFromOutput = new double[results.length];
+        double cost;
+        double sum = 0;
+        for (int i = 0; i < errFromOutput.length; i++) {
+            errFromOutput[i] = expectedOutput[i] - results[i];
+            sum += errFromOutput[i];
         }
 
+        cost = Math.pow(sum, 2);
+        cost *= 0.5d;
+
+        
+        
         return null;
     }
 
