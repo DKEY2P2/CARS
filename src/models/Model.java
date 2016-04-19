@@ -3,7 +3,7 @@ package models;
 import vehicle.Vehicle;
 
 /**
- * Interface for all the models, Pipes,Forbes etc.
+ * Interface for all the models, Pipes,Forbes etc. 
  *
  * @author Lucas Vanparijs, Kareem Horstink
  */

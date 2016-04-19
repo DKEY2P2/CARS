@@ -14,7 +14,7 @@ import vehicle.Vehicle;
  */
 public class IntelligentDriver implements Model {
 
-	private double distanceCars;
+	/*private double distanceCars;
 	private double[] positionsRoad;
 	private double[] velCars;
 	private double timeHeadway;
@@ -24,7 +24,7 @@ public class IntelligentDriver implements Model {
 	private double approachingRate;
 	private double delta;
 	private double acceleration;
-	private double jamDistance;
+	private double jamDistance;*/
 
 	/*
 	 * x0 (v) denotes position of vehicle 1 

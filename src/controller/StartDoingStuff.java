@@ -12,7 +12,7 @@ import controller.threads.ThreadController;
 import helper.Logger;
 import map.Road;
 import map.intersection.DefaultIntersection;
-import models.IntelligentDriver;
+import models.AutonomousCar;
 import ui.ControllerUI;
 import vehicle.VehicleFactory;
 
@@ -40,8 +40,8 @@ public class StartDoingStuff {
         }
         
         
-        /* Set what model to use for the rest of the applicatio */
-        SimulationSettings.getInstance().setModel(new IntelligentDriver());
+        /* Set what model to use for the rest of the application */
+        SimulationSettings.getInstance().setModel(new AutonomousCar());
 
         /* Set what path finding AI to use for the rest of the application */
         SimulationSettings.getInstance().setPathFindingAI(new AStar());
