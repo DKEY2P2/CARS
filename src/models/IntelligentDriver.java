@@ -57,7 +57,7 @@ public class IntelligentDriver implements Model {
 
 		double minDist = veh.getLength()*2; //Picked randomly
 
-		if(inFront == null){
+/*		if(inFront == null){
 			if(!trl.isGreen()){
 				diffSpeed = speed;
 				dist = (1 - veh.getPosition().getValue()) * r.getLength();
@@ -79,6 +79,42 @@ public class IntelligentDriver implements Model {
 		}
 
 		veh.updateAll(speed + acc * Controller.getInstance().getTicker().getTickTimeInS(),acc,r);
+
+		*/
+		
+		if (inFront == null) {
+			if (trl != null) {
+				if (!trl.isGreen()) {
+					//diffSpeed = -speed;
+					dist = (1 - veh.getPosition().getValue()) * r.getLength();
+					diffSpeed = speed;
+				} else {
+				//	diffSpeed = speed;
+				//  dist = minDist * 2;
+					dist = minDist;
+					diffSpeed = - speed;
+				}
+			} else {
+				dist = minDist * 2;
+				diffSpeed = - speed;
+			}
+
+		} else {
+			diffSpeed = speed - inFront.getSpeed();
+			dist = (inFront.getPosition().getValue() - veh.getPosition().getValue()) * r.getLength()
+					- inFront.getLength();
+		}
+
+		if (dist < minDist) {
+			acc = 0;
+			speed = 0;
+		} else {
+			sStar = minDist + speed * T + (speed * diffSpeed) / (2 * Math.sqrt(a * b));
+			acc = a * (1 - Math.pow(veh.getSpeed() / Math.min(r.getSpeedLimit(), veh.getDesiredSpeed()), delta)
+					- Math.pow(sStar / dist, 2));
+		}
+
+		veh.updateAll(speed + acc * Controller.getInstance().getTicker().getTickTimeInS(), acc, r);
 
 		/*
 

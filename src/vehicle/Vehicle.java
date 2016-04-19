@@ -530,6 +530,7 @@ public abstract class Vehicle implements Task, Drawable, Comparable<Vehicle> {
             this.setSpeed(0);
         else
             this.setSpeed(v);
+        System.out.println(this.getSpeed());
 
         double p = this.getPosition().getValue() + ((this.getSpeed() * t / r.getLength())); //new position
         if(p>=1d){
