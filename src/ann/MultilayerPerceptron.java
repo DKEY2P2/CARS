@@ -255,46 +255,6 @@ public class MultilayerPerceptron implements NeuralNetwork {
         }
         double[] results = activate(input);
 
-        double[] errFromOutput = new double[results.length];
-        double cost;
-        double sum = 0;
-
-        //Calculates the intial error
-        for (int i = 0; i < errFromOutput.length; i++) {
-            double DyDivDz = nodes[nodes.length - 1][i].getCurrentValue() * (1 - nodes[nodes.length - 1][i].getCurrentValue());
-            double DeDivDy = -(expectedOutput[i] - nodes[nodes.length - 1][i].getCurrentValue());
-            errFromOutput[i] = -expectedOutput[i] - results[i];
-            errFromOutput[i] = DyDivDz * DeDivDy;
-            nodes[nodes.length - 1][i].setDelta(errFromOutput[i]);
-            sum += errFromOutput[i];
-        }
-
-        cost = Math.pow(sum, 2);
-        cost *= 0.5d;
-        //Calculate the error of the hidden layers
-        for (int layer = nodes.length - 2; layer >= 0; layer--) {
-            for (int nodeNumberCurrent = 0; nodeNumberCurrent < nodes[layer].length; nodeNumberCurrent++) {
-                sum = 0;
-                for (int nodeNumberOneAhead = 0; nodeNumberOneAhead < nodes[layer + 1].length; nodeNumberOneAhead++) {
-                    sum += nodes[layer + 1][nodeNumberOneAhead].getDelta() * weights[layer][nodeNumberCurrent][nodeNumberOneAhead];
-                }
-
-                double DyDivDz = nodes[layer][nodeNumberCurrent].getCurrentValue()
-                        * (1 - nodes[layer][nodeNumberCurrent].getCurrentValue());
-                nodes[layer][nodeNumberCurrent].setDelta(sum * DyDivDz);
-            }
-        }
-
-        //update weights of the outputlayer
-        for (int layer = nodes.length - 1; layer > 0; layer--) {
-            for (int nodeNumber = 0; nodeNumber < nodes[layer-1].length; nodeNumber++) {
-                for (int weightNumber = 0; weightNumber < weights[layer-1][nodeNumber].length; weightNumber++) {
-                    double errOnWeight = nodes[layer][weightNumber].getDelta() * nodes[layer][weightNumber].getCurrentValue();
-                    weights[layer - 1][nodeNumber][weightNumber] = weights[layer - 1][nodeNumber][weightNumber] - learningRate * errOnWeight;
-                }
-            }
-        }
-
         return null;
     }
 
