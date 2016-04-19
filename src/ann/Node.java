@@ -61,5 +61,13 @@ public class Node {
     public String toString() {
         return Double.toString(getCurrentValue());
     }
+    
+    
+    public String getValueString(){
+        return Double.toString(getCurrentValue());
+    }
+    public String getErrorString(){
+        return Double.toString(getDelta());
+    }
 
 }

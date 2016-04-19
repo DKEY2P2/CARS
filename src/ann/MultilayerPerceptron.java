@@ -26,7 +26,7 @@ public class MultilayerPerceptron implements NeuralNetwork {
     /**
      * For creating the random weights
      */
-    private static final Random RANDOM = new Random(240395);
+    private static final Random RANDOM = new Random();
 
     // [layer][nodeNumber]
     private Node[][] nodes;
@@ -140,8 +140,9 @@ public class MultilayerPerceptron implements NeuralNetwork {
      * @return A value between -1 and 1 based on the input
      */
     private double activationFunction(double input) {
-        return 1/(1+Math.pow(Math.E, -input));
-//        return input > 1 ? 0 : 1;
+//        return Math.tanh(input);
+        return 1 / (1 + Math.pow(Math.E, -input));
+//        return Math.signum(input);
     }
 
     @Override
@@ -203,6 +204,36 @@ public class MultilayerPerceptron implements NeuralNetwork {
         System.out.println(builder);
     }
 
+    public void printError() {
+        //Prints the weights all "pretty" like
+        StringBuilder builder = new StringBuilder();
+        builder.append("Error\n");
+        for (int layer = 0; layer < weights.length + 1; layer++) {
+            builder.append(Integer.toString(layer));
+            builder.append("\n");
+            for (int node = 0; node < nodes[layer].length; node++) {
+                builder.append(" ------").append(nodes[layer][node].getErrorString());
+                builder.append("\n");
+            }
+        }
+        System.out.println(builder);
+    }
+
+    public void printValue() {
+        //Prints the weights all "pretty" like
+        StringBuilder builder = new StringBuilder();
+        builder.append("Value\n");
+        for (int layer = 0; layer < weights.length + 1; layer++) {
+            builder.append(Integer.toString(layer));
+            builder.append("\n");
+            for (int node = 0; node < nodes[layer].length; node++) {
+                builder.append(" ------").append(nodes[layer][node].getValueString());
+                builder.append("\n");
+            }
+        }
+        System.out.println(builder);
+    }
+
     @Override
     public int size() {
         int i = 0;
@@ -223,61 +254,43 @@ public class MultilayerPerceptron implements NeuralNetwork {
             throw new IllegalArgumentException("The amount of expected results does not reflect the amount of output nodes");
         }
         double[] results = activate(input);
-        System.out.println("-----_----------_----------_----------_-----");
-        System.out.println("Input: " + Arrays.toString(input));
-        System.out.println("OutPut: " + Arrays.toString(results));
-        System.out.println("Expected: " + Arrays.toString(expectedOutput));
 
         double[] errFromOutput = new double[results.length];
         double cost;
         double sum = 0;
 
-        System.out.println("\nError on ouput");
         //Calculates the intial error
         for (int i = 0; i < errFromOutput.length; i++) {
             double DyDivDz = nodes[nodes.length - 1][i].getCurrentValue() * (1 - nodes[nodes.length - 1][i].getCurrentValue());
             double DeDivDy = -(expectedOutput[i] - nodes[nodes.length - 1][i].getCurrentValue());
             errFromOutput[i] = -expectedOutput[i] - results[i];
+            errFromOutput[i] = DyDivDz * DeDivDy;
             nodes[nodes.length - 1][i].setDelta(errFromOutput[i]);
-            System.out.println("Node " + Integer.toString(i) + " - " + nodes[nodes.length - 1][i].getDelta());
             sum += errFromOutput[i];
         }
 
         cost = Math.pow(sum, 2);
         cost *= 0.5d;
-        System.out.println("\nHidden layer error");
         //Calculate the error of the hidden layers
-        for (int layer = nodes.length - 2; layer > 0; layer--) {
+        for (int layer = nodes.length - 2; layer >= 0; layer--) {
             for (int nodeNumberCurrent = 0; nodeNumberCurrent < nodes[layer].length; nodeNumberCurrent++) {
                 sum = 0;
                 for (int nodeNumberOneAhead = 0; nodeNumberOneAhead < nodes[layer + 1].length; nodeNumberOneAhead++) {
                     sum += nodes[layer + 1][nodeNumberOneAhead].getDelta() * weights[layer][nodeNumberCurrent][nodeNumberOneAhead];
                 }
-                
-                double DyDivDz = nodes[layer][nodeNumberCurrent].getCurrentValue() * 
-                        (1 - nodes[layer][nodeNumberCurrent].getCurrentValue());
+
+                double DyDivDz = nodes[layer][nodeNumberCurrent].getCurrentValue()
+                        * (1 - nodes[layer][nodeNumberCurrent].getCurrentValue());
                 nodes[layer][nodeNumberCurrent].setDelta(sum * DyDivDz);
-                System.out.println("sum: " + sum);
-                System.out.println("DyDivDz: " + DyDivDz);
-                System.out.println("Layer: " + layer);
-                System.out.println("Node: " + nodeNumberCurrent);
-                System.out.println("Node error: " + nodes[layer][nodeNumberCurrent].getDelta());
             }
         }
+
         //update weights of the outputlayer
-
         for (int layer = nodes.length - 1; layer > 0; layer--) {
-            for (int nodeNumber = 0; nodeNumber < nodes[layer].length; nodeNumber++) {
-                for (int weightNumber = 0; weightNumber < weights[layer - 1][nodeNumber].length; weightNumber++) {
-                    System.out.println("-------------------------------------------");
-                    System.out.println("Layer: " + layer);
-                    System.out.println("Node: " + nodeNumber);
-                    System.out.println("Weight: " + weightNumber);
-                    System.out.println("Node err: " + nodes[layer - 1][nodeNumber].getDelta());
-                    double errOnWeight = nodes[layer - 1][nodeNumber].getDelta() * nodes[layer][nodeNumber].getCurrentValue();
-                    System.out.println("err: " + errOnWeight);
-                    weights[layer - 1][nodeNumber][weightNumber] -= learningRate * errOnWeight;
-
+            for (int nodeNumber = 0; nodeNumber < nodes[layer-1].length; nodeNumber++) {
+                for (int weightNumber = 0; weightNumber < weights[layer-1][nodeNumber].length; weightNumber++) {
+                    double errOnWeight = nodes[layer][weightNumber].getDelta() * nodes[layer][weightNumber].getCurrentValue();
+                    weights[layer - 1][nodeNumber][weightNumber] = weights[layer - 1][nodeNumber][weightNumber] - learningRate * errOnWeight;
                 }
             }
         }
