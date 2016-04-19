@@ -81,7 +81,9 @@ public class DefaultIntersection extends Intersection implements Observer {
                 trafficLight.addOut(r);
             });
         } else {
-            getTrafficLights().add(new TrafficLight(this, r, out));
+            if(in.size() > 2){ //This is american style (says Kareem :P)
+            		getTrafficLights().add(new TrafficLight(this, r, out));
+            }
         }
 
         return r;
