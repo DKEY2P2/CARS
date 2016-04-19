@@ -37,7 +37,7 @@ public class StartDoingStuff {
                     UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             Logger.LogError(ex);
-        }
+        } 
         
         
         /* Set what model to use for the rest of the applicatio */
