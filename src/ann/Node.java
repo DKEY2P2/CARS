@@ -1,8 +1,8 @@
 package ann;
 
 /**
- * A class that just contains a simple double. Don't really need it to be honest
- * but I made it just so the other class are <I>"easier"</I> to understand
+ * A class that just contains 2 doubles. Don't really need it to be honest but I
+ * made it just so the other class are <I>"easier"</I> to understand
  *
  * @author Kareem Horstink
  */
@@ -35,6 +35,31 @@ public class Node {
      */
     public void setCurrentValue(double currentValue) {
         this.currentValue = currentValue;
+    }
+
+    private double delta = 0;
+
+    /**
+     * Get the value of delta
+     *
+     * @return the value of delta
+     */
+    public double getDelta() {
+        return delta;
+    }
+
+    /**
+     * Set the value of delta
+     *
+     * @param delta new value of delta
+     */
+    public void setDelta(double delta) {
+        this.delta = delta;
+    }
+
+    @Override
+    public String toString() {
+        return Double.toString(getCurrentValue());
     }
 
 }
