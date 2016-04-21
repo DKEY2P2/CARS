@@ -2,6 +2,11 @@ package statistics;
 
 import controller.Controller;
 import controller.Observer;
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Objects;
+import vehicle.Vehicle;
 import vehicle.VehicleFactory;
 import vehicle.VehicleHolder;
 
@@ -22,8 +27,17 @@ public class Stats {
 
     private int totalNumberOfCarsMade = 0;
     private int currentNumberOfCars = 0;
-    private int totalAmountOfTicks = 0;
-    private double totalAmountOfTimePassed;
+    private int waitingTimeTicks = 0;
+    private double totalWaitTimeS = 0;
+    private int totalWaitingTime = 0;
+    protected int totalNumberTicks = 0;
+    protected double totalTimePassed = 0;
+    //Car index, Wait time (s)
+    protected final ArrayList<AbstractMap.SimpleEntry<Integer, Double>> waitingTimeS = new ArrayList<>();
+    //Car  index, wait time (tick)
+    protected final ArrayList<AbstractMap.SimpleEntry<Integer, Integer>> waitTime = new ArrayList<>();
+
+    private double waitingTimeSeconds = 0;
 
     /**
      * Made to allow StatsDynamic to make it own constructor
@@ -33,12 +47,18 @@ public class Stats {
     }
 
     /**
-     * Meant to be used to clone the object. @TODO
+     * Meant to be used to clone the object.
      *
      * @param s The statistics to be copied over
      */
     private Stats(Stats s) {
-
+        currentNumberOfCars = s.currentNumberOfCars;
+        totalNumberOfCarsMade = s.totalNumberOfCarsMade;
+        totalNumberTicks = s.totalNumberTicks;
+        totalTimePassed = s.totalTimePassed;
+        totalWaitingTime = s.totalWaitingTime;
+        waitingTimeSeconds = s.waitingTimeSeconds;
+        waitingTimeTicks = s.waitingTimeTicks;
     }
 
     /**
@@ -46,8 +66,8 @@ public class Stats {
      *
      * @return Time in ticks
      */
-    public int getTotalWaitTime() {//@TODO do the method? Look at javadoc
-        return -1000;
+    public int getTotalWaitTime() {
+        return totalWaitingTime;
     }
 
     /**
@@ -55,8 +75,18 @@ public class Stats {
      *
      * @return Time in seconds
      */
-    public double getWaitTimeSeconds() {//@TODO do the method? Look at javadoc
-        return -100d;
+    public double getWaitTimeSeconds() {
+        return waitingTimeSeconds;
+    }
+
+    /**
+     * Get the waiting time for the current tick in ticks (in other words, get
+     * the total amount of cars waiting right now)
+     *
+     * @return The total amount of cars waiting
+     */
+    public int getWaitTimeTicks() {
+        return waitingTimeTicks;
     }
 
     /**
@@ -64,8 +94,8 @@ public class Stats {
      *
      * @return Time in seconds
      */
-    public double getTotalWaitTimeSeconds() {//@TODO do the method? Look at javadoc
-        return -100d;
+    public double getTotalWaitTimeSeconds() {
+        return totalWaitTimeS;
     }
 
     /**
@@ -92,7 +122,7 @@ public class Stats {
      * @return The total amount of ticks that have occurred
      */
     public int getTotalAmountOfTicks() {
-        return totalAmountOfTicks;
+        return totalNumberTicks;
     }
 
     /**
@@ -101,12 +131,21 @@ public class Stats {
      * @return The total amount of time that have passed in seconds
      */
     public double getTotalAmountOfTimePassed() {
-        return totalAmountOfTimePassed;
+        return totalTimePassed;
     }
 
     private void update() {
         totalNumberOfCarsMade = VehicleFactory.getFactory().getTotalAmountMade();
         currentNumberOfCars = VehicleHolder.getInstance().size();
+        waitingTimeS.sort(new Compare());
+        double sum = 0;
+        sum = waitingTimeS.stream().map((waitingTime1) -> waitingTime1.getValue()).reduce(sum, (accumulator, _item) -> accumulator + _item);
+        waitingTimeSeconds = sum;
+        totalWaitTimeS += sum;
+        int sum2 = 0;
+        sum2 = waitTime.stream().mapToInt((waitingTime) -> waitingTime.getValue()).reduce(sum2, (pizza, pie) -> pizza + pie);
+        waitingTimeTicks = sum2;
+        totalWaitingTime += sum2;
     }
 
     /**
@@ -130,6 +169,7 @@ public class Stats {
      */
     public static class StatsDynamic extends Stats implements Observer {
 
+        private ArrayList<Integer> flags = new ArrayList<>();
         private Controller world;
 
         public StatsDynamic(Controller c) {
@@ -139,7 +179,47 @@ public class Stats {
 
         @Override
         public void update() {
+            totalTimePassed = world.getTicker().getTimeElapsed();
+            totalNumberTicks = world.getTicker().getTickCount();
+            updateWaitingTimes();
             super.update();
+        }
+
+        private void updateWaitingTimes() {
+            flags.clear();
+            world.getVehicles().stream().filter((vehicle) -> (vehicle.getSpeed() <= 1)).forEach((vehicle) -> {
+                addTime(vehicle);
+            });
+            ArrayList<AbstractMap.SimpleEntry<Integer, Double>> tmp = new ArrayList<>();
+            ArrayList<AbstractMap.SimpleEntry<Integer, Integer>> tmp2 = new ArrayList<>();
+            for (int i = 0; i < waitingTimeS.size(); i++) {
+                AbstractMap.SimpleEntry<Integer, Double> get = waitingTimeS.get(i);
+                AbstractMap.SimpleEntry<Integer, Integer> get2 = waitTime.get(i);
+                if (!flags.contains(get.getKey())) {
+                    tmp.add(get);
+                    tmp2.add(get2);
+                }
+            }
+            waitingTimeS.removeAll(tmp);
+            waitTime.removeAll(tmp2);
+        }
+
+        private void addTime(Vehicle v) {
+            flags.add(v.getIndex());
+            for (AbstractMap.SimpleEntry<Integer, Double> waitingTime1 : this.waitingTimeS) {
+                if (waitingTime1.getKey() == v.getIndex()) {
+                    waitingTime1.setValue(world.getTicker().tickTimeInS);
+                    return;
+                }
+            }
+            for (AbstractMap.SimpleEntry<Integer, Integer> waitTime1 : waitTime) {
+                if (waitTime1.getKey() == v.getIndex()) {
+                    waitTime1.setValue(1);
+                    return;
+                }
+            }
+            this.waitingTimeS.add(new AbstractMap.SimpleEntry<>(v.getIndex(), world.getTicker().tickTimeInS));
+            this.waitTime.add(new AbstractMap.SimpleEntry<>(v.getIndex(), 1));
         }
 
         @Override
@@ -147,5 +227,22 @@ public class Stats {
             update();
         }
 
+    }
+
+    private class Compare implements Comparator<AbstractMap.SimpleEntry<Integer, Double>> {
+
+        @Override
+        public int compare(AbstractMap.SimpleEntry<Integer, Double> o1, AbstractMap.SimpleEntry<Integer, Double> o2) {
+            if (Objects.equals(o1.getValue(), o2.getValue())) {
+                return 0;
+            }
+            if (o1.getValue() > o2.getValue()) {
+                return 1;
+            }
+            if (o2.getValue() > o1.getValue()) {
+                return -1;
+            }
+            return -193;
+        }
     }
 }
