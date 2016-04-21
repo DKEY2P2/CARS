@@ -11,7 +11,7 @@ import controller.threads.ThreadController;
 import helper.Logger;
 import map.Road;
 import map.intersection.DefaultIntersection;
-import models.GM;
+import models.IntelligentDriver;
 import statistics.Stats;
 import ui.ControllerUI;
 import vehicle.VehicleFactory;
@@ -40,7 +40,7 @@ public class StartDoingStuff {
         }
 
         /* Set what model to use for the rest of the applicatio */
-        SimulationSettings.getInstance().setModel(new GM());
+        SimulationSettings.getInstance().setModel(new IntelligentDriver());
 
         /* Set what path finding AI to use for the rest of the application */
         SimulationSettings.getInstance().setPathFindingAI(new AStar());
