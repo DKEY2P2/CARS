@@ -2,6 +2,7 @@ package controller;
 
 import java.util.ArrayList;
 import map.Map;
+import statistics.Stats;
 import ui.ControllerUI;
 import vehicle.VehicleHolder;
 
@@ -13,26 +14,6 @@ import vehicle.VehicleHolder;
  * @author Kareem Horstink
  */
 public class Controller {
-
-    private ControllerUI UI;
-
-    /**
-     * Get the value of UI
-     *
-     * @return the value of UI
-     */
-    public ControllerUI getUI() {
-        return UI;
-    }
-
-    /**
-     * Set the value of UI
-     *
-     * @param UI new value of UI
-     */
-    public void setUI(ControllerUI UI) {
-        this.UI = UI;
-    }
 
     /**
      * The instance of the Controller
@@ -51,6 +32,8 @@ public class Controller {
         return instance;
     }
 
+    private ControllerUI UI;
+
     /**
      * Creates an empty map
      */
@@ -60,11 +43,33 @@ public class Controller {
      * Holds a reference to the holder of the vehicles
      */
     private VehicleHolder vehicles = VehicleHolder.getInstance();
+    /**
+     * The ticker that contains whether or not a tick should happen
+     */
+    private Ticker ticker;
 
     /**
      * Made to be private so no one else can use
      */
     private Controller() {
+    }
+
+    /**
+     * Get the value of UI
+     *
+     * @return the value of UI
+     */
+    public ControllerUI getUI() {
+        return UI;
+    }
+
+    /**
+     * Set the value of UI
+     *
+     * @param UI new value of UI
+     */
+    public void setUI(ControllerUI UI) {
+        this.UI = UI;
     }
 
     /**
@@ -94,8 +99,6 @@ public class Controller {
         this.map = map;
     }
 
-    private Ticker ticker;
-
     /**
      * Get the value of ticker
      *
@@ -113,5 +116,26 @@ public class Controller {
     public void setTicker(Ticker ticker) {
         this.ticker = ticker;
     }
+
+    private Stats stats;
+
+    /**
+     * Set the value of stats
+     *
+     * @param stats new value of stats
+     */
+    public void setStats(Stats stats) {
+        this.stats = stats;
+    }
+
+    /**
+     * Gets the stats
+     * @return The <b>current</b> stats of the system
+     */
+    public Stats getStats() {
+        return stats.copy();
+    }
+    
+    
 
 }
