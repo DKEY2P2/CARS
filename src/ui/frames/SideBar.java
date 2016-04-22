@@ -1,5 +1,6 @@
 package ui.frames;
 
+import controller.Controller;
 import controller.SimulationSettings;
 import controller.StartDoingStuff;
 import helper.Logger;
@@ -17,6 +18,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
+import ui.helper.RunLineChart;
 
 /**
  * A sidebar to hold all the items that control the simulation
@@ -98,7 +100,19 @@ public class SideBar extends JFrame {
         jTabbedPane.add("General", general);
         //------------------------------stats---------------------------------//
         JPanel stats = new JPanel();
-
+        JButton historyNormalized = new JButton("Show history of waiting time when its normalized");
+        historyNormalized.addActionListener((ActionEvent e) -> {
+            RunLineChart.addData(Controller.getInstance().getStats().copy().getWaitingTimeNormalizedHistory(), "Normalized Waiting Time Data");
+            RunLineChart.run();
+        });
+        JButton historyTotalCars = new JButton("Show history of the number of cars");
+        historyNormalized.addActionListener((ActionEvent e) -> {
+            RunLineChart.addDataI(Controller.getInstance().getStats().copy().getNumberOfCarsHistory(), "Amount of Cars Data");
+            RunLineChart.run();
+        });
+        stats.setLayout(new GridLayout(0, 1));
+        stats.add(historyNormalized);
+        stats.add(historyTotalCars);
         jTabbedPane.add("Statistics", stats);
 
         //---------------------------------map--------------------------------//
