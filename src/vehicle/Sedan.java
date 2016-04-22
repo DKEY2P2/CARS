@@ -1,6 +1,6 @@
 package vehicle;
 
-import algorithms.Algorithm;
+import algorithms.pathfinding.Algorithm;
 import helper.Logger;
 import map.Intersection;
 import map.Road;

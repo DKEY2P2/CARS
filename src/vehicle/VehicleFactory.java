@@ -1,6 +1,6 @@
 package vehicle;
 
-import algorithms.Algorithm;
+import algorithms.pathfinding.Algorithm;
 import controller.SimulationSettings;
 import helper.StupidHelper;
 import map.Intersection;
