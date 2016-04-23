@@ -20,15 +20,24 @@ public interface Detector {
      * The probability that the detector is correct
      *
      * @return A number between 0 and 1
-     * @TODO Make a better name
+     *
      */
-    public double getProbablityOfBeingCorrect();
+    public double getProbablityOfBeingCorrect();//@TODO Make a better name
 
     /**
      * Get the maximum amount of cars that the detector can detects
      *
-     * @return The maximum amount of cars that the detector can detect (to accurate level)
+     * @return The maximum amount of cars that the detector can detect (to
+     * accurate level)
      */
     public int getMaximumAmountOfCarThatCanBeDetected();
+
+    /**
+     * So we are able to clone the detector, makes it easier to dictate what
+     * detector to use when in start doing stuff
+     *
+     * @return A <b>empty</b> clone of the detector
+     */
+    public Detector clone();
 
 }
