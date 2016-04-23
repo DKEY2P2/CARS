@@ -16,9 +16,9 @@ import map.intersection.detectors.Detector;
  * @author Kareem Horstink
  */
 public class GreedyVersion2 extends SimpleGreedyIntersection {
-
+    
     private static double lowerBound = 10;
-
+    
     private static double upperBound = 60;
 
     /**
@@ -56,11 +56,11 @@ public class GreedyVersion2 extends SimpleGreedyIntersection {
     public static void setUpperBound(double upperBound) {
         GreedyVersion2.upperBound = upperBound;
     }
-
+    
     public GreedyVersion2(int x, int y, Ticker t) {
         super(x, y, t);
     }
-
+    
     @Override
     public void updateLight(double elapsed) {
         ArrayList<TrafficLight> tLights = getTrafficLights();
@@ -84,12 +84,22 @@ public class GreedyVersion2 extends SimpleGreedyIntersection {
                 indexWithMostCars = light.getDetector().getNumberOfCarsDetected() > indexWithMostCars ? i : indexWithMostCars;
                 light.setLight(false);
             }
+            if (((GreedyVersion2.GreedyTrafficLightExtended) tLights.get(indexWithMostCars)).getCurrentGreenTime() == 0) {
+                ((GreedyVersion2.GreedyTrafficLightExtended) tLights.get(indexWithMostCars)).incrementCurrentGreenTime(getTicker().getTickTimeInS());
+                for (int i = 0; i < tLights.size(); i++) {
+                    if(i==indexWithMostCars){
+                        continue;
+                    }
+                    GreedyVersion2.GreedyTrafficLightExtended light = (GreedyVersion2.GreedyTrafficLightExtended) tLights.get(i);
+                    light.setCurrentGreenTime(0);
+                }
+            }
             tLights.get(indexWithMostCars).setLight(true);
         } else {
             tLights.get(0).setLight(true);
         }
     }
-
+    
     @Override
     public Road addRoad(Road r) {
         getRoads().add(r);
@@ -100,7 +110,7 @@ public class GreedyVersion2 extends SimpleGreedyIntersection {
         } else {
             getIn().add(r);
         }
-
+        
         if (flag) {
             getTrafficLights().stream().forEach((trafficLight) -> {
                 trafficLight.addOut(r);
@@ -108,10 +118,10 @@ public class GreedyVersion2 extends SimpleGreedyIntersection {
         } else {
             getTrafficLights().add(new GreedyTrafficLightExtended(this, r, getOut(), getType()));
         }
-
+        
         return r;
     }
-
+    
     protected class GreedyTrafficLightExtended extends GreedyTrafficLight {
 
         /**
@@ -145,11 +155,11 @@ public class GreedyVersion2 extends SimpleGreedyIntersection {
         public void incrementCurrentGreenTime(double currentGreenTime) {
             this.currentGreenTime += currentGreenTime;
         }
-
+        
         public GreedyTrafficLightExtended(Intersection i, Road in, ArrayList<Road> out, Detector detector) {
             super(i, in, out, detector);
         }
-
+        
     }
-
+    
 }
