@@ -90,6 +90,7 @@ public class Stats {
      * @TODO Think of doing this in a better way
      */
     public ArrayList<Double> getWaitingTimeNormalizedHistory() {
+        //Gets the history of the waiting time and divides it by number of cars history
         ArrayList<Double> tmp = new ArrayList<>();
         for (int i = 0; i < historyWaitingTimeS.size(); i++) {
             Double get1 = historyWaitingTimeS.get(i);
@@ -172,21 +173,28 @@ public class Stats {
         return totalTimePassed;
     }
 
+    //A cluster fuck of different types of updates
     private void update() {
         totalNumberOfCarsMade = VehicleFactory.getFactory().getTotalAmountMade();
         currentNumberOfCars = VehicleHolder.getInstance().size();
+        //Sorts the waiting times of the cars so we can eventually troubleshoot
+        //what car has to wait the most
         waitingTimeS.sort(new Compare());
+        //Gets the total waiting time in seconds
         double sum = 0;
         sum = waitingTimeS.stream().map((waitingTime1) -> waitingTime1.getValue()).reduce(sum, (accumulator, _item) -> accumulator + _item);
         waitingTimeSeconds = sum;
         totalWaitTimeS += sum;
+
+        //Gets the total waiting time in ticks
         int sum2 = 0;
         sum2 = waitTime.stream().mapToInt((waitingTime) -> waitingTime.getValue()).reduce(sum2, (pizza, pie) -> pizza + pie);
         waitingTimeTicks = sum2;
         totalWaitingTime += sum2;
-        historyWaitingTimeS.add(getTotalWaitTimeSeconds());
+
+        //Adds the new values to the history arraylist
+        historyWaitingTimeS.add(waitingTimeSeconds);
         historyNumberOfCars.add(currentNumberOfCars);
-//        historyWaitingTimeS.add(getWaitTimeSeconds());
     }
 
     /**
@@ -210,9 +218,17 @@ public class Stats {
      */
     public static class StatsDynamic extends Stats implements Observer {
 
+        //A flags of all the vehicles, to see if the car is still waiting
         private ArrayList<Integer> flags = new ArrayList<>();
+        //The simulation
         private Controller world;
 
+        /**
+         * Creates the stats object which updates in <i>"real time"</i> with the
+         * simulation
+         *
+         * @param c The simulation
+         */
         public StatsDynamic(Controller c) {
             world = c;
             world.getTicker().addObserver(this);
@@ -220,19 +236,43 @@ public class Stats {
 
         @Override
         public void update() {
+            //Gets the total amount of time has passed
+            //Just takes it from the ticker
             totalTimePassed = world.getTicker().getTimeElapsed();
             totalNumberTicks = world.getTicker().getTickCount();
+
+            //Updates the waiting time
             updateWaitingTimes();
+
+            //Does the rest of the updating
             super.update();
         }
 
+        /**
+         * Checks if a car is waiting and updates the waiting time of the cars
+         * that are waiting
+         */
         private void updateWaitingTimes() {
+            //Clears the previous tick's flags
             flags.clear();
-            world.getVehicles().stream().filter((vehicle) -> (vehicle.getSpeed() <= 1)).forEach((vehicle) -> {
-                addTime(vehicle);
-            });
+            //Gets every car which is slower than 1m/s which is around 3.6 kmh 
+            //and assumes that it is waiting
+            world.getVehicles().
+                    stream().
+                    filter((vehicle) -> (vehicle.getSpeed() <= 1)).
+                    forEach((vehicle) -> {
+                        //Adds all the vehicles to the list of cars that are 
+                        //currently waiting
+                        addTime(vehicle);
+                    });
+
+            //Makes 2 temporay list so we can eventually remove cars that aren't waiting
+            //anymore ~ Ask Kareem to explain more, hard to explain in just comments xD
             ArrayList<AbstractMap.SimpleEntry<Integer, Double>> tmp = new ArrayList<>();
             ArrayList<AbstractMap.SimpleEntry<Integer, Integer>> tmp2 = new ArrayList<>();
+
+            //Goes through all the cars and finds any car that isn't waiting in
+            //the current tick.
             for (int i = 0; i < waitingTimeS.size(); i++) {
                 AbstractMap.SimpleEntry<Integer, Double> get = waitingTimeS.get(i);
                 AbstractMap.SimpleEntry<Integer, Integer> get2 = waitTime.get(i);
@@ -245,20 +285,29 @@ public class Stats {
             waitTime.removeAll(tmp2);
         }
 
+        /**
+         * Adds the vehicle to list which holds what car is currently waiting
+         *
+         * @param v The vehicle in question
+         */
         private void addTime(Vehicle v) {
+            //Adds the vehicle to the flag
             flags.add(v.getIndex());
+
+            //Updates the value if the entry is already in the list
             for (AbstractMap.SimpleEntry<Integer, Double> waitingTime1 : this.waitingTimeS) {
                 if (waitingTime1.getKey() == v.getIndex()) {
-                    waitingTime1.setValue(world.getTicker().tickTimeInS);
-                    return;
+                    waitingTime1.setValue(world.getTicker().tickTimeInS + waitingTime1.getValue());
                 }
             }
             for (AbstractMap.SimpleEntry<Integer, Integer> waitTime1 : waitTime) {
                 if (waitTime1.getKey() == v.getIndex()) {
-                    waitTime1.setValue(1);
+                    waitTime1.setValue(1 + waitTime1.getValue());
                     return;
                 }
             }
+            
+            //If it isn't in the list previously, than adds it to the list
             this.waitingTimeS.add(new AbstractMap.SimpleEntry<>(v.getIndex(), world.getTicker().tickTimeInS));
             this.waitTime.add(new AbstractMap.SimpleEntry<>(v.getIndex(), 1));
         }
@@ -270,6 +319,9 @@ public class Stats {
 
     }
 
+    /**
+     * Compares a SimpleEntry<Integer, Double> based on the double part of it
+     */
     private class Compare implements Comparator<AbstractMap.SimpleEntry<Integer, Double>> {
 
         @Override

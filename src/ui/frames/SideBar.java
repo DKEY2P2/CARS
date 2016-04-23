@@ -106,7 +106,7 @@ public class SideBar extends JFrame {
             RunLineChart.run();
         });
         JButton historyTotalCars = new JButton("Show history of the number of cars");
-        historyNormalized.addActionListener((ActionEvent e) -> {
+        historyTotalCars.addActionListener((ActionEvent e) -> {
             RunLineChart.addDataI(Controller.getInstance().getStats().copy().getNumberOfCarsHistory(), "Amount of Cars Data");
             RunLineChart.run();
         });
