@@ -1,5 +1,7 @@
 package map.intersection.detectors;
 
+import map.TrafficLight;
+
 /**
  * A simple framework for detectors to use and implement
  * <p>
@@ -39,5 +41,14 @@ public interface Detector {
      * @return A <b>empty</b> clone of the detector
      */
     public Detector clone();
+
+    /**
+     * So we are able to clone the detector, makes it easier to dictate what
+     * detector to use when in start doing stuff
+     *
+     * @param t The traffic light the detector has to detect on
+     * @return A <b>empty</b> clone of the detector
+     */
+    public Detector clone(TrafficLight t);
 
 }
