@@ -10,12 +10,23 @@ import map.intersection.detectors.Detector;
 
 /**
  * Hopefully a intersection which is smart that act all greedy like
+ * <p>
+ * Ignores everything and only depends on the number cars currently waiting at a
+ * light
  *
  * @author Kareem Horstink
  */
 public class SimpleGreedyIntersection extends DefaultIntersection {
 
     private static Detector type;
+
+    public static Detector getType() {
+        return type;
+    }
+
+    public static void setType(Detector type) {
+        SimpleGreedyIntersection.type = type;
+    }
 
     public SimpleGreedyIntersection(int x, int y, Ticker t) {
         super(x, y, t);
@@ -65,7 +76,7 @@ public class SimpleGreedyIntersection extends DefaultIntersection {
         return r;
     }
 
-    private static class GreedyTrafficLight extends TrafficLight {
+    protected static class GreedyTrafficLight extends TrafficLight {
 
         private Detector detector;
 

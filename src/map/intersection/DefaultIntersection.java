@@ -68,4 +68,10 @@ public class DefaultIntersection extends Intersection implements Observer {
         update();
     }
 
+    public Ticker getTicker() {
+        return ticker;
+    }
+
+    
+    
 }

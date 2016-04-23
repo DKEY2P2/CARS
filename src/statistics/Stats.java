@@ -87,9 +87,9 @@ public class Stats {
      * Get the waiting time history that in normalized
      *
      * @return An arraylist in chronological order
-     * @TODO Think of doing this in a better way
+     *
      */
-    public ArrayList<Double> getWaitingTimeNormalizedHistory() {
+    public ArrayList<Double> getWaitingTimeNormalizedHistory() {//@TODO Think of doing this in a better way
         ArrayList<Double> tmp = new ArrayList<>();
         for (int i = 0; i < historyWaitingTimeS.size(); i++) {
             Double get1 = historyWaitingTimeS.get(i);
