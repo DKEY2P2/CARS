@@ -259,7 +259,7 @@ public class Stats {
             //and assumes that it is waiting
             world.getVehicles().
                     stream().
-                    filter((vehicle) -> (vehicle.getSpeed() <= 1)).
+                    filter((vehicle) -> (vehicle.getSpeed() <= 1)&&(vehicle.getAcceleration()<0)).
                     forEach((vehicle) -> {
                         //Adds all the vehicles to the list of cars that are 
                         //currently waiting
