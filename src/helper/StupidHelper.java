@@ -1,5 +1,6 @@
 package helper;
 
+import controller.SimulationSettings;
 import java.util.Collection;
 import java.util.Random;
 
@@ -20,7 +21,7 @@ public class StupidHelper {
         if(c.isEmpty()){
             return null;
         }
-        Random r = new Random();
+        Random r = new Random(SimulationSettings.getInstance().getRandomSeed());
         return c.toArray()[r.nextInt(c.size())];
     }
 }

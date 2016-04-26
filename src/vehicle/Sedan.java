@@ -1,6 +1,7 @@
 package vehicle;
 
 import algorithms.Algorithm;
+import controller.SimulationSettings;
 import helper.Logger;
 import map.Intersection;
 import map.Road;
@@ -21,7 +22,7 @@ public class Sedan extends Vehicle {
 
     protected Sedan(Road start, double percentage, Model m, Algorithm a, Intersection destination) {
         super(start, percentage, m, a);
-        Random r = new Random();
+        Random r = new Random(SimulationSettings.getInstance().getRandomSeed());
         setDesiredSpeed(66.66);//100kmh
         setDesiredDeceleration(1.67 + r.nextInt(2));
         setMaxAcceleration(4.55373406193078);

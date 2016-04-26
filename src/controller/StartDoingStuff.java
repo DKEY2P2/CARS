@@ -1,11 +1,8 @@
 package controller;
 
 import java.util.ArrayList;
-import java.util.Random;
-
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-
 import algorithms.AStar;
 import controller.threads.ThreadController;
 import helper.Logger;
@@ -39,6 +36,9 @@ public class StartDoingStuff {
             Logger.LogError(ex);
         }
 
+        /* Set the what the seed is for the random function that rest of the simulation should use */
+        SimulationSettings.getInstance().setRandomSeed(24031995);
+
         /* Set what model to use for the rest of the applicatio */
         SimulationSettings.getInstance().setModel(new IntelligentDriver());
 
@@ -47,7 +47,7 @@ public class StartDoingStuff {
 
         /* Set the number of ticks the simulation waits until it spawns new vehicles */
         SimulationSettings.getInstance().setTimeUntilSpawn(500);
-        
+
         SimulationSettings.getInstance().setNumberOfCarsToSpawn(10);
 
         /* Creates the controller */
@@ -56,9 +56,6 @@ public class StartDoingStuff {
         /* A temporary holder for the intersections */
         ArrayList<DefaultIntersection> a = new ArrayList<>();
         ArrayList<Road> b = new ArrayList<>();
-
-        /* A random generator for location of a vehicle */ //TODO: We must make this ZONE based, not random
-        Random r = new Random();
 
         /* Creates a ticker with the value of 100 ms between each tick which represent 0.1 second */
         Ticker t = new Ticker(0.01, 10);
@@ -100,10 +97,10 @@ public class StartDoingStuff {
         //Starts the UI
         control.setUI(new ControllerUI());
         control.getUI().update();
-        
+
     }
     private static boolean start = false;
-    
+
     public static void start() {
         if (!start) {
             Controller.getInstance().setStats(new Stats.StatsDynamic(Controller.getInstance()));
@@ -111,7 +108,7 @@ public class StartDoingStuff {
             VehicleFactory.getFactory().createVehicle();
             start = true;
         }
-        
+
     }
-    
+
 }

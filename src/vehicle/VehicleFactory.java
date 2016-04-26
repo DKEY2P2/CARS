@@ -56,7 +56,7 @@ public class VehicleFactory {
     /**
      * For the random factor factory
      */
-    private static Random r = new Random();
+    private static Random r = new Random(SimulationSettings.getInstance().getRandomSeed());
 
     /**
      * Returns the factory
@@ -186,7 +186,6 @@ public class VehicleFactory {
     }
 
     private String getType() {
-        Random r = new Random();
         double next = r.nextDouble();
         for (int i = 0; i < probablity.size(); i++) {
             double current;

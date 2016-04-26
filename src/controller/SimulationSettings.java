@@ -18,7 +18,6 @@ public class SimulationSettings {
 
     private int timeUntilSpawn = 150;
 
-
     /**
      * Get the value of timeUntilSpawn
      *
@@ -122,6 +121,26 @@ public class SimulationSettings {
      */
     public void setSpeedLimit(double speedLimit) {
         this.speedLimit = speedLimit;
+    }
+
+    private int randomSeed;
+
+    /**
+     * Get the value of randomSeed
+     *
+     * @return the value of randomSeed
+     */
+    public int getRandomSeed() {
+        return randomSeed;
+    }
+
+    /**
+     * Set the value of randomSeed
+     *
+     * @param randomSeed new value of randomSeed
+     */
+    public void setRandomSeed(int randomSeed) {
+        this.randomSeed = randomSeed;
     }
 
 }
