@@ -143,7 +143,7 @@ public class Map {
         int index = 0;
         int i = 0;
         for (Intersection r1 : r) {
-            double tmp = Math.sqrt(Math.pow(r1.getX() - x, 2) + Math.pow(y - r1.getY(), 2));
+            double tmp = Math.sqrt(Math.pow(r1.p.x - x, 2) + Math.pow(y - r1.p.y, 2));
             if (tmp < min) {
                 min = tmp;
                 index = i;

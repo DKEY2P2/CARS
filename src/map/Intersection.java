@@ -1,14 +1,14 @@
 package map;
 
-import helper.Logger;
+import controller.Observer;
+import controller.SimulationSettings;
+import controller.Ticker;
+import helper.UniqueNumberGenerator;
 import ui.Drawable;
-import ui.helper.TwoDTransformation;
-import ui.setting.GraphicsSetting;
 import vehicle.Vehicle;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.PriorityQueue;
 
 /**
  * The abstract class for all types of intersections present in the simulation
@@ -18,56 +18,19 @@ import java.util.PriorityQueue;
  * @author Lucas Vanparijs, Kareem Horstink
  * @since 27-02-16
  */
-public abstract class Intersection implements Drawable {
+public abstract class Intersection extends geom.Rectangle implements Drawable, Observer {
 
-    private static int indexs = 0;
+    TrafficLight trafficLight;
 
-    private int index;
-
-    public int getIndex() {
-        return index;
-    }
-
-    public static final int DIAMETER = 5;
-
-    int timerLength = 2000;
-
-    /**
-     * The x position of an intersection
-     */
-    private int x;
-    /**
-     * The y position of an intersection
-     */
-    private int y;
-    /**
-     * This is in an ArrayList that is parallel to the roads that have a certain
-     * traffic light, with the index of the road and the corresponding traffic
-     * light being the same
-     */
-    private ArrayList<TrafficLight> tLights = new ArrayList<TrafficLight>();
+    private Ticker ticker;
     /**
      * All the roads that are connected to this intersection
      */
     private ArrayList<Road> roads = new ArrayList<Road>();
 
-    /**
-     * Gets the traffic light system
-     *
-     * @return The traffic light system
-     */
-    public ArrayList<TrafficLight> getTrafficLights() {
-        return tLights;
-    }
+    private ArrayList<Vehicle> vehicles = new ArrayList<Vehicle>();
 
-    public TrafficLight getTrafficLight(Road r) {
-        for (TrafficLight tLight : tLights) {
-            if (tLight.getIn() == r) {
-                return tLight;
-            }
-        }
-        return null;
-    }
+    public int ID;
 
     /**
      * The constructor of the abstract class
@@ -75,10 +38,11 @@ public abstract class Intersection implements Drawable {
      * @param x the x coordinate of the intersection
      * @param y the y coordinate of the intersection
      */
-    public Intersection(int x, int y) {
-        this.x = x;
-        this.y = y;
-        index = indexs++;
+    public Intersection(int x, int y, Ticker t) {
+        super(x,y,SimulationSettings.intersectionSize,SimulationSettings.intersectionSize);//TODO the whole underlying representation should be in meters
+        t.addObserver(this);
+        this.ticker = t;
+        this.ID = UniqueNumberGenerator.getID("i");
     }
 
     /**
@@ -88,84 +52,42 @@ public abstract class Intersection implements Drawable {
      * @return the added road
      */
     public Road addRoad(Road r) {
-        roads.add(r);
+
+        int side = -1;
+
+        if(this.getRoads().size() < 8){
+            if(r.getStart() == this){
+                side = this.getSide(r.getStart().p);
+                if(this.isOccupied(side)){
+                    System.err.println("Sorry this side of the intersection is already occupied");
+                    r = null;
+                }else{
+                    r.setStart(this.getMidPoint(side));
+                    roads.add(r);
+                }
+            }else{
+                side = this.getSide(r.getEnd().p);
+                if(this.isOccupied(side)){
+                    System.err.println("Sorry this side of the intersection is already occupied");
+                    r = null;
+                }else{
+                    r.setEnd(this.getMidPoint(side));
+                    roads.add(r);
+                }
+            }
+        }else{
+            System.err.println("No Road added");
+        }
         return r;
     }
 
     public TrafficLight addTrafficLight(TrafficLight tl) {
-        tLights.add(tl);
-        //Checks if at least one light is green
-        boolean hasGreen = false;
-        for (TrafficLight tLight : tLights) {
-            if (tLight.isGreen()) {
-                hasGreen = true;
-            }
-        }
-        if (!hasGreen) {
-            tLights.get(0).flip();
-            tLights.get(0).setTimeLeft(tLights.get(0).getTimerLength());
-        }
-        return tl;
+        //trafficLight = new TrafficLight(this); //TODO trafficLight should only take in one intersection
+        return trafficLight;
     }
-
-    public void updateLight(double elapsed) {
-        if (tLights.isEmpty()) {
-            return;
-        }
-        //Check which use case to use
-
-        if (tLights.size() > 1) {
-            //If more than one light at a traffic light
-
-            //Goes through all the lights
-            for (int i = 0; i < tLights.size(); i++) {
-                //if the current light is green
-                //set the tmp value to index of the the green light
-                tLights.get(i).setTimeLeft(tLights.get(i).getTimeLeft() - elapsed);
-                if (tLights.get(i).getTimeLeft() <= 0) {
-                    tLights.get(i).flip();
-                    tLights.get(i).setTimeLeft(tLights.get(i).getTimerLength());
-                }
-
-            }
-        } else {
-            tLights.get(0).setTimeLeft(tLights.get(0).getTimeLeft() - elapsed); //This is just because we will make the lights cycle so they will all change together. THIS WILL CHANGE -Lucas
-            if (tLights.get(0).getTimeLeft() <= 0) {
-                tLights.get(0).flip();
-                tLights.get(0).setTimeLeft(tLights.get(0).getTimerLength());
-            }
-        }
-    }
-
-    /**
-     *
-     * @param periodOfTimeElapsed in ms
-     */
-    public void updateLights(int periodOfTimeElapsed) {
-        int currentlyGreen = -1;
-        for (int i = 0; i < tLights.size(); i++) {
-            if (tLights.get(i).isGreen()) {
-                currentlyGreen = i;
-                break;
-            }
-        }
-        if (currentlyGreen == -1) {
-            Logger.LogError("Update Light failed, no green lights", this);
-            return;
-        }
-        TrafficLight green = tLights.get(currentlyGreen);
-        if (green.getTimeLeft() - periodOfTimeElapsed <= 0) {
-            green.setLight(false);
-            green.setTimeLeft(green.getTimerLength());
-            if (currentlyGreen == tLights.size() - 1) {
-                currentlyGreen = 0;
-            } else {
-                currentlyGreen++;
-            }
-            tLights.get(currentlyGreen).setLight(true);
-        } else {
-            green.setTimeLeft(green.getTimeLeft() - periodOfTimeElapsed);
-        }
+    public void update(){
+        //UPDATE THE LIGHTS
+        //UPDATE THE CARS ON THE INTERSECTION
     }
 
     /**
@@ -186,7 +108,6 @@ public abstract class Intersection implements Drawable {
     public Road removeRoad(Road r) {
         int i = roads.indexOf(r);
         roads.remove(r);
-        tLights.remove(i);
         return r;
     }
 
@@ -199,21 +120,7 @@ public abstract class Intersection implements Drawable {
      */
     public boolean isGreen(Road r) {
         int i = roads.indexOf(r);
-        return tLights.get(i).isGreen();
-    }
-
-    /**
-     * Returns all the vehicles that are on a certain road
-     *
-     * @param r the road to return the vehicles from
-     * @return A Queue of all vehicles that are on the specified road
-     */
-    public PriorityQueue<Vehicle> getQueue(Road r) {
-        if (roads.contains(r)) {
-            return r.getVehicles();
-        } else {
-            return null;
-        }
+        return trafficLight.isGreen(); //TODO this needs to go in the TrafficLights
     }
 
     public ArrayList<Road> getIns() {
@@ -234,80 +141,6 @@ public abstract class Intersection implements Drawable {
             }
         }
         return outs;
-    }
-
-    /**
-     * Returns the X coordinate of the intersection
-     *
-     * @return x coordinate
-     */
-    public int getX() {
-        return x;
-    }
-
-    /**
-     * Returns the y coordinate of the intersection
-     *
-     * @return y coordinate
-     */
-    public int getY() {
-        return y;
-    }
-
-    /**
-     * Set the value of the x coordinate
-     *
-     * @param n the new value of the x coordinate
-     */
-    public void setX(int n) {
-        x = n;
-    }
-
-    /**
-     * Set the value of the y coordinate
-     *
-     * @param n the new value of the y coordinate
-     */
-    public void setY(int n) {
-        y = n;
-    }
-
-    /**
-     * Gets the traffic light that is green
-     *
-     * @return
-     */
-    public TrafficLight getCurrentlyGreen() { //This assumes only 1 light per intersection can be green
-        for (TrafficLight tLight : tLights) {
-            if (tLight.isGreen()) {
-                return tLight;
-            }
-        }
-        Logger.LogError("Update Light failed, no green lights", this);
-        return null;
-    }
-
-    /**
-     * What image to draw for this item
-     */
-    private String imageKey = "CircleRed";
-
-    /**
-     * Get the value of imageKey
-     *
-     * @return the value of imageKey
-     */
-    public String getImageKey() {
-        return imageKey;
-    }
-
-    /**
-     * Set the value of imageKey
-     *
-     * @param ImageKey new value of imageKey
-     */
-    public void setImageKey(String ImageKey) {
-        this.imageKey = ImageKey;
     }
 
     /**
@@ -349,7 +182,12 @@ public abstract class Intersection implements Drawable {
 
     @Override
     public void draw(Graphics g) {
-        //BufferedImage bi = ImageMap.getInstance().getImage(imageKey, 0, GraphicsSetting.getInstance().getZoom());
+
+        //TODO drawIntersection(g,this)
+
+        /*g.drawRect(p.x,p.y,width(null),height(null)); //TODO we need some sort of scaling thing for the width and going from coordinates to pixels
+
+
         g.setColor(Color.WHITE);
         double zoom = GraphicsSetting.getInstance().getZoom();
         int tmpX = (int) (((int) (x)) - (DIAMETER * zoom) / 2);
@@ -364,12 +202,17 @@ public abstract class Intersection implements Drawable {
             for (TrafficLight tLight : tLights) {
                 tLight.draw(g, i++);
             }
-        }
+        }*/
+    }
+
+    @Override
+    public void update(String args) {
+        update();
     }
 
     @Override
     public String toString() {
-        return ("Intersection: x= " + getX() + ", y= " + getY() + " ID: " + getIndex());
+        return ("Intersection: x= " + p.x + ", y= " + p.y + " ID: " + ID);
     }
 
 }

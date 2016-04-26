@@ -1,4 +1,4 @@
-package map.road;
+package map;
 
 import map.Intersection;
 import map.Road;

@@ -6,8 +6,8 @@ import json.GEOjson;
 import map.Intersection;
 import map.Map;
 import map.Road;
-import map.intersection.DefaultIntersection;
-import map.road.NormalRoad;
+import map.DefaultIntersection;
+import map.NormalRoad;
 import ui.setting.GraphicsSetting;
 
 import javax.swing.*;
@@ -18,7 +18,7 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferStrategy;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
+
 import ui.helper.TwoDTransformation;
 
 /**

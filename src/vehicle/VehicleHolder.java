@@ -33,8 +33,8 @@ public class VehicleHolder implements Collection<Vehicle> {
     /**
      * Adds a new vehicle with the corresponding key
      *
-     * @param v The vehicle to add
-     * @param key The key that is associated
+     * @param v
+     * @param key The key that is associated The vehicle to add
      */
     public void add(Vehicle v, Integer key) {
         VEHICLE_MAP.put(key, v);

@@ -5,8 +5,8 @@ import helper.Logger;
 import map.Intersection;
 import map.Map;
 import map.Road;
-import map.intersection.DefaultIntersection;
-import map.road.NormalRoad;
+import map.DefaultIntersection;
+import map.NormalRoad;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

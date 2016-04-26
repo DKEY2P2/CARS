@@ -4,15 +4,12 @@ package controller;
 import java.util.ArrayList;
 import java.util.Random;
 
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.*;
 
-import algorithms.AStar;
 import controller.threads.ThreadController;
 import helper.Logger;
 import map.Road;
-import map.intersection.DefaultIntersection;
-import models.IntelligentDriver;
+import map.DefaultIntersection;
 import ui.ControllerUI;
 import vehicle.VehicleFactory;
 
@@ -21,7 +18,7 @@ import vehicle.VehicleFactory;
  *
  * @author Kareem
  */
-public class StartDoingStuff {
+public class Main extends JFrame {
 
     /**
      * Start of everything. Of our mini-world muwahahahaha
@@ -32,24 +29,11 @@ public class StartDoingStuff {
      * consider it the same as if you left it blank
      */
     public static void main(String[] args) {
-        try {
-            UIManager.setLookAndFeel(
-                    UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            Logger.LogError(ex);
-        }
+        Main main = new Main();
+        main.init();
         
-        
-        /* Set what model to use for the rest of the applicatio */
-        SimulationSettings.getInstance().setModel(new IntelligentDriver());
+        //TODO move these settings
 
-        /* Set what path finding AI to use for the rest of the application */
-        SimulationSettings.getInstance().setPathFindingAI(new AStar());
-
-        /* Set the number of ticks the simulation waits until it spawns new vehicles */
-        SimulationSettings.getInstance().setTimeUntilSpawn(500);
-
-        SimulationSettings.getInstance().setNumberOfCarsToSpawn(10);
 
         /* Creates the controller */
         Controller control = Controller.getInstance();
@@ -114,7 +98,22 @@ public class StartDoingStuff {
             VehicleFactory.getFactory().createVehicle();
             start = true;
         }
-        
+    }
+
+    public void init(){
+
+        try {
+            UIManager.setLookAndFeel(
+                    UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            Logger.LogError(ex);
+        }
+
+        this.setTitle("Traffic Simulation");
+        this.setSize(900,600);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.setVisible(true);
     }
 
 }

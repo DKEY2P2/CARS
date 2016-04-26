@@ -70,11 +70,11 @@ public class Ticker extends Observerable {
             public void run() {
                 notifyObservers("tick");
                 tickCount++;
-                timeElapsed += 1 * tickTimeInS;
+                timeElapsed += 1 * tickTimeInS; //TODO make the factory responsible for this
                 //System.out.println("=====================================================");
                 //System.out.println(VehicleHolder.getInstance().size());
-                if (tickCount % SimulationSettings.getInstance().getTimeUntilSpawn() == 0) {
-                    for (int i = 0; i < SimulationSettings.getInstance().getNumberOfCarsToSpawn(); i++) {
+                if (tickCount % SimulationSettings.timeUntilSpawn == 0) {
+                    for (int i = 0; i < SimulationSettings.numberOfCarsToSpawn; i++) {
                         VehicleFactory.getFactory().createVehicle();
                     }
                 }

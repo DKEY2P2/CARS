@@ -1,4 +1,4 @@
-package map.intersection;
+package map;
 
 import controller.Observer;
 import controller.Ticker;

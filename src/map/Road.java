@@ -1,11 +1,9 @@
 package map;
 
+import geom.Point;
 import ui.Drawable;
-import ui.helper.TwoDTransformation;
-import ui.setting.GraphicsSetting;
 import vehicle.Vehicle;
 
-import java.awt.*;
 import java.util.*;
 
 /**
@@ -16,8 +14,6 @@ import java.util.*;
  * @since 18-02-16
  */
 public abstract class Road implements Drawable {
-
-    public static PriorityQueue<Vehicle> pq2;
 
     /**
      * The length of a road
@@ -149,6 +145,10 @@ public abstract class Road implements Drawable {
         return start;
     }
 
+    public void setStart(Point p) {
+        start.p = p;
+    }
+
     /**
      * Returns the ending Intersection of the Road
      *
@@ -156,6 +156,10 @@ public abstract class Road implements Drawable {
      */
     public Intersection getEnd() {
         return end;
+    }
+
+    public void setEnd(Point p) {
+        end.p = p;
     }
 
     /**

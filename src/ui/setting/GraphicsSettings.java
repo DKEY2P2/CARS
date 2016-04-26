@@ -5,18 +5,18 @@ package ui.setting;
  *
  * @author Kareem
  */
-public class GraphicsSetting {
+public class GraphicsSettings {
 
-    private static GraphicsSetting instance;
+    private static GraphicsSettings instance;
 
     /**
      * Get the instance of this class
      *
      * @return The instance of this class
      */
-    public static GraphicsSetting getInstance() {
+    public static GraphicsSettings getInstance() {
         if (instance == null) {
-            instance = new GraphicsSetting();
+            instance = new GraphicsSettings();
         }
         return instance;
     }
@@ -45,7 +45,7 @@ public class GraphicsSetting {
     /**
      * Ensure that a public construction is not avaliable
      */
-    private GraphicsSetting() {
+    private GraphicsSettings() {
     }
 
     /**
