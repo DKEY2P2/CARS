@@ -41,9 +41,9 @@ public abstract class Road implements Drawable {
     public void setWidth(double width) {
         this.width = width;
     }
-    
-    public TrafficLight getTrafficlight(){
-    	return end.getTrafficLight(this);
+
+    public TrafficLight getTrafficlight() {
+        return end.getTrafficLight(this);
     }
 
     /**
@@ -108,7 +108,7 @@ public abstract class Road implements Drawable {
         LENGTH = length;
     }
 
-    public Vehicle addCar(Vehicle v){
+    public Vehicle addCar(Vehicle v) {
         pq.add(v);
         return v;
     }

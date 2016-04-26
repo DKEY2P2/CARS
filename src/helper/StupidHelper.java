@@ -21,7 +21,7 @@ public class StupidHelper {
         if(c.isEmpty()){
             return null;
         }
-        Random r = new Random(SimulationSettings.getInstance().getRandomSeed());
+Random r = SimulationSettings.getInstance().getRandom();
         return c.toArray()[r.nextInt(c.size())];
     }
 }

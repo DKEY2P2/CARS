@@ -26,7 +26,7 @@ public class Minibus extends Vehicle {
 
     protected Minibus(Road start, double percentage, Model m, Algorithm a, Intersection destination) {
         super(start, percentage, m, a);
-        Random r = new Random(SimulationSettings.getInstance().getRandomSeed());
+Random r = SimulationSettings.getInstance().getRandom();
         setDesiredSpeed(55.55);
         setDesiredDeceleration(1.67 + r.nextInt(2));
         setMaxAcceleration(2.80583613916947);

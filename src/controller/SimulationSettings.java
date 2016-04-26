@@ -1,6 +1,7 @@
 package controller;
 
 import algorithms.Algorithm;
+import java.util.Random;
 import models.Model;
 
 /**
@@ -123,24 +124,11 @@ public class SimulationSettings {
         this.speedLimit = speedLimit;
     }
 
-    private int randomSeed;
+    private Random random = new Random(24031995);
 
-    /**
-     * Get the value of randomSeed
-     *
-     * @return the value of randomSeed
-     */
-    public int getRandomSeed() {
-        return randomSeed;
+    public Random getRandom() {
+        return random;
     }
-
-    /**
-     * Set the value of randomSeed
-     *
-     * @param randomSeed new value of randomSeed
-     */
-    public void setRandomSeed(int randomSeed) {
-        this.randomSeed = randomSeed;
-    }
+    
 
 }

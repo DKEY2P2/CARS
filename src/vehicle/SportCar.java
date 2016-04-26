@@ -21,7 +21,7 @@ public class SportCar extends Vehicle {
 
 	protected SportCar(Road start, double percentage, Model m, Algorithm a, Intersection destination) {
 		super(start, percentage, m, a);
-		Random r = new Random(SimulationSettings.getInstance().getRandomSeed());
+Random r = SimulationSettings.getInstance().getRandom();
 		setDesiredSpeed(27.777777778 + r.nextInt(10));//100kmh
 		setDesiredDeceleration(1.67 + r.nextInt(2));
 		setMaxAcceleration(9.57854406130268);

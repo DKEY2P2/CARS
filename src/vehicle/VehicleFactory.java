@@ -56,7 +56,8 @@ public class VehicleFactory {
     /**
      * For the random factor factory
      */
-    private static Random r = new Random(SimulationSettings.getInstance().getRandomSeed());
+    private static Random r = SimulationSettings.getInstance().getRandom();
+
 
     /**
      * Returns the factory
