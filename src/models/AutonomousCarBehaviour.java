@@ -13,14 +13,14 @@ public class AutonomousCarBehaviour implements Model {
 		Vehicle leader = v.getPredecessor();
 		Road r = v.getPosition().getKey();
 		TrafficLight trl = r.getEnd().getTrafficLight(r);
-		double acc; 									// Acceleration
-		double maxDec, maxAcc;							// Maximum Deceleration, Acceleration
-		double propPar1, propPar2;						// Proportional Parameters 1 and 2
-		double actFollDist, desiFollDist, minFollDist;	// Actual , desired and minimum following distance
-		double vSpeed, lSpeed, desSpeed;				// Follower, leader and desired speed
-		double posV, posL, posT;						// Position follower, leader, position Trafficlight
-		double rangeToLeader;							// The range of distance to leader, so whether or not to take them into consideration yet.
-		double lRoad;									// Obviously the length of the road
+		double acc; 												// Acceleration
+		double maxDec, maxAcc, desDec;								// Maximum Deceleration, Acceleration
+		double propPar1, propPar2;									// Proportional Parameters 1 and 2
+		double actFollDist, desiFollDist, minFollDist, breakDist;	// Actual , desired and minimum following distance
+		double vSpeed, lSpeed, desSpeed, sRoad;						// Follower, leader, desired speed and speed limit of road.
+		double posV, posL, posT;									// Position follower, leader, position Trafficlight
+		double rangeToLeader;										// The range of distance to leader, so whether or not to take them into consideration yet.
+		double lRoad;												// Obviously the length of the road
 		
 		
 		acc = 0;
@@ -31,25 +31,34 @@ public class AutonomousCarBehaviour implements Model {
 		vSpeed = v.getSpeed();
 		desSpeed = v.getDesiredSpeed();
 		lRoad = r.getLength();
+		sRoad = r.getSpeedLimit();
+		breakDist = v.getBreakingDistance();
 
 		if (leader == null) {
 			if (trl != null) {
 				if (trl.isGreen()) {
 					if (vSpeed < desSpeed)
 						acc = Math.min(maxAcc, propPar2 * (desSpeed - vSpeed));
-					else if (vSpeed == desSpeed)
+					else if (vSpeed == desSpeed){
 						acc = 0;
-					else
-						acc = Math.max(maxDec, propPar2 * (desSpeed - vSpeed));
-				} else {
+						vSpeed = Math.min(desSpeed, sRoad);
+					}else
+						acc = Math.max(-maxDec, propPar2 * (desSpeed - vSpeed));
+				} else { // Traffic light is RED
+					desDec = v.getDesiredDeceleration();
 					posV = v.getPosition().getValue();
 					posT = 1;
-					actFollDist = (posT - posV);
-					desiFollDist = 0.3;
-					if(actFollDist <= desiFollDist){
-						acc = -6*(Math.pow(vSpeed, 2) / (2 * ((actFollDist)* lRoad)));
-					}else {
+					actFollDist = (posT - posV)* lRoad;
+					acc = -(Math.pow(vSpeed, 2) / (2 * actFollDist));
+					if(breakDist >= acc && acc <= -desDec){
+						v.updateAll(vSpeed + acc * Controller.getInstance().getTicker().getTickTimeInS(), acc, r);
+					} else if(acc > -desDec){
+						
+						vSpeed = Math.min(desSpeed, sRoad);
+					} else if(acc < breakDist){
+						vSpeed = 0;
 						acc = 0;
+						v.updateAll(vSpeed + acc * Controller.getInstance().getTicker().getTickTimeInS(), acc, r);
 					}
 				}
 			} else {
@@ -71,14 +80,10 @@ public class AutonomousCarBehaviour implements Model {
 						- leader.getLength();
 				minFollDist = (v.getSpeed() / 2.2222222) * v.getLength()*2;// Two-second rule 
 				desiFollDist = Math.max(minFollDist, vSpeed * 2);    // where 2 is some constant k
-				System.out.println(" LEADER POS :      " + leader.getPosition().getValue() + " FOLLOWER      "
-						+ v.getPosition().getValue());
-				System.out.println("Actual : " + actFollDist + " Allowed : " + minFollDist);
 				if (actFollDist <= minFollDist) {
-					System.out.println("Went into IF");
+					//System.out.println("Went into IF");
 					acc = -(Math.pow(vSpeed, 2) / (2 * actFollDist)) * 3;
 					acc = Math.min(acc, -maxDec);
-					System.err.println(acc);
 				} else {
 					acc = Math.max(maxDec, propPar1 * (actFollDist - desiFollDist) - (propPar2) * (vSpeed - lSpeed));
 				}
@@ -91,7 +96,6 @@ public class AutonomousCarBehaviour implements Model {
 					acc = -Math.max(maxDec, propPar2 * (desSpeed - vSpeed));
 			}
 		}
-
 		v.updateAll(vSpeed + acc * Controller.getInstance().getTicker().getTickTimeInS(), acc, r);
 	}
 }
