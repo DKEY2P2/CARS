@@ -17,7 +17,7 @@ import map.intersection.detectors.Detector;
  */
 public class SimTrafficLight extends SmartTrafficLight{
 
-    public SimTrafficLight(Intersection i, Road in, ArrayList<Road> out, Detector detector) {
+    public SimTrafficLight(Detector detector) {
         super(null,null,null, detector);
     }
 
