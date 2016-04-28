@@ -26,10 +26,10 @@ public class Minibus extends Vehicle {
     protected Minibus(Road start, double percentage, Model m, Algorithm a, Intersection destination) {
         super(start, percentage, m, a);
         Random r = new Random();
-        setDesiredSpeed(55.55);
+        setDesiredSpeed(23.777777778 + r.nextInt(10));
         setDesiredDeceleration(1.67 + r.nextInt(2));
         setMaxAcceleration(2.80583613916947);
-        setMaxDecceleration(21.73 - 2);http://blog.esurance.com/stopping-distance-is-the-3-second-rule-wrong/#.VwailPkrKUk - THIS IS FOR THE AVERAGE CAR so i subtracted a bit for the minibus
+        setMaxDecceleration(21.73 - 2);//http:blog.esurance.com/stopping-distance-is-the-3-second-rule-wrong/#.VwailPkrKUk - THIS IS FOR THE AVERAGE CAR so i subtracted a bit for the minibus
         setReactionTime(2.3);//average human - http://copradar.com/redlight/factors/
         setLength(4.854);
         setDestination(destination);

@@ -22,7 +22,7 @@ public class Sedan extends Vehicle {
     protected Sedan(Road start, double percentage, Model m, Algorithm a, Intersection destination) {
         super(start, percentage, m, a);
         Random r = new Random();
-        setDesiredSpeed(66.66);//100kmh
+        setDesiredSpeed(27.777777778 + r.nextInt(10));//100kmh
         setDesiredDeceleration(1.67 + r.nextInt(2));
         setMaxAcceleration(4.55373406193078);
         setMaxDecceleration(21.73);//http://blog.esurance.com/stopping-distance-is-the-3-second-rule-wrong/#.VwailPkrKUk
