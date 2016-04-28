@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package algorithms;
+package algorithms.pathfinding;
 
 import helper.Logger;
 import helper.StupidHelper;

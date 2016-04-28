@@ -137,36 +137,6 @@ public abstract class Intersection implements Drawable {
         }
     }
 
-    /**
-     *
-     * @param periodOfTimeElapsed in ms
-     */
-    public void updateLights(int periodOfTimeElapsed) {
-        int currentlyGreen = -1;
-        for (int i = 0; i < tLights.size(); i++) {
-            if (tLights.get(i).isGreen()) {
-                currentlyGreen = i;
-                break;
-            }
-        }
-        if (currentlyGreen == -1) {
-            Logger.LogError("Update Light failed, no green lights", this);
-            return;
-        }
-        TrafficLight green = tLights.get(currentlyGreen);
-        if (green.getTimeLeft() - periodOfTimeElapsed <= 0) {
-            green.setLight(false);
-            green.setTimeLeft(green.getTimerLength());
-            if (currentlyGreen == tLights.size() - 1) {
-                currentlyGreen = 0;
-            } else {
-                currentlyGreen++;
-            }
-            tLights.get(currentlyGreen).setLight(true);
-        } else {
-            green.setTimeLeft(green.getTimeLeft() - periodOfTimeElapsed);
-        }
-    }
 
     /**
      * Returns all the roads connected to the intersection

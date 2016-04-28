@@ -1,6 +1,6 @@
 package controller;
 
-import algorithms.Algorithm;
+import algorithms.pathfinding.Algorithm;
 import models.Model;
 
 /**

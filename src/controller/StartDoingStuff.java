@@ -1,18 +1,18 @@
 package controller;
 
-
 import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import algorithms.AStar;
+import algorithms.pathfinding.AStar;
 import controller.threads.ThreadController;
 import helper.Logger;
 import map.Road;
 import map.intersection.DefaultIntersection;
-import models.GM;
+import models.IntelligentDriver;
+import statistics.Stats;
 import ui.ControllerUI;
 import vehicle.VehicleFactory;
 
@@ -38,17 +38,16 @@ public class StartDoingStuff {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             Logger.LogError(ex);
         }
-        
-        
+
         /* Set what model to use for the rest of the applicatio */
-        SimulationSettings.getInstance().setModel(new GM());
+        SimulationSettings.getInstance().setModel(new IntelligentDriver());
 
         /* Set what path finding AI to use for the rest of the application */
         SimulationSettings.getInstance().setPathFindingAI(new AStar());
 
         /* Set the number of ticks the simulation waits until it spawns new vehicles */
         SimulationSettings.getInstance().setTimeUntilSpawn(500);
-
+        
         SimulationSettings.getInstance().setNumberOfCarsToSpawn(10);
 
         /* Creates the controller */
@@ -64,7 +63,6 @@ public class StartDoingStuff {
         /* Creates a ticker with the value of 100 ms between each tick which represent 0.1 second */
         Ticker t = new Ticker(0.01, 10);
 
-
         //Add the item to the controller
         b.stream().forEach((b1) -> {
             control.getMap().addRoad(b1);
@@ -72,7 +70,6 @@ public class StartDoingStuff {
         a.stream().forEach((as) -> {
             control.getMap().addIntersection(as);
         });
-
 
         //Add the ticker to the controller
         control.setTicker(t);//so we can get the ticker later on
@@ -89,7 +86,6 @@ public class StartDoingStuff {
                 System.err.println("An error has occured - check logs");
                 new ThreadController(1, t);
             }
-            //if you don't care about what number it has, it will be put as the default
             //if you don't care about what number it has, it will be put as the default
         } else if (args.length != 0 && args[0].matches("([No][Oo])")) {
             int cores = Runtime.getRuntime().availableProcessors();
@@ -110,11 +106,12 @@ public class StartDoingStuff {
     
     public static void start() {
         if (!start) {
+            Controller.getInstance().setStats(new Stats.StatsDynamic(Controller.getInstance()));
             Controller.getInstance().getTicker().start("tick");
             VehicleFactory.getFactory().createVehicle();
             start = true;
         }
         
     }
-
+    
 }

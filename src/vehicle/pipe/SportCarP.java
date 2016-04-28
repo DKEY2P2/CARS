@@ -1,6 +1,6 @@
 package vehicle.pipe;
 
-import algorithms.Algorithm;
+import algorithms.pathfinding.Algorithm;
 import map.Intersection;
 import map.Road;
 import models.OVM;
