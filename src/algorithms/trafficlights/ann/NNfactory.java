@@ -1,4 +1,4 @@
-package ann;
+package algorithms.trafficlights.ann;
 
 /**
  * The factory that creates the neural network

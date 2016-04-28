@@ -20,12 +20,12 @@ public class DefaultIntersection extends Intersection implements Observer {
 
     public DefaultIntersection(int x, int y, Ticker t) {
         super(x, y);
-        t.addObserver(this);
-        ticker = t;
+//        t.addObserver(this);
+//        ticker = t;
     }
 
     public void update() {
-        updateLight(ticker.getTimeBetweenTick());
+        updateLight(0.1);
         //this should be the only thing updated in the intersection, the intersection is only responsible for its traffic lights, the cars should be responible for their location
 
     }

@@ -1,4 +1,4 @@
-package ann;
+package algorithms.trafficlights.ann;
 
 /**
  * A class that just contains 2 doubles. Don't really need it to be honest but I

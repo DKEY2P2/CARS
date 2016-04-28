@@ -1,4 +1,4 @@
-package ann;
+package algorithms.trafficlights.ann;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,7 +19,7 @@ import org.neuroph.util.TransferFunctionType;
 public class TesterClass {
 
     public static void main(String[] args) {
-        org.neuroph.core.NeuralNetwork a = NeuralNetworkFactory.createMLPerceptron("2 3 3 3 3 3 1", TransferFunctionType.SIGMOID);
+        org.neuroph.core.NeuralNetwork a = NeuralNetworkFactory.createMLPerceptron("2 3 3 3 3 3 1", TransferFunctionType.STEP);
         System.out.println("fuck");
         a.randomizeWeights();
         System.out.println("fuck");

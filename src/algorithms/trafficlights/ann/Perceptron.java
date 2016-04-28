@@ -1,4 +1,4 @@
-package ann;
+package algorithms.trafficlights.ann;
 
 import java.util.Random;
 

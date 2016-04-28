@@ -13,10 +13,11 @@ import map.intersection.detectors.Detector;
  */
 public class SmartTrafficLight extends TrafficLight {
 
-    private final Detector detector;
+    private Detector detector;
 
     /**
      * Creates the smart traffic light
+     *
      * @param i The intersection the traffic light should be made one
      * @param in The road going into the traffic light
      * @param out All the roads going out a traffic light
@@ -29,10 +30,15 @@ public class SmartTrafficLight extends TrafficLight {
 
     /**
      * Get the detector
+     *
      * @return The detector for this traffic light
      */
     public Detector getDetector() {
         return detector;
+    }
+
+    public void setDetector(Detector detector) {
+        this.detector = detector;
     }
 
 }

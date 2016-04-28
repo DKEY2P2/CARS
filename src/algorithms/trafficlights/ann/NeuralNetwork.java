@@ -1,4 +1,4 @@
-package ann;
+package algorithms.trafficlights.ann;
 
 /**
  * The interface that every type of neural network should follow
