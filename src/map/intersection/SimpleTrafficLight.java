@@ -27,7 +27,6 @@ public class SimpleTrafficLight extends Intersection implements Observer {
     //TODO: This class might be completely useless
     @Override
     public void update() {
-        System.out.println("HERE");
         //updateLights((int) (ticker.getTimeBetweenTick() * ticker.getTickTimeInMS()));
         TrafficLight tl = getCurrentlyGreen();
         int i = 0;

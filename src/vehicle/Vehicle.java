@@ -524,13 +524,12 @@ public abstract class Vehicle implements Task, Drawable, Comparable<Vehicle> {
 
     public void updateAll(double v, double acc,Road r){
         double t = Controller.getInstance().getTicker().getTickTimeInS();
-
         this.setAcceleration(acc);
         if(v < 0)
             this.setSpeed(0);
         else
             this.setSpeed(v);
-
+        System.out.println(this.getSpeed());
         double p = this.getPosition().getValue() + ((this.getSpeed() * t / r.getLength())); //new position
         if(p>=1d){
             r.getVehicles().remove(this);

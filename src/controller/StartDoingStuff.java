@@ -12,7 +12,7 @@ import controller.threads.ThreadController;
 import helper.Logger;
 import map.Road;
 import map.intersection.DefaultIntersection;
-import models.IntelligentDriver;
+import models.AutonomousCarBehaviour;
 import ui.ControllerUI;
 import vehicle.VehicleFactory;
 
@@ -41,7 +41,7 @@ public class StartDoingStuff {
         
         
         /* Set what model to use for the rest of the application */
-        SimulationSettings.getInstance().setModel(new IntelligentDriver());
+        SimulationSettings.getInstance().setModel(new AutonomousCarBehaviour());
 
         /* Set what path finding AI to use for the rest of the application */
         SimulationSettings.getInstance().setPathFindingAI(new AStar());
@@ -49,7 +49,7 @@ public class StartDoingStuff {
         /* Set the number of ticks the simulation waits until it spawns new vehicles */
         SimulationSettings.getInstance().setTimeUntilSpawn(200);
 
-        SimulationSettings.getInstance().setNumberOfCarsToSpawn(5);
+        SimulationSettings.getInstance().setNumberOfCarsToSpawn(0);
 
         /* Creates the controller */
         Controller control = Controller.getInstance();

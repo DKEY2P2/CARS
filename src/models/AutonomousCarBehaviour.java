@@ -16,7 +16,7 @@ public class AutonomousCarBehaviour implements Model {
 		double acc; 												// Acceleration
 		double maxDec, maxAcc, desDec;								// Maximum Deceleration, Acceleration
 		double propPar1, propPar2;									// Proportional Parameters 1 and 2
-		double actFollDist, desiFollDist, minFollDist, breakDist;	// Actual , desired and minimum following distance
+		double actFollDist, desiFollDist, minFollDist; 				// Actual , desired and minimum following distance
 		double vSpeed, lSpeed, desSpeed, sRoad;						// Follower, leader, desired speed and speed limit of road.
 		double posV, posL, posT;									// Position follower, leader, position Trafficlight
 		double rangeToLeader;										// The range of distance to leader, so whether or not to take them into consideration yet.
@@ -32,45 +32,55 @@ public class AutonomousCarBehaviour implements Model {
 		desSpeed = v.getDesiredSpeed();
 		lRoad = r.getLength();
 		sRoad = r.getSpeedLimit();
-		breakDist = v.getBreakingDistance();
 
 		if (leader == null) {
 			if (trl != null) {
 				if (trl.isGreen()) {
+					System.out.println("GREEN TRAFFIC LIGHT \n" );
 					if (vSpeed < desSpeed)
 						acc = Math.min(maxAcc, propPar2 * (desSpeed - vSpeed));
 					else if (vSpeed == desSpeed){
 						acc = 0;
-						vSpeed = Math.min(desSpeed, sRoad);
 					}else
-						acc = Math.max(-maxDec, propPar2 * (desSpeed - vSpeed));
+						acc = -(Math.max(maxDec, propPar2 * (desSpeed - vSpeed)));// TODO: Should this be negative??
 				} else { // Traffic light is RED
-					desDec = v.getDesiredDeceleration();
+					System.out.println("RED TRAFFIC LIGHT \n" );
+					desDec = -(v.getDesiredDeceleration());
 					posV = v.getPosition().getValue();
 					posT = 1;
 					actFollDist = (posT - posV)* lRoad;
+					// ***************************** SOMETHING IS WRONG HERE *********************************
 					acc = -(Math.pow(vSpeed, 2) / (2 * actFollDist));
-					if(breakDist >= acc && acc <= -desDec){
-						v.updateAll(vSpeed + acc * Controller.getInstance().getTicker().getTickTimeInS(), acc, r);
-					} else if(acc > -desDec){
-						
-						vSpeed = Math.min(desSpeed, sRoad);
-					} else if(acc < breakDist){
+					System.out.println("Acc : "+ acc);
+					if(maxDec >= acc && acc <= desDec){
+						// Successful stopping action can be applied
+						acc =  -(Math.pow(vSpeed, 2) / (2 * actFollDist));
 						vSpeed = 0;
+						System.out.println("RED TRAFFIC LIGHT, inside range \n" );
+					} else if(acc > desDec){
+						// Desired stopping position is still too far away.
+						System.out.println("RED TRAFFIC LIGHT, outside range (positive) \n" );
+						System.out.println((v.getPosition().getValue()*lRoad));
+						acc = Math.min(maxAcc, sRoad);
+					} else if(acc < maxDec){
+						// You are too close. It is impossible to stop the vehicle at the desired stopping position.
+						System.out.println("RED TRAFFIC LIGHT, outside  range (negative!!) \n" );
 						acc = 0;
 						v.updateAll(vSpeed + acc * Controller.getInstance().getTicker().getTickTimeInS(), acc, r);
 					}
 				}
 			} else {
+				System.out.println("NO TRAFFIC LIGHT \n" );
 				if (vSpeed < desSpeed)
 					acc = Math.min(maxAcc, propPar2 * (desSpeed - vSpeed));
 				else if (vSpeed == desSpeed)
 					acc = 0;
 				else
-					acc = Math.max(maxDec, propPar2 * (desSpeed - vSpeed));
+					acc = -(Math.max(maxDec, propPar2 * (desSpeed - vSpeed)));
 			}
 
 		} else {
+			System.out.println(" \n Leader takes care of everything.... \n" );
 			rangeToLeader = Math.max(30, vSpeed * 2);
 			posL = leader.getPosition().getValue();
 			posV = v.getPosition().getValue();
@@ -81,7 +91,6 @@ public class AutonomousCarBehaviour implements Model {
 				minFollDist = (v.getSpeed() / 2.2222222) * v.getLength()*2;// Two-second rule 
 				desiFollDist = Math.max(minFollDist, vSpeed * 2);    // where 2 is some constant k
 				if (actFollDist <= minFollDist) {
-					//System.out.println("Went into IF");
 					acc = -(Math.pow(vSpeed, 2) / (2 * actFollDist)) * 3;
 					acc = Math.min(acc, -maxDec);
 				} else {
@@ -96,6 +105,7 @@ public class AutonomousCarBehaviour implements Model {
 					acc = -Math.max(maxDec, propPar2 * (desSpeed - vSpeed));
 			}
 		}
-		v.updateAll(vSpeed + acc * Controller.getInstance().getTicker().getTickTimeInS(), acc, r);
+		double bla = vSpeed + acc*Controller.getInstance().getTicker().getTickTimeInS();
+		v.updateAll(bla, acc, r);
 	}
 }
