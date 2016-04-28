@@ -1,6 +1,6 @@
 package vehicle;
 
-import algorithms.Algorithm;
+import algorithms.pathfinding.Algorithm;
 import controller.Controller;
 import controller.Task;
 import helper.Logger;

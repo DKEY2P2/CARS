@@ -3,7 +3,8 @@ package controller;
 import java.util.ArrayList;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import algorithms.AStar;
+
+import algorithms.pathfinding.AStar;
 import controller.threads.ThreadController;
 import helper.Logger;
 import map.Intersection;

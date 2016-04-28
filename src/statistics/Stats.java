@@ -33,17 +33,19 @@ public class Stats {
     protected int totalNumberTicks = 0;
     protected double totalTimePassed = 0;
     //Car index, Wait time (s)
-    protected final ArrayList<AbstractMap.SimpleEntry<Integer, Double>> waitingTimeS = new ArrayList<>();
+    protected ArrayList<AbstractMap.SimpleEntry<Integer, Double>> waitingTimeS = new ArrayList<>();
     //Car  index, wait time (tick)
-    protected final ArrayList<AbstractMap.SimpleEntry<Integer, Integer>> waitTime = new ArrayList<>();
-
+    protected ArrayList<AbstractMap.SimpleEntry<Integer, Integer>> waitTime = new ArrayList<>();
+    //A history of all the waiting time
+    protected ArrayList<Double> historyWaitingTimeS = new ArrayList<>();
+    //A history of all the cars (amount)
+    protected ArrayList<Integer> historyNumberOfCars = new ArrayList<>();
     private double waitingTimeSeconds = 0;
 
     /**
      * Made to allow StatsDynamic to make it own constructor
      */
     private Stats() {
-
     }
 
     /**
@@ -59,6 +61,42 @@ public class Stats {
         totalWaitingTime = s.totalWaitingTime;
         waitingTimeSeconds = s.waitingTimeSeconds;
         waitingTimeTicks = s.waitingTimeTicks;
+        historyNumberOfCars = (ArrayList<Integer>) s.historyNumberOfCars.clone();
+        historyWaitingTimeS = (ArrayList<Double>) s.historyWaitingTimeS.clone();
+    }
+
+    /**
+     * Get the waiting time history
+     *
+     * @return An arraylist in chronological order
+     */
+    public ArrayList<Double> getWaitingTimeHistory() {
+        return historyWaitingTimeS;
+    }
+
+    /**
+     * Get the number of cars in the simulation history
+     *
+     * @return An arraylist in chronological order
+     */
+    public ArrayList<Integer> getNumberOfCarsHistory() {
+        return historyNumberOfCars;
+    }
+
+    /**
+     * Get the waiting time history that in normalized
+     *
+     * @return An arraylist in chronological order
+     *
+     */
+    public ArrayList<Double> getWaitingTimeNormalizedHistory() {//@TODO Think of doing this in a better way
+        ArrayList<Double> tmp = new ArrayList<>();
+        for (int i = 0; i < historyWaitingTimeS.size(); i++) {
+            Double get1 = historyWaitingTimeS.get(i);
+            Integer get2 = historyNumberOfCars.get(i);
+            tmp.add(get1 / get2);
+        }
+        return tmp;
     }
 
     /**
@@ -146,6 +184,9 @@ public class Stats {
         sum2 = waitTime.stream().mapToInt((waitingTime) -> waitingTime.getValue()).reduce(sum2, (pizza, pie) -> pizza + pie);
         waitingTimeTicks = sum2;
         totalWaitingTime += sum2;
+        historyWaitingTimeS.add(getTotalWaitTimeSeconds());
+        historyNumberOfCars.add(currentNumberOfCars);
+//        historyWaitingTimeS.add(getWaitTimeSeconds());
     }
 
     /**

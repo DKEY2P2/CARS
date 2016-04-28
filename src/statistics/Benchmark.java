@@ -1,6 +1,8 @@
 package statistics;
 
 import controller.Controller;
+import map.Intersection;
+import map.Road;
 
 /**
  * The object contains different ways to benchmark the simulation
@@ -36,4 +38,14 @@ public class Benchmark {
         Stats s = c.getStats().copy();
         return s.getCurrentNumberOfCars() / s.getWaitTimeTicks();
     }
+    
+    public double getWaitingTimeIntersection(Intersection intersection){
+        return 0d;
+    }
+    
+    public double getWaitingTimeRoad(Road r){
+        return 0d;
+    }
+    
+    
 }
