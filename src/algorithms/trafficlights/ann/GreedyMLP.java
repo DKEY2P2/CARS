@@ -1,7 +1,7 @@
 package algorithms.trafficlights.ann;
 
+import algorithms.trafficlights.SmartTrafficLightExtended;
 import algorithms.trafficlights.greedy.GreedyVersion2;
-import algorithms.trafficlights.greedy.SmartTrafficLightExtended;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Iterator;
