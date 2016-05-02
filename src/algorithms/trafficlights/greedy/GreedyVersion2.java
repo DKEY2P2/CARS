@@ -1,9 +1,7 @@
 package algorithms.trafficlights.greedy;
 
-import algorithms.trafficlights.SmartTrafficLight;
 import controller.Ticker;
 import java.util.ArrayList;
-import map.Intersection;
 import map.Road;
 import map.TrafficLight;
 import map.intersection.detectors.Detector;
