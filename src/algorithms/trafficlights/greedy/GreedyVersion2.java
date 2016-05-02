@@ -140,5 +140,27 @@ public class GreedyVersion2 extends GreedyVersion1 {
         return r;
     }
 
+    @Override
+    public Road addRoad(Road r) {
+        //Only change is that it now uses smart traffic light extended instead of the default ones
+        getRoads().add(r);
+        boolean flag = false;
+        if (r.getStart() == this) {
+            getOut().add(r);
+            flag = true;
+        } else {
+            getIn().add(r);
+        }
+
+        if (flag) {
+            getTrafficLights().stream().forEach((trafficLight) -> {
+                trafficLight.addOut(r);
+            });
+        } else {
+            getTrafficLights().add(new SmartTrafficLightExtended(this, r, getOut(), getType()));
+        }
+
+        return r;
+    }
 
 }
