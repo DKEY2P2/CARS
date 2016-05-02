@@ -93,17 +93,15 @@ public class GreedyVersion2 extends GreedyVersion1 {
                 if (light.isGreen()) {
                     //If the current light is green, we how long the light is
                     //green for and check if its within the bounds.
-                    
+
                     //If the light is below the lower bound, we stop checking as
                     //the light has to be green until the lower bound is reached
-                    
                     //If the light is above the lower bound but lower than upper
                     //bound, we do the same check as GreedyVersion1
-                    
                     //If the light is above the upper bound then we set the light
                     //to be red and continue searching for a new light to change
                     //to green with considering the current light
-                    light.incrementCurrentGreenTime(getTicker().getTickTimeInS());
+                    light.incrementCurrentGreenTime(0.1);
                     if (light.getCurrentGreenTime() < lowerBound) {
                         return;
                     } else if (light.getCurrentGreenTime() > upperBound) {
@@ -117,7 +115,8 @@ public class GreedyVersion2 extends GreedyVersion1 {
             }
             //Switches the lights
             if (((SmartTrafficLightExtended) tLights.get(indexWithMostCars)).getCurrentGreenTime() == 0) {
-                ((SmartTrafficLightExtended) tLights.get(indexWithMostCars)).incrementCurrentGreenTime(getTicker().getTickTimeInS());
+                ((SmartTrafficLightExtended) tLights.get(indexWithMostCars)).
+                        incrementCurrentGreenTime(0.1);
                 for (int i = 0; i < tLights.size(); i++) {
                     if (i == indexWithMostCars) {
                         continue;
@@ -133,25 +132,10 @@ public class GreedyVersion2 extends GreedyVersion1 {
         }
     }
 
-    @Override
-    public Road addRoad(Road r) {
+    public Road addRoad(Road r, Detector d) {
         //Only change is that it now uses smart traffic light extended instead of the default ones
-        getRoads().add(r);
-        boolean flag = false;
-        if (r.getStart() == this) {
-            getOut().add(r);
-            flag = true;
-        } else {
-            getIn().add(r);
-        }
 
-        if (flag) {
-            getTrafficLights().stream().forEach((trafficLight) -> {
-                trafficLight.addOut(r);
-            });
-        } else {
-            getTrafficLights().add(new SmartTrafficLightExtended(this, r, getOut(), getType()));
-        }
+        getTrafficLights().add(new SmartTrafficLightExtended(this, r, getOut(), d));
 
         return r;
     }
