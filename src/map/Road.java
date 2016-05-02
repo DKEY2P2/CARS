@@ -20,7 +20,7 @@ public abstract class Road implements Drawable {
     public static PriorityQueue<Vehicle> pq2;
 
     /**
-     * The length of a road
+     * The width of a road
      */
     private double width = 3.25;
 
