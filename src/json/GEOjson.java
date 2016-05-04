@@ -140,9 +140,11 @@ public class GEOjson {
 	
 	//If these are not set yet, let's do.
 	if (refX == 69696 || refY == 69696) {
-	    refX = (int) //(coordinates.getJSONArray(0).getDouble(0) * 1000000);
+	    refX = (int)
+		    //(coordinates.getJSONArray(0).getDouble(0) * 1000000);
 		    Mercator.mercX(coordinates.getJSONArray(0).getDouble(0));
-	    refY = (int) //(coordinates.getJSONArray(0).getDouble(1) * 1000000);
+	    refY = (int)
+		    //(coordinates.getJSONArray(0).getDouble(1) * 1000000);
 		    Mercator.mercY(coordinates.getJSONArray(0).getDouble(1));
 	
 	    
@@ -153,9 +155,11 @@ public class GEOjson {
 	    
 	    JSONArray point = coordinates.getJSONArray(j);
 	    
-	    int xcoord = (int) //((point.getDouble(0) * 1000000) - refX);
+	    int xcoord = (int)
+		    //((point.getDouble(0) * 1000000) - refX);
 		    Mercator.mercX(point.getDouble(0)) - refX;
-	    int ycoord = (int) //((-1) * ((point.getDouble(1) * 1000000) - refY));
+	    int ycoord = (int)
+		    //((-1) * ((point.getDouble(1) * 1000000) - refY));
 		    Mercator.mercY(point.getDouble(1)) - refY;
 	    ints.add(includeIntersectionAtPoint(xcoord, ycoord, map));
 	    
