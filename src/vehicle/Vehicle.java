@@ -1,5 +1,14 @@
 package vehicle;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.util.AbstractMap;
+import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Objects;
+import java.util.PriorityQueue;
+
 import algorithms.Algorithm;
 import controller.Controller;
 import controller.Task;
@@ -9,12 +18,7 @@ import map.Road;
 import map.TrafficLight;
 import models.Model;
 import ui.Drawable;
-import ui.helper.TwoDTransformation;
 import ui.setting.GraphicsSetting;
-
-import java.awt.*;
-import java.util.*;
-import java.util.AbstractMap.SimpleImmutableEntry;
 
 /**
  * The abstract class for all vehicles and identities present in the simulation
@@ -525,10 +529,11 @@ public abstract class Vehicle implements Task, Drawable, Comparable<Vehicle> {
     public void updateAll(double v, double acc,Road r){
         double t = Controller.getInstance().getTicker().getTickTimeInS();
         this.setAcceleration(acc);
-        if(v < 0)
+        if(v < 0){
             this.setSpeed(0);
-        else
+        }else{
             this.setSpeed(v);
+        }
         double p = this.getPosition().getValue() + ((this.getSpeed() * t / r.getLength())); //new position
         if(p>=1d){
             r.getVehicles().remove(this);

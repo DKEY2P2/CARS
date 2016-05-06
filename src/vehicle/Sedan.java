@@ -1,6 +1,7 @@
 package vehicle;
 
 import algorithms.Algorithm;
+import controller.SimulationSettings;
 import helper.Logger;
 import map.Intersection;
 import map.Road;

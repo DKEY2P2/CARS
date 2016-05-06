@@ -1,15 +1,17 @@
 package vehicle;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
+
 import algorithms.Algorithm;
 import controller.SimulationSettings;
 import helper.StupidHelper;
 import map.Intersection;
 import map.Road;
+import models.AutonomousCarBehaviour;
 import models.Model;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
+import models.OVM;
 
 /**
  * A factory for making cars
@@ -24,6 +26,7 @@ public class VehicleFactory {
     public static final String SPORT_CAR = "Sport";
     public static final String SEDAN = "Sedan";
     public static final String MINIBUS = "Minibus";
+    public static final String GOOGLECAR = "GoogleCar";
 
     /**
      * The private instance of the factory
@@ -37,13 +40,16 @@ public class VehicleFactory {
         cars.put(SEDAN, 0);
         cars.put(SPORT_CAR, 1);
         cars.put(MINIBUS, 2);
-        reverse.put(0, SEDAN);
-        reverse.put(1, SPORT_CAR);
-        reverse.put(2, MINIBUS);
+        cars.put(GOOGLECAR, 3);
+        reverse.add(SEDAN);
+        reverse.add(SPORT_CAR);
+        reverse.add(MINIBUS);
+        reverse.add(GOOGLECAR);
 
-        probablity.add(0.3333);
-        probablity.add(0.3333*2);
-        probablity.add(0.3333*3);
+        probablity.add(0.25);
+        probablity.add(0.25);
+        probablity.add(0.25);
+        probablity.add(0.25);
 
     }
     /**
@@ -77,13 +83,15 @@ public class VehicleFactory {
      * @return
      */
     public Vehicle createVehicle(String type, Model m, Algorithm al, Road r, double percentage, Intersection goal) {
-        switch (type) {
+    	switch (type) {
             case "Sport":
                 return new SportCar(r, percentage, m, al, goal);
             case "Sedan":
                 return new Sedan(r, percentage, m, al, goal);
-            case MINIBUS:
+            case "Minibus":
                 return new Minibus(r, percentage, m, al, goal);
+            case "GoogleCar":
+                return new GoogleCar(r, percentage, m, al, goal);
         }
         return null;
     }
@@ -178,20 +186,8 @@ public class VehicleFactory {
 
     private String getType() {
         Random r = new Random();
-        double next = r.nextDouble();
-        for (int i = 0; i < probablity.size(); i++) {
-            double current;
-            double higher = probablity.get(i);
-            if (i == 0) {
-                current = 0;
-            } else {
-                current = probablity.get(i - 1);
-            }
-            if (next > current && next < higher) {
-                return reverse.get(i);
-            }
-        }
-        return null;
+        int next = r.nextInt(4);
+        return reverse.get(next);
     }
 
     /**
@@ -207,6 +203,6 @@ public class VehicleFactory {
     }
 
     private HashMap<String, Integer> cars = new HashMap<>();
-    private HashMap<Integer, String> reverse = new HashMap<>();
+    private ArrayList<String> reverse = new ArrayList<>();
     private ArrayList<Double> probablity = new ArrayList<>();
 }
