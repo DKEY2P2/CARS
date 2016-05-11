@@ -1,80 +1,121 @@
 package models;
 
+import java.awt.Color;
+
 import controller.Controller;
 import map.Road;
 import map.TrafficLight;
 import vehicle.Vehicle;
 
-// http://www.sciencedirect.com/science/article/pii/S1405774315000311
-// https://en.wikipedia.org/wiki/Two-second_rule
-// http://homepage.cs.uiowa.edu/~kearney/pubs/SteeringBehaviorsIEEEVR05.pdf    Page 157
-// http://www.cedr.fr/home/fileadmin/user_upload/Publications/2010/e_Distance_between_vehicles.pdf
 public class AutonomousCar implements Model {
 
+	private boolean drive = true;
+	private double acc; 												// Acceleration
+	private double maxDec, desDec;										// Maximum Deceleration, desired Dec
+	private double propPar1, propPar2;									// Proportional Parameters 1 and 2
+	private double actFollDist, desiFollDist, minFollDist; 				// Actual , desired and minimum following distance
+	private double speed, lSpeed;										// Follower, leader, desired speed
+	private double posV, posL;											// Position follower, leader
+	private double rangeToLeader;										// The range of distance to leader, so whether or not to take them into consideration yet.
+	private double lRoad;												// Obviously the length of the road
 	@Override
 	public void calculate(Vehicle v) {
 
 		Vehicle leader = v.getPredecessor();
 		Road r = v.getPosition().getKey();
 		TrafficLight trl = r.getEnd().getTrafficLight(r);
+		
+		double bla = 0;
+		
 
-		double acc, maxDec, dist, actDist, minDist, desiDist, par1, par2, speed, diffSpeed = 0;
-
-		minDist = v.getLength() * 2;
+		maxDec = -(v.getMaxDecceleration());
+		propPar1 = 1.3;
+		propPar2 = (2 * Math.sqrt(propPar1));
 		speed = v.getSpeed();
-		maxDec = v.getMaxDecceleration();
-		par1 = 1; // Do NOT know what this is supposed to be. Defined as "a
-					// proportional parameter".
-		par2 = (2 * Math.sqrt(par1));
-
-		desiDist = Math.max(minDist, speed * 2); // kd is a constant ?!!!
-
+		lRoad = r.getLength();
+		
 		if (leader == null) {
 			if (trl != null) {
-				//	System.out.println("We have a traffic light.");
-				if (!trl.isGreen()) {
-					diffSpeed = speed;
-					actDist = (1 - v.getPosition().getValue()) * r.getLength();
-					dist = (actDist - desiDist);
-					if (dist < minDist) {
-						speed = 0;
-						acc = 0;
-					} else {
-						acc = Math.max(maxDec, (par1 * dist - par2 * diffSpeed));
-					}
+				if (trl.isGreen()) {
+					acc = cruisingBehaviour(v, r, propPar2);
+				} else { // Traffic light is RED
+					desDec = -(v.getDesiredDeceleration());
 
-				} else {
-					if (speed < v.getDesiredSpeed()) {
-						acc = Math.min(v.getMaxAcceleration(), 2 * (v.getDesiredSpeed() - speed));
-					} else if (speed == v.getDesiredSpeed()) {
-						acc = speed;
-					} else {
-						acc = Math.max(v.getMaxDecceleration(), 2 * (v.getDesiredDeceleration() - speed));
+					actFollDist = ((1 - v.getPosition().getValue()) * lRoad);
+					acc = -(Math.pow(speed, 2) / (2 * actFollDist));
+					if (acc > desDec && drive) {
+						acc = cruisingBehaviour(v, r, propPar2);
+					} else if (acc < maxDec && acc < desDec) {
+						drive = false;
+						acc = -10*(Math.pow(speed, 2) / (2 * actFollDist));
 					}
 				}
+				bla = speed + acc * Controller.getInstance().getTicker().getTickTimeInS();
+				v.updateAll(bla, acc, r);
+				
+				if (bla <= 0) {
+					v.setColor(Color.BLACK);
+				} else
+					v.setColor(Color.ORANGE);
 			} else {
-				if (speed < v.getDesiredSpeed()) {
-					acc = Math.min(v.getMaxAcceleration(), 2 * (v.getDesiredSpeed() - speed));
-				} else if (speed == v.getDesiredSpeed()) {
-					acc = speed;
-				} else {
-					acc = Math.max(v.getMaxDecceleration(), 2 * (v.getDesiredDeceleration() - speed));
-				}
+				acc = cruisingBehaviour(v, r, propPar2);
 			}
+
 		} else {
-			minDist = (v.getSpeed() / 8000) * v.getLength();// Two-second rule from WIKI
-			actDist = ((leader.getPosition().getValue() - v.getPosition().getValue()) * r.getLength())
-					- leader.getLength();
-			diffSpeed = v.getSpeed() - leader.getSpeed();
-			dist = (actDist - desiDist);
-			if (dist < minDist) {
-				acc = - Math.pow(speed, 2)/(2*dist);
+			rangeToLeader = Math.max(20, speed * 2);
+			posL = leader.getPosition().getValue();
+			posV = v.getPosition().getValue();
+			if (((posL - posV) * lRoad) <= rangeToLeader) {
+				lSpeed = leader.getSpeed();
+				actFollDist = ((posL - posV) * lRoad) - leader.getLength();
+				minFollDist = (v.getSpeed() / 2.2222222) * v.getLength() * 1.1;// Two-second rule 
+				desiFollDist = Math.max(minFollDist, speed * 1.2);    // where 2 is some constant k
+				if (actFollDist <= minFollDist) {
+					acc = -(Math.pow(speed, 2) / (2 * actFollDist)) ;
+					acc = Math.min(acc, maxDec);
+				} else {
+					acc = Math.max(maxDec, propPar1 * (actFollDist - desiFollDist) - (propPar2) * (speed - lSpeed));
+				}
 			} else {
-				acc = Math.max(maxDec, (par1 * dist - par2 * diffSpeed));
+				acc = cruisingBehaviour(v, r, propPar2);
 			}
 		}
-		v.updateAll(speed + acc * Controller.getInstance().getTicker().getTickTimeInS(), acc, r);
-
+		bla = speed + acc * Controller.getInstance().getTicker().getTickTimeInS();
+		v.updateAll(bla, acc, r);
 	}
 
+	public static double cruisingBehaviour(Vehicle v, Road r, double prop) {
+		double speed = v.getSpeed();
+		double desSpeed = v.getDesiredSpeed();
+		double rLimit = r.getSpeedLimit();
+		double maxDec = -(v.getMaxDecceleration());
+		double maxAcc = v.getMaxAcceleration();
+		double acc;
+		if (speed < desSpeed) {
+			if (overLimit(speed, rLimit)) {
+				acc = -(Math.max(maxDec, prop * (desSpeed - speed)));
+			} else
+				acc = Math.min(maxAcc, prop * (desSpeed - speed));
+		} else if (speed == desSpeed) {
+			if (overLimit(speed, rLimit)) {
+				acc = -(Math.max(maxDec, prop * (desSpeed - speed)));
+			} else
+				acc = 0;
+		} else {
+			acc = -(Math.max(maxDec, prop * (desSpeed - speed)));
+		}
+		return acc;
+	}
+
+	public static boolean overLimit(double speed, double sLimit) {
+		boolean tooFast;
+		if (speed > sLimit) {
+			tooFast = true;
+		} else if (speed == sLimit) {
+			tooFast = false;
+		} else {
+			tooFast = false;
+		}
+		return tooFast;
+	}
 }

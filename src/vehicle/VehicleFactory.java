@@ -9,7 +9,7 @@ import controller.SimulationSettings;
 import helper.StupidHelper;
 import map.Intersection;
 import map.Road;
-import models.AutonomousCarBehaviour;
+import models.AutonomousCar;
 import models.Model;
 import models.OVM;
 
