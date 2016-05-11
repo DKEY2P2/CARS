@@ -20,7 +20,6 @@ public class GM implements Model {
 	private double acceleration;
 	private double position;
 	private double velocity;
-	private double timeStep;
 	/*
 	 * Driving habit will not change if the follow distance is farther that maxFollow in meters. 
 	 */
@@ -28,70 +27,47 @@ public class GM implements Model {
 	
 	public GM() {
 		
-		a=13;
-		m=0;
-		l=1;
+		a=1;
+		m=1;
+		l=3;
 		
 	}
 
-	private double velocity(Vehicle car){
-		return car.getSpeed()+car.getAcceleration()*timeStep;
-		
-	}
-	private double position(Vehicle car) {
-		return car.getPosition().getValue()*car.getPosition().getKey().getLength()
-				+(car.getSpeed()*timeStep)
-					+(.5*car.getAcceleration())*Math.pow(timeStep, 2); 
-	}
 	private double acceleration(Vehicle lead, Vehicle follow) {
-		return (velocity(lead)-velocity(follow))
+		return (lead.getSpeed()-follow.getSpeed())
 					*(Math.pow(a*follow.getSpeed(),m))
-						/Math.pow((position(lead)-position(follow)),l);
+						/Math.pow((lead.getPosition().getValue())-lead.getPosition().getValue(),l);
 	}
 	public void calculate(Vehicle v) {
-		
-		double reactionTime= v.getReactionTime();
-		double time = Controller.getInstance().getTicker().getTickTimeInS();
+		double react = v.getReactionTime();
 		Road r =v.getPosition().getKey();
 		TrafficLight trl = r.getTrafficlight();
 		Vehicle inFrontVehicle = v.getPredecessor();
 		velocity = v.getSpeed();
-		position = v.getPosition().getValue()*r.getLength();
+		position = v.getPosition().getValue();
 		acceleration = v.getAcceleration();
-		
+		double minDist= v.getLength()*2;
 		
 		//a*(speed of following car)*(speedOfLeadCar-speedOfFollowCar)/(positionOfLead-positionOfFollow)
-		if(inFrontVehicle != null && (position(inFrontVehicle)- position(v))<= 50) {
-			timeStep = Controller.getInstance().getTicker().getTickTimeInS()-time;
+		if(inFrontVehicle != null && (inFrontVehicle.getPosition().getValue()-v.getPosition().getValue()) < minDist ) {
 			acceleration= acceleration(inFrontVehicle,v);
-			
-			double newPosition = position(v);
-			v.setAcceleration(acceleration);
-			v.setPosition(new SimpleImmutableEntry<>(r,newPosition));
+			velocity+=acceleration*Controller.getInstance().getTicker().getTickTimeInS();
 			
 		}else{
-			timeStep = Controller.getInstance().getTicker().getTickTimeInS()-time;
-			double speed= v.getSpeed();
-			double position = v.getPosition().getValue()*r.getLength();
+
 			
-			if(!trl.isGreen() && position-r.getLength() == v.getBreakingDistance() ) {
-				acceleration = v.getMaxDecceleration();
-				double newPosition = position(v);
-				speed = velocity(v);
-				v.setSpeed(speed);
-				v.setPosition(new SimpleImmutableEntry<>(r,newPosition));
+			if(!trl.isGreen() && position-r.getLength() < minDist ) {
+				acceleration = -1*v.getMaxDecceleration();
 			
 			} else {
-					speed = speed+v.getMaxAcceleration()*Controller.getInstance().getTicker().getTickTimeInS();
-					speed= Math.min(speed, r.getSpeedLimit());
-					double newPosition = (position + speed * Controller.getInstance().getTicker().getTickTimeInS())
-							/ r.getLength();
-					v.setAcceleration(acceleration);
-					v.setSpeed(speed);
-					v.setPosition(new SimpleImmutableEntry<>(r, newPosition));
+				if(velocity == 0) {
+					acceleration = v.getMaxAcceleration();
+				}
+					acceleration = Math.min(r.getSpeedLimit(),v.getDesiredSpeed());
 			}
-			
+			velocity=Math.max(0, Math.min(velocity+acceleration*Controller.getInstance().getTicker().getTickTimeInS() , r.getSpeedLimit()));
 		}
+		v.updateAll(velocity, acceleration, r);
 		
 	}
 	
