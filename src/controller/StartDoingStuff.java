@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.ArrayList;
+
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -12,7 +13,7 @@ import map.Map;
 import map.Road;
 import map.intersection.DefaultIntersection;
 import map.road.NormalRoad;
-import models.IntelligentDriver;
+import models.GM;
 import statistics.Stats;
 import ui.ControllerUI;
 import vehicle.VehicleFactory;
@@ -41,13 +42,13 @@ public class StartDoingStuff {
         }
 
         /* Set what model to use for the rest of the applicatio */
-        SimulationSettings.getInstance().setModel(new IntelligentDriver());
+        SimulationSettings.getInstance().setModel(new GM());
 
         /* Set what path finding AI to use for the rest of the application */
         SimulationSettings.getInstance().setPathFindingAI(new AStar());
 
         /* Set the number of ticks the simulation waits until it spawns new vehicles */
-        SimulationSettings.getInstance().setTimeUntilSpawn(500);
+        SimulationSettings.getInstance().setTimeUntilSpawn(200);
 
         SimulationSettings.getInstance().setNumberOfCarsToSpawn(10);
 

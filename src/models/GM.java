@@ -29,45 +29,50 @@ public class GM implements Model {
 		
 		a=1;
 		m=1;
-		l=3;
+		l=1;
 		
 	}
 
 	private double acceleration(Vehicle lead, Vehicle follow) {
 		return (lead.getSpeed()-follow.getSpeed())
 					*(Math.pow(a*follow.getSpeed(),m))
-						/Math.pow((lead.getPosition().getValue())-lead.getPosition().getValue(),l);
+						/Math.pow((lead.getPosition().getValue())-follow.getPosition().getValue(),l);
 	}
 	public void calculate(Vehicle v) {
+		
+		Vehicle inFrontVehicle = v.getPredecessor();
 		double react = v.getReactionTime();
 		Road r =v.getPosition().getKey();
-		TrafficLight trl = r.getTrafficlight();
-		Vehicle inFrontVehicle = v.getPredecessor();
+		TrafficLight trl = r.getEnd().
 		velocity = v.getSpeed();
 		position = v.getPosition().getValue();
 		acceleration = v.getAcceleration();
-		double minDist= v.getLength()*2;
+		double minDist= v.getLength();
 		
 		//a*(speed of following car)*(speedOfLeadCar-speedOfFollowCar)/(positionOfLead-positionOfFollow)
 		if(inFrontVehicle != null && (inFrontVehicle.getPosition().getValue()-v.getPosition().getValue()) < minDist ) {
 			acceleration= acceleration(inFrontVehicle,v);
-			velocity+=acceleration*Controller.getInstance().getTicker().getTickTimeInS();
+			//velocity=velocity+acceleration*Controller.getInstance().getTicker().getTickTimeInS();
 			
 		}else{
 
 			
-			if(!trl.isGreen() && position-r.getLength() < minDist ) {
-				acceleration = -1*v.getMaxDecceleration();
-			
+			if(!trl.isGreen()) {
+				if(position-r.getLength() < minDist) {
+					acceleration = -1*v.getMaxDecceleration();
+					
+				} else {
+					acceleration = Math.min(r.getSpeedLimit(),v.getDesiredSpeed());
+				}
 			} else {
 				if(velocity == 0) {
 					acceleration = v.getMaxAcceleration();
 				}
 					acceleration = Math.min(r.getSpeedLimit(),v.getDesiredSpeed());
 			}
-			velocity=Math.max(0, Math.min(velocity+acceleration*Controller.getInstance().getTicker().getTickTimeInS() , r.getSpeedLimit()));
+			//velocity=Math.max(0, Math.min(velocity+acceleration*Controller.getInstance().getTicker().getTickTimeInS() , r.getSpeedLimit()));
 		}
-		v.updateAll(velocity, acceleration, r);
+		v.updateAll(velocity+acceleration*Controller.getInstance().getTicker().getTickTimeInS(), acceleration, r);
 		
 	}
 	
