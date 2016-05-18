@@ -180,12 +180,13 @@ public class GEOjson {
 		Road r2 = i.getRoads().get(1);
 		
 		if (r1.getStart() == i){}
-			r1.set
+//			r1.set
 		
 	    }
 	}
 	return null;
     }
+    /**
     
     public static class SphericalMercator {
 	public static final double RADIUS = 6378137.0;
@@ -207,7 +208,7 @@ public class GEOjson {
 	}
     }
     
-    
+    **/
     
     public static class Mercator {
 	final private static double R_MAJOR = 6378137.0;
